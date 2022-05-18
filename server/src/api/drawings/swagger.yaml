@@ -1,0 +1,12 @@
+components:
+  schemas:
+    Drawing:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+      additionalProperties: false
