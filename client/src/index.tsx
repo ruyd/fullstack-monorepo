@@ -8,13 +8,18 @@ import { Counter } from './features/canvas/Counter'
 import CssBaseline from '@mui/material/CssBaseline'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
+import NavBar from './components/NavBar'
+import { flexbox } from '@mui/system'
+import Stack from '@mui/material/Stack'
+import { Grid } from '@mui/material'
 
 function App() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container>
-        <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }} />
+      <NavBar />
+      <Container maxWidth={false} disableGutters sx={{ display: 'flex' }}>
+        <Box sx={{ bgcolor: '#cfe8fc' }}>ddd</Box>
       </Container>
     </React.Fragment>
   )

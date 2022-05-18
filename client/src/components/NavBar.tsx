@@ -13,8 +13,8 @@ import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
 
-const pages = ['Products', 'Pricing', 'Blog']
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+const pages = ['Drawings']
+const settings = ['Profile', 'Drawings', 'Logout']
 
 export default function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
@@ -57,7 +57,7 @@ export default function NavBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            DrawSpace
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -113,7 +113,7 @@ export default function NavBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            DrawSpace
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (

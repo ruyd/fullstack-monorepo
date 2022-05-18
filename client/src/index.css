@@ -1,3 +1,19 @@
+html,
+body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  box-sizing: border-box;
+  justify-content: space-around;
+}
+
+#root {
+  display: flex;
+  flex-flow: column wrap;
+  box-sizing: border-box;
+  justify-content: space-around;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
