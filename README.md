@@ -7,8 +7,20 @@ client
 
 server
 
-- crud - done
 - auth0 - nice to have
+
+choice tradeoffs
+
+- backend using mentioned tech (postgres)
+-
+
+bonus
+
+1. save history on each stroke
+2. svg for retina
+3. mui layout and svg responsiveness
+4. ?
+5. ?
 
 ---
 
