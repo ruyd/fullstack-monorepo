@@ -9,10 +9,10 @@ server
 
 - auth0 - nice to have
 
-choice tradeoffs
+choices and tradeoffs
 
 - backend using mentioned tech (postgres)
--
+- brushes
 
 bonus
 
@@ -41,22 +41,24 @@ Provide a very simple login/register mechanism.
 Main
 This screen is the public list of drawings that all users uploaded. Information that should be
 present for each drawing:
-● Creation date & time.
-● Time it took to draw (from first stroke to sending the drawing).
-● Thumbnail of the drawing itself.
-● show the user’s details
-● allow a user to delete their drawings
+
+- Creation date & time.
+- Time it took to draw (from first stroke to sending the drawing).
+- Thumbnail of the drawing itself.
+- show the user’s details
+- allow a user to delete their drawings
 
 Create
-● The user should be able to choose colors (at least five).
-● The user should be able to change the brush’s stroke width.
-● There should be a special “Eraser” brush.
-● The user can choose whether this drawing is public (goes in the list) or private (and then
-they can share the URL with whoever they want).
-You should create both the frontend (ReactJS) and the backend (Node.js). Avoid using a library
-that will do all the drawing. You can choose any other technology in your stack. The application
-should have an API layer that it communicates with. Frontend and backend should be
-separated.
+
+- The user should be able to choose colors (at least five).
+- The user should be able to change the brush’s stroke width.
+- There should be a special “Eraser” brush.
+- The user can choose whether this drawing is public (goes in the list) or private (and then
+  they can share the URL with whoever they want).
+  You should create both the frontend (ReactJS) and the backend (Node.js). Avoid using a library
+  that will do all the drawing. You can choose any other technology in your stack. The application
+  should have an API layer that it communicates with. Frontend and backend should be
+  separated.
 
 Major Bonus Points
 We would love to see as much of these features implemented. Although they are not required,
