@@ -5,6 +5,8 @@ export interface Drawing {
   id: number
   userId: string
   name: string
+  data?: string
+  history?: string[]
   createdAt?: Date
   updatedAt?: Date
 }

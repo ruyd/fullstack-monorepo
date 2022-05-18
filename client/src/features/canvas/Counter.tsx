@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useAppSelector, useAppDispatch } from '../../store'
+import { useAppSelector, useAppDispatch } from '../../shared/store'
 import {
   decrement,
   increment,

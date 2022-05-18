@@ -1,4 +1,5 @@
 import httpStatus from 'http-status'
+import { NextFunction, Request, Response } from 'express'
 
 export interface HttpErrorParams {
   message?: string
@@ -178,4 +179,48 @@ export class HttpInternalServerError extends HttpError {
       data,
     })
   }
+}
+
+type HttpErrorResponse = Required<
+  Pick<HttpErrorParams, 'status' | 'message'> & { code: string }
+> &
+  Pick<HttpErrorParams, 'data' | 'stack'>
+
+/**
+ * Handler for all requests that throw an Error.
+ *
+ * Inspired by:
+ * - https://dev.to/lvidakovic/handling-custom-error-types-in-express-js-1k90
+ * - https://github.com/danielfsousa/express-rest-boilerplate/
+ */
+export function errorHandler(
+  err: HttpError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
+  const response: HttpErrorResponse = {
+    status: err.status,
+    code: err.name,
+    message: err.message,
+    data: err.data,
+    stack: err.stack,
+  }
+
+  console.error(
+    `Client with IP="${req.ip}" failed to complete request to="${req.method}" originating from="${req.originalUrl}". Status="${err.status}" Message="${err.message}"`,
+    err
+  )
+
+  if (!err.isPublic) {
+    response.message = 'Internal server error'
+    delete response.data
+  }
+
+  if (process.env.NODE_ENV !== 'development') {
+    delete response.stack
+  }
+
+  res.status(err.status)
+  res.json(response)
 }

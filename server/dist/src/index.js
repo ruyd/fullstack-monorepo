@@ -19,7 +19,7 @@ const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const db_1 = __importDefault(require("./shared/db"));
 const api_1 = __importDefault(require("./api"));
-const errorMiddleware_1 = require("./shared/errorMiddleware");
+const errors_1 = require("./shared/errors");
 (() => __awaiter(void 0, void 0, void 0, function* () {
     //Initialize Models
     yield db_1.default.authenticate();
@@ -34,13 +34,12 @@ const errorMiddleware_1 = require("./shared/errorMiddleware");
     })));
     //Apply API
     app.use(`/${config_1.default.version}`, api_1.default);
+    //Errors
+    app.use(errors_1.errorHandler);
     //Start server
     app.get('/', (req, res) => {
         res.send('Talk Backend x');
     });
-    //Errors
-    app.use(errorMiddleware_1.errorHandler);
-    app.use(errorMiddleware_1.errorConverter);
     app.listen(config_1.default.port, () => {
         console.log(`⚡️[server]: Server is running at https://localhost:${config_1.default.port} with API Swagger at /docs`);
     });

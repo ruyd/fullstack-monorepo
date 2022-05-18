@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HttpInternalServerError = exports.HttpConflictError = exports.HttpNotFoundError = exports.HttpForbiddenError = exports.HttpUnauthorizedError = exports.HttpBadRequestError = exports.HttpError = void 0;
+exports.errorHandler = exports.HttpInternalServerError = exports.HttpConflictError = exports.HttpNotFoundError = exports.HttpForbiddenError = exports.HttpUnauthorizedError = exports.HttpBadRequestError = exports.HttpError = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 /**
  * Re-usable HttpError class.
@@ -165,4 +165,31 @@ class HttpInternalServerError extends HttpError {
     }
 }
 exports.HttpInternalServerError = HttpInternalServerError;
+/**
+ * Handler for all requests that throw an Error.
+ *
+ * Inspired by:
+ * - https://dev.to/lvidakovic/handling-custom-error-types-in-express-js-1k90
+ * - https://github.com/danielfsousa/express-rest-boilerplate/
+ */
+function errorHandler(err, req, res, next) {
+    const response = {
+        status: err.status,
+        code: err.name,
+        message: err.message,
+        data: err.data,
+        stack: err.stack,
+    };
+    console.error(`Client with IP="${req.ip}" failed to complete request to="${req.method}" originating from="${req.originalUrl}". Status="${err.status}" Message="${err.message}"`, err);
+    if (!err.isPublic) {
+        response.message = 'Internal server error';
+        delete response.data;
+    }
+    if (process.env.NODE_ENV !== 'development') {
+        delete response.stack;
+    }
+    res.status(err.status);
+    res.json(response);
+}
+exports.errorHandler = errorHandler;
 //# sourceMappingURL=errors.js.map

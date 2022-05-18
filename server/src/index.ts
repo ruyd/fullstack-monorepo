@@ -5,7 +5,7 @@ import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
 import db from './shared/db'
 import api from './api'
-import { errorConverter, errorHandler } from './shared/errorMiddleware'
+import { errorHandler } from './shared/errors'
 ;(async () => {
   //Initialize Models
   await db.authenticate()
@@ -31,14 +31,13 @@ import { errorConverter, errorHandler } from './shared/errorMiddleware'
   //Apply API
   app.use(`/${config.version}`, api)
 
+  //Errors
+  app.use(errorHandler)
+
   //Start server
   app.get('/', (req: Request, res: Response) => {
     res.send('Talk Backend x')
   })
-
-  //Errors
-  app.use(errorHandler)
-  app.use(errorConverter)
 
   app.listen(config.port, () => {
     console.log(
