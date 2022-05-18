@@ -5,15 +5,18 @@ import { store } from './shared/store'
 import reportWebVitals from './reportWebVitals'
 import './index.css'
 import { Counter } from './features/canvas/Counter'
+import CssBaseline from '@mui/material/CssBaseline'
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Counter />
-        <span></span>
-      </header>
-    </div>
+    <React.Fragment>
+      <CssBaseline />
+      <Container>
+        <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }} />
+      </Container>
+    </React.Fragment>
   )
 }
 
