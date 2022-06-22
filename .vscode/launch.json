@@ -2,18 +2,17 @@
     "configurations": [
         {
             "command": "npm run dev",
-            "name": "Node Debug",
+            "name": "Server Debug",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceRoot}/server"
         },
         {
             "type": "pwa-msedge",
-            "request": "attach",
-            "name": "Attach against localhost",
+            "request": "launch",
+            "name": "Frontend Edge",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/client",
-            "port": 9223,
         }
     ]
 }

@@ -9,18 +9,16 @@ import CssBaseline from '@mui/material/CssBaseline'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import NavBar from './components/NavBar'
-import { flexbox } from '@mui/system'
-import Stack from '@mui/material/Stack'
-import { Grid } from '@mui/material'
+import ThemeSwitch from './components/ThemeSwitch'
 
 function App() {
   return (
     <React.Fragment>
       <CssBaseline />
       <NavBar />
-      <Container maxWidth={false} disableGutters sx={{ display: 'flex' }}>
-        <Box sx={{ bgcolor: '#cfe8fc' }}>ddd</Box>
-      </Container>
+      <main>
+        <Box sx={{}}>ddxd</Box>
+      </main>
     </React.Fragment>
   )
 }
@@ -31,7 +29,9 @@ const root = createRoot(container)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ThemeSwitch>
+        <App />
+      </ThemeSwitch>
     </Provider>
   </React.StrictMode>
 )

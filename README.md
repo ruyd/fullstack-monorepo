@@ -1,26 +1,14 @@
 client
 
-- layout
-- listing
-- canvas editor
-- auth mock
+- responsive
+- cra template
+- node starter
+- deno starter
 
 server
 
-- auth0 - nice to have
-
-choices and tradeoffs
-
-- backend using mentioned tech (postgres)
-- brushes
-
-bonus
-
-1. save history on each stroke
-2. svg for retina
-3. mui layout and svg responsiveness
-4. ?
-5. ?
+- jwt
+- dynamic api routes from sequelize
 
 ---
 
