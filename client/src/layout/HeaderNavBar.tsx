@@ -12,11 +12,15 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
+import { useAppDispatch, useAppSelector } from '../shared/store'
+import { patch } from '../features/app/slice'
 
 const pages = ['Drawings']
 const settings = ['Profile', 'Drawings', 'Logout']
 
-export default function NavBar() {
+export default function HeaderNavBar() {
+  const dispatch = useAppDispatch()
+  const darkTheme = useAppSelector((store) => store.app.darkTheme)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -35,6 +39,10 @@ export default function NavBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
+  }
+
+  const handleThemeToggle = () => {
+    dispatch(patch({ darkTheme: !darkTheme }))
   }
 
   return (
@@ -154,6 +162,9 @@ export default function NavBar() {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleThemeToggle}>
+                <Typography textAlign="center">Theme</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

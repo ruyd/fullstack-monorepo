@@ -11,7 +11,7 @@ export type CanvasContextType = {
   canvasRef: RefObject<HTMLCanvasElement>
   contextRef: RefObject<CanvasRenderingContext2D>
   prepareCanvas: () => void
-  startDrawing: (e: { nativeEvent: MouseEvent }) => void
+  startDrawing: (e: React.MouseEvent<HTMLElement>) => void
   finishDrawing: () => void
   clearCanvas: () => void
   draw: (e: { nativeEvent: MouseEvent }) => void

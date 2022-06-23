@@ -28,8 +28,6 @@ main {
   flex: 1;
   display: flex;
   flex-flow: column;
-  background-color: black;
-  color: white;
 }
 
 main div {

@@ -14,15 +14,15 @@ const darkOptions: ThemeOptions = {
 
 const lightOptions: ThemeOptions = {}
 
-export function getTheme(mode: string): Theme {
-  const options = mode === 'dark' ? darkOptions : lightOptions
+export function getTheme(darkMode: boolean): Theme {
+  const options = darkMode ? darkOptions : lightOptions
   return createTheme(options)
 }
 
 export default function ThemeSwitch({
   children,
 }: React.PropsWithChildren<{}>): JSX.Element {
-  const selectedTheme = useAppSelector((store) => store.app.theme) || 'light'
-  const theme = React.useMemo(() => getTheme(selectedTheme), [selectedTheme])
+  const darkTheme = useAppSelector((store) => store.app.darkTheme)
+  const theme = React.useMemo(() => getTheme(darkTheme), [darkTheme])
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>
 }

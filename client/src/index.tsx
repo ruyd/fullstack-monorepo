@@ -3,22 +3,20 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from './shared/store'
 import reportWebVitals from './reportWebVitals'
-import './index.css'
-import { Counter } from './features/canvas/Counter'
 import CssBaseline from '@mui/material/CssBaseline'
-import Container from '@mui/material/Container'
-import Box from '@mui/material/Box'
-import NavBar from './components/NavBar'
-import ThemeSwitch from './components/ThemeSwitch'
+import HeaderNavBar from './layout/HeaderNavBar'
+import MainSection from './layout/MainSection'
+import ThemeSwitch from './layout/ThemeSwitch'
+import './index.css'
 
 function App() {
   return (
     <React.Fragment>
-      <CssBaseline />
-      <NavBar />
-      <main>
-        <Box sx={{}}>ddxd</Box>
-      </main>
+      <ThemeSwitch>
+        <CssBaseline enableColorScheme />
+        <HeaderNavBar />
+        <MainSection />
+      </ThemeSwitch>
     </React.Fragment>
   )
 }
@@ -29,11 +27,10 @@ const root = createRoot(container)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeSwitch>
-        <App />
-      </ThemeSwitch>
+      <App />
     </Provider>
   </React.StrictMode>
 )
 
-reportWebVitals()
+const perf = process.env.NODE_ENV !== 'production' ? console.log : () => {}
+reportWebVitals(perf)
