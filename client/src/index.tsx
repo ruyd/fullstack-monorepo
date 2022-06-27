@@ -10,6 +10,7 @@ import DrawerRight from './layout/Drawer'
 import { BrowserRouter } from 'react-router-dom'
 import Routing from './layout/Routing'
 import Notifications from './layout/Notifications'
+import { HelmetProvider } from 'react-helmet-async'
 
 function App() {
   return (
@@ -31,9 +32,11 @@ const root = createRoot(container)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>
     </Provider>
   </React.StrictMode>
 )
