@@ -2,20 +2,24 @@ import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from './shared/store'
-import reportWebVitals from './reportWebVitals'
 import CssBaseline from '@mui/material/CssBaseline'
-import HeaderNavBar from './layout/HeaderNavBar'
-import MainSection from './layout/MainSection'
+import Header from './layout/Header'
 import ThemeSwitch from './layout/ThemeSwitch'
 import './index.css'
+import DrawerRight from './layout/Drawer'
+import { BrowserRouter } from 'react-router-dom'
+import Routing from './layout/Routing'
+import Notifications from './layout/Notifications'
 
 function App() {
   return (
     <React.Fragment>
       <ThemeSwitch>
         <CssBaseline enableColorScheme />
-        <HeaderNavBar />
-        <MainSection />
+        <Header />
+        <Routing />
+        <Notifications />
+        <DrawerRight />
       </ThemeSwitch>
     </React.Fragment>
   )
@@ -27,10 +31,9 @@ const root = createRoot(container)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 )
-
-const perf = process.env.NODE_ENV !== 'production' ? console.log : () => {}
-reportWebVitals(perf)

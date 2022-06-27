@@ -4,7 +4,7 @@ import { AppNotification, patch } from '../features/app/slice'
 import IconClose from '@mui/icons-material/Close'
 import { IconButton, Snackbar } from '@mui/material'
 
-export default function NotificationsBar() {
+export default function Notifications() {
   const notifications = useAppSelector((store) => store.app.notifications)
   const dispatch = useAppDispatch()
   const [open, setOpen] = React.useState(false)

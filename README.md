@@ -1,6 +1,9 @@
 client
 
+- content mocks
 - responsive
+- title
+- modal
 - cra template
 - node starter
 - deno starter

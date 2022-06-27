@@ -21,6 +21,7 @@ const settings = ['Profile', 'Drawings', 'Logout']
 export default function HeaderNavBar() {
   const dispatch = useAppDispatch()
   const darkTheme = useAppSelector((store) => store.app.darkTheme)
+  const drawerRightOpen = useAppSelector((store) => store.app.drawerRightOpen)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -43,6 +44,10 @@ export default function HeaderNavBar() {
 
   const handleThemeToggle = () => {
     dispatch(patch({ darkTheme: !darkTheme }))
+  }
+
+  const handleMenuToggle = () => {
+    dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
   }
 
   return (
@@ -162,6 +167,9 @@ export default function HeaderNavBar() {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleMenuToggle}>
+                <Typography textAlign="center">Right Menu</Typography>
+              </MenuItem>
               <MenuItem onClick={handleThemeToggle}>
                 <Typography textAlign="center">Theme</Typography>
               </MenuItem>
