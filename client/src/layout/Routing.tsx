@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material'
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Route, Routes } from 'react-router-dom'
@@ -16,7 +17,7 @@ export default function Routing() {
               <Helmet>
                 <title>{route.title}</title>
               </Helmet>
-              <React.Suspense fallback={<>Suspense...</>}>
+              <React.Suspense fallback={<CircularProgress />}>
                 <route.component />
               </React.Suspense>
             </AuthCheck>

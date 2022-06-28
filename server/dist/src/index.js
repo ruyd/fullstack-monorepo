@@ -20,6 +20,7 @@ const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const db_1 = __importDefault(require("./shared/db"));
 const api_1 = __importDefault(require("./api"));
 const errors_1 = require("./shared/errors");
+const swagger_1 = require("./api/auto/swagger");
 (() => __awaiter(void 0, void 0, void 0, function* () {
     //Initialize Models
     yield db_1.default.authenticate();
@@ -28,17 +29,19 @@ const errors_1 = require("./shared/errors");
     const app = (0, express_1.default)();
     app.use(express_1.default.json());
     //Swagger
-    app.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup((0, swagger_jsdoc_1.default)({
+    const swaggerDoc = (0, swagger_jsdoc_1.default)({
         swaggerDefinition: config_1.default.swaggerSetup,
         apis: ['./src/**/swagger.yaml', './src/**/routes.ts'],
-    })));
+    });
+    (0, swagger_1.swaggerDocModelInject)(db_1.default.modelManager.models, swaggerDoc);
+    app.use('/docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerDoc));
     //Apply API
     app.use(`/${config_1.default.version}`, api_1.default);
     //Errors
     app.use(errors_1.errorHandler);
     //Start server
     app.get('/', (req, res) => {
-        res.send('Talk Backend x');
+        res.send('Starter Backend x');
     });
     app.listen(config_1.default.port, () => {
         console.log(`⚡️[server]: Server is running at https://localhost:${config_1.default.port} with API Swagger at /docs`);

@@ -200,7 +200,7 @@ export function errorHandler(
   next: NextFunction
 ): void {
   const response: HttpErrorResponse = {
-    status: err.status,
+    status: err.status || httpStatus.INTERNAL_SERVER_ERROR,
     code: err.name,
     message: err.message,
     data: err.data,
@@ -217,10 +217,10 @@ export function errorHandler(
     delete response.data
   }
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV === 'production') {
     delete response.stack
   }
 
-  res.status(err.status)
+  res.status(response.status)
   res.json(response)
 }

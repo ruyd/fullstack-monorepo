@@ -174,7 +174,7 @@ exports.HttpInternalServerError = HttpInternalServerError;
  */
 function errorHandler(err, req, res, next) {
     const response = {
-        status: err.status,
+        status: err.status || http_status_1.default.INTERNAL_SERVER_ERROR,
         code: err.name,
         message: err.message,
         data: err.data,
@@ -185,10 +185,10 @@ function errorHandler(err, req, res, next) {
         response.message = 'Internal server error';
         delete response.data;
     }
-    if (process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV === 'production') {
         delete response.stack;
     }
-    res.status(err.status);
+    res.status(response.status);
     res.json(response);
 }
 exports.errorHandler = errorHandler;

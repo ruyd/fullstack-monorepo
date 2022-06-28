@@ -7,6 +7,7 @@ export interface AppRoute {
   description?: string
   secure?: boolean
   animate?: string
+  modal?: boolean
 }
 
 export const routes: AppRoute[] = [
@@ -14,7 +15,6 @@ export const routes: AppRoute[] = [
     title: 'Home',
     path: '/',
     component: React.lazy(() => import('../pages/Home')),
-    secure: true,
   },
   {
     title: 'Login',

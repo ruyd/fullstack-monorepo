@@ -1,34 +1,44 @@
+import { Model, ModelStatic } from 'sequelize/types'
 import { HttpNotFoundError } from '../../shared/errors'
 import { PagingOptions } from '../../shared/types'
-import { Drawing, DrawingInstance, DrawingModel } from './models'
 
 export async function list(
-  userId: string,
+  model: ModelStatic<any>,
+  where: { userId?: string } = {},
   page: PagingOptions = { limit: 100, offset: 0 }
-): Promise<Drawing[]> {
-  const items = (await DrawingModel.findAll({
+): Promise<any[]> {
+  const items = (await model.findAll({
     raw: true,
-    where: { userId },
+    where,
     ...page,
-  })) as unknown as Drawing[]
+  })) as unknown as any[]
   return items
 }
 
-export async function getIfExists(id: string): Promise<DrawingInstance> {
-  const item = await DrawingModel.findByPk(id)
+export async function getIfExists<T>(
+  model: ModelStatic<Model>,
+  id: string
+): Promise<Model> {
+  const item = await model.findByPk(id)
   if (!item) {
     throw new HttpNotFoundError(`Record with id ${id} not found`)
   }
   return item
 }
 
-export async function createOrUpdate(payload: Drawing): Promise<Drawing> {
-  const [item] = await DrawingModel.upsert(payload)
+export async function createOrUpdate<T extends Model>(
+  model: ModelStatic<Model>,
+  payload: any
+): Promise<T> {
+  const [item] = await model.upsert(payload)
   return item.get()
 }
 
-export async function deleteIfExists(id: string): Promise<Drawing> {
-  const item = await getIfExists(id)
+export async function deleteIfExists(
+  model: ModelStatic<Model>,
+  id: string
+): Promise<any> {
+  const item = await getIfExists(model, id)
   await item.destroy()
   return item.get()
 }

@@ -16,6 +16,7 @@ export interface AppState {
   notifications: AppNotification[]
   drawerLeftOpen?: boolean
   drawerRightOpen?: boolean
+  loading?: boolean
 }
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')

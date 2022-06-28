@@ -10,6 +10,7 @@ const apiVersion = 'v1';
 const config = {
     version: apiVersion,
     port: Number(process.env.PORT || 3001),
+    tokenSecret: process.env.TOKEN_SECRET,
     db: {
         url: process.env.DB_URL || '',
         schema: process.env.DB_SCHEMA || 'public',

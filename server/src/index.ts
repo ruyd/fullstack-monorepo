@@ -6,6 +6,7 @@ import swaggerJsdoc from 'swagger-jsdoc'
 import db from './shared/db'
 import api from './api'
 import { errorHandler } from './shared/errors'
+import { getPaths, getSchema, swaggerDocModelInject } from './api/auto/swagger'
 ;(async () => {
   //Initialize Models
   await db.authenticate()
@@ -17,16 +18,14 @@ import { errorHandler } from './shared/errors'
   app.use(express.json())
 
   //Swagger
-  app.use(
-    '/docs',
-    swaggerUi.serve,
-    swaggerUi.setup(
-      swaggerJsdoc({
-        swaggerDefinition: config.swaggerSetup,
-        apis: ['./src/**/swagger.yaml', './src/**/routes.ts'],
-      })
-    )
-  )
+  const swaggerDoc = swaggerJsdoc({
+    swaggerDefinition: config.swaggerSetup,
+    apis: ['./src/**/swagger.yaml', './src/**/routes.ts'],
+  })
+
+  swaggerDocModelInject(db.modelManager.models, swaggerDoc)
+
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
   //Apply API
   app.use(`/${config.version}`, api)
@@ -36,7 +35,7 @@ import { errorHandler } from './shared/errors'
 
   //Start server
   app.get('/', (req: Request, res: Response) => {
-    res.send('Talk Backend x')
+    res.send('Starter Backend x')
   })
 
   app.listen(config.port, () => {
