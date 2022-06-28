@@ -1,5 +1,5 @@
 {
-    "name": "server",
+    "name": "api_server",
     "apiVersion": "v1",
     "version": "1.0.0",
     "description": "",

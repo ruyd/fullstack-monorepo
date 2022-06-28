@@ -8,6 +8,8 @@ export interface AppRoute {
   secure?: boolean
   animate?: string
   modal?: boolean
+  link?: boolean
+  profile?: boolean
 }
 
 export const routes: AppRoute[] = [

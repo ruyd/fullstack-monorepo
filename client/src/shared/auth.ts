@@ -1,6 +1,4 @@
-import { Middleware } from '@reduxjs/toolkit'
 import jwtDecode from 'jwt-decode'
-import { login } from '../features/app/slice'
 import axios from 'axios'
 
 export interface AppUser {
@@ -48,15 +46,4 @@ export function setHeader(token: string) {
 export function onLogin(payload: string) {
   localStorage.setItem(TOKEN_KEY, payload)
   setHeader(payload)
-}
-
-/**
- * Hmm
- **/
-export const authMiddleware: Middleware = () => (next) => (action) => {
-  const result = next(action)
-  if (login.match(action)) {
-    onLogin(action.payload)
-  }
-  return result
 }

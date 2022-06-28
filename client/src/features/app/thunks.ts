@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { onLogin } from '../../shared/auth'
 import { patch } from './slice'
 
 export const LoginAsync = createAsyncThunk(
@@ -17,5 +18,6 @@ export const LoginAsync = createAsyncThunk(
         loading: false,
       })
     )
+    onLogin(response.data.token)
   }
 )

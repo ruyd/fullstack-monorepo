@@ -1,3 +1,4 @@
+import { red } from '@mui/material/colors'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   AppUser,
@@ -39,13 +40,12 @@ const slice = createSlice({
     patch: (state, action: PayloadAction<Partial<AppState>>) => {
       return { ...state, ...action.payload }
     },
-    login: (state, action: PayloadAction<string>) => {
-      state.token = action.payload
-      onLogin(action.payload) //this should not work but testing it
+    notify: (state, action: PayloadAction<AppNotification>) => {
+      state.notifications.push(action.payload)
     },
   },
 })
 
-export const { patch, login } = slice.actions
+export const { patch } = slice.actions
 
 export default slice.reducer

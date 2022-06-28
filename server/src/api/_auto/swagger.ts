@@ -14,7 +14,7 @@ const conversions = {
   TIME: 'string',
 }
 
-export function getSchema(model) {
+export function getSchema(model: any) {
   const excluded = ['createdAt', 'updatedAt']
   const columns = Object.entries(model.tableAttributes).filter(
     ([name]) => !excluded.includes(name)
@@ -31,7 +31,7 @@ export function getSchema(model) {
   }
 }
 
-export function getPaths(model) {
+export function getPaths(model: typeof Model) {
   const tagName = model.name.toLowerCase()
   const tags = [tagName]
   const $ref = `#/components/schemas/${model.name}`
@@ -142,6 +142,9 @@ export function getPaths(model) {
 export function swaggerDocModelInject(models: typeof Model[], swaggerDoc) {
   models.every((model) => {
     const schema = getSchema(model)
+    if (!swaggerDoc?.components?.schemas) {
+      swaggerDoc.components.schemas = {}
+    }
     const existingSchema = swaggerDoc?.components?.schemas[model.name]
     if (!existingSchema) {
       swaggerDoc.components.schemas[model.name] = schema

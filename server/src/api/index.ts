@@ -8,10 +8,13 @@ import {
   deleteHandler,
 } from './_auto/routes'
 import { tokenCheck } from '../shared/auth'
+import { DrawingModel } from './drawings/models'
 
 const router = express.Router()
+router.use('/profile', profile)
 
-//Auto CRUD Routes
+//Auto CRUD
+const _init = [DrawingModel]
 db.modelManager.models.every((model) => {
   const prefix = `${model.name.toLowerCase()}`
   router.get(`/${prefix}`, tokenCheck, listHandler.bind(model))
@@ -19,7 +22,5 @@ db.modelManager.models.every((model) => {
   router.post(`/${prefix}`, tokenCheck, saveHandler.bind(model))
   router.delete(`/${prefix}/:id`, tokenCheck, deleteHandler.bind(model))
 })
-
-router.use('/profile', profile)
 
 export default router

@@ -15,9 +15,10 @@ import AdbIcon from '@mui/icons-material/Adb'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
 import { Link } from 'react-router-dom'
+import routes from '../shared/routes'
 
 const pages = ['Drawings']
-const settings = ['Profile', 'Drawings', 'Logout']
+const settings = routes.filter((route) => route.profile)
 
 export default function HeaderNavBar() {
   const dispatch = useAppDispatch()
@@ -168,10 +169,15 @@ export default function HeaderNavBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.path} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <Typography component={Link} to="login" textAlign="center">
+                  Login
+                </Typography>
+              </MenuItem>
               <MenuItem onClick={handleMenuToggle}>
                 <Typography textAlign="center">Right Menu</Typography>
               </MenuItem>
