@@ -21,6 +21,11 @@ export const routes: AppRoute[] = [
     path: '/login',
     component: React.lazy(() => import('../pages/Login')),
   },
+  {
+    title: 'Drawings',
+    path: '/drawings',
+    component: React.lazy(() => import('../pages/Drawings')),
+  },
 ]
 
 export default routes

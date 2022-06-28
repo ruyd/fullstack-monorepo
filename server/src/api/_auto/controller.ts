@@ -3,7 +3,7 @@ import { HttpNotFoundError } from '../../shared/errors'
 import { PagingOptions } from '../../shared/types'
 
 export async function list(
-  model: ModelStatic<any>,
+  model: ModelStatic<Model>,
   where: { userId?: string } = {},
   page: PagingOptions = { limit: 100, offset: 0 }
 ): Promise<any[]> {
@@ -11,11 +11,11 @@ export async function list(
     raw: true,
     where,
     ...page,
-  })) as unknown as any[]
+  })) as any[]
   return items
 }
 
-export async function getIfExists<T>(
+export async function getIfExists(
   model: ModelStatic<Model>,
   id: string
 ): Promise<Model> {

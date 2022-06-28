@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { store } from './shared/store'
@@ -11,8 +11,13 @@ import { BrowserRouter } from 'react-router-dom'
 import Routing from './layout/Routing'
 import Notifications from './layout/Notifications'
 import { HelmetProvider } from 'react-helmet-async'
+import axios from 'axios'
+import config from './shared/config'
 
 function App() {
+  useEffect(() => {
+    axios.defaults.baseURL = config.apiUrl
+  }, [])
   return (
     <React.Fragment>
       <ThemeSwitch>

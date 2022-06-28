@@ -15,12 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("express-async-errors");
 const config_1 = __importDefault(require("./shared/config"));
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const db_1 = __importDefault(require("./shared/db"));
 const api_1 = __importDefault(require("./api"));
 const errors_1 = require("./shared/errors");
-const swagger_1 = require("./api/auto/swagger");
+const swagger_1 = require("./api/_auto/swagger");
 (() => __awaiter(void 0, void 0, void 0, function* () {
     //Initialize Models
     yield db_1.default.authenticate();
@@ -28,6 +29,7 @@ const swagger_1 = require("./api/auto/swagger");
     yield db_1.default.sync();
     const app = (0, express_1.default)();
     app.use(express_1.default.json());
+    app.use((0, cors_1.default)());
     //Swagger
     const swaggerDoc = (0, swagger_jsdoc_1.default)({
         swaggerDefinition: config_1.default.swaggerSetup,

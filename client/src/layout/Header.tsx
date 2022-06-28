@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
+import { Link } from 'react-router-dom'
 
 const pages = ['Drawings']
 const settings = ['Profile', 'Drawings', 'Logout']
@@ -58,8 +59,8 @@ export default function HeaderNavBar() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="/"
+            component={Link}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -70,7 +71,7 @@ export default function HeaderNavBar() {
               textDecoration: 'none',
             }}
           >
-            DrawSpace
+            DrawSpaceZ
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -103,8 +104,10 @@ export default function HeaderNavBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page}>
+                  <Typography component={Link} to={page} textAlign="center">
+                    {page}....
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -113,8 +116,8 @@ export default function HeaderNavBar() {
           <Typography
             variant="h5"
             noWrap
-            component="a"
-            href=""
+            component={Link}
+            to="/drawings"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -126,13 +129,15 @@ export default function HeaderNavBar() {
               textDecoration: 'none',
             }}
           >
-            DrawSpace
+            DrawSpacex
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
+                component={Link}
+                to={page}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}

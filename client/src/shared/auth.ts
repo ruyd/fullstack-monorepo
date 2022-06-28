@@ -1,6 +1,7 @@
 import { Middleware } from '@reduxjs/toolkit'
 import jwtDecode from 'jwt-decode'
 import { login } from '../features/app/slice'
+import axios from 'axios'
 
 export interface AppUser {
   id: string
@@ -36,11 +37,17 @@ export function getPersistedAuthFromStorage(): {
   if (user.expiration && user.expiration > Date.now()) {
     return null
   }
+  setHeader(token)
   return { token, user }
+}
+
+export function setHeader(token: string) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
 export function onLogin(payload: string) {
   localStorage.setItem(TOKEN_KEY, payload)
+  setHeader(payload)
 }
 
 /**
