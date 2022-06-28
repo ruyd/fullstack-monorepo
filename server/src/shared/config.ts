@@ -13,7 +13,7 @@ export interface Config {
     schema: string
     ssl?: boolean
   }
-  swaggerSetup: OAS3Definition & { basePath: string }
+  swaggerSetup: OAS3Definition
 }
 
 const apiVersion = 'v1'

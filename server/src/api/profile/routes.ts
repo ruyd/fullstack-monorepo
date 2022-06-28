@@ -37,4 +37,12 @@ router.post('/login', (req, res) => {
   res.json({ token: 'token', user: { id: '1' } })
 })
 
+router.post('/logff', (req, res) => {
+  res.json({ success: true })
+})
+
+router.post('/revoke', (req, res) => {
+  res.json({ success: true })
+})
+
 export default router

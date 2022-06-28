@@ -1,5 +1,6 @@
-import express from 'express'
+import { Router } from 'express'
 import { Model, ModelStatic } from 'sequelize/types'
+import { tokenCheck } from '../../shared/auth'
 import { createOrUpdate, deleteIfExists, getIfExists, list } from './controller'
 
 export async function saveHandler(this: typeof Model, req, res) {
@@ -39,10 +40,26 @@ export async function listHandler(this: typeof Model, req, res) {
   const where: { userId?: string } = {}
   const model = this as ModelStatic<Model>
   if (model.getAttributes().userId) {
-    where.userId = req.auth.id
+    // where.userId = req.auth.id
   }
   const limit = Number(req.query.limit || 100)
   const offset = Number(req.query.offset || 0)
   const result = await list(model, where, { limit, offset })
   res.json(result)
+}
+
+/**
+ * Mounts the CRUD handlers for the given model using name as path
+ * Might need options for any model to exclude certain methods/auth
+ * @param models - array of sequelize models
+ * @param router - express router
+ **/
+export function autoApiRouterInject(models: typeof Model[], router: Router) {
+  models.every((model) => {
+    const prefix = model.name.toLowerCase()
+    router.get(`/${prefix}`, tokenCheck, listHandler.bind(model))
+    router.get(`/${prefix}/:id`, tokenCheck, getHandler.bind(model))
+    router.post(`/${prefix}`, tokenCheck, saveHandler.bind(model))
+    router.delete(`/${prefix}/:id`, tokenCheck, deleteHandler.bind(model))
+  })
 }
