@@ -15,7 +15,7 @@ const conversions = {
 }
 
 export function getSchema(model: any) {
-  const excluded = ['createdAt', 'updatedAt']
+  const excluded = ['createdAt', 'updatedAt', 'deletedAt']
   const columns = Object.entries(model.tableAttributes).filter(
     ([name]) => !excluded.includes(name)
   ) as [[string, any]]
@@ -140,7 +140,7 @@ export function getPaths(model: typeof Model) {
 }
 
 export function swaggerDocModelInject(models: typeof Model[], swaggerDoc) {
-  models.every((model) => {
+  for (const model of models) {
     const schema = getSchema(model)
     if (!swaggerDoc?.components?.schemas) {
       swaggerDoc.components.schemas = {}
@@ -157,5 +157,5 @@ export function swaggerDocModelInject(models: typeof Model[], swaggerDoc) {
         swaggerDoc.paths[p] = paths[p]
       }
     }
-  })
+  }
 }

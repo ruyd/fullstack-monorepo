@@ -4,7 +4,7 @@ import axios from 'axios'
 export interface AppUser {
   id: string
   name: string
-  expiration: number
+  exp: number
 }
 export const TOKEN_KEY = 'token'
 
@@ -32,7 +32,7 @@ export function getPersistedAuthFromStorage(): {
   if (!user) {
     return null
   }
-  if (user.expiration && user.expiration > Date.now()) {
+  if (user.exp && user.exp > Date.now()) {
     return null
   }
   setHeader(token)

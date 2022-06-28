@@ -5,7 +5,7 @@ import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
 import db from './shared/db'
-import api from './api'
+import api, { autoApiModels } from './api'
 import { errorHandler } from './shared/errors'
 import { swaggerDocModelInject } from './api/_auto/swagger'
 ;(async () => {
@@ -24,7 +24,7 @@ import { swaggerDocModelInject } from './api/_auto/swagger'
     apis: ['./src/**/swagger.yaml', './src/**/routes.ts'],
   })
 
-  swaggerDocModelInject(db.modelManager.models, swaggerDoc)
+  swaggerDocModelInject(autoApiModels, swaggerDoc)
 
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 

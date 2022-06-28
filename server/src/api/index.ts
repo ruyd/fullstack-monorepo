@@ -1,14 +1,14 @@
 import express from 'express'
-import db from '../shared/db'
 import { autoApiRouterInject } from './_auto/routes'
-import { DrawingModel } from './drawings/models'
 import profile from './profile/routes'
+import { DrawingModel } from './drawings/models'
+import { UserModel } from './profile/models'
 
 const router = express.Router()
 router.use('/profile', profile)
 
 //Auto CRUD
-const _init = [DrawingModel]
-autoApiRouterInject(db.modelManager.models, router)
+export const autoApiModels = [DrawingModel, UserModel]
+autoApiRouterInject(autoApiModels, router)
 
 export default router

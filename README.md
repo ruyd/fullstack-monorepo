@@ -1,3 +1,5 @@
+# DrawSpace - Modern Starter Sample
+
 client
 
 - content mocks
@@ -12,6 +14,8 @@ server
 
 - jwt
 - dynamic api routes from sequelize
+- auth0
+- firebase
 
 ---
 

@@ -1,10 +1,12 @@
 import express from 'express'
+import jwt from 'jsonwebtoken'
+import config from '../../shared/config'
 
 const router = express.Router()
 
 /**
  * @swagger
- * /profile:
+ * /profile/login:
  *   post:
  *     tags:
  *       - profile
@@ -32,9 +34,30 @@ const router = express.Router()
  *                   type: string
  */
 router.post('/login', (req, res) => {
-  const { user, password } = req.body
+  const { email, password } = req.body
+  let user
+  if (email === 'admin@admin.com' && password === 'admin') {
+    user = { id: '1', name: 'admin' }
+  }
 
-  res.json({ token: 'token', user: { id: '1' } })
+  if (!user) {
+    throw new Error('Invalid credentials')
+  }
+
+  if (!config.tokenSecret) {
+    throw new Error('tokenSecret is not set')
+  }
+
+  const token = jwt.sign(user, config.tokenSecret, {
+    expiresIn: '2d',
+  })
+  res.json({ token })
+})
+
+router.post('/oauthcallback', (req, res) => {
+  const { oauthToken: token } = req.body
+
+  res.json({ token })
 })
 
 router.post('/logff', (req, res) => {
