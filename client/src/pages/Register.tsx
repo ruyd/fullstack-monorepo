@@ -1,0 +1,113 @@
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  TextField,
+  Typography,
+  Link as MuiLink,
+  Container,
+} from '@mui/material'
+import { LockOutlined } from '@mui/icons-material'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { useAppDispatch } from '../shared/store'
+import { RegisterAsync } from '../features/app/thunks'
+
+export default function Register() {
+  const dispatch = useAppDispatch()
+
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const obj = {} as any
+    data.forEach((value, key) => (obj[key] = value))
+    dispatch(RegisterAsync(obj))
+  }
+
+  return (
+    <Container maxWidth="xs">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <LockOutlined />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+        <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="given-name"
+                required
+                fullWidth
+                name="firstName"
+                label="First name"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="family-name"
+                required
+                fullWidth
+                name="lastName"
+                label="Last name"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="email"
+                required
+                fullWidth
+                name="email"
+                label="Email"
+                type="email"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="new-password"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="acceptTerms" color="primary" />}
+                label="I accept the terms"
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign Up
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <MuiLink component={Link} to="/login" variant="body2">
+                Already have an account? Sign in
+              </MuiLink>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
+  )
+}

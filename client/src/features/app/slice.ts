@@ -1,13 +1,15 @@
-import { red } from '@mui/material/colors'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {
-  AppUser,
-  getPersistedAuthFromStorage,
-  onLogin,
-} from '../../shared/auth'
+import { AppUser, getPersistedAuthFromStorage } from '../../shared/auth'
+
+export enum NotificationType {
+  info = 'info',
+  success = 'success',
+  error = 'error',
+}
 export interface AppNotification {
   id: string
   message: string
+  type?: NotificationType
   closed?: boolean
 }
 export interface AppState {
@@ -40,12 +42,23 @@ const slice = createSlice({
     patch: (state, action: PayloadAction<Partial<AppState>>) => {
       return { ...state, ...action.payload }
     },
-    notify: (state, action: PayloadAction<AppNotification>) => {
-      state.notifications.push(action.payload)
+    notify: (state, action: PayloadAction<string>) => {
+      state.notifications.push({
+        message: action.payload,
+        id: new Date().getTime().toString(),
+        type: NotificationType.info,
+      })
+    },
+    notifyError: (state, action: PayloadAction<string>) => {
+      state.notifications.push({
+        message: action.payload,
+        id: new Date().getTime().toString(),
+        type: NotificationType.error,
+      })
     },
   },
 })
 
-export const { patch } = slice.actions
+export const { patch, notify, notifyError } = slice.actions
 
 export default slice.reducer

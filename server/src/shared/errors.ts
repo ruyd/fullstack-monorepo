@@ -212,11 +212,6 @@ export function errorHandler(
     err
   )
 
-  if (!err.isPublic) {
-    response.message = 'Internal server error'
-    delete response.data
-  }
-
   if (process.env.NODE_ENV === 'production') {
     delete response.stack
   }

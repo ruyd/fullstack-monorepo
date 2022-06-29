@@ -3,7 +3,10 @@ import axios from 'axios'
 
 export interface AppUser {
   id: string
-  name: string
+  email: string
+  firstName?: string
+  lastName?: string
+  roles?: string[]
   exp: number
 }
 export const TOKEN_KEY = 'token'

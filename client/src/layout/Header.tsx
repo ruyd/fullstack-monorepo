@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
 import { Link } from 'react-router-dom'
 import routes from '../shared/routes'
+import LoadingTop from './LoadingTop'
 
 const pages = ['Drawings']
 const settings = routes.filter((route) => route.profile)
@@ -54,6 +55,7 @@ export default function HeaderNavBar() {
 
   return (
     <AppBar position="static">
+      <LoadingTop />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -169,15 +171,15 @@ export default function HeaderNavBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting.path} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting.path}
+                  onClick={handleCloseUserMenu}
+                  component={Link}
+                  to={setting.path}
+                >
                   <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography component={Link} to="login" textAlign="center">
-                  Login
-                </Typography>
-              </MenuItem>
               <MenuItem onClick={handleMenuToggle}>
                 <Typography textAlign="center">Right Menu</Typography>
               </MenuItem>

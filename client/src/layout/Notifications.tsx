@@ -8,32 +8,40 @@ export default function Notifications() {
   const notifications = useAppSelector((store) => store.app.notifications)
   const dispatch = useAppDispatch()
   const [open, setOpen] = React.useState(false)
-  const [message, setMessage] = React.useState<AppNotification | null>()
+  const [message, setMessage] = React.useState<AppNotification | null>(null)
+
+  const update = React.useCallback(
+    (notifications: AppNotification[]) => {
+      dispatch(patch({ notifications }))
+    },
+    [dispatch]
+  )
+
+  const close = React.useCallback(() => {
+    setOpen(false)
+  }, [])
 
   React.useEffect(() => {
-    const updateStore = (notifications: AppNotification[]) =>
-      dispatch(patch({ notifications }))
-
     if (notifications.length > 0 && !message) {
-      setMessage(notifications[0])
+      setMessage({ ...notifications[0] })
+      update(notifications.slice(1))
       setOpen(true)
-      updateStore(notifications.slice(1))
-    } else {
+    } else if (notifications.length && message && open) {
       setOpen(false)
     }
-  }, [dispatch, message, notifications])
+  }, [dispatch, message, notifications, open, update])
 
   return (
     <Snackbar
       key={message?.id}
-      open={open}
-      onClose={() => setOpen(false)}
-      TransitionProps={{ onExited: () => setMessage(null) }}
       message={message?.message}
+      open={open}
+      onClose={close}
+      TransitionProps={{ onExited: () => setMessage(null) }}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       autoHideDuration={3000}
       action={
-        <IconButton>
+        <IconButton onClick={close}>
           <IconClose />
         </IconButton>
       }

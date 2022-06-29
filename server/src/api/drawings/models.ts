@@ -1,4 +1,4 @@
-import sequelize, { Model } from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
 import db, { commonOptions } from '../../shared/db'
 
 export interface Drawing {
@@ -17,14 +17,15 @@ export const DrawingModel = db.define<DrawingInstance>(
   'drawing',
   {
     id: {
-      type: sequelize.UUID,
+      type: DataTypes.UUID,
       primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
     },
     userId: {
-      type: sequelize.UUID,
+      type: DataTypes.UUID,
     },
     name: {
-      type: sequelize.STRING,
+      type: DataTypes.STRING,
     },
   },
   {
