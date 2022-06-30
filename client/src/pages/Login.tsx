@@ -26,11 +26,7 @@ export default function Login() {
     data.forEach((value, key) => (obj[key] = value))
     dispatch(LoginAsync(obj)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
-        if (returnTo) {
-          navigate(returnTo)
-        } else {
-          navigate('/')
-        }
+        navigate(returnTo || '/')
       }
     })
   }
@@ -70,12 +66,6 @@ export default function Login() {
                 name="password"
                 label="Password"
                 type="password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
               />
             </Grid>
           </Grid>

@@ -15,7 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
 import { Link, useNavigate } from 'react-router-dom'
-import routes from '../shared/routing'
+import routes from '../shared/routes'
 import LoadingTop from './LoadingTop'
 import { LogoutAsync } from '../features/app/thunks'
 
@@ -30,7 +30,6 @@ export default function HeaderNavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
-  const navigate = useNavigate()
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -57,7 +56,6 @@ export default function HeaderNavBar() {
 
   const handleLogout = () => {
     dispatch(LogoutAsync())
-    navigate('/login')
   }
 
   return (
