@@ -45,8 +45,17 @@ function setLogin(
 
 export const LoginAsync = createAsyncThunk(
   'app/login',
-  async (payload: { email: string; password: string }, { dispatch }) => {
+  async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request(dispatch, 'profile/login', payload)
+    setLogin(dispatch, response.data.token)
+  }
+)
+
+export const RegisterAsync = createAsyncThunk(
+  'app/register',
+  async (payload: Record<string, unknown>, { dispatch }) => {
+    const response = await request(dispatch, 'profile/register', payload)
+    //For email validation rework this
     setLogin(dispatch, response.data.token)
   }
 )
@@ -57,14 +66,5 @@ export const LogoutAsync = createAsyncThunk(
     //const response = await request(dispatch, 'profile/logout')
     dispatch(patch({ token: undefined, user: undefined }))
     onLogin(undefined)
-  }
-)
-
-export const RegisterAsync = createAsyncThunk(
-  'app/register',
-  async (payload: unknown, { dispatch }) => {
-    const response = await request(dispatch, 'profile/register', payload)
-    //For email validation rework this
-    setLogin(dispatch, response.data.token)
   }
 )

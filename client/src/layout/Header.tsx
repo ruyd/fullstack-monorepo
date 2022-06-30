@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import routes from '../shared/routes'
 import LoadingTop from './LoadingTop'
 import { LogoutAsync } from '../features/app/thunks'
@@ -79,7 +79,7 @@ export default function HeaderNavBar() {
               textDecoration: 'none',
             }}
           >
-            DrawSpaceZ
+            DrawSpace
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

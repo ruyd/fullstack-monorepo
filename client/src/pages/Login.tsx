@@ -3,9 +3,7 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
   Container,
-  FormControlLabel,
   Grid,
   TextField,
   Typography,
@@ -22,9 +20,9 @@ export default function Login() {
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const obj = {} as any
-    data.forEach((value, key) => (obj[key] = value))
-    dispatch(LoginAsync(obj)).then(({ meta }) => {
+    const payload = {} as Record<string, unknown>
+    data.forEach((value, key) => (payload[key] = value))
+    dispatch(LoginAsync(payload)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
         navigate(returnTo || '/')
       }
