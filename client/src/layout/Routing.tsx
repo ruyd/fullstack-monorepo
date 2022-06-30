@@ -3,7 +3,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Route, Routes } from 'react-router-dom'
 import config from '../shared/config'
-import routes from '../shared/routes'
+import routes from '../shared/routing'
 import AuthCheck from './AuthCheck'
 
 export default function Routing() {

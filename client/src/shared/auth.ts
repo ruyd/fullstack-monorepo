@@ -46,7 +46,12 @@ export function setHeader(token: string) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
-export function onLogin(payload: string) {
-  localStorage.setItem(TOKEN_KEY, payload)
-  setHeader(payload)
+export function onLogin(payload?: string) {
+  if (payload) {
+    localStorage.setItem(TOKEN_KEY, payload)
+    setHeader(payload)
+  } else {
+    localStorage.removeItem(TOKEN_KEY)
+    delete axios.defaults.headers.common['Authorization']
+  }
 }

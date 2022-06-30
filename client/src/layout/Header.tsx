@@ -14,9 +14,10 @@ import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
-import { Link } from 'react-router-dom'
-import routes from '../shared/routes'
+import { Link, useNavigate } from 'react-router-dom'
+import routes from '../shared/routing'
 import LoadingTop from './LoadingTop'
+import { LogoutAsync } from '../features/app/thunks'
 
 const pages = ['Drawings']
 const settings = routes.filter((route) => route.profile)
@@ -29,6 +30,7 @@ export default function HeaderNavBar() {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   )
+  const navigate = useNavigate()
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -51,6 +53,11 @@ export default function HeaderNavBar() {
 
   const handleMenuToggle = () => {
     dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
+  }
+
+  const handleLogout = () => {
+    dispatch(LogoutAsync())
+    navigate('/login')
   }
 
   return (
@@ -185,6 +192,9 @@ export default function HeaderNavBar() {
               </MenuItem>
               <MenuItem onClick={handleThemeToggle}>
                 <Typography textAlign="center">Theme</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>
           </Box>

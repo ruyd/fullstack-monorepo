@@ -34,6 +34,7 @@ export const routes: AppRoute[] = [
     title: 'Drawings',
     path: '/drawings',
     component: React.lazy(() => import('../pages/Drawings')),
+    secure: true,
   },
 ]
 

@@ -4,17 +4,12 @@ import { AppUser, decodeUser, onLogin } from '../../shared/auth'
 import { notify, notifyError, patch } from './slice'
 
 /**
- * Axios wrapper for thunks that picks up the bearer token from auth.setHeader
- * @param dispatch
- * @param url
- * @param data
- * @param method
- * @returns
+ * Axios wrapper for thunks with token from onLogin
  */
 export async function request(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
   url: string,
-  data: any,
+  data?: any,
   method: string = 'post'
 ): Promise<AxiosResponse> {
   let response: AxiosResponse
@@ -53,6 +48,15 @@ export const LoginAsync = createAsyncThunk(
   async (payload: { email: string; password: string }, { dispatch }) => {
     const response = await request(dispatch, 'profile/login', payload)
     setLogin(dispatch, response.data.token)
+  }
+)
+
+export const LogoutAsync = createAsyncThunk(
+  'app/logout',
+  async (_, { dispatch }) => {
+    //const response = await request(dispatch, 'profile/logout')
+    dispatch(patch({ token: undefined, user: undefined }))
+    onLogin(undefined)
   }
 )
 

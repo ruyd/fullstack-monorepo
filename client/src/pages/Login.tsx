@@ -17,6 +17,7 @@ import { useAppDispatch } from '../shared/store'
 export default function Login() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const returnTo = new URLSearchParams(window.location.search).get('returnTo')
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -25,7 +26,11 @@ export default function Login() {
     data.forEach((value, key) => (obj[key] = value))
     dispatch(LoginAsync(obj)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
-        navigate('/')
+        if (returnTo) {
+          navigate(returnTo)
+        } else {
+          navigate('/')
+        }
       }
     })
   }
