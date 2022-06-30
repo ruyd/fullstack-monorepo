@@ -139,7 +139,10 @@ export function getPaths(model: typeof Model) {
   return paths
 }
 
-export function swaggerDocModelInject(models: typeof Model[], swaggerDoc) {
+export function swaggerDocModelInject(
+  models: ModelStatic<Model>[],
+  swaggerDoc
+) {
   for (const model of models) {
     const schema = getSchema(model)
     if (!swaggerDoc?.components?.schemas) {

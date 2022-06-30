@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
 import { AppUser, decodeUser, onLogin } from '../../shared/auth'
 import { notify, notifyError, patch } from './slice'
@@ -7,19 +7,32 @@ const options = {
   validateStatus: () => true,
 }
 
-const error = (response: AxiosResponse) =>
-  notifyError(
-    response?.data?.message || `${response.status}: ${response.statusText}`
-  )
+export async function request(
+  dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
+  url: string,
+  data: any
+): Promise<AxiosResponse> {
+  let response: AxiosResponse
+  try {
+    dispatch(patch({ loading: true }))
+    response = await axios({ ...options, url, data, method: 'post' })
+    if (response.status !== 200) {
+      dispatch(notifyError(response.data.message))
+      throw new Error(response.statusText)
+    }
+  } catch (error: any) {
+    dispatch(notifyError(error.message))
+    throw error
+  } finally {
+    dispatch(patch({ loading: false }))
+  }
+  return response
+}
 
 export const LoginAsync = createAsyncThunk(
   'app/login',
-  async (
-    { email, password }: { email: string; password: string },
-    { dispatch }
-  ) => {
-    dispatch(patch({ loading: true }))
-    const response = await axios.post('profile/login', { email, password })
+  async (payload: { email: string; password: string }, { dispatch }) => {
+    const response = await request(dispatch, 'profile/login', payload)
     dispatch(
       patch({
         token: response.data.token,
@@ -34,13 +47,7 @@ export const LoginAsync = createAsyncThunk(
 export const RegisterAsync = createAsyncThunk(
   'app/register',
   async (payload: unknown, { dispatch }) => {
-    dispatch(patch({ loading: true }))
-    const response = await axios.post('profile/register', payload, options)
-    if (!response?.data?.token) {
-      dispatch(patch({ loading: false }))
-      dispatch(error(response))
-      return
-    }
+    const response = await request(dispatch, 'profile/register', payload)
     const user = decodeUser(response.data.token) as AppUser
     dispatch(
       patch({

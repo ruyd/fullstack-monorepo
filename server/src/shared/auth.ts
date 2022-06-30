@@ -12,8 +12,8 @@ export function tokenCheck(_req, _res, next) {
   })
 }
 
-export function createToken(user) {
-  return jwt.sign(user, config.tokenSecret as string, {
+export function createToken(obj: object) {
+  return jwt.sign(obj, config.tokenSecret as string, {
     expiresIn: '2d',
   })
 }

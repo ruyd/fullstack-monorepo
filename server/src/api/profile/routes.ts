@@ -1,4 +1,5 @@
 import express from 'express'
+import { request } from 'http'
 import { createToken } from '../../shared/auth'
 import config from '../../shared/config'
 import { createOrUpdate } from '../_auto/controller'
@@ -93,8 +94,12 @@ router.post('/register', async (req, res) => {
     throw new Error('Missing payload')
   }
 
-  const userModel = await createOrUpdate(UserModel, payload)
-  const user = userModel.get()
+  const existing = await UserModel.findOne({ where: { email: payload.email } })
+  if (existing) {
+    throw new Error('Email already exists')
+  }
+
+  const user = await createOrUpdate(UserModel, payload)
   const token = createToken(user)
   res.json({ token })
 })

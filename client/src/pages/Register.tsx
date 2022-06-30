@@ -12,21 +12,25 @@ import {
 } from '@mui/material'
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../shared/store'
 import { RegisterAsync } from '../features/app/thunks'
 
 export default function Register() {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const obj = {} as any
     data.forEach((value, key) => (obj[key] = value))
-    dispatch(RegisterAsync(obj))
+    dispatch(RegisterAsync(obj)).then(({ meta }) => {
+      if (meta.requestStatus === 'fulfilled') {
+        navigate('/')
+      }
+    })
   }
-
   return (
     <Container maxWidth="xs">
       <Box
@@ -49,6 +53,7 @@ export default function Register() {
                 autoComplete="given-name"
                 required
                 fullWidth
+                id="firstName"
                 name="firstName"
                 label="First name"
                 autoFocus
@@ -68,6 +73,7 @@ export default function Register() {
                 autoComplete="email"
                 required
                 fullWidth
+                id="email"
                 name="email"
                 label="Email"
                 type="email"
