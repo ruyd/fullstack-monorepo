@@ -26,7 +26,15 @@ import { swaggerDocModelInject } from './api/_auto/swagger'
 
   swaggerDocModelInject(autoApiModels, swaggerDoc)
 
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc))
+  app.use(
+    '/docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDoc, {
+      swaggerOptions: {
+        persistAuthorization: true,
+      },
+    })
+  )
 
   //Apply API
   app.use(`/${config.version}`, api)

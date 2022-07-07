@@ -1,11 +1,9 @@
 components:
   securitySchemes:
-    BearerAuth:
+    bearerAuth:
       type: http
       scheme: bearer
       in: header
-  security:
-    - BearerAuth: []
   responses:
     403Unauthorized:
       description: You do not have permission to access this

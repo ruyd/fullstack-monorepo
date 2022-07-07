@@ -1,6 +1,9 @@
 import express from 'express'
-import { Model, ModelStatic } from 'sequelize/types'
-import { tokenCheck } from '../../shared/auth'
+import {
+  Model,
+  ModelAttributeColumnOptions,
+  ModelStatic,
+} from 'sequelize/types'
 import { createOrUpdate, deleteIfExists, getIfExists, list } from './controller'
 
 export async function saveHandler(this: typeof Model, req, res) {
@@ -33,14 +36,38 @@ export async function getHandler(this: typeof Model, req, res) {
   res.json(result)
 }
 
-export async function listHandler(this: typeof Model, req, res) {
+export const autoApiConfig = {
+  authIdName: 'id',
+  userIdName: 'memberId',
+}
+
+/**
+ * Has req.query params limit and offset for paging
+ * @param req
+ * @param res
+ */
+export async function listHandler(
+  this: typeof Model,
+  req: express.Request,
+  res: express.Response
+) {
   if (!this) {
     throw new Error('this is not defined')
   }
-  const where: { userId?: string } = {}
+  const where: Record<string, string> = {}
   const model = this as ModelStatic<Model>
-  if (model.getAttributes().userId) {
-    // where.userId = req.auth.id
+  const fields = model.getAttributes()
+  //query params 1-1 to model attributes
+  for (const field in fields) {
+    if (req.query[field]) {
+      where[field] = req.query[field] as string
+    }
+  }
+
+  //user filtering from authentication token
+  const auth = (req as any).auth
+  if (auth && Object.keys(fields).includes(autoApiConfig.userIdName)) {
+    where[autoApiConfig.userIdName] = auth[autoApiConfig.authIdName]
   }
   const limit = Number(req.query.limit || 100)
   const offset = Number(req.query.offset || 0)
