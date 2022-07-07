@@ -61,11 +61,11 @@ router.post('/login', (req, res) => {
 
 /**
  * @swagger
- * /profile/login:
+ * /profile/register:
  *   post:
  *     tags:
  *       - profile
- *     summary: Login
+ *     summary: Register
  *     requestBody:
  *       required: true
  *       content:
@@ -73,6 +73,10 @@ router.post('/login', (req, res) => {
  *           schema:
  *             type: object
  *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
  *               email:
  *                 type: string
  *               password:
@@ -99,6 +103,16 @@ router.post('/register', async (req, res) => {
     throw new Error('Email already exists')
   }
 
+  const user = await createOrUpdate(UserModel, payload)
+  const token = createToken(user)
+  res.json({ token })
+})
+
+router.post('/edit', async (req, res) => {
+  const payload = req.body
+  if (!payload) {
+    throw new Error('Missing payload')
+  }
   const user = await createOrUpdate(UserModel, payload)
   const token = createToken(user)
   res.json({ token })

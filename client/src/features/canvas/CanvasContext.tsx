@@ -1,11 +1,12 @@
 import React, {
   useContext,
   useRef,
-  useState,
   createContext,
   PropsWithChildren,
   RefObject,
 } from 'react'
+import { useAppDispatch } from '../../shared/store'
+import { saveAsync } from './thunks'
 
 export type CanvasContextType = {
   canvasRef: RefObject<HTMLCanvasElement>
@@ -14,15 +15,18 @@ export type CanvasContextType = {
   startDrawing: (e: React.MouseEvent<HTMLElement>) => void
   finishDrawing: () => void
   clearCanvas: () => void
+  saveCanvas: () => void
   draw: (e: { nativeEvent: MouseEvent }) => void
 }
 
 const CanvasContext = createContext<CanvasContextType>({} as CanvasContextType)
 
 export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
-  const [isDrawing, setIsDrawing] = useState(false)
+  const dispatch = useAppDispatch()
+  const isDrawing = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
+  const history = useRef<{ x: number; y: number }[]>([])
 
   const prepareCanvas = () => {
     const canvas = canvasRef.current
@@ -30,16 +34,19 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
       return
     }
 
-    canvas.width = window.innerWidth * 2
-    canvas.height = window.innerHeight * 2
-    canvas.style.width = `${window.innerWidth}px`
-    canvas.style.height = `${window.innerHeight}px`
+    const w = window.innerWidth - 20
+    const h = window.innerHeight - 80
+
+    canvas.width = w
+    canvas.height = h
+    canvas.style.width = `${w}px`
+    canvas.style.height = `${h}px`
 
     const context = canvas.getContext('2d')
     if (!context) {
       return
     }
-    context.scale(2, 2)
+    //context.scale(2, 2)
     context.lineCap = 'round'
     context.strokeStyle = 'black'
     context.lineWidth = 5
@@ -53,8 +60,10 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
       return
     }
     contextRef.current.beginPath()
-    contextRef.current.moveTo(offsetX, offsetY)
-    setIsDrawing(true)
+    contextRef.current.lineTo(offsetX + 1, offsetY + 1)
+    contextRef.current.stroke()
+    isDrawing.current = true
+    history.current.push({ x: offsetX + 1, y: offsetY + 1 })
   }
 
   const finishDrawing = () => {
@@ -62,16 +71,20 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
       return
     }
     contextRef.current.closePath()
-    setIsDrawing(false)
+    isDrawing.current = false
+    if (!contextRef.current) {
+      return
+    }
   }
 
   const draw = ({ nativeEvent }: { nativeEvent: MouseEvent }) => {
-    if (!isDrawing || !contextRef?.current) {
+    if (!isDrawing.current || !contextRef?.current) {
       return
     }
     const { offsetX, offsetY } = nativeEvent
     contextRef.current.lineTo(offsetX, offsetY)
     contextRef.current.stroke()
+    history.current.push({ x: offsetX + 1, y: offsetY + 1 })
   }
 
   const clearCanvas = () => {
@@ -80,8 +93,21 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
     if (!canvas || !context) {
       return
     }
-    context.fillStyle = 'white'
-    context.fillRect(0, 0, canvas.width, canvas.height)
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    history.current = []
+  }
+
+  const saveCanvas = async () => {
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context) {
+      return
+    }
+    const image = canvas.toDataURL('image/png')
+    const result = await dispatch(saveAsync(image))
+    if (result.meta.requestStatus === 'fulfilled') {
+      console.log('saved')
+    }
   }
 
   return (
@@ -93,6 +119,7 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
         startDrawing,
         finishDrawing,
         clearCanvas,
+        saveCanvas,
         draw,
       }}
     >

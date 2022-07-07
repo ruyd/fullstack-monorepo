@@ -6,18 +6,21 @@ import {
   Middleware,
 } from '@reduxjs/toolkit'
 import appReducer from '../features/app/slice'
-import counterReducer from '../features/canvas/slice'
+import canvasReducer from '../features/canvas/slice'
 
-export const customMiddleware: Middleware = () => (next) => (action) => {
-  const result = next(action)
-  //logic to run after action
-  return result
-}
+export const customMiddleware: Middleware =
+  ({ getState, dispatch }) =>
+  (next) =>
+  (action) => {
+    const result = next(action)
+    //logic to run after action
+    return result
+  }
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
-    counter: counterReducer,
+    canvas: canvasReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(customMiddleware),

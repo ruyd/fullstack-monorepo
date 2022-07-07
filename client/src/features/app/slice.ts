@@ -1,15 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppUser, getPersistedAuthFromStorage } from '../../shared/auth'
 
-export enum NotificationType {
+export enum NotificationSeverity {
   info = 'info',
   success = 'success',
+  warning = 'warning',
   error = 'error',
 }
 export interface AppNotification {
   id: string
   message: string
-  type?: NotificationType
+  severity?: NotificationSeverity
   closed?: boolean
 }
 export interface AppState {
@@ -28,11 +29,11 @@ const defaultState: AppState = {
   notifications: [],
 }
 
-const persistedToken = getPersistedAuthFromStorage()
+const persistedAuth = getPersistedAuthFromStorage()
 const initialState = {
   ...defaultState,
-  token: persistedToken?.token,
-  user: persistedToken?.user,
+  token: persistedAuth?.token,
+  user: persistedAuth?.user,
 }
 
 const slice = createSlice({
@@ -46,14 +47,14 @@ const slice = createSlice({
       state.notifications.push({
         message: action.payload,
         id: new Date().getTime().toString(),
-        type: NotificationType.info,
+        severity: NotificationSeverity.info,
       })
     },
     notifyError: (state, action: PayloadAction<string>) => {
       state.notifications.push({
         message: action.payload,
         id: new Date().getTime().toString(),
-        type: NotificationType.error,
+        severity: NotificationSeverity.error,
       })
     },
   },

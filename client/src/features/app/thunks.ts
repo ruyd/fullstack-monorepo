@@ -11,7 +11,7 @@ export async function request(
   url: string,
   data?: any,
   method: string = 'post'
-): Promise<AxiosResponse> {
+): Promise<AxiosResponse<{ success: true } | any>> {
   let response: AxiosResponse
   try {
     dispatch(patch({ loading: true }))
@@ -19,6 +19,7 @@ export async function request(
       url,
       data,
       method,
+      timeout: 10000,
     })
   } catch (error: any) {
     dispatch(notifyError(error?.response?.data?.message || error.message))
@@ -66,5 +67,13 @@ export const LogoutAsync = createAsyncThunk(
     //const response = await request(dispatch, 'profile/logout')
     dispatch(patch({ token: undefined, user: undefined }))
     onLogin(undefined)
+  }
+)
+
+export const EditProfileAsync = createAsyncThunk(
+  'app/editProfile',
+  async (payload: Record<string, unknown>, { dispatch }) => {
+    const response = await request(dispatch, 'profile/edit', payload)
+    setLogin(dispatch, response.data.token)
   }
 )

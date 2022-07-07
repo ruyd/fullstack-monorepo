@@ -39,6 +39,7 @@ export function getPaths(model: typeof Model) {
     [`/${tagName}`]: {
       get: {
         summary: 'Get list',
+        security: [{ BearerAuth: [] }],
         responses: {
           '200': {
             content: {
@@ -58,6 +59,7 @@ export function getPaths(model: typeof Model) {
       post: {
         summary: 'Create or update an item',
         required: true,
+        security: [{ BearerAuth: [] }],
         requestBody: {
           content: {
             'application/json': {
@@ -84,6 +86,7 @@ export function getPaths(model: typeof Model) {
     [`/${tagName}/{id}`]: {
       get: {
         summary: 'Get one',
+        security: [{ BearerAuth: [] }],
         parameters: [
           {
             name: 'id',
@@ -110,6 +113,7 @@ export function getPaths(model: typeof Model) {
       },
       delete: {
         summary: 'Delete one',
+        security: [{ BearerAuth: [] }],
         parameters: [
           {
             name: 'id',

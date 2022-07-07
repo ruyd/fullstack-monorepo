@@ -23,7 +23,7 @@ export default function Register() {
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const obj = {} as any
+    const obj = {} as Record<string, unknown>
     data.forEach((value, key) => (obj[key] = value))
     dispatch(RegisterAsync(obj)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
@@ -64,6 +64,7 @@ export default function Register() {
                 autoComplete="family-name"
                 required
                 fullWidth
+                id="lastName"
                 name="lastName"
                 label="Last name"
               />
@@ -84,6 +85,7 @@ export default function Register() {
                 autoComplete="new-password"
                 required
                 fullWidth
+                id="password"
                 name="password"
                 label="Password"
                 type="password"

@@ -1,7 +1,12 @@
+import { CanvasProvider } from '../features/canvas/CanvasContext'
+import { Canvas } from '../features/canvas/Canvas'
+
 export default function Drawings() {
   return (
     <div>
-      <h1>Drawings</h1>
+      <CanvasProvider>
+        <Canvas />
+      </CanvasProvider>
     </div>
   )
 }

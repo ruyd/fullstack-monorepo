@@ -2,7 +2,7 @@ import React from 'react'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { AppNotification, patch } from '../features/app/slice'
 import IconClose from '@mui/icons-material/Close'
-import { IconButton, Snackbar } from '@mui/material'
+import { Alert, IconButton, Snackbar } from '@mui/material'
 
 export default function Notifications() {
   const notifications = useAppSelector((store) => store.app.notifications)
@@ -34,17 +34,15 @@ export default function Notifications() {
   return (
     <Snackbar
       key={message?.id}
-      message={message?.message}
       open={open}
       onClose={close}
       TransitionProps={{ onExited: () => setMessage(null) }}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       autoHideDuration={3000}
-      action={
-        <IconButton onClick={close}>
-          <IconClose />
-        </IconButton>
-      }
-    />
+    >
+      <Alert onClose={close} severity={message?.severity}>
+        {message?.message}
+      </Alert>
+    </Snackbar>
   )
 }
