@@ -1,15 +1,12 @@
 import { FindOptions, Model, ModelStatic } from 'sequelize/types'
 import { HttpNotFoundError } from '../../shared/errors'
-import { PagingOptions } from '../../shared/types'
 
 export async function list(
   model: ModelStatic<Model>,
-  where: { userId?: string } = {},
   options: FindOptions = { limit: 100, offset: 0 }
 ): Promise<any[]> {
   const items = (await model.findAll({
     raw: true,
-    where,
     ...options,
   })) as any[]
   return items

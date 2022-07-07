@@ -1,13 +1,28 @@
 import express from 'express'
-import {
-  Model,
-  ModelAttributeColumnOptions,
-  ModelStatic,
-  Order,
-} from 'sequelize/types'
+import { Model, ModelStatic, Order } from 'sequelize/types'
 import { createOrUpdate, deleteIfExists, getIfExists, list } from './controller'
 
-export async function saveHandler(this: typeof Model, req, res) {
+export interface AutoApiConfig {
+  userIdColumn: string
+  getAuthUserId(req: express.Request): string
+}
+
+export const autoApiConfig: AutoApiConfig = {
+  userIdColumn: 'userId',
+  getAuthUserId: (req) => (req as any).auth?.id,
+}
+
+/**
+ * Saves payload via upsert with userIdColumn set to auth.id
+ * @param req
+ * @param res
+ * @returns
+ */
+export async function saveHandler(
+  this: typeof Model,
+  req: express.Request,
+  res: express.Response
+) {
   if (!this) {
     throw new Error('this is not defined')
   }
@@ -15,11 +30,23 @@ export async function saveHandler(this: typeof Model, req, res) {
     return res.status(400).send('Request body is missing')
   }
   const model = this as ModelStatic<Model>
+  const authId = autoApiConfig.getAuthUserId(req)
+  if (
+    authId &&
+    Object.keys(model.getAttributes()).includes(autoApiConfig.userIdColumn) &&
+    !req.body[autoApiConfig.userIdColumn]
+  ) {
+    req.body[autoApiConfig.userIdColumn] = authId
+  }
   const result = await createOrUpdate(model, req.body)
   res.json(result)
 }
 
-export async function deleteHandler(this: typeof Model, req, res) {
+export async function deleteHandler(
+  this: typeof Model,
+  req: express.Request,
+  res: express.Response
+) {
   if (!this) {
     throw new Error('this is not defined')
   }
@@ -28,7 +55,11 @@ export async function deleteHandler(this: typeof Model, req, res) {
   res.json(result)
 }
 
-export async function getHandler(this: typeof Model, req, res) {
+export async function getHandler(
+  this: typeof Model,
+  req: express.Request,
+  res: express.Response
+) {
   if (!this) {
     throw new Error('this is not defined')
   }
@@ -37,17 +68,9 @@ export async function getHandler(this: typeof Model, req, res) {
   res.json(result)
 }
 
-export interface AutoApiConfig {
-  userIdColumnName: string
-  getAuthUserId(req: express.Request): string
-}
-
-export const autoApiConfig: AutoApiConfig = {
-  userIdColumnName: 'userId',
-  getAuthUserId: (req) => (req as any).auth?.id,
-}
-
 /**
+ * Get Listing
+ *
  * Auto detects and filters table based on request.auth.userId === table.userId
  * Import and modify static autoApiConfig to customize
  * @param req
@@ -62,7 +85,7 @@ export async function listHandler(
     throw new Error('this is not defined')
   }
   const where: Record<string, string> = {}
-  let order: Order = []
+  const order: Order = []
   const model = this as ModelStatic<Model>
   const fields = model.getAttributes()
   //filter by query params 1-1 to model attributes
@@ -71,22 +94,22 @@ export async function listHandler(
       where[field] = req.query[field] as string
     }
   }
-  //sort
-  if (req.query.sort) {
-    const sortFields = (req.query.sort as string)?.split(',')
+  //sorting
+  if (req.query.orderBy) {
+    const sortFields = (req.query.orderBy as string)?.split(',')
     for (const field of sortFields) {
       const direction = field.startsWith('-') ? 'DESC' : 'ASC'
-      order.push([field, direction])
+      order[field.replace(/^-{1}/, '')] = direction
     }
   }
-  //user filtering from authentication token
+  //userId filtering from authentication token
   const authId = autoApiConfig.getAuthUserId(req)
-  if (authId && Object.keys(fields).includes(autoApiConfig.userIdColumnName)) {
-    where[autoApiConfig.userIdColumnName] = authId
+  if (authId && Object.keys(fields).includes(autoApiConfig.userIdColumn)) {
+    where[autoApiConfig.userIdColumn] = authId
   }
   const limit = Number(req.query.limit || 100)
   const offset = Number(req.query.offset || 0)
-  const result = await list(model, where, { limit, offset, order })
+  const result = await list(model, { where, limit, offset, order })
   res.json(result)
 }
 

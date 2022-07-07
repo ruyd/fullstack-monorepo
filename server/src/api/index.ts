@@ -1,5 +1,5 @@
 import express from 'express'
-import { autoApiConfig, autoApiRouterInject } from './_auto/routes'
+import { autoApiRouterInject } from './_auto/routes'
 import profile from './profile/routes'
 import { DrawingModel } from './drawings/models'
 import { UserModel } from './profile/models'
@@ -10,7 +10,6 @@ router.use('/profile', profile)
 
 //Auto CRUD
 export const autoApiModels = [DrawingModel, UserModel]
-autoApiConfig.userIdColumnName = 'userId'
 autoApiRouterInject(autoApiModels, router, tokenCheck)
 
 export default router
