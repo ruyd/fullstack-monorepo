@@ -62,8 +62,8 @@ export function autoApiRouterInject(
   router: express.Router,
   authMiddleware: (
     req: express.Request,
-    _res: express.Response,
-    _next: express.NextFunction
+    res: express.Response,
+    next: express.NextFunction
   ) => Promise<void>
 ) {
   for (const model of models) {
