@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import express from 'express'
 import { Model, ModelStatic } from 'sequelize/types'
 import { tokenCheck } from '../../shared/auth'
 import { createOrUpdate, deleteIfExists, getIfExists, list } from './controller'
@@ -55,17 +55,22 @@ export async function listHandler(this: typeof Model, req, res) {
  * Might need options for any model to exclude certain methods/auth
  * @param models - array of sequelize models
  * @param router - express router
+ * @param authMiddleware - token check middleware
  **/
 export function autoApiRouterInject(
   models: ModelStatic<Model>[],
-  router: Router
+  router: express.Router,
+  authMiddleware: (
+    req: express.Request,
+    _res: express.Response,
+    _next: express.NextFunction
+  ) => Promise<void>
 ) {
   for (const model of models) {
     const prefix = model.name.toLowerCase()
-    //can we put jwt -> auth in index? check diff vs jwt and req.auth
-    router.get(`/${prefix}`, tokenCheck, listHandler.bind(model))
-    router.get(`/${prefix}/:id`, tokenCheck, getHandler.bind(model))
-    router.post(`/${prefix}`, tokenCheck, saveHandler.bind(model))
-    router.delete(`/${prefix}/:id`, tokenCheck, deleteHandler.bind(model))
+    router.get(`/${prefix}`, authMiddleware, listHandler.bind(model))
+    router.get(`/${prefix}/:id`, authMiddleware, getHandler.bind(model))
+    router.post(`/${prefix}`, authMiddleware, saveHandler.bind(model))
+    router.delete(`/${prefix}/:id`, authMiddleware, deleteHandler.bind(model))
   }
 }
