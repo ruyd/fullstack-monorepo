@@ -3,6 +3,7 @@ import {
   Model,
   ModelAttributeColumnOptions,
   ModelStatic,
+  Order,
 } from 'sequelize/types'
 import { createOrUpdate, deleteIfExists, getIfExists, list } from './controller'
 
@@ -61,15 +62,23 @@ export async function listHandler(
     throw new Error('this is not defined')
   }
   const where: Record<string, string> = {}
+  let order: Order = []
   const model = this as ModelStatic<Model>
   const fields = model.getAttributes()
-  //query params 1-1 to model attributes
-  for (const field in fields) {
-    if (req.query[field]) {
+  //filter by query params 1-1 to model attributes
+  for (const field in req.query) {
+    if (fields[field]) {
       where[field] = req.query[field] as string
     }
   }
-
+  //sort
+  if (req.query.sort) {
+    const sortFields = (req.query.sort as string)?.split(',')
+    for (const field of sortFields) {
+      const direction = field.startsWith('-') ? 'DESC' : 'ASC'
+      order.push([field, direction])
+    }
+  }
   //user filtering from authentication token
   const authId = autoApiConfig.getAuthUserId(req)
   if (authId && Object.keys(fields).includes(autoApiConfig.userIdColumnName)) {
@@ -77,7 +86,7 @@ export async function listHandler(
   }
   const limit = Number(req.query.limit || 100)
   const offset = Number(req.query.offset || 0)
-  const result = await list(model, where, { limit, offset })
+  const result = await list(model, where, { limit, offset, order })
   res.json(result)
 }
 
