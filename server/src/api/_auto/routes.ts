@@ -36,13 +36,19 @@ export async function getHandler(this: typeof Model, req, res) {
   res.json(result)
 }
 
-export const autoApiConfig = {
-  authIdName: 'id',
-  userIdName: 'memberId',
+export interface AutoApiConfig {
+  userIdColumnName: string
+  getAuthUserId(req: express.Request): string
+}
+
+export const autoApiConfig: AutoApiConfig = {
+  userIdColumnName: 'userId',
+  getAuthUserId: (req) => (req as any).auth?.id,
 }
 
 /**
- * Has req.query params limit and offset for paging
+ * Auto detects and filters table based on request.auth.userId === table.userId
+ * Import and modify static autoApiConfig to customize
  * @param req
  * @param res
  */
@@ -65,9 +71,9 @@ export async function listHandler(
   }
 
   //user filtering from authentication token
-  const auth = (req as any).auth
-  if (auth && Object.keys(fields).includes(autoApiConfig.userIdName)) {
-    where[autoApiConfig.userIdName] = auth[autoApiConfig.authIdName]
+  const authId = autoApiConfig.getAuthUserId(req)
+  if (authId && Object.keys(fields).includes(autoApiConfig.userIdColumnName)) {
+    where[autoApiConfig.userIdColumnName] = authId
   }
   const limit = Number(req.query.limit || 100)
   const offset = Number(req.query.offset || 0)

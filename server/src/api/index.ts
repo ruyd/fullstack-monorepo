@@ -10,7 +10,7 @@ router.use('/profile', profile)
 
 //Auto CRUD
 export const autoApiModels = [DrawingModel, UserModel]
-autoApiConfig.userIdName = 'userId'
+autoApiConfig.userIdColumnName = 'userId'
 autoApiRouterInject(autoApiModels, router, tokenCheck)
 
 export default router
