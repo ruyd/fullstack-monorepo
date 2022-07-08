@@ -36,7 +36,7 @@ const jwtVerify = expressjwt({
   algorithms: ['HS256'],
 })
 
-export async function tokenCheck(req, _res, next) {
+export async function tokenCheckWare(req, _res, next) {
   if (!config?.tokenSecret) {
     return next()
   }
@@ -64,13 +64,13 @@ function setRequest(req: express.Request & { auth: any }): {
   if (!decoded.includes('{')) {
     return {}
   }
-  const header = JSON.parse(decoded) as jwt.JwtHeader
   req.auth = decodeToken(token)
+  const header = JSON.parse(decoded) as jwt.JwtHeader
   return { header, token }
 }
 
 /**
- * Local token encoding
+ * HS256 token encoding
  * Not for auth0 or any providers without private key
  * @param obj
  * @returns
@@ -138,5 +138,3 @@ export async function authProviderRegister(
     }
   }
 }
-
-//https://ruy.auth0.com/authorize?client_id=nGKyd_1WxWhol-4bBxTphcwmzeVXz89f&response_type=code&connection=google-oauth2&prompt=login&scope=openid%20profile&redirect_uri=https://manage.auth0.com/tester/callback?connection=google-oauth2
