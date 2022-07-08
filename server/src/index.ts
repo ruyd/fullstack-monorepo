@@ -49,7 +49,7 @@ import { swaggerDocModelInject } from './api/_auto/swagger'
 
   app.listen(config.port, () => {
     console.log(
-      `⚡️[server]: Server is running at https://localhost:${config.port} with API Swagger at /docs`
+      `⚡️[server]: Server is running at https://localhost:${config.port} with a SwaggerUI Admin on ${config.swaggerSetup.basePath}`
     )
   })
 })()

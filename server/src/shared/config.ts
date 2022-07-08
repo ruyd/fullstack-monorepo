@@ -18,7 +18,7 @@ export interface Config {
     clientId: string
     clientSecret: string
     ruleNamespace: string
-    algorithm: string
+    algorithm: 'RS256' | 'HS256'
   }
   swaggerSetup: OAS3Definition
 }
