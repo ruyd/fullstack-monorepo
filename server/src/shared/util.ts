@@ -1,3 +1,5 @@
+import { validate, v4 } from 'uuid'
+
 export function dashifyUUID(i: string): string {
   return (
     i.substring(0, 8) +
@@ -10,4 +12,14 @@ export function dashifyUUID(i: string): string {
     '-' +
     i.substring(20)
   )
+}
+
+export function tryDashesOrNewUUID(undashed?: string): string {
+  if (undashed) {
+    const candidate = dashifyUUID(undashed)
+    if (validate(candidate)) {
+      return candidate
+    }
+  }
+  return v4()
 }

@@ -1,0 +1,10 @@
+[
+    {
+        "id": "rul_zjYPAyx5Mb27QB2e",
+        "enabled": true,
+        "script": "function (user, context, callback) {\n  const assignedRoles = (context.authorization || {}).roles;\n  let accessTokenClaims = context.accessToken || {};\n  accessTokenClaims[`https://roles`] = assignedRoles;\n  context.accessToken = accessTokenClaims;\n  return callback(null, user, context);\n}",
+        "name": "AddRoles",
+        "order": 1,
+        "stage": "login_success"
+    }
+]

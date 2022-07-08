@@ -1,28 +1,25 @@
-import { PayloadAction } from '@reduxjs/toolkit'
+import { validate, v4 } from 'uuid'
 
-export function success(
-  res:
-    | PayloadAction<
-        void,
-        string,
-        {
-          arg: Record<string, unknown>
-          requestId: string
-          requestStatus: 'fulfilled'
-        },
-        never
-      >
-    | PayloadAction<
-        unknown,
-        string,
-        {
-          arg: Record<string, unknown>
-          requestId: string
-          requestStatus: 'rejected'
-          aborted: boolean
-          condition: boolean
-        }
-      >
-): boolean {
-  return res.meta.requestStatus === 'fulfilled'
+export function dashifyUUID(i: string): string {
+  return (
+    i.substring(0, 8) +
+    '-' +
+    i.substring(8, 4) +
+    '-' +
+    i.substring(12, 4) +
+    '-' +
+    i.substring(16, 4) +
+    '-' +
+    i.substring(20)
+  )
+}
+
+export function tryDashesOrNewUUID(undashed?: string): string {
+  if (undashed) {
+    const candidate = dashifyUUID(undashed)
+    if (validate(candidate)) {
+      return candidate
+    }
+  }
+  return v4()
 }

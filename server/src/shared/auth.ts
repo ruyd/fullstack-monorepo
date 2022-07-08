@@ -1,10 +1,9 @@
 import axios from 'axios'
-import { expressjwt, GetVerificationKey } from 'express-jwt'
+import express from 'express'
+import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import config from './config'
-import fs from 'fs'
-import path from 'path'
 
 export interface oAuthResponse {
   access_token: string
@@ -26,15 +25,10 @@ export interface oAuthRegistered {
   error_description?: string
 }
 
-const getKeysMiddleware = jwksRsa.expressJwtSecret({
-  jwksUri: `${config.authProvider?.baseUrl}/.well-known/jwks.json`,
+const jwkClient = jwksRsa({
+  jwksUri: `${config.auth?.baseUrl}/.well-known/jwks.json`,
   cache: true,
   rateLimit: true,
-}) as GetVerificationKey
-
-const jwkVerify = expressjwt({
-  secret: getKeysMiddleware,
-  algorithms: ['RS256'],
 })
 
 const jwtVerify = expressjwt({
@@ -42,23 +36,37 @@ const jwtVerify = expressjwt({
   algorithms: ['HS256'],
 })
 
-export function tokenCheck(_req, _res, next) {
+export async function tokenCheck(req, _res, next) {
   if (!config?.tokenSecret) {
     return next()
   }
-  let handler = jwtVerify
-  if (_req.headers.authorization?.includes('Bearer ')) {
-    const token = _req.headers.authorization?.split(' ')[1]
-    const headerChunk = token.split('.')[0]
-    const decoded = Buffer.from(headerChunk, 'base64').toString()
-    const header = decoded.includes('{')
-      ? (JSON.parse(decoded) as jwt.JwtHeader)
-      : null
-    if (header?.alg === 'RS256') {
-      handler = jwkVerify
-    }
+  const { header, token } = setRequest(req)
+  if (config.auth?.algorithm === 'RS256' && header && token) {
+    const result = await jwkClient.getSigningKey(header.kid)
+    const key = result.getPublicKey()
+    const _ = jwt.verify(token, key, { algorithms: ['RS256'] })
+    return next()
   }
-  return handler(_req, _res, next)
+
+  return jwtVerify(req, _res, next)
+}
+
+function setRequest(req: express.Request & { auth: any }): {
+  header?: jwt.JwtHeader
+  token?: string
+} {
+  if (!req.headers.authorization?.includes('Bearer ')) {
+    return {}
+  }
+  const token = req.headers.authorization.split(' ')[1]
+  const headerChunk = token.split('.')[0]
+  const decoded = Buffer.from(headerChunk, 'base64').toString()
+  if (!decoded.includes('{')) {
+    return {}
+  }
+  const header = JSON.parse(decoded) as jwt.JwtHeader
+  req.auth = decodeToken(token)
+  return { header, token }
 }
 
 /**
@@ -72,8 +80,14 @@ export async function createToken(obj: object) {
   return token
 }
 
-export function decodeToken<T extends jwt.JwtPayload>(token: string): T {
-  const authInfo = jwt.decode(token) as T
+export function decodeToken(token: string) {
+  const authInfo = jwt.decode(token) as jwt.JwtPayload
+  const prefix = config.auth?.ruleNamespace || 'https://'
+  const keys = Object.keys(authInfo).filter((key) => key.includes(prefix))
+  for (const key of keys) {
+    authInfo[key.replace(prefix, '')] = authInfo[key]
+    delete authInfo[key]
+  }
   return authInfo
 }
 
@@ -82,11 +96,11 @@ export async function authProviderLogin(
   password: string
 ): Promise<oAuthResponse> {
   const response = await axios.post(
-    `${config.authProvider?.baseUrl}/oauth/token`,
+    `${config.auth?.baseUrl}/oauth/token`,
     {
-      client_id: config.authProvider?.clientId,
-      client_secret: config.authProvider?.clientSecret,
-      audience: `${config.authProvider?.baseUrl}/api/v2/`,
+      client_id: config.auth?.clientId,
+      client_secret: config.auth?.clientSecret,
+      audience: `${config.auth?.baseUrl}/api/v2/`,
       grant_type: 'password',
       username,
       password,
@@ -100,22 +114,29 @@ export async function authProviderLogin(
 
 export async function authProviderRegister(
   payload: Record<string, string>
-): Promise<oAuthRegistered> {
-  const response = await axios.post(
-    `${config.authProvider?.baseUrl}/dbconnections/signup`,
-    {
-      connection: 'Username-Password-Authentication',
-      client_id: config.authProvider?.clientId,
-      given_name: payload.firstName,
-      family_name: payload.lastName,
-      email: payload.email,
-      password: payload.password,
-      user_metadata: {
-        userId: payload.userId,
-      },
+): Promise<Partial<oAuthRegistered>> {
+  try {
+    const response = await axios.post(
+      `${config.auth?.baseUrl}/dbconnections/signup`,
+      {
+        connection: 'Username-Password-Authentication',
+        client_id: config.auth?.clientId,
+        given_name: payload.firstName,
+        family_name: payload.lastName,
+        email: payload.email,
+        password: payload.password,
+        user_metadata: {
+          id: payload.userId,
+        },
+      }
+    )
+    return response.data
+  } catch (error: any) {
+    return {
+      error: error.response?.data?.name,
+      error_description: error.response?.data?.description,
     }
-  )
-  return response.data
+  }
 }
 
 //https://ruy.auth0.com/authorize?client_id=nGKyd_1WxWhol-4bBxTphcwmzeVXz89f&response_type=code&connection=google-oauth2&prompt=login&scope=openid%20profile&redirect_uri=https://manage.auth0.com/tester/callback?connection=google-oauth2

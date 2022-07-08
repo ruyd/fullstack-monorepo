@@ -9,7 +9,7 @@ export interface AutoApiConfig {
 
 export const autoApiConfig: AutoApiConfig = {
   userIdColumn: 'userId',
-  getAuthUserId: (req) => (req as any).auth?.id,
+  getAuthUserId: (req) => (req as any).auth?.userId,
 }
 
 /**

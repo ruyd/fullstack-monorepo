@@ -15,7 +15,7 @@ export const UserModel = db.define<UserInstance>(
   'user',
   {
     userId: {
-      type: DataTypes.UUID,
+      type: DataTypes.STRING, //non uuid for auth0
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },

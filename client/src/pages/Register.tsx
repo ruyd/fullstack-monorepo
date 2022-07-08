@@ -50,45 +50,45 @@ export default function Register() {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="given-name"
                 required
                 fullWidth
                 id="firstName"
                 name="firstName"
                 label="First name"
                 autoFocus
+                autoComplete="given-name"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="family-name"
                 required
                 fullWidth
                 id="lastName"
                 name="lastName"
                 label="Last name"
+                autoComplete="family-name"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                autoComplete="email"
                 required
                 fullWidth
                 id="email"
                 name="email"
                 label="Email"
                 type="email"
+                autoComplete="email"
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                autoComplete="new-password"
                 required
                 fullWidth
                 id="password"
                 name="password"
                 label="Password"
                 type="password"
+                autoComplete="new-password"
               />
             </Grid>
             <Grid item xs={12}>

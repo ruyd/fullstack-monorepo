@@ -13,10 +13,12 @@ export interface Config {
     schema: string
     ssl?: boolean
   }
-  authProvider?: {
+  auth?: {
     baseUrl: string
     clientId: string
     clientSecret: string
+    ruleNamespace: string
+    algorithm: string
   }
   swaggerSetup: OAS3Definition
 }
@@ -31,10 +33,12 @@ const config: Config = {
     schema: process.env.DB_SCHEMA || 'public',
     ssl: process.env.DB_SSL === 'true',
   },
-  authProvider: {
+  auth: {
     baseUrl: process.env.AUTH_BASE_URL || '',
     clientId: process.env.AUTH_CLIENT_ID || '',
     clientSecret: process.env.AUTH_CLIENT_SECRET || '',
+    ruleNamespace: 'https://',
+    algorithm: 'RS256',
   },
   swaggerSetup: {
     openapi: '3.0.0',
