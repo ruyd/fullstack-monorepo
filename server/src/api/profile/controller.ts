@@ -1,6 +1,12 @@
 import express from 'express'
-import { createToken } from '../../shared/auth'
+import {
+  createToken,
+  decodeToken,
+  authProviderLogin,
+  authProviderRegister,
+} from '../../shared/auth'
 import config from '../../shared/config'
+import uuid from 'uuid'
 import { createOrUpdate } from '../_auto/controller'
 import { UserModel } from './models'
 
@@ -15,6 +21,11 @@ export async function register(req: express.Request, res: express.Response) {
     throw new Error('Email already exists')
   }
 
+  payload.userId = uuid.v4()
+  const providerResult = await authProviderRegister(payload)
+  if (providerResult.error) {
+    throw new Error(providerResult.error_description)
+  }
   const user = await createOrUpdate(UserModel, payload)
   const token = createToken(user)
   res.json({ token })
@@ -22,25 +33,31 @@ export async function register(req: express.Request, res: express.Response) {
 
 export async function login(req: express.Request, res: express.Response) {
   const { email, password } = req.body
-  let user
-  if (email === 'admin@admin.com' && password === 'admin') {
-    user = {
-      id: '021b7860-9a5a-4c88-85dc-3847f9ef2d3d',
-      name: 'admin',
-      roles: ['admin'],
-    }
+
+  const response = await authProviderLogin(email, password)
+  if (response.error) {
+    throw new Error(response.error_description)
   }
 
+  //const decoded = decodeToken(response.id_token)
+  const user = (await UserModel.findOne({ where: { email } }))?.get()
   if (!user) {
-    throw new Error('Invalid credentials')
+    throw new Error('User not found')
   }
 
   if (!config.tokenSecret) {
     throw new Error('tokenSecret is not set')
   }
 
-  const token = createToken(user)
-  res.json({ token })
+  const token = createToken({
+    userId: user?.userId,
+    roles: [],
+  })
+  res.json({
+    id_token: response.id_token,
+    access_token: response.access_token,
+    test: token,
+  })
 }
 
 export async function edit(req: express.Request, res: express.Response) {

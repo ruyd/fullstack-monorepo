@@ -48,7 +48,7 @@ export const LoginAsync = createAsyncThunk(
   'app/login',
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request(dispatch, 'profile/login', payload)
-    setLogin(dispatch, response.data.token)
+    setLogin(dispatch, response.data.id_token)
   }
 )
 
@@ -57,7 +57,7 @@ export const RegisterAsync = createAsyncThunk(
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request(dispatch, 'profile/register', payload)
     //For email validation rework this
-    setLogin(dispatch, response.data.token)
+    setLogin(dispatch, response.data.id_token)
   }
 )
 

@@ -13,6 +13,11 @@ export interface Config {
     schema: string
     ssl?: boolean
   }
+  authProvider?: {
+    baseUrl: string
+    clientId: string
+    clientSecret: string
+  }
   swaggerSetup: OAS3Definition
 }
 
@@ -25,6 +30,11 @@ const config: Config = {
     url: process.env.DB_URL || '',
     schema: process.env.DB_SCHEMA || 'public',
     ssl: process.env.DB_SSL === 'true',
+  },
+  authProvider: {
+    baseUrl: process.env.AUTH_BASE_URL || '',
+    clientId: process.env.AUTH_CLIENT_ID || '',
+    clientSecret: process.env.AUTH_CLIENT_SECRET || '',
   },
   swaggerSetup: {
     openapi: '3.0.0',

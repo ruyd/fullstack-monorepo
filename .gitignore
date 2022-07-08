@@ -11,6 +11,9 @@
 # production
 /**/dist
 
+server/src/certs
+
+
 # misc
 .DS_Store
 .env

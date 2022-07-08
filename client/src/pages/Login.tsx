@@ -74,7 +74,7 @@ export default function Login() {
             color="primary"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign Up
+            Sign In
           </Button>
         </Box>
       </Box>
