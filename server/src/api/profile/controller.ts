@@ -49,14 +49,8 @@ export async function login(req: express.Request, res: express.Response) {
     throw new Error('tokenSecret is not set')
   }
 
-  const token = createToken({
-    userId: user?.userId,
-    roles: [],
-  })
   res.json({
-    id_token: response.id_token,
-    access_token: response.access_token,
-    test: token,
+    token: response.access_token,
   })
 }
 

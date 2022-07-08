@@ -86,6 +86,7 @@ export async function authProviderLogin(
     {
       client_id: config.authProvider?.clientId,
       client_secret: config.authProvider?.clientSecret,
+      audience: `${config.authProvider?.baseUrl}/api/v2/`,
       grant_type: 'password',
       username,
       password,
