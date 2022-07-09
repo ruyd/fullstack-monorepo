@@ -1,0 +1,26 @@
+{
+  "name": "@root/lib",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist",
+    "src",
+    "!dist/test",
+    "!dist/tsconfig.tsbuildinfo",
+    "!src/tsconfig.json"
+  ],
+  "private": true,
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  }
+}
