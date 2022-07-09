@@ -31,6 +31,13 @@ export const routes: AppRoute[] = [
     profile: true,
   },
   {
+    title: 'Profile',
+    path: '/profile',
+    component: React.lazy(() => import('../pages/Profile')),
+    profile: true,
+    secure: true,
+  },
+  {
     title: 'Drawings',
     path: '/drawings',
     component: React.lazy(() => import('../pages/Drawings')),

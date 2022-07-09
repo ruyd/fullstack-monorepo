@@ -11,8 +11,6 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@root/lib": "^1.0.0",
     "axios": "^0.27.2",

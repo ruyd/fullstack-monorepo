@@ -19,7 +19,6 @@
     "!src/tsconfig.json"
   ],
   "private": true,
-  "license": "ISC",
   "publishConfig": {
     "access": "public"
   },

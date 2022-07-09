@@ -1,7 +1,7 @@
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
 import { AppUser, onLogin } from '../../shared/auth'
-import { notify, notifyError, patch } from './slice'
+import { notifyError, patch } from './slice'
 
 /**
  * Axios wrapper for thunks with token from onLogin

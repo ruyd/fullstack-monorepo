@@ -1,5 +1,5 @@
-import { Button, Fab, Stack } from '@mui/material'
 import React, { useEffect } from 'react'
+import { Fab, Stack } from '@mui/material'
 import { useCanvas } from './CanvasContext'
 
 export function Canvas() {

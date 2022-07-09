@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close'
 import { useAppSelector, useAppDispatch } from '../shared/store'
 import { patch } from '../features/app/slice'
-import { Box, Paper } from '@mui/material'
+import { Paper } from '@mui/material'
 
 export default function DrawerRight() {
   const dispatch = useAppDispatch()

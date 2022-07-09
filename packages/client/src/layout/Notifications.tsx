@@ -1,8 +1,7 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { AppNotification, patch } from '../features/app/slice'
-import IconClose from '@mui/icons-material/Close'
-import { Alert, IconButton, Snackbar } from '@mui/material'
+import { Alert, Snackbar } from '@mui/material'
 
 export default function Notifications() {
   const notifications = useAppSelector((store) => store.app.notifications)
