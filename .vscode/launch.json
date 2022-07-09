@@ -8,11 +8,19 @@
             "cwd": "${workspaceRoot}/packages/server"
         },
         {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Frontend Chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/packages/client",
+        },
+        {
             "type": "msedge",
             "request": "launch",
             "name": "Frontend Edge",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/packages/client",
+            "version": "stable"
         }
     ]
 }
