@@ -7,7 +7,7 @@ import {
 } from '../../shared/auth'
 import { createOrUpdate } from '../_auto/controller'
 import { UserModel, UserPublicAttributes } from './models'
-import { tryDashesOrNewUUID } from '../../shared/util'
+import { AppAccessToken, tryDashesOrNewUUID } from '@root/lib'
 
 export async function register(req: express.Request, res: express.Response) {
   const payload = req.body
@@ -64,8 +64,10 @@ export async function edit(req: express.Request, res: express.Response) {
   if (!payload) {
     throw new Error('Missing payload')
   }
-  const record = await createOrUpdate(UserModel, payload)
-  res.json({ success: true })
+  const auth = (req as any).auth as AppAccessToken
+  payload.userId = auth.userId
+  const user = await createOrUpdate(UserModel, payload)
+  res.json({ user })
 }
 
 export async function setPictureIfEmpty(payload: Record<string, string>) {

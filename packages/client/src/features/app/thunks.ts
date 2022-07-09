@@ -1,6 +1,7 @@
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
 import { AppUser, onLogin } from '../../shared/auth'
+import { RootState } from '../../shared/store'
 import { notifyError, patch } from './slice'
 
 /**
@@ -72,7 +73,13 @@ export const LogoutAsync = createAsyncThunk(
 
 export const EditProfileAsync = createAsyncThunk(
   'app/editProfile',
-  async (payload: Record<string, unknown>, { dispatch }) => {
-    await request(dispatch, 'profile/edit', payload)
+  async (payload: Record<string, unknown>, { dispatch, getState }) => {
+    const response = await request(dispatch, 'profile/edit', payload)
+    const token = (getState() as RootState)?.app?.token as string
+    const user = response.data.user
+    if (user) {
+      dispatch(patch({ user }))
+      onLogin({ token, user })
+    }
   }
 )

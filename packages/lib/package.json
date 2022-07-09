@@ -2,8 +2,7 @@
   "name": "@root/lib",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
-  "main": "./src/index.js",
+  "main": "src/index.js",
   "exports": {
     ".": "./dist/index.js",
     "./package.json": "./package.json"
@@ -14,9 +13,7 @@
   "files": [
     "dist",
     "src",
-    "!dist/test",
-    "!dist/tsconfig.tsbuildinfo",
-    "!src/tsconfig.json"
+    "!dist/test"
   ],
   "private": true,
   "publishConfig": {
