@@ -26,7 +26,7 @@ export interface Drawing {
 
 export const Testy: string = 'verynice'
 /**
- * worth it? too much typing?xx
+ * worth it? too much hassle for this pattern?
  */
 export class AppDrawing implements Partial<Drawing> {
   history: DrawAction[]
