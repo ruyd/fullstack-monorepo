@@ -3,6 +3,6 @@
     "src"
   ],
   "compilerOptions": {
-    "outDir": "../dist"
+    "outDir": "./dist"
   }
 }
