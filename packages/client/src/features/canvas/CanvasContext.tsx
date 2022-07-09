@@ -5,7 +5,7 @@ import React, {
   PropsWithChildren,
   RefObject,
 } from 'react'
-import { DrawAction } from '@root/lib'
+import { DrawAction, ActionType } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { loadAsync, saveAsync } from './thunks'
 
@@ -66,7 +66,7 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
     contextRef.current.lineTo(offsetX + 1, offsetY + 1)
     contextRef.current.stroke()
     isDrawing.current = true
-    // record(offsetX + 1, offsetY + 1)
+    record(ActionType.Open, offsetX + 1, offsetY + 1)
   }
 
   const finishDrawing = () => {
@@ -75,13 +75,14 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
     }
     contextRef.current.closePath()
     isDrawing.current = false
+    record(ActionType.Close)
     if (!contextRef.current) {
       return
     }
   }
 
-  const record = (x: number, y: number) => {
-    history.current = [...history.current, { x, y, open: isDrawing.current }]
+  const record = (t: ActionType, x?: number, y?: number) => {
+    history.current = [...history.current, { x, y, t }]
   }
 
   const onDraw = ({ nativeEvent }: { nativeEvent: MouseEvent }) => {
@@ -100,7 +101,7 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
       contextRef.current.lineTo(offsetX, offsetY)
       contextRef.current.stroke()
       if (!hist) {
-        record(offsetX, offsetY)
+        record(ActionType.Stroke, offsetX, offsetY)
       }
     },
     []
@@ -135,13 +136,16 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
       history.current = current.history
     }
 
-    history.current.forEach((action) => {
-      if (action.open) {
+    history.current.forEach(({ t, x, y }) => {
+      if (t === ActionType.Open) {
         contextRef.current?.beginPath()
-      } else {
+      }
+      if ([ActionType.Open, ActionType.Stroke].includes(t)) {
+        draw(x as number, y as number, true)
+      }
+      if (t === ActionType.Close) {
         contextRef.current?.closePath()
       }
-      draw(action.x, action.y, true)
     })
   }, [current.history, draw])
 

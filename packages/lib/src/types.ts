@@ -5,14 +5,20 @@ export interface AppAccessToken extends JwtPayload {
   roles: string[]
 }
 
+export enum ActionType {
+  Open = 'o',
+  Close = 'c',
+  Stroke = 's',
+}
+
 export interface DrawAction {
-  x: number
-  y: number
+  t: ActionType
+  x?: number
+  y?: number
   color?: string
   size?: number
   style?: string
   time?: number
-  open?: boolean
 }
 
 export interface Drawing {
