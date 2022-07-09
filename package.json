@@ -14,7 +14,7 @@
         "start": "npm run start:client",
         "start:client": "npm run -w @root/client start",
         "prestart:server": "npm run -w @root/client bundle:prod",
-        "start:server": "npm run -w @root/server dev",
+        "server": "npm run -w @root/server dev",
         "prettify": "npx prettier . --write"
     },
     "devDependencies": {

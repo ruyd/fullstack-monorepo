@@ -55,7 +55,7 @@ export function getPersistedAuthFromStorage(): {
   if (!accessToken) {
     return null
   }
-  if (user.exp && user.exp > Date.now()) {
+  if (accessToken?.exp && user.exp > Date.now()) {
     return null
   }
   setHeader(token)
