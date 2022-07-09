@@ -4,12 +4,7 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "type": "module",
   "main": "src/index.js",
-  "exports": {
-    ".": "./dist/index.js",
-    "./package.json": "./package.json"
-  },
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/src/index.js",
@@ -43,12 +38,5 @@
     "concurrently": "^7.2.0",
     "nodemon": "^2.0.16",
     "typescript": "^4.6.4"
-  },
-  "files": [
-    "dist",
-    "src",
-    "!dist/test",
-    "!dist/tsconfig.tsbuildinfo",
-    "!src/tsconfig.json"
-  ]
+  }
 }

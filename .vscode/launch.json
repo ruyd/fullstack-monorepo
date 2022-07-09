@@ -5,14 +5,14 @@
             "name": "Server Debug",
             "request": "launch",
             "type": "node-terminal",
-            "cwd": "${workspaceRoot}/server"
+            "cwd": "${workspaceRoot}/packages/server"
         },
         {
-            "type": "pwa-msedge",
+            "type": "msedge",
             "request": "launch",
             "name": "Frontend Edge",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/client",
+            "webRoot": "${workspaceFolder}/packages/client",
         }
     ]
 }
