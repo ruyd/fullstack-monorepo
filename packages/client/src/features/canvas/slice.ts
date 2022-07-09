@@ -1,43 +1,46 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { v4 as uuid } from 'uuid'
+import { DrawAction, Drawing } from '@root/lib'
 import { AppThunk } from '../../shared/store'
 
-export interface CanvasBit {
-  x: number
-  y: number
-  color?: string
-  size?: number
-  style?: string
+export interface CanvasState {
+  current: Drawing
+  items: Drawing[]
 }
 
-export interface CanvasState {
-  id: string
-  name: string
-  history: CanvasBit[]
-  items: []
+function getDraft() {
+  let draft: Drawing = {
+    id: '',
+    name: 'New Draft',
+    history: [],
+  }
+  const persisted = localStorage.getItem('canvas')
+  if (persisted?.includes('{')) {
+    draft = JSON.parse(persisted) as Drawing
+  }
+  return draft
 }
+
+const current = getDraft()
 
 const initialState: CanvasState = {
-  id: uuid(),
-  name: 'New Draft',
-  history: [],
+  current,
   items: [],
 }
 
-export const counterSlice = createSlice({
+export const canvasSlice = createSlice({
   name: 'canvas',
   initialState,
   reducers: {
-    onChange: (state, action: PayloadAction<CanvasBit>) => {
-      state.history.push(action.payload)
+    onChange: (state, action: PayloadAction<DrawAction>) => {
+      state.current.history.push(action.payload)
     },
   },
 })
 
-export const actions = counterSlice.actions
+export const actions = canvasSlice.actions
 
 export const incrementIfOdd =
   (amount: number): AppThunk =>
   (dispatch, getState) => {}
 
-export default counterSlice.reducer
+export default canvasSlice.reducer

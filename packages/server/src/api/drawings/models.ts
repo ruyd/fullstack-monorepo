@@ -18,6 +18,9 @@ export const DrawingModel = db.define<DrawingInstance>(
     name: {
       type: DataTypes.STRING,
     },
+    history: {
+      type: DataTypes.JSONB,
+    },
   },
   {
     ...commonOptions,

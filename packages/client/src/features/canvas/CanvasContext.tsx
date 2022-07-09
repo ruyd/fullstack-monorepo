@@ -5,7 +5,7 @@ import React, {
   PropsWithChildren,
   RefObject,
 } from 'react'
-import { useAppDispatch } from '../../shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { saveAsync } from './thunks'
 
 export type CanvasContextType = {
@@ -23,10 +23,11 @@ const CanvasContext = createContext<CanvasContextType>({} as CanvasContextType)
 
 export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
   const dispatch = useAppDispatch()
+  const current = useAppSelector((state) => state.canvas.current)
   const isDrawing = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
-  const history = useRef<{ x: number; y: number }[]>([])
+  const history = useRef<{ x: number; y: number }[]>(current.history || [])
 
   const prepareCanvas = () => {
     const canvas = canvasRef.current
@@ -103,8 +104,7 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
     if (!canvas || !context) {
       return
     }
-    const image = canvas.toDataURL('image/png')
-    const result = await dispatch(saveAsync(image))
+    const result = await dispatch(saveAsync(history.current))
     if (result.meta.requestStatus === 'fulfilled') {
       console.log('saved')
     }

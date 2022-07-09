@@ -5,12 +5,20 @@ export interface AppAccessToken extends JwtPayload {
   roles: string[]
 }
 
+export interface DrawAction {
+  x: number
+  y: number
+  color?: string
+  size?: number
+  style?: string
+  timer?: number
+}
+
 export interface Drawing {
-  id: number
-  userId: string
+  id?: string
   name: string
-  data?: string
-  history?: string[]
+  history: DrawAction[]
+  userId?: string
   createdAt?: Date
   updatedAt?: Date
 }

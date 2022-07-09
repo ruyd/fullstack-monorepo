@@ -27,7 +27,7 @@ export default function Register() {
     data.forEach((value, key) => (obj[key] = value))
     dispatch(RegisterAsync(obj)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
-        navigate('/')
+        navigate('/login')
       }
     })
   }

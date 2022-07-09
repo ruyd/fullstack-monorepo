@@ -75,9 +75,9 @@ export const EditProfileAsync = createAsyncThunk(
   'app/editProfile',
   async (payload: Record<string, unknown>, { dispatch, getState }) => {
     const response = await request(dispatch, 'profile/edit', payload)
-    const token = (getState() as RootState)?.app?.token as string
     const user = response.data.user
     if (user) {
+      const token = (getState() as RootState)?.app?.token as string
       dispatch(patch({ user }))
       onLogin({ token, user })
     }

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { DrawAction } from '@root/lib'
 import { RootState } from '../../shared/store'
 import { request } from '../app/thunks'
 
@@ -12,13 +13,10 @@ export const loadAsync = createAsyncThunk(
 
 export const saveAsync = createAsyncThunk(
   'canvas/save',
-  async (image: string, { dispatch, getState }) => {
+  async (history: DrawAction[], { dispatch, getState }) => {
     const state = getState() as RootState
-    const response = await request(dispatch, '/drawing', {
-      id: state.canvas.id,
-      name: state.canvas.name,
-      history: state.canvas.history,
-    })
-    return response.data
+    const payload = state.canvas.current
+    payload.history = history
+    await request(dispatch, '/drawing', payload)
   }
 )
