@@ -1,15 +1,6 @@
+import { User } from '@root/lib'
 import { DataTypes, Model } from 'sequelize'
 import db, { commonOptions } from '../../shared/db'
-
-export interface User {
-  userId: string
-  email: string
-  firstName?: string
-  lastName?: string
-  picture?: string
-  createdAt?: Date
-  updatedAt?: Date
-}
 
 export type UserInstance = Model<User>
 

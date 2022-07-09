@@ -1,24 +1,15 @@
-import jwtDecode, { JwtPayload } from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 import axios from 'axios'
+import { AppAccessToken, User } from '@root/lib'
 
-export interface AppUser {
+export interface AppUser extends User {
   [key: string]: unknown
-  userId: string
-  email: string
-  firstName?: string
-  lastName?: string
-}
-
-export interface AppAccessToken extends JwtPayload {
-  userId: string
-  roles: string[]
-  [key: string]: any
 }
 
 export const STORAGE_KEY = 'auth'
 
 /**
- * Auth0 roles added via rules have namespace prefix; using https://field
+ * Auth0 rules custom props use namespace prefix: https://field
  */
 export const RULE_PREFIX = 'https://'
 

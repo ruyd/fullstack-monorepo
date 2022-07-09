@@ -1,5 +1,7 @@
 {
-    "composite": true,
+    "compilerOptions": {
+        "composite": true,
+    },
     "files": [],
     "references": [
         {

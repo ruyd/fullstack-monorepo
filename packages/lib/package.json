@@ -22,5 +22,8 @@
   "license": "ISC",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
   }
 }
