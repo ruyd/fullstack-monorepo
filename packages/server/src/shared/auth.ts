@@ -54,6 +54,13 @@ export async function tokenCheckWare(req, _res, next) {
   return jwtVerify(req, _res, next)
 }
 
+export function hasRole(
+  req: express.Request & { auth: { roles: string[] } },
+  role: string
+): boolean {
+  return req.auth?.roles?.includes(role)
+}
+
 export function setRequest(req: express.Request & { auth: any }): {
   header?: jwt.JwtHeader
   token?: string
