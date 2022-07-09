@@ -10,6 +10,7 @@
 
 # production
 /**/dist
+/**/build
 
 packages/server/src/certs
 

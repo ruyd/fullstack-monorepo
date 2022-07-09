@@ -11,7 +11,8 @@ export interface DrawAction {
   color?: string
   size?: number
   style?: string
-  timer?: number
+  time?: number
+  open?: boolean
 }
 
 export interface Drawing {
@@ -21,6 +22,24 @@ export interface Drawing {
   userId?: string
   createdAt?: Date
   updatedAt?: Date
+}
+
+export const Testy: string = 'hotness'
+/**
+ * worth it? too much typing?xx
+ */
+export class AppDrawing implements Partial<Drawing> {
+  history: DrawAction[]
+  constructor() {
+    this.history = []
+  }
+  calcDuration() {
+    const total = this.history.reduce(
+      (acc: number, cur: DrawAction) => (cur?.time || 0) + acc,
+      0
+    )
+    return total
+  }
 }
 
 export interface User {

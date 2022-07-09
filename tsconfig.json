@@ -1,17 +1,10 @@
 {
+    "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "composite": true,
-    },
-    "files": [],
-    "references": [
-        {
-            "path": "./packages/client"
-        },
-        {
-            "path": "./packages/lib"
-        },
-        {
-            "path": "./packages/server"
+        "paths": {
+            "@root/*": [
+                "./packages/*/src"
+            ]
         }
-    ]
+    },
 }
