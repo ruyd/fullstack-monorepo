@@ -1,3 +1,4 @@
+import { DrawAction } from '@root/lib'
 import React, {
   useContext,
   useRef,
@@ -27,7 +28,7 @@ export const CanvasProvider = ({ children }: PropsWithChildren<{}>) => {
   const isDrawing = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
-  const history = useRef<{ x: number; y: number }[]>(current.history || [])
+  const history = useRef<DrawAction[]>(current.history || [])
 
   const prepareCanvas = () => {
     const canvas = canvasRef.current
