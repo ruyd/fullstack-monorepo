@@ -2,22 +2,16 @@
 
 client
 
+- profile edit
 - content mocks
 - responsive
-- title
 - modal
 - cra template
-- node starter
 - deno starter
 
 server
 
-- jwt
-- dynamic api routes from sequelize
-- auth0
-- firebase
-
----
+-
 
 The Assignment
 
