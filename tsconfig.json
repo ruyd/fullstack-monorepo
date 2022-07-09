@@ -1,0 +1,15 @@
+{
+    "composite": true,
+    "files": [],
+    "references": [
+        {
+            "path": "./packages/client"
+        },
+        {
+            "path": "./packages/lib"
+        },
+        {
+            "path": "./packages/server"
+        }
+    ]
+}

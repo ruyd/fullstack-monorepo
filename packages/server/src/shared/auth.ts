@@ -4,6 +4,7 @@ import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import config from './config'
+import { SharedAccessToken } from '@root/lib'
 
 export interface oAuthError {
   error?: string
