@@ -1,10 +1,10 @@
+// https://muguku.medium.com/fix-go-to-definition-and-hot-reload-in-a-react-typescript-monorepo-362908716d0e
 // this file overrides the default CRA configurations (webpack, eslint, babel, etc)
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 module.exports = {
     webpack: {
         configure: (config) => {
-            console.log('craco init', config)
             // Remove ModuleScopePlugin which throws when we try to import something
             // outside of src/.
             config.resolve.plugins.pop();
