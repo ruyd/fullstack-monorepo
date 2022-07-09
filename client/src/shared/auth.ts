@@ -1,35 +1,41 @@
-import jwtDecode from 'jwt-decode'
+import jwtDecode, { JwtPayload } from 'jwt-decode'
 import axios from 'axios'
 
 export interface AppUser {
   [key: string]: unknown
-  id: string
+  userId: string
   email: string
   firstName?: string
   lastName?: string
-  roles?: string[]
-  exp?: number
-  sub?: string
 }
-export const TOKEN_KEY = 'token'
+
+export interface AppAccessToken extends JwtPayload {
+  userId: string
+  roles: string[]
+  [key: string]: any
+}
+
+export const STORAGE_KEY = 'auth'
 
 /**
  * Auth0 roles added via rules have namespace prefix; using https://field
  */
 export const RULE_PREFIX = 'https://'
 
-export function decodeUser(token: string): AppUser | null {
+export function decodeAccessToken(token: string): AppAccessToken | null {
   if (!token) {
     return null
   }
   try {
-    const user = jwtDecode(token) as AppUser
-    const keys = Object.keys(user).filter((key) => key.includes(RULE_PREFIX))
+    const accessToken = jwtDecode(token) as AppAccessToken
+    const keys = Object.keys(accessToken).filter((key) =>
+      key.includes(RULE_PREFIX)
+    )
     for (const key of keys) {
-      user[key.replace(RULE_PREFIX, '')] = user[key]
-      delete user[key]
+      accessToken[key.replace(RULE_PREFIX, '')] = accessToken[key]
+      delete accessToken[key]
     }
-    return user
+    return accessToken
   } catch {
     return null
   }
@@ -39,12 +45,14 @@ export function getPersistedAuthFromStorage(): {
   token: string
   user: AppUser
 } | null {
-  const token = localStorage.getItem(TOKEN_KEY)
-  if (!token) {
+  const json = localStorage.getItem(STORAGE_KEY)
+  if (!json) {
     return null
   }
-  const user = decodeUser(token)
-  if (!user) {
+
+  const { token, user } = JSON.parse(json)
+  const accessToken = decodeAccessToken(token)
+  if (!accessToken) {
     return null
   }
   if (user.exp && user.exp > Date.now()) {
@@ -58,11 +66,11 @@ export function setHeader(token?: string) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
-export function onLogin(payload?: string) {
+export function onLogin(payload?: { token: string; user: AppUser }) {
   if (payload) {
-    localStorage.setItem(TOKEN_KEY, payload)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   } else {
-    localStorage.removeItem(TOKEN_KEY)
+    localStorage.removeItem(STORAGE_KEY)
   }
-  setHeader(payload)
+  setHeader(payload?.token)
 }

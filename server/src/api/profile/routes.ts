@@ -77,7 +77,7 @@ router.post('/oauthcallback', (req, res) => {
   res.json({ token })
 })
 
-router.post('/logff', (req, res) => {
+router.post('/logoff', (req, res) => {
   res.json({ success: true })
 })
 

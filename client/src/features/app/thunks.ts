@@ -1,6 +1,6 @@
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
-import { AppUser, decodeUser, onLogin } from '../../shared/auth'
+import { AppUser, onLogin } from '../../shared/auth'
 import { notify, notifyError, patch } from './slice'
 
 /**
@@ -32,23 +32,23 @@ export async function request(
 
 function setLogin(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
-  token: string
+  token: string,
+  user: AppUser
 ) {
-  const user = decodeUser(token) as AppUser
   dispatch(
     patch({
       token,
       user,
     })
   )
-  onLogin(token)
+  onLogin({ token, user })
 }
 
 export const LoginAsync = createAsyncThunk(
   'app/login',
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request(dispatch, 'profile/login', payload)
-    setLogin(dispatch, response.data.token)
+    setLogin(dispatch, response.data.token, response.data.user)
   }
 )
 
@@ -57,14 +57,14 @@ export const RegisterAsync = createAsyncThunk(
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request(dispatch, 'profile/register', payload)
     //For email validation rework this
-    setLogin(dispatch, response.data.token)
+    setLogin(dispatch, response.data.token, response.data.user)
   }
 )
 
 export const LogoutAsync = createAsyncThunk(
   'app/logout',
   async (_, { dispatch }) => {
-    //const response = await request(dispatch, 'profile/logout')
+    request(dispatch, 'profile/logoff')
     dispatch(patch({ token: undefined, user: undefined }))
     onLogin(undefined)
   }
@@ -73,7 +73,6 @@ export const LogoutAsync = createAsyncThunk(
 export const EditProfileAsync = createAsyncThunk(
   'app/editProfile',
   async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request(dispatch, 'profile/edit', payload)
-    setLogin(dispatch, response.data.token)
+    await request(dispatch, 'profile/edit', payload)
   }
 )

@@ -5,24 +5,26 @@ import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import config from './config'
 
-export interface oAuthResponse {
+export interface oAuthError {
+  error?: string
+  error_description?: string
+  status?: number
+}
+
+export interface oAuthResponse extends oAuthError {
   access_token: string
   id_token: string
   scope: string
   expires_in: number
   token_type: string
-  error?: string
-  error_description?: string
 }
 
-export interface oAuthRegistered {
+export interface oAuthRegistered extends oAuthError {
   _id: string
   email: string
   family_name: string
   given_name: string
   email_verified: boolean
-  error?: string
-  error_description?: string
 }
 
 const jwkClient = jwksRsa({
@@ -51,7 +53,7 @@ export async function tokenCheckWare(req, _res, next) {
   return jwtVerify(req, _res, next)
 }
 
-function setRequest(req: express.Request & { auth: any }): {
+export function setRequest(req: express.Request & { auth: any }): {
   header?: jwt.JwtHeader
   token?: string
 } {
@@ -75,7 +77,7 @@ function setRequest(req: express.Request & { auth: any }): {
  * @param obj
  * @returns
  */
-export async function createToken(obj: object) {
+export function createToken(obj: object): string {
   const token = jwt.sign(obj, config.tokenSecret as string)
   return token
 }
@@ -121,12 +123,59 @@ export async function authProviderRegister(
       {
         connection: 'Username-Password-Authentication',
         client_id: config.auth?.clientId,
-        given_name: payload.firstName,
-        family_name: payload.lastName,
         email: payload.email,
         password: payload.password,
         user_metadata: {
           id: payload.userId,
+        },
+      }
+    )
+    return response.data
+  } catch (error: any) {
+    return {
+      error: error.response?.data?.name,
+      error_description: error.response?.data?.description,
+    }
+  }
+}
+
+export async function authProviderChangePassword(
+  payload: Record<string, string>
+): Promise<oAuthError | string> {
+  try {
+    const response = await axios.post(
+      `${config.auth?.baseUrl}/dbconnections/change_password`,
+      {
+        connection: 'Username-Password-Authentication',
+        client_id: config.auth?.clientId,
+        email: payload.email,
+      }
+    )
+    return response.data
+  } catch (error: any) {
+    return {
+      error: error.response?.data?.name,
+      error_description: error.response?.data?.description,
+    }
+  }
+}
+
+export async function authProviderPatch(payload: {
+  id: string
+  email: string
+  password: string
+}): Promise<oAuthError | string> {
+  try {
+    const response = await axios.patch(
+      `${config.auth?.baseUrl}/api/v2/users/${payload.id}`,
+      {
+        connection: 'Username-Password-Authentication',
+        client_id: config.auth?.clientId,
+        ...payload,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${config.auth?.manageToken}`,
         },
       }
     )

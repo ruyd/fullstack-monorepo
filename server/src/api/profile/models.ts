@@ -3,8 +3,10 @@ import db, { commonOptions } from '../../shared/db'
 
 export interface User {
   userId: string
-  name: string
   email: string
+  firstName?: string
+  lastName?: string
+  picture?: string
   createdAt?: Date
   updatedAt?: Date
 }
@@ -15,14 +17,20 @@ export const UserModel = db.define<UserInstance>(
   'user',
   {
     userId: {
-      type: DataTypes.STRING, //non uuid for auth0
+      type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    name: {
+    firstName: {
+      type: DataTypes.STRING,
+    },
+    lastName: {
       type: DataTypes.STRING,
     },
     email: {
+      type: DataTypes.STRING,
+    },
+    picture: {
       type: DataTypes.STRING,
     },
   },
@@ -30,3 +38,11 @@ export const UserModel = db.define<UserInstance>(
     ...commonOptions,
   }
 )
+
+export const UserPublicAttributes = [
+  'userId',
+  'firstName',
+  'lastName',
+  'email',
+  'picture',
+]

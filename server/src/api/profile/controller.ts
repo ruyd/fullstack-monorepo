@@ -3,9 +3,10 @@ import {
   createToken,
   authProviderLogin,
   authProviderRegister,
+  decodeToken,
 } from '../../shared/auth'
 import { createOrUpdate } from '../_auto/controller'
-import { UserModel } from './models'
+import { UserModel, UserPublicAttributes } from './models'
 import { tryDashesOrNewUUID } from '../../shared/util'
 
 export async function register(req: express.Request, res: express.Response) {
@@ -25,6 +26,7 @@ export async function register(req: express.Request, res: express.Response) {
     throw new Error(providerResult.error_description)
   }
 
+  setPictureIfEmpty(payload)
   const user = await createOrUpdate(UserModel, payload)
   const token = createToken(user)
   res.json({ token })
@@ -38,13 +40,22 @@ export async function login(req: express.Request, res: express.Response) {
     throw new Error(response.error_description)
   }
 
-  const user = (await UserModel.findOne({ where: { email } }))?.get()
+  // const accessToken = decodeToken(response.access_token)
+  // if (accessToken.verified) {
+  // }
+
+  const user = await UserModel.findOne({
+    where: { email },
+    attributes: UserPublicAttributes,
+  })
+
   if (!user) {
     throw new Error('User not found')
   }
 
   res.json({
     token: response.access_token,
+    user,
   })
 }
 
@@ -53,7 +64,14 @@ export async function edit(req: express.Request, res: express.Response) {
   if (!payload) {
     throw new Error('Missing payload')
   }
-  const user = await createOrUpdate(UserModel, payload)
-  const token = createToken(user)
-  res.json({ token })
+  const record = await createOrUpdate(UserModel, payload)
+  res.json({ success: true })
+}
+
+export async function setPictureIfEmpty(payload: Record<string, string>) {
+  if (!payload?.picture && payload.firstName && payload.lastName) {
+    const f = payload.firstName.charAt(0).toLowerCase()
+    const l = payload.lastName.charAt(0).toLowerCase()
+    payload.picture = `https://i2.wp.com/cdn.auth0.com/avatars/${f}${l}.png?ssl=1`
+  }
 }
