@@ -24,7 +24,7 @@ export interface Drawing {
   updatedAt?: Date
 }
 
-export const Testy: string = 'very'
+export const Testy: string = 'verynice'
 /**
  * worth it? too much typing?xx
  */
