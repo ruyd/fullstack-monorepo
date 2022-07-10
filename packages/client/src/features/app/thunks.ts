@@ -4,6 +4,13 @@ import { AppUser, onLogin } from '../../shared/auth'
 import { RootState } from '../../shared/store'
 import { notifyError, patch } from './slice'
 
+export enum Method {
+  GET = 'get',
+  POST = 'post',
+  DELETE = 'delete',
+  PATCH = 'patch',
+}
+
 /**
  * Axios wrapper for thunks with token from onLogin
  */
@@ -11,7 +18,7 @@ export async function request(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
   url: string,
   data?: any,
-  method: string = 'post'
+  method: Method = Method.POST
 ): Promise<AxiosResponse<{ success: true } | any>> {
   let response: AxiosResponse
   try {

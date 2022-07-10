@@ -1,18 +1,19 @@
 import React, { useRef, startTransition } from 'react'
-import { DrawAction, ActionType } from '@root/lib'
+import { DrawAction, ActionType, Drawing } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { loadAsync, saveAsync } from './thunks'
+import { deleteAsync, loadAsync, saveAsync } from './thunks'
 import { debounce, Fab, Stack, TextField } from '@mui/material'
 import { useCallback } from 'react'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
-import { adjustResolution } from './helpers'
+import { adjustResolution, generateThumbnail } from './helpers'
 
 export default function CanvasWrapper() {
   const dispatch = useAppDispatch()
   const history = useAppSelector((state) => state.canvas?.active?.history)
   const name = useAppSelector((state) => state.canvas?.active?.name)
+  const brush = useAppSelector((state) => state.canvas?.brush)
   const isDrawing = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
@@ -89,12 +90,17 @@ export default function CanvasWrapper() {
       return
     }
 
-    const payload: { history: DrawAction[]; name?: string } | null = {
+    const payload: {
+      history: DrawAction[]
+      name?: string
+      thumbnail?: string
+    } | null = {
       history: buffer.current,
     }
     if (nameRef.current?.value) {
       payload.name = nameRef.current.value
     }
+    payload.thumbnail = await generateThumbnail(canvas)
     const result = await dispatch(saveAsync(payload))
     if (result.meta.requestStatus === 'fulfilled') {
       console.log('saved')

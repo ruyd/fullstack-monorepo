@@ -1,3 +1,5 @@
+import { Drawing } from '@root/lib'
+
 export function adjustResolution(canvas: HTMLCanvasElement) {
   if (!canvas) {
     return
@@ -36,4 +38,44 @@ export function createOffscreen(width: number, height: number, dpr: number) {
   }
   context.lineWidth = 5
   return context
+}
+
+export async function generateThumbnail(
+  canvas: HTMLCanvasElement,
+  width: number = 250,
+  height: number = 150
+): Promise<string> {
+  const data = canvas.toDataURL()
+  const img = new Image(canvas.width, canvas.height)
+  img.src = data
+  img.height = width
+  img.width = height
+
+  const srcAsync = (): Promise<string> =>
+    new Promise((resolve) => {
+      img.onload = () => {
+        const off = document.createElement('canvas')
+        off.width = width
+        off.height = height
+        const context = off.getContext('2d') as CanvasRenderingContext2D
+        context.drawImage(img, 0, 0, width, height)
+        const result = context.canvas.toDataURL()
+        resolve(result)
+      }
+    })
+
+  const result = await srcAsync()
+  return result
+}
+
+export function getDraft() {
+  let draft: Drawing = {
+    name: 'New Draft',
+    history: [],
+  }
+  const persisted = localStorage.getItem('canvas')
+  if (persisted?.includes('{')) {
+    draft = JSON.parse(persisted) as Drawing
+  }
+  return draft
 }

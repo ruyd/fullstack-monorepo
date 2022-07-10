@@ -1,23 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Drawing } from '@root/lib'
+import { getDraft } from './helpers'
+
+export interface Brush {
+  size: number
+  color?: string
+  style?: string
+}
 
 export interface CanvasState {
   active: Drawing
   items: Drawing[]
   loaded?: boolean
   loading?: boolean
-}
-
-function getDraft() {
-  let draft: Drawing = {
-    name: 'New Draft',
-    history: [],
-  }
-  const persisted = localStorage.getItem('canvas')
-  if (persisted?.includes('{')) {
-    draft = JSON.parse(persisted) as Drawing
-  }
-  return draft
+  brush?: Brush
 }
 
 const active = getDraft()

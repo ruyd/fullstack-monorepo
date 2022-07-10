@@ -23,9 +23,10 @@ export interface DrawAction {
 
 export interface Drawing {
   id?: string
+  userId?: string
   name: string
   history: DrawAction[]
-  userId?: string
+  thumbnail?: string
   createdAt?: Date
   updatedAt?: Date
 }

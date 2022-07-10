@@ -1,13 +1,15 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { DrawAction, Drawing } from '@root/lib'
+import { AppUser } from '../../shared/auth'
 import { RootState } from '../../shared/store'
-import { request } from '../app/thunks'
+import { Method, request } from '../app/thunks'
+import { getDraft } from './helpers'
 import { actions } from './slice'
 
 export const loadAsync = createAsyncThunk(
   'canvas/load',
   async (_, { dispatch }) => {
-    const response = await request(dispatch, `/drawing`, null, 'get')
+    const response = await request(dispatch, `/drawing`, null, Method.GET)
     if (response.status === 200) {
       dispatch(actions.patch({ items: response.data }))
     }
@@ -18,11 +20,15 @@ export const loadAsync = createAsyncThunk(
 export const saveAsync = createAsyncThunk(
   'canvas/save',
   async (
-    { history, name }: { history: DrawAction[]; name?: string },
+    { history, name, thumbnail }: Partial<Drawing>,
     { dispatch, getState }
   ) => {
     const state = getState() as RootState
-    const payload: Drawing = { ...state.canvas.active, history }
+    const payload = {
+      ...state.canvas.active,
+      history,
+      thumbnail,
+    }
     if (name) {
       payload.name = name
     }
@@ -31,5 +37,24 @@ export const saveAsync = createAsyncThunk(
       dispatch(actions.onSave(response.data))
     }
     return response.data
+  }
+)
+
+export const deleteAsync = createAsyncThunk(
+  'canvas/delete',
+  async (id: string, { dispatch, getState }) => {
+    const response = await request(
+      dispatch,
+      `/drawing/${id}`,
+      null,
+      Method.DELETE
+    )
+    if (response.status !== 200) {
+      return
+    }
+    const state = (getState() as RootState).canvas.items
+    const items = state.filter((item) => item.id !== id)
+    const active = items.find((item) => item.id === id) || getDraft()
+    dispatch(actions.patch({ items, active }))
   }
 )
