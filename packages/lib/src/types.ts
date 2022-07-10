@@ -15,10 +15,10 @@ export interface DrawAction {
   t: ActionType
   x?: number
   y?: number
-  color?: string
-  size?: number
-  style?: string
-  time?: number
+  c?: string
+  w?: number
+  st?: string
+  ts?: number
 }
 
 export interface Drawing {
@@ -41,7 +41,7 @@ export class AppDrawing implements Partial<Drawing> {
   }
   calcDuration() {
     const total = this.history.reduce(
-      (acc: number, cur: DrawAction) => (cur?.time || 0) + acc,
+      (acc: number, cur: DrawAction) => (cur?.ts || 0) + acc,
       0
     )
     return total

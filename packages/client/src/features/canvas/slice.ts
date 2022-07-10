@@ -4,6 +4,8 @@ import { DrawAction, Drawing } from '@root/lib'
 export interface CanvasState {
   current: Drawing
   items: Drawing[]
+  loaded?: boolean
+  loading?: boolean
 }
 
 function getDraft() {
@@ -33,7 +35,17 @@ export const canvasSlice = createSlice({
       return { ...state, ...action.payload }
     },
     onSave: (state, action: PayloadAction<Drawing>) => {
-      state.current = action.payload
+      state.current.id = action.payload.id
+      state.current.updatedAt = action.payload.updatedAt
+      state.current.createdAt = action.payload.createdAt
+      const existing = state.items.find((item) => item.id === action.payload.id)
+      if (existing) {
+        state.items = state.items.map((item) =>
+          item.id === action.payload.id ? action.payload : item
+        )
+      } else {
+        state.items.push(action.payload)
+      }
     },
   },
 })

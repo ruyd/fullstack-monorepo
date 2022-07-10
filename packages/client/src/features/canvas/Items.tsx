@@ -1,4 +1,4 @@
-import { Card, Stack } from '@mui/material'
+import { Button, Card, Stack } from '@mui/material'
 import { Drawing } from '@root/lib'
 import { useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
@@ -12,9 +12,16 @@ export default function Items() {
     [dispatch]
   )
   return (
-    <Stack>
+    <Stack direction="row">
       {items.map((item) => (
-        <Card onClick={() => setItem(item)}>{item.name}</Card>
+        <Button
+          variant="contained"
+          key={item.id}
+          onClick={() => setItem(item)}
+          sx={{ padding: '2rem' }}
+        >
+          {item.name}
+        </Button>
       ))}
     </Stack>
   )
