@@ -2,17 +2,12 @@ import React, { useRef, startTransition } from 'react'
 import { DrawAction, ActionType } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { loadAsync, saveAsync } from './thunks'
-import {
-  CircularProgress,
-  debounce,
-  Fab,
-  Stack,
-  TextField,
-} from '@mui/material'
+import { debounce, Fab, Stack, TextField } from '@mui/material'
 import { useCallback } from 'react'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
+import { adjustResolution } from './helpers'
 
 export default function CanvasWrapper() {
   const dispatch = useAppDispatch()
@@ -77,27 +72,6 @@ export default function CanvasWrapper() {
     []
   )
 
-  const adjustResolution = () => {
-    const canvas = canvasRef.current
-    if (!canvas) {
-      return
-    }
-    // Get the DPR and size of the canvas
-    const dpr = window.devicePixelRatio
-    const rect = canvas.getBoundingClientRect()
-
-    // Set the "actual" size of the canvas
-    canvas.width = rect.width * dpr
-    canvas.height = rect.height * dpr
-
-    // Scale the context to ensure correct drawing operations
-    canvas.getContext('2d')?.scale(dpr, dpr)
-
-    // Set the "drawn" size of the canvas
-    canvas.style.width = rect.width + 'px'
-    canvas.style.height = rect.height + 'px'
-  }
-
   const clearCanvas = () => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
@@ -134,9 +108,7 @@ export default function CanvasWrapper() {
 
     //Lazy worker
     if (!workerRef.current) {
-      const worker = new Worker(
-        new URL('../../shared/worker.ts', import.meta.url)
-      )
+      const worker = new Worker(new URL('./worker.ts', import.meta.url))
       worker.onmessage = (e) => {
         if (!contextRef.current) {
           console.error('no context for result')
@@ -149,12 +121,16 @@ export default function CanvasWrapper() {
 
     //Worker rendering
     dispatch(actions.patch({ loading: true }))
+
+    //Resizing support
+    const { width, height } = canvasRef.current.getBoundingClientRect()
     workerRef.current.postMessage({
       buffer: buffer.current,
-      width: canvasRef.current.width,
-      height: canvasRef.current.height,
+      width,
+      height,
+      dpr: window.devicePixelRatio,
     })
-  }, [history, draw, dispatch])
+  }, [dispatch])
 
   const prepareCanvas = useCallback(() => {
     const canvas = canvasRef.current
@@ -162,23 +138,19 @@ export default function CanvasWrapper() {
       return
     }
 
-    const w = window.innerWidth - 20
-    const h = window.innerHeight - 80
-
-    canvas.width = w
-    canvas.height = h
+    canvas.width = window.innerWidth - 20
+    canvas.height = window.innerHeight - 80
 
     const context = canvas.getContext('2d')
     if (!context) {
       return
     }
+    adjustResolution(canvas)
     context.lineCap = 'round'
     context.strokeStyle = 'black'
     context.lineWidth = 5
 
     contextRef.current = context
-
-    adjustResolution()
   }, [])
 
   React.useEffect(() => {

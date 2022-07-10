@@ -1,5 +1,8 @@
 {
     "name": "drawspace",
+    "author": {
+        "name": "github/ruyd"
+    },
     "workspaces": [
         "packages/*"
     ],

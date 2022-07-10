@@ -1,4 +1,4 @@
-# DrawSpace - Modern Starter Sample
+# DrawSpace - Modern Monorepo Sample
 
 client
 

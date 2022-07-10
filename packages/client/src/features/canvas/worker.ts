@@ -1,20 +1,19 @@
 import { ActionType, DrawAction } from '@root/lib'
+import { createOffscreen } from './helpers'
 
-const processHistory = (
-  buffer: DrawAction[],
-  width: number,
+export type WorkMessage = {
+  buffer: DrawAction[]
+  width: number
   height: number
-) => {
+  dpr: number
+}
+
+function processHistory({ buffer, width, height, dpr }: WorkMessage) {
   console.log('processing history')
-
-  const off = new OffscreenCanvas(width, height)
-  const background = off.getContext('2d') as OffscreenCanvasRenderingContext2D
-
+  const background = createOffscreen(width, height, dpr)
   if (!background) {
     return
   }
-
-  background.lineWidth = 5
 
   buffer.forEach(({ t, x, y }) => {
     if (t === ActionType.Open) {
@@ -35,16 +34,8 @@ const processHistory = (
 }
 
 /* eslint-disable-next-line no-restricted-globals */
-self.onmessage = ({
-  data,
-}: {
-  data: {
-    buffer: DrawAction[]
-    width: number
-    height: number
-  }
-}) => {
-  processHistory(data.buffer, data.width, data.height)
+self.onmessage = ({ data }: { data: WorkMessage }) => {
+  processHistory(data)
 }
 
 export {}
