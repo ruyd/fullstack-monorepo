@@ -13,11 +13,12 @@ import { useCallback } from 'react'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
+import { current } from '@reduxjs/toolkit'
 
 export default function CanvasWrapper() {
   const dispatch = useAppDispatch()
-  const history = useAppSelector((state) => state.canvas?.current?.history)
-  const name = useAppSelector((state) => state.canvas?.current?.name)
+  const history = useAppSelector((state) => state.canvas?.active?.history)
+  const name = useAppSelector((state) => state.canvas?.active?.name)
   const isDrawing = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
@@ -128,34 +129,26 @@ export default function CanvasWrapper() {
   }
 
   const processHistory = React.useCallback(() => {
-    console.log('processing history')
-    if (!canvasRef.current) {
+    if (!canvasRef.current || !contextRef.current) {
       return
     }
 
-    if (history.length !== buffer.current.length) {
-      console.log('setting history')
-      buffer.current = history
-    }
-
+    //Lazy worker
     if (!workerRef.current) {
       const worker = new Worker(
         new URL('../../shared/worker.ts', import.meta.url)
       )
       worker.onmessage = (e) => {
+        if (!contextRef.current) {
+          console.error('no context for result')
+        }
         contextRef.current?.putImageData(e.data, 0, 0)
         dispatch(actions.patch({ loading: false }))
       }
       workerRef.current = worker
     }
 
-    contextRef.current?.clearRect(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height
-    )
-
+    //Worker rendering
     dispatch(actions.patch({ loading: true }))
     workerRef.current.postMessage({
       buffer: buffer.current,
@@ -188,12 +181,14 @@ export default function CanvasWrapper() {
   }, [])
 
   React.useEffect(() => {
-    console.log('loading items and prep')
+    console.log('prep')
     dispatch(loadAsync())
     prepareCanvas()
   }, [dispatch, prepareCanvas])
 
   React.useEffect(() => {
+    console.log('onItemChange')
+    buffer.current = history
     startTransition(() => {
       processHistory()
     })

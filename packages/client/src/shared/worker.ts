@@ -1,8 +1,5 @@
 import { ActionType, DrawAction } from '@root/lib'
 
-let off: OffscreenCanvas
-let background: OffscreenCanvasRenderingContext2D
-
 const processHistory = (
   buffer: DrawAction[],
   width: number,
@@ -10,10 +7,8 @@ const processHistory = (
 ) => {
   console.log('processing history')
 
-  if (!off) {
-    off = new OffscreenCanvas(width, height)
-    background = off.getContext('2d') as OffscreenCanvasRenderingContext2D
-  }
+  const off = new OffscreenCanvas(width, height)
+  const background = off.getContext('2d') as OffscreenCanvasRenderingContext2D
 
   if (!background) {
     return

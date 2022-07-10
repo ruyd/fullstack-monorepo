@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DrawAction, Drawing } from '@root/lib'
 
 export interface CanvasState {
-  current: Drawing
+  active: Drawing
   items: Drawing[]
   loaded?: boolean
   loading?: boolean
@@ -20,10 +20,10 @@ function getDraft() {
   return draft
 }
 
-const current = getDraft()
+const active = getDraft()
 
 const initialState: CanvasState = {
-  current,
+  active,
   items: [],
 }
 
@@ -35,9 +35,9 @@ export const canvasSlice = createSlice({
       return { ...state, ...action.payload }
     },
     onSave: (state, action: PayloadAction<Drawing>) => {
-      state.current.id = action.payload.id
-      state.current.updatedAt = action.payload.updatedAt
-      state.current.createdAt = action.payload.createdAt
+      state.active.id = action.payload.id
+      state.active.updatedAt = action.payload.updatedAt
+      state.active.createdAt = action.payload.createdAt
       const existing = state.items.find((item) => item.id === action.payload.id)
       if (existing) {
         state.items = state.items.map((item) =>

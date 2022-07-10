@@ -14,7 +14,7 @@ export function Canvas({
   buffer: React.RefObject<DrawAction[]>
   nameRef: React.RefObject<HTMLInputElement>
 }) {
-  const history = useAppSelector((state) => state.canvas?.current?.history)
+  const history = useAppSelector((state) => state.canvas?.active?.history)
 
   const processHistory = React.useCallback(() => {
     console.log('processing history')

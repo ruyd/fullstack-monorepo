@@ -22,7 +22,7 @@ export const saveAsync = createAsyncThunk(
     { dispatch, getState }
   ) => {
     const state = getState() as RootState
-    const payload: Drawing = { ...state.canvas.current, history }
+    const payload: Drawing = { ...state.canvas.active, history }
     if (name) {
       payload.name = name
     }
