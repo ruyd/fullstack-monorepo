@@ -213,7 +213,7 @@ export default function CanvasWrapper() {
         <TextField
           inputRef={nameRef}
           defaultValue={name}
-          onChange={debounce(onNameChange, 500)}
+          onChange={debounce(onNameChange, 400)}
           key={`${id}${name}`}
         />
         <Fab onClick={newCanvas}>New</Fab>
