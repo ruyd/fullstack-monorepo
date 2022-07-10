@@ -64,7 +64,7 @@ export default function CanvasWrapper() {
   }
 
   const draw = React.useCallback(
-    (offsetX: number, offsetY: number, hist: boolean = false) => {
+    (offsetX: number, offsetY: number, hist = false) => {
       if (!contextRef?.current) {
         return
       }
@@ -83,8 +83,8 @@ export default function CanvasWrapper() {
       return
     }
     // Get the DPR and size of the canvas
-    var dpr = window.devicePixelRatio
-    var rect = canvas.getBoundingClientRect()
+    const dpr = window.devicePixelRatio
+    const rect = canvas.getBoundingClientRect()
 
     // Set the "actual" size of the canvas
     canvas.width = rect.width * dpr

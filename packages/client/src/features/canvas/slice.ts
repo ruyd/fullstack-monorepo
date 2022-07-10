@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { DrawAction, Drawing } from '@root/lib'
+import { Drawing } from '@root/lib'
 
 export interface CanvasState {
   active: Drawing

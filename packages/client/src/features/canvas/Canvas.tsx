@@ -60,7 +60,7 @@ export function Canvas({
     context.lineWidth = 5
 
     //contextRef.current = context
-  }, [])
+  }, [canvasRef])
 
   return <></>
 }
