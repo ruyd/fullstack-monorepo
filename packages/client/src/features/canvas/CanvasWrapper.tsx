@@ -13,7 +13,6 @@ import { useCallback } from 'react'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
-import { current } from '@reduxjs/toolkit'
 
 export default function CanvasWrapper() {
   const dispatch = useAppDispatch()
@@ -78,7 +77,7 @@ export default function CanvasWrapper() {
     []
   )
 
-  const scale = () => {
+  const adjustResolution = () => {
     const canvas = canvasRef.current
     if (!canvas) {
       return
@@ -178,16 +177,16 @@ export default function CanvasWrapper() {
     context.lineWidth = 5
 
     contextRef.current = context
+
+    adjustResolution()
   }, [])
 
   React.useEffect(() => {
-    console.log('prep')
     dispatch(loadAsync())
     prepareCanvas()
   }, [dispatch, prepareCanvas])
 
   React.useEffect(() => {
-    console.log('onItemChange')
     buffer.current = history
     startTransition(() => {
       processHistory()
