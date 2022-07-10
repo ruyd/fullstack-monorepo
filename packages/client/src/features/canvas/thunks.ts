@@ -25,9 +25,6 @@ export const saveAsync = createAsyncThunk(
       history,
       thumbnail,
     }
-    // if (payload.id === 'draft') {
-    //   payload.id = undefined
-    // }
     const response = await request(dispatch, '/drawing', payload)
     if (response.status === 200) {
       dispatch(actions.onSave(response.data))

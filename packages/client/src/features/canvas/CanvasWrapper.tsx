@@ -23,8 +23,6 @@ export default function CanvasWrapper() {
   const nameRef = useRef<HTMLInputElement | null>(null)
   const workerRef = useRef<Worker | null>(null)
 
-  console.log('CanvasWrapper', id, name)
-
   const record = (t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth
     const st = contextRef.current?.strokeStyle as string
@@ -110,12 +108,11 @@ export default function CanvasWrapper() {
 
     const payload: {
       history: DrawAction[]
-      thumbnail?: string
-    } | null = {
+      thumbnail: string
+    } = {
       history: buffer.current,
+      thumbnail: await generateThumbnail(canvas),
     }
-
-    payload.thumbnail = await generateThumbnail(canvas)
     const result = await dispatch(saveAsync(payload))
     if (result.meta.requestStatus === 'fulfilled') {
       console.log('saved')
