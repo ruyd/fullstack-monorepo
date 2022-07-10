@@ -14,6 +14,8 @@ import {
   isEmptyCanvas,
 } from './helpers'
 
+const debug = console.log.bind
+
 export default function CanvasWrapper() {
   const dispatch = useAppDispatch()
   const history = useAppSelector((state) => state.canvas?.active?.history)
@@ -24,6 +26,7 @@ export default function CanvasWrapper() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
   const buffer = useRef<DrawAction[]>([])
+  const bufferId = useRef<string | undefined | null>(null)
   const nameRef = useRef<HTMLInputElement | null>(null)
   const workerRef = useRef<Worker | null>(null)
 
@@ -92,6 +95,7 @@ export default function CanvasWrapper() {
     }
     context.clearRect(0, 0, canvas.width, canvas.height)
     buffer.current = []
+    bufferId.current = null
   }
 
   const saveCanvas = async () => {
@@ -176,17 +180,23 @@ export default function CanvasWrapper() {
   }, [dispatch, prepareCanvas])
 
   React.useEffect(() => {
-    console.log('onItemChanged', id, history.length, buffer.current.length)
     if (!id) {
       clearCanvas()
       return
     }
-    buffer.current = history
-    if (isEmptyCanvas(canvasRef.current as HTMLCanvasElement)) {
-      startTransition(() => {
-        processHistory()
-      })
+
+    if (bufferId.current !== id) {
+      const savedDraft = id && id !== 'draft' && bufferId.current === 'draft'
+      buffer.current = history
+      bufferId.current = id
+      if (savedDraft) {
+        return
+      }
     }
+
+    startTransition(() => {
+      processHistory()
+    })
   }, [id, history, processHistory])
 
   return (

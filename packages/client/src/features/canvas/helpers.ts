@@ -70,6 +70,7 @@ export async function generateThumbnail(
 
 export function getDraft() {
   let draft: Drawing = {
+    id: 'draft',
     name: 'New Draft',
     history: [],
   }
