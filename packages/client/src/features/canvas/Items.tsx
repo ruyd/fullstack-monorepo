@@ -18,7 +18,7 @@ export default function Items() {
   const items = useAppSelector((store) => store.canvas.items)
   const dispatch = useAppDispatch()
   const setItem = useCallback(
-    (item: Drawing) => dispatch(actions.patch({ active: item })),
+    (item: Drawing) => dispatch(actions.patchActive(item)),
     [dispatch]
   )
 

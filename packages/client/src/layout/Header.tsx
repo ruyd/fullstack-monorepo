@@ -161,7 +161,7 @@ export default function HeaderNavBar() {
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
-              id="menu-appbar"
+              id="menu-profile"
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',
