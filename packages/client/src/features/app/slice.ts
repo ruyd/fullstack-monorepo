@@ -21,6 +21,7 @@ export interface AppState {
   drawerLeftOpen?: boolean
   drawerRightOpen?: boolean
   loading?: boolean
+  loaded?: boolean
 }
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')

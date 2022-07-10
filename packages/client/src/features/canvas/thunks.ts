@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { DrawAction, Drawing } from '@root/lib'
-import { AppUser } from '../../shared/auth'
+import { Drawing } from '@root/lib'
 import { RootState } from '../../shared/store'
 import { Method, request } from '../app/thunks'
 import { getDraft } from './helpers'
@@ -19,22 +18,16 @@ export const loadAsync = createAsyncThunk(
 
 export const saveAsync = createAsyncThunk(
   'canvas/save',
-  async (
-    { history, name, thumbnail }: Partial<Drawing>,
-    { dispatch, getState }
-  ) => {
+  async ({ history, thumbnail }: Partial<Drawing>, { dispatch, getState }) => {
     const state = getState() as RootState
     const payload = {
       ...state.canvas.active,
       history,
       thumbnail,
     }
-    if (name) {
-      payload.name = name
-    }
-    if (payload.id === 'draft') {
-      payload.id = undefined
-    }
+    // if (payload.id === 'draft') {
+    //   payload.id = undefined
+    // }
     const response = await request(dispatch, '/drawing', payload)
     if (response.status === 200) {
       dispatch(actions.onSave(response.data))

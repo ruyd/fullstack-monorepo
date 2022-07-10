@@ -30,6 +30,9 @@ export const canvasSlice = createSlice({
     patch: (state, action: PayloadAction<Partial<CanvasState>>) => {
       return { ...state, ...action.payload }
     },
+    patchActive: (state, action: PayloadAction<Partial<Drawing>>) => {
+      return { ...state, active: { ...state.active, ...action.payload } }
+    },
     onSave: (state, action: PayloadAction<Drawing>) => {
       state.active.id = action.payload.id
       state.active.updatedAt = action.payload.updatedAt

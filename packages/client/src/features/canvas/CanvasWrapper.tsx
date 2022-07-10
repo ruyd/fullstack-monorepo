@@ -1,20 +1,13 @@
-import React, { useRef, startTransition } from 'react'
-import { DrawAction, ActionType, Drawing } from '@root/lib'
+import React, { useRef, startTransition, ReactEventHandler } from 'react'
+import { DrawAction, ActionType } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { deleteAsync, loadAsync, saveAsync } from './thunks'
+import { loadAsync, saveAsync } from './thunks'
 import { debounce, Fab, Stack, TextField } from '@mui/material'
 import { useCallback } from 'react'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
-import {
-  adjustResolution,
-  generateThumbnail,
-  getDraft,
-  isEmptyCanvas,
-} from './helpers'
-
-const debug = console.log.bind
+import { adjustResolution, generateThumbnail, getDraft } from './helpers'
 
 export default function CanvasWrapper() {
   const dispatch = useAppDispatch()
@@ -26,9 +19,11 @@ export default function CanvasWrapper() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
   const buffer = useRef<DrawAction[]>([])
-  const bufferId = useRef<string | undefined | null>(null)
+  const bufferId = useRef<string | null>(null)
   const nameRef = useRef<HTMLInputElement | null>(null)
   const workerRef = useRef<Worker | null>(null)
+
+  console.log('CanvasWrapper', id, name)
 
   const record = (t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth
@@ -82,7 +77,15 @@ export default function CanvasWrapper() {
     []
   )
 
+  const onNameChange = React.useCallback(
+    (e: { target: { value: string } }) => {
+      dispatch(actions.patchActive({ name: e.target.value }))
+    },
+    [dispatch]
+  )
+
   const newCanvas = () => {
+    clearCanvas()
     const active = getDraft()
     dispatch(actions.patch({ active }))
   }
@@ -107,14 +110,11 @@ export default function CanvasWrapper() {
 
     const payload: {
       history: DrawAction[]
-      name?: string
       thumbnail?: string
     } | null = {
       history: buffer.current,
     }
-    if (nameRef.current?.value) {
-      payload.name = nameRef.current.value
-    }
+
     payload.thumbnail = await generateThumbnail(canvas)
     const result = await dispatch(saveAsync(payload))
     if (result.meta.requestStatus === 'fulfilled') {
@@ -186,14 +186,13 @@ export default function CanvasWrapper() {
     }
 
     if (bufferId.current !== id) {
-      const savedDraft = id && id !== 'draft' && bufferId.current === 'draft'
       buffer.current = history
-      bufferId.current = id
-      if (savedDraft) {
-        return
-      }
+      bufferId.current = id as string
     }
 
+    if (!history.length) {
+      return
+    }
     startTransition(() => {
       processHistory()
     })
@@ -211,8 +210,8 @@ export default function CanvasWrapper() {
         <TextField
           inputRef={nameRef}
           defaultValue={name}
-          key={id}
-          onChange={debounce(saveCanvas, 1000)}
+          onChange={debounce(onNameChange, 500)}
+          key={`${id}${name}`}
         />
         <Fab onClick={newCanvas}>New</Fab>
         <Fab onClick={clearCanvas}>Clear</Fab>
