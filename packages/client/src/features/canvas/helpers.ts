@@ -79,3 +79,10 @@ export function getDraft() {
   }
   return draft
 }
+
+export function isEmptyCanvas(canvas: HTMLCanvasElement) {
+  const blank = document.createElement('canvas')
+  blank.width = canvas.width
+  blank.height = canvas.height
+  return canvas.toDataURL() === blank.toDataURL()
+}

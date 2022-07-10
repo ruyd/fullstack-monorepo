@@ -7,12 +7,18 @@ import { useCallback } from 'react'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
-import { adjustResolution, generateThumbnail } from './helpers'
+import {
+  adjustResolution,
+  generateThumbnail,
+  getDraft,
+  isEmptyCanvas,
+} from './helpers'
 
 export default function CanvasWrapper() {
   const dispatch = useAppDispatch()
   const history = useAppSelector((state) => state.canvas?.active?.history)
   const name = useAppSelector((state) => state.canvas?.active?.name)
+  const id = useAppSelector((state) => state.canvas?.active?.id)
   const brush = useAppSelector((state) => state.canvas?.brush)
   const isDrawing = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -72,6 +78,11 @@ export default function CanvasWrapper() {
     },
     []
   )
+
+  const newCanvas = () => {
+    const active = getDraft()
+    dispatch(actions.patch({ active }))
+  }
 
   const clearCanvas = () => {
     const canvas = canvasRef.current
@@ -165,11 +176,18 @@ export default function CanvasWrapper() {
   }, [dispatch, prepareCanvas])
 
   React.useEffect(() => {
+    console.log('onItemChanged', id, history.length, buffer.current.length)
+    if (!id) {
+      clearCanvas()
+      return
+    }
     buffer.current = history
-    startTransition(() => {
-      processHistory()
-    })
-  }, [history, processHistory])
+    if (isEmptyCanvas(canvasRef.current as HTMLCanvasElement)) {
+      startTransition(() => {
+        processHistory()
+      })
+    }
+  }, [id, history, processHistory])
 
   return (
     <>
@@ -183,9 +201,10 @@ export default function CanvasWrapper() {
         <TextField
           inputRef={nameRef}
           defaultValue={name}
+          key={id}
           onChange={debounce(saveCanvas, 1000)}
         />
-        <Fab onClick={processHistory}>New</Fab>
+        <Fab onClick={newCanvas}>New</Fab>
         <Fab onClick={clearCanvas}>Clear</Fab>
         <Fab onClick={saveCanvas}>Save</Fab>
       </Stack>
