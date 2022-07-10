@@ -183,8 +183,14 @@ export default function CanvasWrapper() {
     }
 
     if (bufferId.current !== id) {
-      buffer.current = history
+      const afterDraftSave = !bufferId.current && !!id && !history.length
       bufferId.current = id as string
+      if (afterDraftSave) {
+        return
+      }
+      buffer.current = history
+    } else {
+      return
     }
 
     if (!history.length) {
