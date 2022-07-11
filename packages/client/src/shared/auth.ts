@@ -9,7 +9,7 @@ export interface AppUser extends User {
 export const STORAGE_KEY = 'auth'
 
 /**
- * Auth0 rules custom props use namespace prefix: https://field
+ * Note: Auth0 rules custom props use namespace prefix: https://field
  */
 export const RULE_PREFIX = 'https://'
 
@@ -20,11 +20,13 @@ export function decodeAccessToken(token: string): AppAccessToken | null {
   try {
     const accessToken = jwtDecode(token) as AppAccessToken
 
+    //Check lifetime
     const now = new Date().getTime() / 1000
     if (accessToken?.exp && accessToken.exp < now) {
       return null
     }
 
+    //Remove prefix
     const keys = Object.keys(accessToken).filter((key) =>
       key.includes(RULE_PREFIX)
     )
