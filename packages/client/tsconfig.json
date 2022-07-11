@@ -1,4 +1,5 @@
 {
+  //"extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es5",
     "lib": [
@@ -27,6 +28,6 @@
   "exclude": [
     "node_modules",
     "build",
-    "./craco.config.js"
+    "craco.config.js"
   ]
 }

@@ -28,6 +28,8 @@ export interface oAuthRegistered extends oAuthError {
   email_verified: boolean
 }
 
+type ReqWithAuht = express.Request & { auth: AppAccessToken }
+
 const jwkClient = jwksRsa({
   jwksUri: `${config.auth?.baseUrl}/.well-known/jwks.json`,
   cache: true,
@@ -39,11 +41,15 @@ const jwtVerify = expressjwt({
   algorithms: ['HS256'],
 })
 
-export async function tokenCheckWare(req, _res, next) {
+export async function tokenCheckWare(
+  req: express.Request,
+  _res: express.Response,
+  next: express.NextFunction
+) {
   if (!config?.tokenSecret) {
     return next()
   }
-  const { header, token } = setRequest(req)
+  const { header, token } = setRequest(req as ReqWithAuht)
   if (config.auth?.algorithm === 'RS256' && header && token) {
     const result = await jwkClient.getSigningKey(header.kid)
     const key = result.getPublicKey()
@@ -61,7 +67,7 @@ export function hasRole(
   return req.auth?.roles?.includes(role)
 }
 
-export function setRequest(req: express.Request & { auth: any }): {
+export function setRequest(req: ReqWithAuht): {
   header?: jwt.JwtHeader
   token?: string
 } {
@@ -74,7 +80,7 @@ export function setRequest(req: express.Request & { auth: any }): {
   if (!decoded.includes('{')) {
     return {}
   }
-  req.auth = decodeToken(token)
+  req.auth = decodeToken(token) as AppAccessToken
   const header = JSON.parse(decoded) as jwt.JwtHeader
   return { header, token }
 }

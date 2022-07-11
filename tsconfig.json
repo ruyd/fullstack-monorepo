@@ -31,7 +31,6 @@
     },
     "include": [
         "packages/",
-        "packages/client/src",
     ],
     "exclude": [
         "**/node_modules",
@@ -39,6 +38,7 @@
         "**/dist",
         "**/build",
         "**/tests",
-        "**/*.spec.ts"
+        "**/*.spec.ts",
+        "**/craco.config.js"
     ]
 }

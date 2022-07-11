@@ -13,6 +13,7 @@ import Notifications from './layout/Notifications'
 import { HelmetProvider } from 'react-helmet-async'
 import axios from 'axios'
 import config from './shared/config'
+import Footer from './layout/Footer'
 
 function App() {
   useEffect(() => {
@@ -26,6 +27,7 @@ function App() {
         <Routing />
         <Notifications />
         <DrawerRight />
+        <Footer />
       </ThemeSwitch>
     </React.Fragment>
   )

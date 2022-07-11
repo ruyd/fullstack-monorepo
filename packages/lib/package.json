@@ -1,6 +1,7 @@
 {
   "name": "@root/lib",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "src/index.js",
   "exports": {
@@ -9,7 +10,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "private": true,
   "dependencies": {
     "jsonwebtoken": "^8.5.1"
   }

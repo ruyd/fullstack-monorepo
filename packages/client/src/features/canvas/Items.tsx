@@ -1,15 +1,12 @@
 import { Delete } from '@mui/icons-material'
 import {
-  Box,
   Button,
-  Card,
   Container,
   IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
   Paper,
-  Stack,
 } from '@mui/material'
 import { Drawing } from '@root/lib'
 import React from 'react'
@@ -47,9 +44,9 @@ export default function Items() {
                 src={item.thumbnail}
                 alt={item.name}
                 loading="lazy"
+                height={150}
+                width={300}
                 style={{
-                  height: '150px',
-                  width: '300px',
                   backgroundColor: 'rgba(200, 163, 255, .1)',
                 }}
               />

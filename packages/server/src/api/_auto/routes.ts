@@ -99,7 +99,7 @@ export async function listHandler(
     const sortFields = (req.query.orderBy as string)?.split(',')
     for (const field of sortFields) {
       const direction = field.startsWith('-') ? 'DESC' : 'ASC'
-      order[field.replace(/^-{1}/, '')] = direction
+      order.push([field.replace(/^-{1}/, ''), direction])
     }
   }
   //userId filtering from authentication token
