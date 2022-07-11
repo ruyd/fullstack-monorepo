@@ -10,11 +10,11 @@ import { generateThumbnail, getDraft } from './helpers'
 import { Canvas } from './Canvas'
 import Color from './Color'
 import Player from './Player'
+import NameEdit from './NameEdit'
 
 export default function CanvasControl() {
   const dispatch = useAppDispatch()
   const history = useAppSelector((state) => state.canvas?.active?.history)
-  const name = useAppSelector((state) => state.canvas?.active?.name)
   const id = useAppSelector((state) => state.canvas?.active?.id)
   const brush = useAppSelector((state) => state.canvas?.brush)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -29,13 +29,6 @@ export default function CanvasControl() {
     const st = contextRef.current?.strokeStyle as string
     buffer.current = [...buffer.current, { x, y, t, w, st }]
   }
-
-  const onNameChange = React.useCallback(
-    (e: { target: { value: string } }) => {
-      dispatch(actions.patchActive({ name: e.target.value }))
-    },
-    [dispatch]
-  )
 
   const clearCanvas = React.useCallback(() => {
     const canvas = canvasRef.current
@@ -112,6 +105,7 @@ export default function CanvasControl() {
     }
 
     if (bufferId.current !== id) {
+      //not patching history onSave to avoid re-rendering
       const afterDraftSave = !bufferId.current && !!id && !history.length
       bufferId.current = id as string
       if (afterDraftSave) {
@@ -135,12 +129,7 @@ export default function CanvasControl() {
       <Canvas canvasRef={canvasRef} contextRef={contextRef} record={record} />
       <Color />
       <Stack sx={{ position: 'absolute', right: '1rem', bottom: '10%' }}>
-        <TextField
-          inputRef={nameRef}
-          defaultValue={name}
-          onChange={debounce(onNameChange, 400)}
-          key={`${id}${name}`}
-        />
+        <NameEdit inputRef={nameRef} />
         <Fab onClick={newHandler}>New</Fab>
         <Fab onClick={clearCanvas}>Clear</Fab>
         <Fab onClick={saveCanvas}>Save</Fab>
