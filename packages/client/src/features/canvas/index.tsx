@@ -2,7 +2,7 @@ import React, { useRef, startTransition } from 'react'
 import { DrawAction, ActionType } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { saveAsync } from './thunks'
-import { debounce, Fab, Stack, TextField } from '@mui/material'
+import { Fab, Stack } from '@mui/material'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
@@ -58,10 +58,7 @@ export default function CanvasControl() {
       history: buffer.current,
       thumbnail: await generateThumbnail(canvas),
     }
-    const result = await dispatch(saveAsync(payload))
-    if (result.meta.requestStatus === 'fulfilled') {
-      console.log('saved')
-    }
+    await dispatch(saveAsync(payload))
   }, [dispatch])
 
   const renderHistory = React.useCallback(() => {
@@ -115,9 +112,6 @@ export default function CanvasControl() {
       return
     }
 
-    if (!history.length) {
-      return
-    }
     startTransition(() => {
       renderHistory()
     })

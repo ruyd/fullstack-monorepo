@@ -1,11 +1,14 @@
 import { Delete } from '@mui/icons-material'
 import {
+  Box as Box,
   Button,
   Card,
+  Container,
   IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
+  Paper,
   Stack,
 } from '@mui/material'
 import { Drawing } from '@root/lib'
@@ -35,32 +38,36 @@ export default function Items() {
   }, [dispatch])
 
   return (
-    <ImageList>
-      {items.map((item) => (
-        <ImageListItem key={item.id}>
-          <img
-            src={item.thumbnail}
-            alt={item.name}
-            loading="lazy"
-            style={{
-              height: '150px',
-              width: '300px',
-              backgroundColor: 'rgba(200, 163, 255, .1)',
-            }}
-          />
-          <ImageListItemBar
-            title={item.name}
-            actionIcon={
-              <>
-                <Button onClick={() => setItem(item)}>Edit</Button>
-                <IconButton onClick={() => deleteItem(item)}>
-                  <Delete />
-                </IconButton>
-              </>
-            }
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
+    <Container maxWidth="xl">
+      <Paper variant="outlined" sx={{ padding: '1rem' }}>
+        <ImageList>
+          {items.map((item) => (
+            <ImageListItem key={item.id}>
+              <img
+                src={item.thumbnail}
+                alt={item.name}
+                loading="lazy"
+                style={{
+                  height: '150px',
+                  width: '300px',
+                  backgroundColor: 'rgba(200, 163, 255, .1)',
+                }}
+              />
+              <ImageListItemBar
+                title={item.name}
+                actionIcon={
+                  <>
+                    <Button onClick={() => setItem(item)}>Edit</Button>
+                    <IconButton onClick={() => deleteItem(item)}>
+                      <Delete />
+                    </IconButton>
+                  </>
+                }
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Paper>
+    </Container>
   )
 }
