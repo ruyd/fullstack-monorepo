@@ -70,9 +70,9 @@ export async function generateThumbnail(
 
 export function getDraft() {
   let draft: Drawing = {
+    id: 'draft',
     name: 'New Draft',
     history: [],
-    createdAt: new Date().getTime() as unknown as Date,
   }
   const persisted = localStorage.getItem('canvas')
   if (persisted?.includes('{')) {

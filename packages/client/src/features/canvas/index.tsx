@@ -99,16 +99,15 @@ export default function CanvasControl() {
    * onItemChanged
    */
   React.useEffect(() => {
-    if (!id) {
+    if (id === 'draft') {
       clearCanvas()
       return
     }
 
     if (bufferId.current !== id) {
-      //not patching history onSave to avoid re-rendering
-      const afterDraftSave = !bufferId.current && !!id && !history.length
+      const savedDraft = bufferId.current === 'draft' && !!id && id !== 'draft'
       bufferId.current = id as string
-      if (afterDraftSave) {
+      if (savedDraft) {
         return
       }
       buffer.current = history
