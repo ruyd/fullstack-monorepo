@@ -19,10 +19,10 @@
         "resolveJsonModule": true,
         "noEmitOnError": true,
         "jsx": "preserve",
-        "baseUrl": ".",
         "declaration": true,
         "declarationMap": false,
         "listEmittedFiles": true,
+        "baseUrl": ".",
         "paths": {
             "@root/*": [
                 "./packages/*/src"

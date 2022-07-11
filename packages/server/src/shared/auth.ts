@@ -28,7 +28,7 @@ export interface oAuthRegistered extends oAuthError {
   email_verified: boolean
 }
 
-type ReqWithAuht = express.Request & { auth: AppAccessToken }
+type ReqWithAuth = express.Request & { auth: AppAccessToken }
 
 const jwkClient = jwksRsa({
   jwksUri: `${config.auth?.baseUrl}/.well-known/jwks.json`,
@@ -49,7 +49,7 @@ export async function tokenCheckWare(
   if (!config?.tokenSecret) {
     return next()
   }
-  const { header, token } = setRequest(req as ReqWithAuht)
+  const { header, token } = setRequest(req as ReqWithAuth)
   if (config.auth?.algorithm === 'RS256' && header && token) {
     const result = await jwkClient.getSigningKey(header.kid)
     const key = result.getPublicKey()
@@ -67,7 +67,7 @@ export function hasRole(
   return req.auth?.roles?.includes(role)
 }
 
-export function setRequest(req: ReqWithAuht): {
+export function setRequest(req: ReqWithAuth): {
   header?: jwt.JwtHeader
   token?: string
 } {
