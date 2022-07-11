@@ -1,5 +1,5 @@
 {
-  //"extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "es5",
     "lib": [
@@ -20,10 +20,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",
   },
   "include": [
-    "src"
+    "src",
   ],
   "exclude": [
     "node_modules",

@@ -5,6 +5,11 @@ export interface AppAccessToken extends JwtPayload {
   roles: string[]
 }
 
+export interface Entity {
+  createdAt?: Date
+  updatedAt?: Date
+}
+
 export enum ActionType {
   Open = 'o',
   Close = 'c',
@@ -21,19 +26,18 @@ export interface DrawAction {
   ts?: number
 }
 
-export interface Drawing {
+export interface Drawing extends Entity {
   id?: string
   userId?: string
   name: string
   history: DrawAction[]
   thumbnail?: string
-  createdAt?: Date
-  updatedAt?: Date
 }
 
-export const Testy: string = 'verynice'
+export const HotReloadTestVar: string = 'nice'
+
 /**
- * worth it? too much hassle for this pattern?
+ * @deprecated
  */
 export class AppDrawing implements Partial<Drawing> {
   history: DrawAction[]
@@ -49,12 +53,10 @@ export class AppDrawing implements Partial<Drawing> {
   }
 }
 
-export interface User {
+export interface User extends Entity {
   userId: string
   email: string
   firstName?: string
   lastName?: string
   picture?: string
-  createdAt?: Date
-  updatedAt?: Date
 }
