@@ -1,9 +1,9 @@
-import CanvasWrapper from '../features/canvas/CanvasWrapper'
+import CanvasControl from '../features/canvas'
 
 export default function Drawings() {
   return (
     <div>
-      <CanvasWrapper />
+      <CanvasControl />
     </div>
   )
 }

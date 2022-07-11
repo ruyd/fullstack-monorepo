@@ -1,4 +1,4 @@
-import React, { useRef, startTransition, ReactEventHandler } from 'react'
+import React, { useRef, startTransition } from 'react'
 import { DrawAction, ActionType } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { loadAsync, saveAsync } from './thunks'
@@ -8,14 +8,14 @@ import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
 import { adjustResolution, generateThumbnail, getDraft } from './helpers'
+import { Canvas } from './Canvas'
 
-export default function CanvasWrapper() {
+export default function CanvasControl() {
   const dispatch = useAppDispatch()
   const history = useAppSelector((state) => state.canvas?.active?.history)
   const name = useAppSelector((state) => state.canvas?.active?.name)
   const id = useAppSelector((state) => state.canvas?.active?.id)
   const brush = useAppSelector((state) => state.canvas?.brush)
-  const isDrawing = useRef(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
   const buffer = useRef<DrawAction[]>([])
@@ -28,52 +28,6 @@ export default function CanvasWrapper() {
     const st = contextRef.current?.strokeStyle as string
     buffer.current = [...buffer.current, { x, y, t, w, st }]
   }
-
-  const startDrawing = ({ nativeEvent }: { nativeEvent: MouseEvent }) => {
-    const { offsetX, offsetY } = nativeEvent
-    if (!contextRef.current) {
-      return
-    }
-    contextRef.current.beginPath()
-    contextRef.current.lineTo(offsetX + 1, offsetY + 1)
-    contextRef.current.stroke()
-    isDrawing.current = true
-    record(ActionType.Open, offsetX + 1, offsetY + 1)
-  }
-
-  const finishDrawing = () => {
-    if (!contextRef.current) {
-      return
-    }
-    contextRef.current.closePath()
-    isDrawing.current = false
-    record(ActionType.Close)
-    if (!contextRef.current) {
-      return
-    }
-  }
-
-  const onDraw = ({ nativeEvent }: { nativeEvent: MouseEvent }) => {
-    if (!isDrawing.current || !contextRef?.current) {
-      return
-    }
-    const { offsetX, offsetY } = nativeEvent
-    draw(offsetX, offsetY)
-  }
-
-  const draw = React.useCallback(
-    (offsetX: number, offsetY: number, hist = false) => {
-      if (!contextRef?.current) {
-        return
-      }
-      contextRef.current.lineTo(offsetX, offsetY)
-      contextRef.current.stroke()
-      if (!hist) {
-        record(ActionType.Stroke, offsetX, offsetY)
-      }
-    },
-    []
-  )
 
   const onNameChange = React.useCallback(
     (e: { target: { value: string } }) => {
@@ -171,11 +125,17 @@ export default function CanvasWrapper() {
     contextRef.current = context
   }, [])
 
+  /**
+   * onLoad
+   */
   React.useEffect(() => {
     dispatch(loadAsync())
     prepareCanvas()
   }, [dispatch, prepareCanvas])
 
+  /**
+   * onItemChanged
+   */
   React.useEffect(() => {
     if (!id) {
       clearCanvas()
@@ -203,12 +163,7 @@ export default function CanvasWrapper() {
 
   return (
     <>
-      <canvas
-        onMouseDown={startDrawing}
-        onMouseUp={finishDrawing}
-        onMouseMove={onDraw}
-        ref={canvasRef}
-      />
+      <Canvas canvasRef={canvasRef} contextRef={contextRef} record={record} />
       <Stack sx={{ position: 'absolute', right: '1rem', bottom: '10%' }}>
         <TextField
           inputRef={nameRef}
