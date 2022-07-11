@@ -27,7 +27,8 @@
             "@root/*": [
                 "./packages/*/src"
             ]
-        }
+        },
+        "outDir": "dist",
     },
     "include": [
         "packages/",
