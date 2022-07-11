@@ -8,6 +8,8 @@ import { actions } from './slice'
 import Items from './Items'
 import { generateThumbnail, getDraft } from './helpers'
 import { Canvas } from './Canvas'
+import Color from './Color'
+import Player from './Player'
 
 export default function CanvasControl() {
   const dispatch = useAppDispatch()
@@ -59,10 +61,7 @@ export default function CanvasControl() {
       return
     }
 
-    const payload: {
-      history: DrawAction[]
-      thumbnail: string
-    } = {
+    const payload = {
       history: buffer.current,
       thumbnail: await generateThumbnail(canvas),
     }
@@ -134,6 +133,7 @@ export default function CanvasControl() {
   return (
     <>
       <Canvas canvasRef={canvasRef} contextRef={contextRef} record={record} />
+      <Color />
       <Stack sx={{ position: 'absolute', right: '1rem', bottom: '10%' }}>
         <TextField
           inputRef={nameRef}
@@ -146,6 +146,7 @@ export default function CanvasControl() {
         <Fab onClick={saveCanvas}>Save</Fab>
       </Stack>
       <LoadingCanvas />
+      <Player buffer={buffer} />
       <Items />
     </>
   )

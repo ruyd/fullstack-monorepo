@@ -29,22 +29,24 @@ export function Canvas({
   )
 
   const startDrawing = (offsetX: number, offsetY: number) => {
-    if (!contextRef.current) {
+    if (!contextRef.current || !canvasRef.current) {
       return
     }
     contextRef.current.beginPath()
     contextRef.current.lineTo(offsetX + 1, offsetY + 1)
     contextRef.current.stroke()
     isDrawing.current = true
+    canvasRef.current.style.cursor = 'crosshair'
     record(ActionType.Open, offsetX + 1, offsetY + 1)
   }
 
   const finishDrawing = () => {
-    if (!contextRef.current) {
+    if (!contextRef.current || !canvasRef.current) {
       return
     }
     contextRef.current.closePath()
     isDrawing.current = false
+    canvasRef.current.style.cursor = 'default'
     record(ActionType.Close)
     if (!contextRef.current) {
       return
