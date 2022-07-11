@@ -1,6 +1,6 @@
 import { Delete } from '@mui/icons-material'
 import {
-  Box as Box,
+  Box,
   Button,
   Card,
   Container,

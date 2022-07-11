@@ -3,7 +3,7 @@ import axios from 'axios'
 import { AppAccessToken, User } from '@root/lib'
 
 export interface AppUser extends User {
-  [key: string]: unknown
+  // client props
 }
 
 export const STORAGE_KEY = 'auth'
@@ -22,7 +22,7 @@ export function decodeAccessToken(token: string): AppAccessToken | null {
 
     //Check lifetime
     const now = new Date().getTime() / 1000
-    if (accessToken?.exp && accessToken.exp < now) {
+    if (accessToken?.exp && now > accessToken.exp) {
       return null
     }
 

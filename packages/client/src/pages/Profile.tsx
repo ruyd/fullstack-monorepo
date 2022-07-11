@@ -21,7 +21,6 @@ export default function Profile() {
     const data = new FormData(event.currentTarget)
     const payload = {} as Record<string, unknown>
     data.forEach((value, key) => (payload[key] = value))
-    payload.id = user?.id
     dispatch(EditProfileAsync(payload))
   }
   return (
