@@ -19,6 +19,12 @@ export function decodeAccessToken(token: string): AppAccessToken | null {
   }
   try {
     const accessToken = jwtDecode(token) as AppAccessToken
+
+    const now = new Date().getTime() / 1000
+    if (accessToken?.exp && accessToken.exp < now) {
+      return null
+    }
+
     const keys = Object.keys(accessToken).filter((key) =>
       key.includes(RULE_PREFIX)
     )
@@ -44,9 +50,6 @@ export function getPersistedAuthFromStorage(): {
   const { token, user } = JSON.parse(json)
   const accessToken = decodeAccessToken(token)
   if (!accessToken) {
-    return null
-  }
-  if (accessToken?.exp && user.exp > Date.now()) {
     return null
   }
   setHeader(token)
