@@ -10,6 +10,14 @@ export default function Player({
   buffer: React.RefObject<DrawAction[]>
 }) {
   const active = useAppSelector((state) => state.canvas?.active)
+  const max = buffer?.current?.length || 1
+  const marks = React.useMemo(() => {
+    const m = [{ value: 0, label: '0' }]
+    if (max > 0) {
+      m.push({ value: max, label: `${max}` })
+    }
+    return m
+  }, [max])
 
   return (
     <Box sx={{ width: '90%', margin: '0 auto' }}>
@@ -17,13 +25,7 @@ export default function Player({
         valueLabelDisplay="on"
         max={buffer?.current?.length}
         color="secondary"
-        marks={[
-          { value: 0, label: '0' },
-          {
-            value: buffer?.current?.length as number,
-            label: `${buffer?.current?.length}`,
-          },
-        ]}
+        marks={marks}
       />
     </Box>
   )
