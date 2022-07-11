@@ -9,7 +9,6 @@ export type WorkMessage = {
 }
 
 function processHistory({ buffer, width, height, dpr }: WorkMessage) {
-  console.log('processing history')
   const background = createOffscreen(width, height, dpr)
   if (!background) {
     return

@@ -1,7 +1,7 @@
 import React from 'react'
 import { DrawAction } from '@root/lib'
 import { useAppSelector } from '../../shared/store'
-import StyledSlider from './StyledSlider'
+import StyledSlider from '../../layout/StyledSlider'
 import Box from '@mui/material/Box'
 
 export default function Player({
