@@ -1,17 +1,32 @@
 import React from 'react'
 
 import { ActionType } from '@root/lib'
+import { adjustResolution } from './helpers'
 
 export function Canvas({
   canvasRef,
   contextRef,
   record,
 }: {
-  canvasRef: React.RefObject<HTMLCanvasElement>
-  contextRef: React.RefObject<CanvasRenderingContext2D>
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
+  contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>
   record: (t: ActionType, x?: number, y?: number) => void
 }) {
   const isDrawing = React.useRef<boolean>(false)
+
+  const draw = React.useCallback(
+    (offsetX: number, offsetY: number, hist = false) => {
+      if (!contextRef?.current) {
+        return
+      }
+      contextRef.current.lineTo(offsetX, offsetY)
+      contextRef.current.stroke()
+      if (!hist) {
+        record(ActionType.Stroke, offsetX, offsetY)
+      }
+    },
+    [contextRef, record]
+  )
 
   const startDrawing = (offsetX: number, offsetY: number) => {
     if (!contextRef.current) {
@@ -42,6 +57,14 @@ export function Canvas({
     startDrawing(offsetX, offsetY)
   }
 
+  const onMouseMove = ({ nativeEvent }: { nativeEvent: MouseEvent }) => {
+    if (!isDrawing.current || !contextRef?.current) {
+      return
+    }
+    const { offsetX, offsetY } = nativeEvent
+    draw(offsetX, offsetY)
+  }
+
   const touchStart = (e: React.TouchEvent) => {
     if (e.touches?.length > 1) return
     const offsetX = e.touches[0].clientX
@@ -56,27 +79,30 @@ export function Canvas({
     draw(offsetX, offsetY)
   }
 
-  const onDraw = ({ nativeEvent }: { nativeEvent: MouseEvent }) => {
-    if (!isDrawing.current || !contextRef?.current) {
+  const onLoadCanvasPrep = React.useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas) {
       return
     }
-    const { offsetX, offsetY } = nativeEvent
-    draw(offsetX, offsetY)
-  }
 
-  const draw = React.useCallback(
-    (offsetX: number, offsetY: number, hist = false) => {
-      if (!contextRef?.current) {
-        return
-      }
-      contextRef.current.lineTo(offsetX, offsetY)
-      contextRef.current.stroke()
-      if (!hist) {
-        record(ActionType.Stroke, offsetX, offsetY)
-      }
-    },
-    []
-  )
+    canvas.width = window.innerWidth - 20
+    canvas.height = window.innerHeight - 80
+
+    const context = canvas.getContext('2d')
+    if (!context) {
+      return
+    }
+    adjustResolution(canvas)
+    context.lineCap = 'round'
+    context.strokeStyle = 'black'
+    context.lineWidth = 5
+
+    contextRef.current = context
+  }, [canvasRef, contextRef])
+
+  React.useEffect(() => {
+    onLoadCanvasPrep()
+  }, [onLoadCanvasPrep])
 
   return (
     <>
@@ -86,7 +112,7 @@ export function Canvas({
         onTouchEnd={finishDrawing}
         onMouseDown={onMouseStart}
         onMouseUp={finishDrawing}
-        onMouseMove={onDraw}
+        onMouseMove={onMouseMove}
         ref={canvasRef}
       />
     </>

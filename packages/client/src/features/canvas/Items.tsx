@@ -9,10 +9,11 @@ import {
   Stack,
 } from '@mui/material'
 import { Drawing } from '@root/lib'
+import React from 'react'
 import { useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
-import { deleteAsync } from './thunks'
+import { deleteAsync, loadAsync } from './thunks'
 
 export default function Items() {
   const items = useAppSelector((store) => store.canvas.items)
@@ -28,6 +29,10 @@ export default function Items() {
       console.log('deleted')
     }
   }
+
+  React.useEffect(() => {
+    dispatch(loadAsync())
+  }, [dispatch])
 
   return (
     <ImageList>

@@ -1,13 +1,12 @@
 import React, { useRef, startTransition } from 'react'
 import { DrawAction, ActionType } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { loadAsync, saveAsync } from './thunks'
+import { saveAsync } from './thunks'
 import { debounce, Fab, Stack, TextField } from '@mui/material'
-import { useCallback } from 'react'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
-import { adjustResolution, generateThumbnail, getDraft } from './helpers'
+import { generateThumbnail, getDraft } from './helpers'
 import { Canvas } from './Canvas'
 
 export default function CanvasControl() {
@@ -36,13 +35,7 @@ export default function CanvasControl() {
     [dispatch]
   )
 
-  const newCanvas = () => {
-    clearCanvas()
-    const active = getDraft()
-    dispatch(actions.patch({ active }))
-  }
-
-  const clearCanvas = () => {
+  const clearCanvas = React.useCallback(() => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
     if (!canvas || !context) {
@@ -51,9 +44,15 @@ export default function CanvasControl() {
     context.clearRect(0, 0, canvas.width, canvas.height)
     buffer.current = []
     bufferId.current = null
-  }
+  }, [])
 
-  const saveCanvas = async () => {
+  const newHandler = React.useCallback(() => {
+    clearCanvas()
+    const active = getDraft()
+    dispatch(actions.patch({ active }))
+  }, [clearCanvas, dispatch])
+
+  const saveCanvas = React.useCallback(async () => {
     const canvas = canvasRef.current
     const context = canvas?.getContext('2d')
     if (!canvas || !context) {
@@ -71,9 +70,9 @@ export default function CanvasControl() {
     if (result.meta.requestStatus === 'fulfilled') {
       console.log('saved')
     }
-  }
+  }, [dispatch])
 
-  const processHistory = React.useCallback(() => {
+  const renderHistory = React.useCallback(() => {
     if (!canvasRef.current || !contextRef.current) {
       return
     }
@@ -104,35 +103,6 @@ export default function CanvasControl() {
     })
   }, [dispatch])
 
-  const prepareCanvas = useCallback(() => {
-    const canvas = canvasRef.current
-    if (!canvas) {
-      return
-    }
-
-    canvas.width = window.innerWidth - 20
-    canvas.height = window.innerHeight - 80
-
-    const context = canvas.getContext('2d')
-    if (!context) {
-      return
-    }
-    adjustResolution(canvas)
-    context.lineCap = 'round'
-    context.strokeStyle = 'black'
-    context.lineWidth = 5
-
-    contextRef.current = context
-  }, [])
-
-  /**
-   * onLoad
-   */
-  React.useEffect(() => {
-    dispatch(loadAsync())
-    prepareCanvas()
-  }, [dispatch, prepareCanvas])
-
   /**
    * onItemChanged
    */
@@ -157,9 +127,9 @@ export default function CanvasControl() {
       return
     }
     startTransition(() => {
-      processHistory()
+      renderHistory()
     })
-  }, [id, history, processHistory])
+  }, [id, history, renderHistory, clearCanvas])
 
   return (
     <>
@@ -171,7 +141,7 @@ export default function CanvasControl() {
           onChange={debounce(onNameChange, 400)}
           key={`${id}${name}`}
         />
-        <Fab onClick={newCanvas}>New</Fab>
+        <Fab onClick={newHandler}>New</Fab>
         <Fab onClick={clearCanvas}>Clear</Fab>
         <Fab onClick={saveCanvas}>Save</Fab>
       </Stack>
