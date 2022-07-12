@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
         "composite": true,
-        "references": {
-            "@root/lib": [
-                "./packages/lib"
+        "paths": {
+            "@root/*": [
+                "./packages/*",
+                "./client",
+                "./server"
             ]
         },
         "outDir": "dist",

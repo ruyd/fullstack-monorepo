@@ -4,17 +4,21 @@
   "private": true,
   "main": "src/index.js",
   "exports": {
-    ".": "./dist/index.js",
-    "./package.json": "./package.json"
+    ".": "./dist/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build",
+    "lint": "eslint .",
+    "test": "npm run test"
   },
   "dependencies": {
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/sequelize": "^4.28.14"
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/sequelize": "^4.28.14",
+    "@types/uuid": "^8.3.4"
   },
   "repository": {
     "type": "git",
