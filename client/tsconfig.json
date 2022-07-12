@@ -1,6 +1,6 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "target": "es5",
     "lib": [
       "dom",
@@ -20,19 +20,19 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",
+    "baseUrl": ".",
+    "paths": {
+      "@root/lib": [
+        "../packages/lib/src",
+      ]
+    },
   },
   "include": [
     "src",
   ],
-  "paths": {
-    "@root/lib": [
-      "../packages/lib"
-    ]
-  },
   "exclude": [
     "node_modules",
     "build",
     "craco.config.js"
-  ]
+  ],
 }

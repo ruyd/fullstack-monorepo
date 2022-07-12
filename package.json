@@ -15,8 +15,8 @@
         "lint": "eslint .",
         "test": "npm run test",
         "start": "npm run client",
-        "client": "npm run -w @root/client start",
-        "server": "npm run -w @root/server dev",
+        "client": "npm run -w client start",
+        "server": "npm run -w server dev",
         "prettify": "npx prettier . --write"
     },
     "devDependencies": {
