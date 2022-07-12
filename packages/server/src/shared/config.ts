@@ -5,7 +5,8 @@ import packageJson from '../../package.json'
 dotenv.config({})
 
 export interface Config {
-  version: string
+  production: boolean
+  prefix: string
   port: number
   tokenSecret?: string
   db: {
@@ -24,9 +25,10 @@ export interface Config {
   swaggerSetup: OAS3Definition
 }
 
-const apiVersion = 'v1'
+const prefix = process.env.PREFIX || 'v1'
 const config: Config = {
-  version: apiVersion,
+  production: process.env.NODE_ENV === 'production',
+  prefix,
   port: Number(process.env.PORT || 3001),
   tokenSecret: process.env.TOKEN_SECRET,
   db: {
@@ -50,7 +52,7 @@ const config: Config = {
     },
     servers: [
       {
-        url: `http://localhost:${process.env.PORT}/${apiVersion}`,
+        url: `http://localhost:${process.env.PORT}/${prefix}`,
         description: `localhost:${process.env.PORT}`,
       },
     ],
