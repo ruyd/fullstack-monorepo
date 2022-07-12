@@ -1,11 +1,11 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,
     "forceConsistentCasingInFileNames": true,
     "target": "es6",
     "module": "commonjs",
-    "outDir": "dist",
     "sourceMap": true,
     "resolveJsonModule": true,
     "lib": [
@@ -14,15 +14,19 @@
       "es2019.array"
     ],
     "esModuleInterop": true,
+    "outDir": "dist",
+    "baseUrl": "src"
   },
   "include": [
-    "./src/**/*.ts",
-    ".eslintrc.js"
+    "**/*.ts",
+    "../lib/src/**/*.ts",
+    ".eslintrc.js",
+    "package.json"
   ],
   "exclude": [
     "dist",
     "build",
     "coverage",
     "node_modules"
-  ]
+  ],
 }

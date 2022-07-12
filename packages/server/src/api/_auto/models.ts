@@ -2,19 +2,6 @@ import { Drawing, DrawingAttributes, entities } from '@root/lib'
 import { Model, ModelAttributes, ModelStatic } from 'sequelize'
 import db, { commonOptions } from '../../shared/db'
 
-// export type DrawingInstance = Model<Drawing>
-
-// export const DrawingModel = db.define<DrawingInstance>(
-//   DrawingAttributes.name,
-//   DrawingAttributes.attributes as ModelAttributes<
-//     DrawingInstance,
-//     Attributes<DrawingInstance>
-//   >,
-//   {
-//     ...commonOptions,
-//   }
-// )
-
 export const models: ModelStatic<Model>[] = []
 
 export function initializeModels() {
@@ -26,7 +13,5 @@ export function initializeModels() {
     )
   })
 }
-
-initializeModels()
 
 export default models

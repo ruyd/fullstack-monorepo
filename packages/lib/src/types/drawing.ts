@@ -25,7 +25,7 @@ export interface Drawing extends Entity {
   thumbnail?: string
 }
 
-export const DrawingAttributes: ModelConfig = {
+export const DrawingAttributes: ModelConfig<Drawing> = {
   name: 'drawing',
   attributes: {
     id: {

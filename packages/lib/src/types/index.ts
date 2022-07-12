@@ -12,9 +12,9 @@ export const HotReloadTestVar: string = 'nice'
 /**
  * Configuration Schema for DB Entities
  */
-export interface ModelConfig {
+export interface ModelConfig<T = unknown> {
   name: string
-  attributes: ModelAttributes<Model, Partial<Attributes<Model>>>
+  attributes: ModelAttributes<Model<T>, Attributes<Model<T>>>
   roles?: string[]
   paranoid?: boolean
 }

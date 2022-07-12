@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "composite": true,
         "module": "esnext",
         "target": "esnext",
         "lib": [
@@ -22,18 +23,19 @@
         "declaration": true,
         "declarationMap": false,
         "listEmittedFiles": true,
-        "baseUrl": ".",
         "paths": {
             "@root/*": [
                 "./packages/*/src"
             ]
         },
+        "rootDir": ".",
         "outDir": "dist",
     },
     "include": [
         "packages/",
     ],
     "exclude": [
+        "**/**/node_modules",
         "**/node_modules",
         "**/coverage",
         "**/dist",
