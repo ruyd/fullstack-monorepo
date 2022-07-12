@@ -126,11 +126,7 @@ export async function listHandler(
 export function autoApiRouterInject(
   models: ModelStatic<Model>[],
   router: express.Router,
-  authMiddleware: (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => Promise<void>
+  authMiddleware: express.Handler
 ) {
   for (const model of models) {
     const prefix = model.name.toLowerCase()

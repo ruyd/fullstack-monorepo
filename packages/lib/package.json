@@ -12,5 +12,8 @@
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@types/sequelize": "^4.28.14"
   }
 }
