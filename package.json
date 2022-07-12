@@ -5,8 +5,8 @@
     },
     "private": true,
     "workspaces": [
-        "client",
         "packages/*",
+        "client",
         "server"
     ],
     "outDir": "dist",
