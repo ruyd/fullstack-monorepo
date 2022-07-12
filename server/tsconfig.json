@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,
@@ -19,7 +19,7 @@
   },
   "include": [
     "**/*.ts",
-    "../lib/src/**/*.ts",
+    "../packages/**/*.ts",
     ".eslintrc.js",
     "package.json"
   ],

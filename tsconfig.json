@@ -1,38 +1,15 @@
 {
     "compilerOptions": {
         "composite": true,
-        "module": "esnext",
-        "target": "esnext",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
-        "sourceMap": true,
-        "allowJs": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "isolatedModules": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "noEmitOnError": true,
-        "jsx": "preserve",
-        "declaration": true,
-        "declarationMap": false,
-        "listEmittedFiles": true,
-        "paths": {
-            "@root/*": [
-                "./packages/*/src"
+        "references": {
+            "@root/lib": [
+                "./packages/lib"
             ]
         },
-        "rootDir": ".",
         "outDir": "dist",
     },
     "include": [
-        "packages/",
+        "**/packages",
     ],
     "exclude": [
         "**/**/node_modules",

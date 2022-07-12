@@ -5,7 +5,9 @@
     },
     "private": true,
     "workspaces": [
-        "packages/*"
+        "client",
+        "packages/*",
+        "server"
     ],
     "outDir": "dist",
     "scripts": {

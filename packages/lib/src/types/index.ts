@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken'
-import { Attributes, DataTypes, Model, ModelAttributes } from 'sequelize/types'
+import { Attributes, Model, ModelAttributes } from 'sequelize/types'
 export * from './drawing'
 
 export interface AppAccessToken extends JwtPayload {
@@ -24,6 +24,20 @@ export interface ModelConfig<T = unknown> {
  */
 export const entities: ModelConfig[] = []
 
+/**
+ * Add Entity config to Server Sequelize entities
+ * @cfg {ModelConfig} entity
+ * @returns ModelConfig
+ */
+export function define<T>(cfg: ModelConfig<T>): ModelConfig<T> {
+  entities.push(cfg)
+  return cfg
+}
+
+/**
+ * Common Model Options
+ * ie: Timestamps
+ */
 export interface Entity {
   createdAt?: Date
   updatedAt?: Date

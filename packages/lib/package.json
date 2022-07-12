@@ -2,7 +2,6 @@
   "name": "@root/lib",
   "version": "1.0.0",
   "private": true,
-  "description": "",
   "main": "src/index.js",
   "exports": {
     ".": "./dist/index.js"
@@ -15,5 +14,16 @@
   },
   "devDependencies": {
     "@types/sequelize": "^4.28.14"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruyd/drawspace.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruyd/drawspace/issues"
+  },
+  "homepage": "https://github.com/ruyd/drawspace#readme",
+  "description": ""
 }

@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize/types'
-import { entities, Entity, ModelConfig } from '.'
+import { define, Entity } from '.'
 
 export enum ActionType {
   Open = 'o',
@@ -25,7 +25,7 @@ export interface Drawing extends Entity {
   thumbnail?: string
 }
 
-export const DrawingAttributes: ModelConfig<Drawing> = {
+export const DrawingAttributes = define<Drawing>({
   name: 'drawing',
   attributes: {
     id: {
@@ -46,6 +46,4 @@ export const DrawingAttributes: ModelConfig<Drawing> = {
       type: DataTypes.STRING,
     },
   },
-}
-
-entities.push(DrawingAttributes)
+})
