@@ -8,10 +8,8 @@ import db from './shared/db'
 import api, { autoApiModels } from './api'
 import { errorHandler } from './shared/errors'
 import { swaggerDocModelInject } from './api/_auto/swagger'
-import { initializeModels } from './api/_auto/models'
 ;(async () => {
   //Initialize Models
-  initializeModels()
   await db.authenticate()
   await db.createSchema(config.db.schema, {})
   await db.sync({ alter: !config.production })
