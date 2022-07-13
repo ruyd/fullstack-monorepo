@@ -17,11 +17,6 @@
       "dom",
       "es2019.array"
     ],
-    "paths": {
-      "sequelize/types": [
-        "@types/sequelize",
-      ]
-    },
   },
   "include": [
     "./src/**/*.ts",

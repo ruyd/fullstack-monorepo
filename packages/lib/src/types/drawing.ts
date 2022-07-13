@@ -1,5 +1,4 @@
-import { DataTypes } from 'sequelize/types'
-import { define, Entity } from '.'
+import { Entity } from '.'
 
 export enum ActionType {
   Open = 'o',
@@ -24,26 +23,3 @@ export interface Drawing extends Entity {
   history: DrawAction[]
   thumbnail?: string
 }
-
-export const DrawingAttributes = define<Drawing>({
-  name: 'drawing',
-  attributes: {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    userId: {
-      type: DataTypes.UUID,
-    },
-    name: {
-      type: DataTypes.STRING,
-    },
-    history: {
-      type: DataTypes.JSONB,
-    },
-    thumbnail: {
-      type: DataTypes.STRING,
-    },
-  },
-})

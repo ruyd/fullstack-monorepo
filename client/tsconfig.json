@@ -23,7 +23,7 @@
     "paths": {
       "@root/lib": [
         "../packages/lib/src",
-      ]
+      ],
     },
   },
   "include": [

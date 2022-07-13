@@ -1,8 +1,6 @@
 {
   "extends": "../tsconfig.shared.json",
   "compilerOptions": {
-    "declaration": true,
-    "declarationDir": "dist/types",
     "outDir": "dist",
     "baseUrl": "."
   },

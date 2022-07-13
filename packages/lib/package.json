@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.8",
-    "@types/sequelize": "^4.28.14",
     "@types/uuid": "^8.3.4"
   },
   "repository": {

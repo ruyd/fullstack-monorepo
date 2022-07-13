@@ -1,10 +1,9 @@
 //Not Inherited - Shared Options for All Packages
 {
     "compilerOptions": {
-        "composite": true,
+        "composite": false,
         "strict": true,
-        "declaration": true,
-        "declarationDir": "dist/types",
+        "declaration": false,
         "outDir": "dist",
     }
 }

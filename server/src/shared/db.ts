@@ -1,4 +1,4 @@
-import { ModelOptions, Sequelize } from 'sequelize'
+import { Model, ModelOptions, ModelStatic, Sequelize } from 'sequelize'
 import config from './config'
 
 export const commonOptions: ModelOptions = {
@@ -6,8 +6,10 @@ export const commonOptions: ModelOptions = {
   underscored: true,
 }
 
-const sequelize = new Sequelize(config.db.url, {
+export const db = new Sequelize(config.db.url, {
   ssl: config.db.ssl,
 })
 
-export default sequelize
+export const models: ModelStatic<Model>[] = []
+
+export default db
