@@ -1,4 +1,5 @@
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
+import { AppAccessToken, User } from '@root/lib'
 import axios, { AxiosResponse } from 'axios'
 import { AppUser, onLogin } from '../../shared/auth'
 import { RootState } from '../../shared/store'
@@ -14,14 +15,17 @@ export enum Method {
 /**
  * Axios wrapper for thunks with token from onLogin
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function request<T, R = { success: true } & any>(
+export async function request<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  R = { success: true } | any,
+  T = Record<string, unknown>
+>(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
   url: string,
   data?: T,
   method: Method = Method.POST
 ): Promise<AxiosResponse<R>> {
-  let response: AxiosResponse
+  let response: AxiosResponse<R>
   try {
     dispatch(patch({ loading: true }))
     response = await axios({
@@ -57,7 +61,11 @@ function setLogin(
 export const LoginAsync = createAsyncThunk(
   'app/login',
   async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request(dispatch, 'profile/login', payload)
+    const response = await request<{ token: string; user: AppUser }>(
+      dispatch,
+      'profile/login',
+      payload
+    )
     setLogin(dispatch, response.data.token, response.data.user)
   }
 )
@@ -74,7 +82,7 @@ export const RegisterAsync = createAsyncThunk(
 export const LogoutAsync = createAsyncThunk(
   'app/logout',
   async (_, { dispatch }) => {
-    request(dispatch, 'profile/logoff')
+    await request(dispatch, 'profile/logoff')
     dispatch(patch({ token: undefined, user: undefined }))
     onLogin(undefined)
   }
