@@ -29,7 +29,7 @@ function processHistory({ buffer, width, height, dpr }: WorkMessage) {
 
   const data = background.getImageData(0, 0, width, height)
   /* eslint-disable-next-line no-restricted-globals */
-  self.postMessage(data, 'render.worker')
+  self.postMessage(data)
 }
 
 /* eslint-disable-next-line no-restricted-globals */

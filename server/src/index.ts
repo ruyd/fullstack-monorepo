@@ -12,7 +12,7 @@ import { swaggerDocModelInject } from './api/_auto/swagger'
   //Initialize Models
   await db.authenticate()
   await db.createSchema(config.db.schema, {})
-  await db.sync({ alter: !config.production })
+  await db.sync({ alter: !config.production, force: !config.production })
 
   const app: Express = express()
   app.use(express.json({ limit: '1mb' }))

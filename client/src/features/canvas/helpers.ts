@@ -1,9 +1,11 @@
 import { Drawing } from '@root/lib'
+import config from '../../shared/config'
 
 export function adjustResolution(canvas: HTMLCanvasElement) {
   if (!canvas) {
     return
   }
+  console.log('adjustResolution')
 
   const dpr = window.devicePixelRatio
   const rect = canvas.getBoundingClientRect()
@@ -42,8 +44,8 @@ export function createOffscreen(width: number, height: number, dpr: number) {
 
 export async function generateThumbnail(
   canvas: HTMLCanvasElement,
-  width = 250,
-  height = 150
+  width = config.thumbnails.width,
+  height = config.thumbnails.width
 ): Promise<string> {
   const data = canvas.toDataURL()
   const img = new Image(canvas.width, canvas.height)

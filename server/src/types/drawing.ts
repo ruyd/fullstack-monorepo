@@ -42,6 +42,6 @@ export const DrawingModel = db.define<Model<Drawing>>('drawing', {
     type: DataTypes.JSONB,
   },
   thumbnail: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
   },
 })

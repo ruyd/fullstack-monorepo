@@ -11,6 +11,7 @@ import {
 import { Drawing } from '@root/lib'
 import React from 'react'
 import { useCallback } from 'react'
+import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
 import { deleteAsync, loadAsync } from './thunks'
@@ -36,7 +37,7 @@ export default function Items() {
 
   return (
     <Container maxWidth="xl">
-      <Paper variant="outlined" sx={{ padding: '1rem' }}>
+      <Paper variant="elevation" sx={{ padding: '1rem' }}>
         <ImageList>
           {items.map((item) => (
             <ImageListItem key={item.id}>
@@ -44,11 +45,13 @@ export default function Items() {
                 src={item.thumbnail}
                 alt={item.name}
                 loading="lazy"
-                height={150}
-                width={300}
                 style={{
                   backgroundColor: 'rgba(200, 163, 255, .1)',
+                  height: config.thumbnails.height,
+                  width: config.thumbnails.width,
                 }}
+                width={config.thumbnails.width}
+                height={config.thumbnails.height}
               />
               <ImageListItemBar
                 title={item.name}
