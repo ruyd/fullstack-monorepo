@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
 // https://muguku.medium.com/fix-go-to-definition-and-hot-reload-in-a-react-typescript-monorepo-362908716d0e
 // this file overrides the default CRA configurations (webpack, eslint, babel, etc)
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");

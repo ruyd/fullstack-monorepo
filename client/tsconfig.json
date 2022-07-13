@@ -28,7 +28,7 @@
   },
   "include": [
     "src",
-    ".eslintrc.cjs",
+    ".eslintrc.*",
   ],
   "exclude": [
     "node_modules",

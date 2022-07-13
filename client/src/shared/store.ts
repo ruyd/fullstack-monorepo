@@ -35,6 +35,10 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >
 
-// Use throughout your app instead of plain `useDispatch` and `useSelector`
+/**
+ * Use instead of plain `useDispatch` */
 export const useAppDispatch = () => useDispatch<AppDispatch>()
+
+/**
+ * Use instead of plain `useSelector` */
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
