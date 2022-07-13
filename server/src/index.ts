@@ -15,7 +15,7 @@ import { swaggerDocModelInject } from './api/_auto/swagger'
   await db.sync({ alter: !config.production })
 
   const app: Express = express()
-  app.use(express.json({ limit: '1mb' }))
+  app.use(express.jxxxson({ limit: '1mb' }))
   app.use(cors())
 
   //Swagger
