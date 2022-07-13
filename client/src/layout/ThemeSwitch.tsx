@@ -21,7 +21,7 @@ export function getTheme(darkMode: boolean): Theme {
 
 export default function ThemeSwitch({
   children,
-}: React.PropsWithChildren<{}>): JSX.Element {
+}: React.PropsWithChildren<unknown>): JSX.Element {
   const darkTheme = useAppSelector((store) => store.app.darkTheme)
   const theme = React.useMemo(() => getTheme(darkTheme), [darkTheme])
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>

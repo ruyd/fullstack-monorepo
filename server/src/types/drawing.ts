@@ -1,5 +1,6 @@
-import { DataTypes } from 'sequelize'
-import { Entity } from '.'
+import { DataTypes, Model } from 'sequelize'
+import { db } from '../shared/db'
+import { Entity } from '@root/lib'
 
 export enum ActionType {
   Open = 'o',
@@ -25,24 +26,22 @@ export interface Drawing extends Entity {
   thumbnail?: string
 }
 
-export const DrawingAttributes = {
-  attributes: {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    userId: {
-      type: DataTypes.UUID,
-    },
-    name: {
-      type: DataTypes.STRING,
-    },
-    history: {
-      type: DataTypes.JSONB,
-    },
-    thumbnail: {
-      type: DataTypes.STRING,
-    },
+export const DrawingModel = db.define<Model<Drawing>>('drawing', {
+  id: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    defaultValue: DataTypes.UUIDV4,
   },
-}
+  userId: {
+    type: DataTypes.UUID,
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  history: {
+    type: DataTypes.JSONB,
+  },
+  thumbnail: {
+    type: DataTypes.STRING,
+  },
+})

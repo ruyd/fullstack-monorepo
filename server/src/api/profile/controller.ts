@@ -3,11 +3,10 @@ import {
   createToken,
   authProviderLogin,
   authProviderRegister,
-  decodeToken,
 } from '../../shared/auth'
 import { createOrUpdate } from '../_auto/controller'
-import { UserModel, UserPublicAttributes } from './models'
-import { AppAccessToken } from '../../types'
+import { UserModel, UserPublicAttributes } from '../../types/user'
+import { AppAccessToken } from '@root/lib'
 import { v4 as uuid } from 'uuid'
 
 export async function register(req: express.Request, res: express.Response) {

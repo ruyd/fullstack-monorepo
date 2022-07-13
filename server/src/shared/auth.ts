@@ -4,7 +4,7 @@ import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import config from './config'
-import { AppAccessToken } from '../types'
+import { AppAccessToken } from '@root/lib'
 
 export interface oAuthError {
   error?: string
