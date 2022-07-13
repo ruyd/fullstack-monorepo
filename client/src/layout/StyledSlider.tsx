@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 import Slider, { SliderProps } from '@mui/material/Slider'
 
-const StyledSlider = styled(Slider)(({ theme }) => ({
+const StyledSlider = styled(Slider)(() => ({
   color: '#7e57c2',
   height: 8,
   '& .MuiSlider-track': {

@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 
 export default function Footer() {
   return (
-    <Container maxWidth="xl">
+    <Container>
       <Box component="footer">
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>

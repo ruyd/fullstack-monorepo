@@ -8,8 +8,8 @@ export interface Config {
 }
 
 const config: Config = {
-  apiUrl: process.env.REACT_APP_BACKEND_API || 'defaultbackendurl',
-  defaultTitle: 'Drawspace',
+  apiUrl: process.env.REACT_APP_BACKEND_API || 'htts://localhost:3001/v1',
+  defaultTitle: 'DrawSpace',
   thumbnails: {
     width: 300,
     height: 200,

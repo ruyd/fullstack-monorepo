@@ -14,12 +14,13 @@ export enum Method {
 /**
  * Axios wrapper for thunks with token from onLogin
  */
-export async function request(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function request<T, R = { success: true } & any>(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
   url: string,
-  data?: any,
+  data?: T,
   method: Method = Method.POST
-): Promise<AxiosResponse<{ success: true } | any>> {
+): Promise<AxiosResponse<R>> {
   let response: AxiosResponse
   try {
     dispatch(patch({ loading: true }))
@@ -29,7 +30,8 @@ export async function request(
       method,
       timeout: 10000,
     })
-  } catch (error: any) {
+  } catch (err: unknown) {
+    const error = err as Error & { response: AxiosResponse }
     dispatch(notifyError(error?.response?.data?.message || error.message))
     throw error
   } finally {

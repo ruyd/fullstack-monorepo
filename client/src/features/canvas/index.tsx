@@ -16,7 +16,6 @@ export default function CanvasControl() {
   const dispatch = useAppDispatch()
   const history = useAppSelector((state) => state.canvas?.active?.history)
   const id = useAppSelector((state) => state.canvas?.active?.id)
-  const brush = useAppSelector((state) => state.canvas?.brush)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
   const buffer = useRef<DrawAction[]>([])
