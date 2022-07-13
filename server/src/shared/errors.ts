@@ -1,5 +1,5 @@
 import httpStatus from 'http-status'
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 
 export interface HttpErrorParams {
   message?: string
@@ -196,8 +196,7 @@ type HttpErrorResponse = Required<
 export function errorHandler(
   err: HttpError,
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ): void {
   const response: HttpErrorResponse = {
     status: err.status || httpStatus.INTERNAL_SERVER_ERROR,
@@ -208,13 +207,13 @@ export function errorHandler(
   }
 
   console.error(
-    `Client with IP="${req.ip}" failed to complete request to="${req.method}" originating from="${req.originalUrl}". Status="${response.status}" Message="${err.message}"`,
+    `Client with IP="${req.ip}" failed to complete request to="${
+      req.method
+    }" originating from="${req.originalUrl}". Status="${JSON.stringify(
+      response.status
+    )}" Message="${JSON.stringify(err.message)}"`,
     err
   )
-
-  if (process.env.NODE_ENV === 'production') {
-    delete response.stack
-  }
 
   res.status(response.status)
   res.json(response)

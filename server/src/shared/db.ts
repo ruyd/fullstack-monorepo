@@ -6,10 +6,27 @@ export const commonOptions: ModelOptions = {
   underscored: true,
 }
 
-export const db = new Sequelize(config.db.url, {
-  ssl: config.db.ssl,
-})
+export interface ModelConfig {
+  name: string
+  attributes: { [key: string]: unknown }
+  roles?: string[]
+  options?: ModelOptions
+}
 
 export const models: ModelStatic<Model>[] = []
+
+export const db = new Sequelize(config.db.url, {
+  ssl: config.db.ssl,
+}) as Sequelize & { apify: (cfg: ModelConfig) => void; entities: ModelConfig[] }
+
+export const entities: ModelConfig[] = []
+
+db.entities = entities
+
+export function apify(cfg: ModelConfig): void {
+  entities.push(cfg)
+}
+
+db.apify = apify
 
 export default db

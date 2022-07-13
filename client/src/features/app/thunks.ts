@@ -1,5 +1,4 @@
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
-import { AppAccessToken, User } from '@root/lib'
 import axios, { AxiosResponse } from 'axios'
 import { AppUser, onLogin } from '../../shared/auth'
 import { RootState } from '../../shared/store'

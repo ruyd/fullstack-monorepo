@@ -10,6 +10,7 @@ export interface AppRoute {
   modal?: boolean
   link?: boolean
   profile?: boolean
+  hideFooter?: boolean
 }
 
 export const routes: AppRoute[] = [
@@ -42,6 +43,7 @@ export const routes: AppRoute[] = [
     path: '/drawings',
     component: React.lazy(() => import('../pages/Drawings')),
     secure: true,
+    hideFooter: true,
   },
 ]
 

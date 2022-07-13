@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import express from 'express'
 import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
@@ -53,7 +53,7 @@ export async function tokenCheckWare(
   if (config.auth?.algorithm === 'RS256' && header && token) {
     const result = await jwkClient.getSigningKey(header.kid)
     const key = result.getPublicKey()
-    const _ = jwt.verify(token, key, { algorithms: ['RS256'] })
+    jwt.verify(token, key, { algorithms: ['RS256'] })
     return next()
   }
 
@@ -145,7 +145,10 @@ export async function authProviderRegister(
       }
     )
     return response.data
-  } catch (error: any) {
+  } catch (err: unknown) {
+    const error = err as Error & {
+      response: AxiosResponse
+    }
     return {
       error: error.response?.data?.name,
       error_description: error.response?.data?.description,
@@ -166,7 +169,8 @@ export async function authProviderChangePassword(
       }
     )
     return response.data
-  } catch (error: any) {
+  } catch (err: unknown) {
+    const error = err as Error & { response: AxiosResponse }
     return {
       error: error.response?.data?.name,
       error_description: error.response?.data?.description,
@@ -194,7 +198,8 @@ export async function authProviderPatch(payload: {
       }
     )
     return response.data
-  } catch (error: any) {
+  } catch (err: unknown) {
+    const error = err as Error & { response: AxiosResponse }
     return {
       error: error.response?.data?.name,
       error_description: error.response?.data?.description,
