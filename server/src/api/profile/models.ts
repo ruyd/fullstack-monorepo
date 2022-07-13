@@ -1,4 +1,4 @@
-import { User } from '@root/lib'
+import { User } from '../../types'
 import { DataTypes, Model } from 'sequelize'
 import db, { commonOptions } from '../../shared/db'
 

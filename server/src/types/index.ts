@@ -29,7 +29,7 @@ export const entities: ModelConfig[] = []
  * @cfg {ModelConfig} entity
  * @returns ModelConfig
  */
-export function define<T>(cfg: ModelConfig<T>): ModelConfig<T> {
+export const define = <T>(cfg: ModelConfig<T>): ModelConfig<T> => {
   entities.push(cfg)
   return cfg
 }

@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true,
-    "target": "es6",
+    "target": "es2016",
     "module": "commonjs",
-    "outDir": "dist",
-    "sourceMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
     "resolveJsonModule": true,
+    "sourceMap": true,
+    "noEmitOnError": false,
+    "baseUrl": ".",
+    "outDir": "dist",
     "lib": [
       "es6",
       "dom",
       "es2019.array"
     ],
-    "esModuleInterop": true,
   },
   "include": [
     "./src/**/*.ts",
@@ -22,7 +24,6 @@
   "exclude": [
     "dist",
     "build",
-    "coverage",
     "node_modules"
   ]
 }

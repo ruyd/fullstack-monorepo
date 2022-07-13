@@ -7,7 +7,8 @@ import {
 } from '../../shared/auth'
 import { createOrUpdate } from '../_auto/controller'
 import { UserModel, UserPublicAttributes } from './models'
-import { AppAccessToken, tryDashesOrNewUUID } from '@root/lib'
+import { AppAccessToken } from '../../types'
+import { v4 as uuid } from 'uuid'
 
 export async function register(req: express.Request, res: express.Response) {
   const payload = req.body
@@ -20,7 +21,7 @@ export async function register(req: express.Request, res: express.Response) {
     throw new Error('Email already exists')
   }
 
-  payload.userId = tryDashesOrNewUUID()
+  payload.userId = uuid()
   const providerResult = await authProviderRegister(payload)
   if (providerResult.error) {
     throw new Error(providerResult.error_description)

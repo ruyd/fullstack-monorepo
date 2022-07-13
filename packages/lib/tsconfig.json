@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../tsconfig.shared.json",
   "compilerOptions": {
     "declaration": true,
     "declarationDir": "dist/types",

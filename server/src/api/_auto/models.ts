@@ -1,4 +1,4 @@
-import { Drawing, DrawingAttributes, entities } from '@root/lib'
+import { Drawing, DrawingAttributes, entities } from '../../types'
 import { Model, ModelAttributes, ModelStatic } from 'sequelize'
 import db, { commonOptions } from '../../shared/db'
 
