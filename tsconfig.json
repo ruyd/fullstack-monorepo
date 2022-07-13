@@ -3,8 +3,11 @@
     "compilerOptions": {
         "paths": {
             "@root/*": [
-                "packages/*/src"
+                "/packages/*/src"
             ]
         },
     },
+    "include": [
+        "packages/lib",
+    ],
 }
