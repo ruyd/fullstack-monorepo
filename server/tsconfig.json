@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "noEmitOnError": false,
+    "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "outDir": "dist",
     "lib": [
@@ -16,6 +17,11 @@
       "dom",
       "es2019.array"
     ],
+    "paths": {
+      "sequelize/types": [
+        "@types/sequelize",
+      ]
+    },
   },
   "include": [
     "./src/**/*.ts",

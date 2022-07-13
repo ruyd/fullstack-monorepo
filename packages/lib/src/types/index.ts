@@ -1,5 +1,5 @@
 import { JwtPayload } from 'jsonwebtoken'
-import { Attributes, Model, ModelAttributes } from 'sequelize/types'
+import { ModelAttributes, Attributes, Model } from 'sequelize/types/model'
 export * from './drawing'
 
 export interface AppAccessToken extends JwtPayload {

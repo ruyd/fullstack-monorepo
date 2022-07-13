@@ -1,12 +1,6 @@
 {
     "extends": "./tsconfig.build.json",
-    "compilerOptions": {
-        "paths": {
-            "@root/*": [
-                "/packages/*/src"
-            ]
-        },
-    },
+    "compilerOptions": {},
     "include": [
         "packages/lib",
     ],
