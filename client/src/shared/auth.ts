@@ -2,6 +2,7 @@ import jwtDecode from 'jwt-decode'
 import axios from 'axios'
 import { AppAccessToken, User } from '@root/lib'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppUser extends User {
   // client props
 }
