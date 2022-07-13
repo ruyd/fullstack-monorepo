@@ -17,6 +17,7 @@
         "start": "npm run client",
         "client": "npm run -w client start",
         "server": "npm run -w server dev",
+        "dev": "npm run -w server dev",
         "prettify": "npx prettier . --write"
     },
     "devDependencies": {
@@ -39,5 +40,11 @@
         "tsconfig-paths-webpack-plugin": "^3.5.1",
         "typescript": "~4.7.4"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+        "-": "^0.0.1",
+        "@types/uuid": "^8.3.4",
+        "server": "^1.0.37",
+        "w": "^1.1.0"
+    }
 }

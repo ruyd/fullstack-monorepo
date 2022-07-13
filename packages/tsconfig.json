@@ -1,9 +1,10 @@
 //Not Inherited - Shared Options for All Packages
 {
     "compilerOptions": {
-        "noImplicitAny": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "sourceMap": true
+        "composite": true,
+        "strict": true,
+        "declaration": true,
+        "declarationDir": "dist/types",
+        "outDir": "dist",
     }
 }

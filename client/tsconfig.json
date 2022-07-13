@@ -22,13 +22,15 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@root/lib": [
-        "../packages/lib/src",
+      "@root/*": [
+        "../packages/*",
       ]
     },
   },
   "include": [
     "src",
+    ".eslintrc.js",
+    "../packages/*/src",
   ],
   "exclude": [
     "node_modules",

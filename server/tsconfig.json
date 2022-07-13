@@ -1,35 +1,11 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "strict": true,
-    "noImplicitAny": true,
-    "forceConsistentCasingInFileNames": true,
-    "target": "es6",
-    "module": "commonjs",
     "sourceMap": true,
     "resolveJsonModule": true,
-    "lib": [
-      "es6",
-      "dom",
-      "es2019.array"
-    ],
     "esModuleInterop": true,
+    "moduleResolution": "node",
     "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "@root/*": [
-        "../packages/*",
-      ]
-    },
+    "baseUrl": "."
   },
-  "include": [
-    "**/*.ts",
-    ".eslintrc.js",
-    "./package.json"
-  ],
-  "exclude": [
-    "dist",
-    "build",
-    "coverage",
-    "node_modules"
-  ],
 }
