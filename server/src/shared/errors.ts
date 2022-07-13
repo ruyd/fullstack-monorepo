@@ -207,11 +207,7 @@ export function errorHandler(
   }
 
   console.error(
-    `Client with IP="${req.ip}" failed to complete request to="${
-      req.method
-    }" originating from="${req.originalUrl}". Status="${JSON.stringify(
-      response.status
-    )}" Message="${JSON.stringify(err.message)}"`,
+    `Client with IP="${req.ip}" failed to complete request to="${req.method}" originating from="${req.originalUrl}". Status="${response.status}" Message="${err.message}"`,
     err
   )
 
