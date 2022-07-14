@@ -6,7 +6,7 @@ import {
   ReqWithAuth,
 } from '../../shared/auth'
 import { createOrUpdate } from '../_auto/controller'
-import { UserModel, UserPublicAttributes } from '../../types/user'
+import { UserModel } from '../../types/user'
 import { AppAccessToken, getPictureMock } from '@root/lib'
 import { v4 as uuid } from 'uuid'
 
@@ -47,7 +47,6 @@ export async function login(req: express.Request, res: express.Response) {
 
   const user = await UserModel.findOne({
     where: { email },
-    attributes: UserPublicAttributes,
   })
 
   if (!user) {
