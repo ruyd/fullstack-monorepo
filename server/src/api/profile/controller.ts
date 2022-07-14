@@ -7,7 +7,7 @@ import {
 } from '../../shared/auth'
 import { createOrUpdate } from '../_auto/controller'
 import { UserModel, UserPublicAttributes } from '../../types/user'
-import { AppAccessToken } from '@root/lib'
+import { AppAccessToken, getPictureMock } from '@root/lib'
 import { v4 as uuid } from 'uuid'
 
 export async function register(req: express.Request, res: express.Response) {
@@ -71,10 +71,8 @@ export async function edit(req: express.Request, res: express.Response) {
   res.json({ user })
 }
 
-export async function setPictureIfEmpty(payload: Record<string, string>) {
+export function setPictureIfEmpty(payload: Record<string, string>): void {
   if (!payload?.picture && payload.firstName && payload.lastName) {
-    const f = payload.firstName.charAt(0).toLowerCase()
-    const l = payload.lastName.charAt(0).toLowerCase()
-    payload.picture = `https://i2.wp.com/cdn.auth0.com/avatars/${f}${l}.png?ssl=1`
+    payload.picture = getPictureMock(payload)
   }
 }

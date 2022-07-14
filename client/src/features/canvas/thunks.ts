@@ -1,14 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { Drawing } from '@root/lib'
 import { RootState } from '../../shared/store'
-import { Method, request } from '../app/thunks'
+import { get, Method, request } from '../app/thunks'
 import { getDraft } from './helpers'
 import { actions } from './slice'
 
 export const loadAsync = createAsyncThunk(
   'canvas/load',
   async (_, { dispatch }) => {
-    const resp = await request<Drawing[]>(dispatch, `/drawing`, {}, Method.GET)
+    const resp = await get<Drawing[]>(`/drawing`)
     if (resp.status === 200) {
       dispatch(actions.patch({ items: resp.data }))
     }
@@ -30,7 +30,7 @@ export const saveAsync = createAsyncThunk(
       payload.id = undefined
     }
 
-    const response = await request(dispatch, '/drawing', payload)
+    const response = await request('/drawing', payload)
     if (response.status === 200) {
       dispatch(actions.onSave(response.data))
     }
@@ -41,12 +41,7 @@ export const saveAsync = createAsyncThunk(
 export const deleteAsync = createAsyncThunk(
   'canvas/delete',
   async (id: string, { dispatch, getState }) => {
-    const response = await request(
-      dispatch,
-      `/drawing/${id}`,
-      null,
-      Method.DELETE
-    )
+    const response = await request(`/drawing/${id}`, null, Method.DELETE)
     if (response.status !== 200) {
       return
     }

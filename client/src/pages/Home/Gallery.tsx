@@ -1,19 +1,25 @@
 import React from 'react'
-import { Box, Card, CardHeader, Container, Grid } from '@mui/material'
+import { Avatar, Box, Card, CardHeader, Container, Grid } from '@mui/material'
 import config from '../../shared/config'
 import { Drawing } from '@root/lib'
-import { useGet } from '../app/thunks'
+import { useGet } from '../../features/app/thunks'
+import Moment from 'react-moment'
 
 export default function Gallery() {
+  //const newItems = useAppSelector(socket.items)
   const { data: items } = useGet<Drawing[]>('gallery', '/drawing')
   return (
     <Container>
       <Box>
         <Grid container>
-          {items?.map((item) => (
+          {items?.map((item: Drawing) => (
             <Grid item key={item.id}>
               <Card>
-                <CardHeader>{item.name}</CardHeader>
+                <CardHeader
+                  title={item.name}
+                  subheader={<Moment fromNow>{item.createdAt}</Moment>}
+                  avatar={<Avatar></Avatar>}
+                />
                 <img
                   src={item.thumbnail}
                   alt={item.name}

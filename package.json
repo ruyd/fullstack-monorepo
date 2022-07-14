@@ -42,9 +42,7 @@
     },
     "license": "MIT",
     "dependencies": {
-        "-": "^0.0.1",
         "@types/uuid": "^8.3.4",
-        "server": "^1.0.37",
-        "w": "^1.0.1"
+        "server": "^1.0.37"
     }
 }

@@ -1,4 +1,4 @@
-import { Entity } from '.'
+import { Entity, User } from '.'
 
 export enum ActionType {
   Open = 'o',
@@ -22,4 +22,5 @@ export interface Drawing extends Entity {
   name: string
   history: DrawAction[]
   thumbnail?: string
+  user?: User
 }

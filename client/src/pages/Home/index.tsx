@@ -1,6 +1,6 @@
 import React from 'react'
-import { Container, Stack } from '@mui/material'
-import Gallery from '../../features/gallery'
+import { Container } from '@mui/material'
+import Gallery from './Gallery'
 import HeroSection from './HeroSection'
 export default function HomePage() {
   return (

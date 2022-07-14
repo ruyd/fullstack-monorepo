@@ -23,3 +23,13 @@ export function tryDashesOrNewUUID(undashed?: string): string {
   }
   return v4()
 }
+
+export function getPictureMock(payload: Record<string, string>): string {
+  let f = '?'
+  let l = ''
+  if (!payload?.picture && payload.firstName && payload.lastName) {
+    f = payload.firstName.charAt(0).toLowerCase()
+    l = payload.lastName.charAt(0).toLowerCase()
+  }
+  return `https://i2.wp.com/cdn.auth0.com/avatars/${f}${l}.png?ssl=1`
+}

@@ -1,30 +1,7 @@
 import { DataTypes, Model } from 'sequelize'
 import { db } from '../shared/db'
-import { Entity } from '@root/lib'
-
-export enum ActionType {
-  Open = 'o',
-  Close = 'c',
-  Stroke = 's',
-}
-
-export interface DrawAction {
-  t: ActionType
-  x?: number
-  y?: number
-  c?: string
-  w?: number
-  st?: string
-  ts?: number
-}
-
-export interface Drawing extends Entity {
-  id?: string
-  userId?: string
-  name: string
-  history: DrawAction[]
-  thumbnail?: string
-}
+import { Drawing } from '@root/lib'
+import { UserModel } from './user'
 
 export const DrawingModel = db.define<Model<Drawing>>('drawing', {
   id: {
@@ -45,3 +22,5 @@ export const DrawingModel = db.define<Model<Drawing>>('drawing', {
     type: DataTypes.TEXT,
   },
 })
+
+DrawingModel.hasOne(UserModel)

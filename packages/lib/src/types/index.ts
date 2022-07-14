@@ -6,8 +6,6 @@ export interface AppAccessToken extends JwtPayload {
   roles: string[]
 }
 
-export const HotReloadTestVar: string = 'nice'
-
 /**
  * Common Model Options
  * ie: Timestamps

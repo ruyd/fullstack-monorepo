@@ -24,7 +24,6 @@ export default function HeroSection({
         <Typography variant="h4">{title}</Typography>
         <Typography variant="h6">{subtitle}</Typography>
         <Button variant="contained">{caption}</Button>
-        <StyledImage src={HeroImage} alt="hero" />
         {children}
       </Box>
     </Container>

@@ -2,7 +2,7 @@ import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, onLogin } from '../../shared/auth'
-import { RootState, useAppDispatch } from '../../shared/store'
+import { RootState, store } from '../../shared/store'
 import { notifyError, patch } from './slice'
 
 export enum Method {
@@ -20,12 +20,12 @@ export async function request<
   R = { success: true } | any,
   T = Record<string, unknown>
 >(
-  dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
   url: string,
   data?: T,
   method: Method = Method.POST
 ): Promise<AxiosResponse<R>> {
   let response: AxiosResponse<R>
+  const dispatch = store.dispatch
   try {
     dispatch(patch({ loading: true }))
     response = await axios({
@@ -44,6 +44,8 @@ export async function request<
   return response
 }
 
+export const get = <T>(url: string) => request<T>(url, {}, Method.GET)
+
 /**
  * Generic GET Hook for components
  * @param cacheKey
@@ -59,8 +61,7 @@ export const useGet = <T>(
   useQuery<T>(
     cacheKey,
     async () => {
-      const dispatch = useAppDispatch()
-      const resp = await request<T>(dispatch, url, {}, Method.GET)
+      const resp = await get<T>(url)
       return resp.data
     },
     options
@@ -85,7 +86,6 @@ export const LoginAsync = createAsyncThunk(
   'app/login',
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request<{ token: string; user: AppUser }>(
-      dispatch,
       'profile/login',
       payload
     )
@@ -96,7 +96,7 @@ export const LoginAsync = createAsyncThunk(
 export const RegisterAsync = createAsyncThunk(
   'app/register',
   async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request(dispatch, 'profile/register', payload)
+    const response = await request('profile/register', payload)
     //For email validation rework this
     setLogin(dispatch, response.data.token, response.data.user)
   }
@@ -105,7 +105,7 @@ export const RegisterAsync = createAsyncThunk(
 export const LogoutAsync = createAsyncThunk(
   'app/logout',
   async (_, { dispatch }) => {
-    await request(dispatch, 'profile/logoff')
+    await request('profile/logoff')
     dispatch(patch({ token: undefined, user: undefined }))
     onLogin(undefined)
   }
@@ -114,7 +114,7 @@ export const LogoutAsync = createAsyncThunk(
 export const EditProfileAsync = createAsyncThunk(
   'app/editProfile',
   async (payload: Record<string, unknown>, { dispatch, getState }) => {
-    const response = await request(dispatch, 'profile/edit', payload)
+    const response = await request('profile/edit', payload)
     const user = response.data.user
     if (user) {
       const token = (getState() as RootState)?.app?.token as string

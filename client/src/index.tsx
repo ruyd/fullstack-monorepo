@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { store } from './shared/store'
 import CssBaseline from '@mui/material/CssBaseline'
 import Header from './layout/Header'
@@ -14,7 +15,6 @@ import { HelmetProvider } from 'react-helmet-async'
 import axios from 'axios'
 import config from './shared/config'
 import Footer from './layout/Footer'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 function App() {
   useEffect(() => {
@@ -41,14 +41,14 @@ const queryClient = new QueryClient()
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <HelmetProvider>
-        <BrowserRouter>
-          <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
             <App />
-          </QueryClientProvider>
-        </BrowserRouter>
-      </HelmetProvider>
-    </Provider>
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>
+    </QueryClientProvider>
   </React.StrictMode>
 )

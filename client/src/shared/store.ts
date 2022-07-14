@@ -7,7 +7,6 @@ import {
 } from '@reduxjs/toolkit'
 import appReducer from '../features/app/slice'
 import canvasReducer from '../features/canvas/slice'
-import galleryReducer from '../features/gallery/slice'
 
 export const customMiddleware: Middleware = () => (next) => (action) => {
   const result = next(action)
@@ -18,7 +17,6 @@ export const store = configureStore({
   reducer: {
     app: appReducer,
     canvas: canvasReducer,
-    gallery: galleryReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(customMiddleware),
