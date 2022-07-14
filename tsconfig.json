@@ -1,7 +1,18 @@
 {
     "extends": "./tsconfig.build.json",
-    "compilerOptions": {},
-    "include": [
-        "packages/*",
+    "compilerOptions": {
+        "module": "es2020",
+        "outDir": "dist"
+    },
+    "references": [
+        {
+            "client": "client"
+        },
+        {
+            "packages": "packages"
+        },
+        {
+            "server": "server"
+        }
     ],
 }

@@ -17,6 +17,11 @@
       "dom",
       "es2019.array"
     ],
+    "paths": {
+      "@root/*": [
+        "../packages/*/src"
+      ]
+    }
   },
   "include": [
     "./src/**/*.ts",
