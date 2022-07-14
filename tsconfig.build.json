@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "allowJs": true,
-        "skipLibCheck": true,
+        "skipLibCheck": false,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
@@ -9,7 +9,6 @@
         "noFallthroughCasesInSwitch": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
-        "noEmit": true,
         "jsx": "react-jsx",
         "baseUrl": ".",
         "paths": {
