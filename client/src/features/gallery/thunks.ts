@@ -6,7 +6,12 @@ import { Drawing } from '@root/lib'
 export const loadAsync = createAsyncThunk(
   'gallery/load',
   async (_, { dispatch }) => {
-    const resp = await request<Drawing[]>(dispatch, '/drawings', {}, Method.GET)
+    const resp = await request<Drawing[]>(
+      dispatch,
+      '/drawing',
+      undefined,
+      Method.GET
+    )
     const items = resp.data
     dispatch(actions.patch({ items }))
   }

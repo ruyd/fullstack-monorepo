@@ -1,7 +1,8 @@
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
+import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, onLogin } from '../../shared/auth'
-import { RootState } from '../../shared/store'
+import { RootState, useAppDispatch } from '../../shared/store'
 import { notifyError, patch } from './slice'
 
 export enum Method {
@@ -42,6 +43,28 @@ export async function request<
   }
   return response
 }
+
+/**
+ * Generic GET Hook for components
+ * @param cacheKey
+ * @param url
+ * @param options react-query useQueryOptions
+ * @returns
+ */
+export const useGet = <T>(
+  cacheKey: string,
+  url: string,
+  options?: UseQueryOptions<T>
+) =>
+  useQuery<T>(
+    cacheKey,
+    async () => {
+      const dispatch = useAppDispatch()
+      const resp = await request<T>(dispatch, url, {}, Method.GET)
+      return resp.data
+    },
+    options
+  )
 
 function setLogin(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,

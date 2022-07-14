@@ -1,22 +1,19 @@
 import React from 'react'
-import { Box, Card, Container, Grid } from '@mui/material'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
-import { loadAsync } from './thunks'
+import { Box, Card, CardHeader, Container, Grid } from '@mui/material'
 import config from '../../shared/config'
+import { Drawing } from '@root/lib'
+import { useGet } from '../app/thunks'
 
 export default function Gallery() {
-  const dispatch = useAppDispatch()
-  const items = useAppSelector((store) => store.gallery.items)
-  React.useEffect(() => {
-    dispatch(loadAsync())
-  }, [dispatch])
+  const { data: items } = useGet<Drawing[]>('gallery', '/drawing')
   return (
     <Container>
       <Box>
         <Grid container>
-          {items.map((item) => (
+          {items?.map((item) => (
             <Grid item key={item.id}>
               <Card>
+                <CardHeader>{item.name}</CardHeader>
                 <img
                   src={item.thumbnail}
                   alt={item.name}

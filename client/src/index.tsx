@@ -14,6 +14,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import axios from 'axios'
 import config from './shared/config'
 import Footer from './layout/Footer'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 function App() {
   useEffect(() => {
@@ -36,13 +37,16 @@ function App() {
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const container = document.getElementById('root')!
 const root = createRoot(container)
+const queryClient = new QueryClient()
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <HelmetProvider>
         <BrowserRouter>
-          <App />
+          <QueryClientProvider client={queryClient}>
+            <App />
+          </QueryClientProvider>
         </BrowserRouter>
       </HelmetProvider>
     </Provider>
