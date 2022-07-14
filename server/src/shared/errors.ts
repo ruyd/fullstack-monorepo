@@ -1,5 +1,5 @@
 import httpStatus from 'http-status'
-import { Request, Response } from 'express'
+import express from 'express'
 
 export interface HttpErrorParams {
   message?: string
@@ -195,8 +195,8 @@ type HttpErrorResponse = Required<
  */
 export function errorHandler(
   err: HttpError,
-  req: Request,
-  res: Response
+  req: express.Request,
+  res: express.Response
 ): void {
   const response: HttpErrorResponse = {
     status: err.status || httpStatus.INTERNAL_SERVER_ERROR,
@@ -211,6 +211,5 @@ export function errorHandler(
     err
   )
 
-  res.status(response.status)
-  res.json(response)
+  res.json(response).status(response.status)
 }

@@ -8,11 +8,11 @@ import { actions } from './slice'
 export const loadAsync = createAsyncThunk(
   'canvas/load',
   async (_, { dispatch }) => {
-    const response = await request(dispatch, `/drawing`, null, Method.GET)
-    if (response.status === 200) {
-      dispatch(actions.patch({ items: response.data }))
+    const resp = await request<Drawing[]>(dispatch, `/drawing`, {}, Method.GET)
+    if (resp.status === 200) {
+      dispatch(actions.patch({ items: resp.data }))
     }
-    return response.data
+    return resp.data
   }
 )
 

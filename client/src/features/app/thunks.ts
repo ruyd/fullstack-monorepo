@@ -52,6 +52,7 @@ function setLogin(
     patch({
       token,
       user,
+      loaded: !!token,
     })
   )
   onLogin({ token, user })

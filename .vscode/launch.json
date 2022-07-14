@@ -2,7 +2,7 @@
     "configurations": [
         {
             "command": "npm run dev",
-            "name": "Server Debug",
+            "name": "Server",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceRoot}/server"
@@ -10,14 +10,14 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Frontend Chrome",
+            "name": "Client Chrome",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/client",
         },
         {
             "type": "msedge",
             "request": "launch",
-            "name": "Frontend Edge",
+            "name": "Client Edge",
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/client",
             "version": "stable"

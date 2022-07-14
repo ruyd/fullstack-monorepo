@@ -1,17 +1,15 @@
-# DrawSpace - Modern Monorepo Sample
+# DrawSpace - TypeScript Monorepo Sample
 
-client
+TypeScript App Template & FullStack Patterns Showcase
 
-- profile edit
-- content mocks
-- responsive
-- modal
-- cra template
-- deno starter
+## Developer Experience
 
-server
+- Hot Reload Heaven: client and server independently and both for packages
+- Modern Redux without boilerplate
+- End-to-End Typed APIs via shared package with runtime automation
+- Workers for expensive computations
 
--
+### Origins
 
 The Assignment
 
