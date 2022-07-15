@@ -29,5 +29,12 @@
             "type": "node-terminal",
             "cwd": "${workspaceRoot}/server"
         },
+        {
+            "command": "craco build",
+            "name": "craco",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceRoot}/client"
+        },
     ]
 }
