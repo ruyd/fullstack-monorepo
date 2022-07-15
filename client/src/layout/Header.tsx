@@ -16,7 +16,6 @@ import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
 import { Link } from 'react-router-dom'
 import routes from '../shared/routes'
-import LoadingTop from './LoadingTop'
 import { LogoutAsync } from '../features/app/thunks'
 
 const pages = ['Drawings']
@@ -60,7 +59,6 @@ export default function HeaderNavBar() {
 
   return (
     <AppBar position="static">
-      <LoadingTop />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />

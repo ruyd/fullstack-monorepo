@@ -7,6 +7,8 @@ export async function list(
 ): Promise<Record<string, unknown>[]> {
   const items = (await model.findAll({
     raw: true,
+    nest: true,
+    include: Object.keys(model.associations),
     ...options,
   })) as unknown as Record<string, unknown>[]
   return items

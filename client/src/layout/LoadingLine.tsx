@@ -1,7 +1,12 @@
 import LinearProgress from '@mui/material/LinearProgress'
 import { useAppSelector } from '../shared/store'
 
-export default function LoadingTop() {
+export default function LoadingLine() {
   const loading = useAppSelector((store) => store.app.loading)
-  return <LinearProgress className={`${loading ? '' : 'invisible'}`} />
+  return (
+    <LinearProgress
+      className={`${loading ? '' : 'invisible'}`}
+      sx={{ height: '1.2px' }}
+    />
+  )
 }

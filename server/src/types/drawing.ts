@@ -23,4 +23,6 @@ export const DrawingModel = db.define<Model<Drawing>>('drawing', {
   },
 })
 
-DrawingModel.hasOne(UserModel)
+DrawingModel.hasOne(UserModel, {
+  as: 'user',
+})

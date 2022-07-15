@@ -1,23 +1,38 @@
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
+import React from 'react'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
+import LoadingLine from './LoadingLine'
+
+const Text = ({ children, ...rest }: { children: React.ReactNode }) => (
+  <Typography variant="body1" color="gray" {...rest}>
+    {children}
+  </Typography>
+)
 
 export default function Footer() {
   return (
-    <Container>
-      <Box component="footer">
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Typography variant="body1">
-              © {new Date().getFullYear()} Test
-            </Typography>
+    <>
+      <Container>
+        <Box component="footer">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Text>
+                <img
+                  src="https://img.shields.io/badge/License-ISC-blue.svg"
+                  style={{ margin: '0 1rem 0 0' }}
+                />
+                on {new Date().getFullYear()}
+              </Text>
+            </Grid>
+            <Grid item xs={12} md={6} textAlign="right">
+              <Text>Made with love by Ruy</Text>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6} textAlign="right">
-            <Typography variant="body1">Made with love</Typography>
-          </Grid>
-        </Grid>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+      <LoadingLine />
+    </>
   )
 }

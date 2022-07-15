@@ -8,6 +8,8 @@ export type WorkMessage = {
   dpr: number
 }
 
+const w = self as Window & typeof globalThis
+
 function processHistory({ buffer, width, height, dpr }: WorkMessage) {
   const background = createOffscreen(width, height, dpr)
   if (!background) {
@@ -28,12 +30,15 @@ function processHistory({ buffer, width, height, dpr }: WorkMessage) {
   })
 
   const data = background.getImageData(0, 0, width, height)
-
-  self.postMessage(data, 'render')
+  try {
+    w.postMessage(data, {})
+  } catch (err: unknown) {
+    console.error(err)
+    w.postMessage(data, 'worker')
+  }
 }
 
-/* eslint-disable-next-line no-restricted-globals */
-self.onmessage = ({ data }: { data: WorkMessage }) => {
+w.onmessage = ({ data }: { data: WorkMessage }) => {
   processHistory(data)
 }
 

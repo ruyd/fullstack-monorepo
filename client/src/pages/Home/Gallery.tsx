@@ -9,7 +9,7 @@ export default function Gallery() {
   //const newItems = useAppSelector(socket.items)
   const { data: items } = useGet<Drawing[]>('gallery', '/drawing')
   return (
-    <Container>
+    <Container maxWidth={false}>
       <Box>
         <Grid container>
           {items?.map((item: Drawing) => (
@@ -18,7 +18,7 @@ export default function Gallery() {
                 <CardHeader
                   title={item.name}
                   subheader={<Moment fromNow>{item.createdAt}</Moment>}
-                  avatar={<Avatar></Avatar>}
+                  avatar={<Avatar>{item.user?.firstName?.substring(1)}</Avatar>}
                 />
                 <img
                   src={item.thumbnail}
