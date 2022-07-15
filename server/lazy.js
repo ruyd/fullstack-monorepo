@@ -59,10 +59,10 @@ function runAsync(text) {
 async function init() {
   console.warn('node_modules and dist warm up...')
   await runAsync('npm i')
-  console.log('node_modules: ready')
+  console.log('node_modules: ✔')
   await runAsync('tsc')
   if (fs.existsSync('dist')) {
-    console.log('dist: ready')
+    console.log('dist: ✔')
     run()
   } else {
     console.error('something went wrong, dist not generated, aborting...')
@@ -76,7 +76,7 @@ if (!fs.existsSync('node_modules')) {
   init()
   return
 } else {
-  console.info('node_modules: check')
+  console.info('node_modules: ✔')
 }
 
 if (!fs.existsSync('dist')) {
@@ -84,11 +84,11 @@ if (!fs.existsSync('dist')) {
   return
 } else {
   if (fs.existsSync('dist/packages')) {
-    console.warn('Dist not combined: should be dist/src/server+packages')
-    console.warn('Clean if needed then npm i @root/package to fix')
+    console.warn('dist/src/ not combining output, happens when @root/lib not present|resolved')
+    console.warn('npm "run clean" then "i @root/lib" to fix 🙌')
     wired('npm i @root/lib | tsc')
   } else {
-    console.info('dist: check')
+    console.info('dist: ✔')
   }
 }
 
