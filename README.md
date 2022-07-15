@@ -10,8 +10,6 @@ TypeScript App Template & FullStack Patterns Showcase
 - Workers for expensive computations
 - Lazy NPM script for server
 
-Sharing for fun
-
 ### The Assignment
 
 Create a drawing web application that allows users to draw/sketch on an empty piece of “paper”
