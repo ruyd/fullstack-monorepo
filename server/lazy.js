@@ -50,7 +50,7 @@ function runAsync(text) {
       })
     }
     catch {
-      console.warn(' ✔ 🙌 You may ignore error above - maybe workplace npm i glitch"')
+      console.warn(' ✔ 🙌 You may ignore error above - maybe npm i workplaces glitch"')
       resolve(-1)
     }
   })
@@ -59,10 +59,15 @@ function runAsync(text) {
 async function init() {
   console.warn('node_modules and dist warm up...')
   await runAsync('npm i')
-  console.log('finished npm')
+  console.log('node_modules: ready')
   await runAsync('tsc')
-  console.log('finished tsc')
-  run()
+  if (fs.existsSync('dist')) {
+    console.log('dist: ready')
+    run()
+  } else {
+    console.error('something went wrong, dist not generated, aborting...')
+    return
+  }
 }
 
 //RUN
