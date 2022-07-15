@@ -10,6 +10,11 @@
     "baseUrl": ".",
     "outDir": "dist",
     "noEmitOnError": true,
+    "paths": {
+      "@root/*": [
+        "../packages/*/src",
+      ],
+    },
   },
   "include": [
     "src",

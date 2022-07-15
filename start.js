@@ -2,48 +2,59 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
 const fs = require('fs')
-const spawn = require('cross-spawn')
+const { execSync, exec, spawn } = require('child_process');
 
-function wire(spawned) {
-  spawned.console.stdout.on('data', (data) => {
+function wire(spw) {
+  spw.stdout.on('data', (data) => {
     console.log(data)
   })
 
-  spawned.console.stderr.on('data', (data) => {
+  spw.stderr.on('data', (data) => {
     console.error(data)
   })
 
-  spawned.console.on('close', (code) => {
+  spw.on('close', (code) => {
     console.log('lazy exit: ' + code)
   })
+  spw.on('error', (code) => {
+    console.error('error: ' + code)
+  })
+}
+
+function wired(text) {
+  const spw = spawn(text)
+  wire(spw)
+  return spw
+}
+
+function run() {
+  const arg = process.execArgv[0] || 'run client'
+  wired('npm ' + arg)
+}
+
+//RUN
+
+if (!fs.existsSync('node_modules')) {
+  console.warn('Running "npm i" for you, this will take a few...')
+  const spw = wired('npm i')
+  spw.on('close', () => run())
+  return
+} else {
+  console.info('node_modules: check')
 }
 
 if (!fs.existsSync('server/.env')) {
   console.error('Missing .env file for server')
 } else {
-  console.info('senv okay')
+  console.info('senv: check')
 }
 
 if (!fs.existsSync('client/.env')) {
   console.error('Missing .env file for server')
 } else {
-  console.info('cenv okay')
+  console.info('cenv: check')
 }
 
-if (!fs.existsSync('node_modules')) {
-  console.log('Node Modules not ready, npm i...')
-  const result = spawn('npm', 'i', { stdio: 'inherit' })
-  wire(result)
-} else {
-  console.info('node_modules there')
-}
 
-const arg = process.execArgv[0] || 'client'
-
-const dev = spawn.sync(
-  'npm',
-  ['run', arg]
-  , { stdio: 'inherit' })
-
-wire(dev)
+run()
 

@@ -20,7 +20,8 @@
         "server": "npm run -w server dev",
         "lint": "eslint .",
         "test": "npm run test",
-        "prettify": "npx prettier . --write"
+        "prettify": "npx prettier . --write",
+        "clean": "rm -rf node_modules **/node_modules package-lock.json **/dist **/build"
     },
     "devDependencies": {
         "@craco/craco": "^7.0.0-alpha.7",
