@@ -29,9 +29,7 @@ function wired(text) {
     wire(spw)
     return spw
   } catch (err) {
-    console.log(err)
-    // eslint-disable-next-line no-debugger
-    debugger
+    console.error(err)
   }
   return null
 }
@@ -52,7 +50,7 @@ function runAsync(text) {
       })
     }
     catch {
-      console.warn('You may ignore error: "npm ERR! Cannot set properties of null (setting xyz) - workplace glitch"')
+      console.warn(' ✔ 🙌 You may ignore error above - maybe workplace npm i glitch"')
       resolve(-1)
     }
   })
