@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "target": "es6",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "importHelpers": true,
     "strict": true,
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",
     "noEmitOnError": true,
     "paths": {
-      "@root/lib": [
-        "../packages/lib"
+      "@root/*": [
+        "../packages/*/src"
       ]
-    },
+    }
   },
   "include": [
     "src",
