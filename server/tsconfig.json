@@ -5,17 +5,11 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "importHelpers": true,
     "strict": true,
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",
     "noEmitOnError": true,
-    "paths": {
-      "@root/*": [
-        "../packages/*/src"
-      ]
-    }
   },
   "include": [
     "src",
@@ -26,9 +20,4 @@
     "dist",
     "node_modules"
   ],
-  "references": [
-    {
-      "@root": "../packages"
-    }
-  ]
 }

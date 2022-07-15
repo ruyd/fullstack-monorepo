@@ -33,3 +33,5 @@ export function getPictureMock(payload: Record<string, string>): string {
   }
   return `https://i2.wp.com/cdn.auth0.com/avatars/${f}${l}.png?ssl=1`
 }
+
+export const hello = 'xxxx'

@@ -21,6 +21,13 @@
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}/client",
             "version": "stable"
-        }
+        },
+        {
+            "command": "nodemon -q lazy.js",
+            "name": "NPM Script",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceRoot}/server"
+        },
     ]
 }
