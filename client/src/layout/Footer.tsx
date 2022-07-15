@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import LoadingLine from './LoadingLine'
 
 const Text = ({ children, ...rest }: { children: React.ReactNode }) => (
-  <Typography variant="body1" color="gray" {...rest}>
+  <Typography variant="body1" color="gray" fontSize={12} {...rest}>
     {children}
   </Typography>
 )
@@ -14,8 +14,8 @@ const Text = ({ children, ...rest }: { children: React.ReactNode }) => (
 export default function Footer() {
   return (
     <>
-      <Container>
-        <Box component="footer">
+      <Container component="footer" sx={{ position: 'sticky', bottom: 0 }}>
+        <Box>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <Text>
