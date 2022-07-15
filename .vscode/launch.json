@@ -24,17 +24,17 @@
         },
         {
             "command": "nodemon -q lazy.js",
-            "name": "NPM Script",
+            "name": "Server Script",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceRoot}/server"
         },
         {
-            "command": "craco build",
-            "name": "craco",
+            "command": "node start.js",
+            "name": "Start Script",
             "request": "launch",
             "type": "node-terminal",
-            "cwd": "${workspaceRoot}/client"
+            "cwd": "${workspaceRoot}"
         },
     ]
 }

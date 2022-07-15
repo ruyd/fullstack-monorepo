@@ -23,6 +23,6 @@
         "**/dist",
         "**/build",
         "**/tests",
-        "**/craco.config.js"
+        "**/*.js",
     ]
 }
