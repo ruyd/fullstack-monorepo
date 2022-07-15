@@ -18,11 +18,7 @@ function wire(spawned) {
   })
 }
 
-if (!fs.existsSync('server/.env')) {
-  console.error('Missing .env file for server')
-}
-
-if (!fs.existsSync('client/.env')) {
+if (!fs.existsSync('.env')) {
   console.error('Missing .env file for server')
 }
 

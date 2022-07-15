@@ -12,13 +12,14 @@
     ],
     "outDir": "dist",
     "scripts": {
-        "build": "tsc --build",
-        "lint": "eslint .",
-        "test": "npm run test",
         "start": "node start.js",
+        "build": "node start.js buildcmd",
+        "buildcmd": "tsc --build",
+        "dev": "npm start -w server dev",
         "client": "npm run -w client start",
         "server": "npm run -w server dev",
-        "dev": "npm run -w server dev",
+        "lint": "eslint .",
+        "test": "npm run test",
         "prettify": "npx prettier . --write"
     },
     "devDependencies": {
@@ -33,6 +34,7 @@
         "@types/swagger-ui-express": "^4.1.3",
         "@typescript-eslint/eslint-plugin": "^5.30.5",
         "@typescript-eslint/parser": "^5.30.5",
+        "cross-spawn": "^7.0.3",
         "eslint": "^8.19.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-no-only-tests": "^2.6.0",

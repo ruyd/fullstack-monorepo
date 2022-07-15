@@ -20,19 +20,24 @@ function wire(spawned) {
 
 if (!fs.existsSync('server/.env')) {
   console.error('Missing .env file for server')
+} else {
+  console.info('senv okay')
 }
 
 if (!fs.existsSync('client/.env')) {
   console.error('Missing .env file for server')
+} else {
+  console.info('cenv okay')
 }
 
 if (!fs.existsSync('node_modules')) {
   console.log('Node Modules not ready, npm i...')
   const result = spawn('npm', 'i', { stdio: 'inherit' })
   wire(result)
+} else {
+  console.info('node_modules there')
 }
 
-//nicely paired with vscode debug of server
 const arg = process.execArgv[0] || 'client'
 
 const dev = spawn.sync(
