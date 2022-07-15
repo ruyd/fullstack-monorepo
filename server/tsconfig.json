@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es6",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -10,11 +9,6 @@
     "baseUrl": ".",
     "outDir": "dist",
     "noEmitOnError": true,
-    "paths": {
-      "@root/*": [
-        "../packages/*/src",
-      ],
-    },
   },
   "include": [
     "src",
@@ -25,4 +19,9 @@
     "dist",
     "node_modules"
   ],
+  "references": [
+    {
+      "@root/lib": "../packages/lib"
+    }
+  ]
 }

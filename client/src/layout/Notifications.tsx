@@ -39,7 +39,7 @@ export default function Notifications() {
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       autoHideDuration={3000}
     >
-      <Alert onClose={close} severity={message?.severity}>
+      <Alert onClose={close} severity={message?.severity} sx={{ mb: '2rem' }}>
         {message?.message}
       </Alert>
     </Snackbar>

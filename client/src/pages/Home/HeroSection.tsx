@@ -8,7 +8,7 @@ const StyledImage = styled(`img`)(() => ({
 }))
 
 export default function HeroSection({
-  title = 'A app that showcases drawings',
+  title = 'App that showcases drawings',
   subtitle = 'FullStack patterns showcase and sample working monorepo for TypeScript apps',
   caption = 'Get Started',
   children,

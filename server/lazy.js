@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
 const fs = require('fs')
-const { exec } = require('child_process');
+const { exec, execSync } = require('child_process');
 
 function wire(spw) {
   spw.stdout.on('data', (data) => {
@@ -19,44 +19,78 @@ function wire(spw) {
   spw.on('error', (code) => {
     console.error('error: ' + code)
   })
+
 }
 
 function wired(text) {
-  const spw = exec(text)
-  wire(spw)
-  return spw
+  console.log(text)
+  try {
+    const spw = exec(text)
+    wire(spw)
+    return spw
+  } catch (err) {
+    console.log(err)
+    // eslint-disable-next-line no-debugger
+    debugger
+  }
+  return null
 }
 
-const dev = 'concurrently "npx tsc --watch" "nodemon -q dist/src/index.js"'
 function run() {
-  const arg = process.execArgv[0]
-  wired(arg ? 'npm ' + arg : dev)
+  wired('npx tsc --watch')
+  wired('nodemon -q dist/src/index.js')
+}
+
+function runAsync(text) {
+  return new Promise((resolve) => {
+    try {
+      const job = execSync(text)
+      console.log(job)
+      job.on('exit', (code) => {
+        console.log('exited')
+        resolve(code)
+      })
+    }
+    catch {
+      console.warn('You may ignore error: "npm ERR! Cannot set properties of null (setting xyz) - workplace glitch"')
+      resolve(-1)
+    }
+  })
+}
+
+async function init() {
+  console.warn('node_modules and dist warm up...')
+  await runAsync('npm i')
+  console.log('finished npm')
+  await runAsync('tsc')
+  console.log('finished tsc')
+  run()
 }
 
 //RUN
 
 if (!fs.existsSync('node_modules')) {
-  console.warn('npm install, will load in ~3 minutes...')
-  const spw = wired('npm i')
-  spw.on('close', () => run())
+  init()
   return
 } else {
   console.info('node_modules: check')
 }
 
+if (!fs.existsSync('dist')) {
+  init()
+  return
+} else {
+  if (fs.existsSync('dist/packages')) {
+    console.warn('Dist not combined: should be dist/src/server+packages')
+    console.warn('Clean if needed then npm i @root/package to fix')
+    wired('npm i @root/lib | tsc')
+  } else {
+    console.info('dist: check')
+  }
+}
 
 if (!fs.existsSync('.env')) {
   console.error('Missing .env file for server')
 }
 
-if (!fs.existsSync('node_modules')) {
-  console.log('Node Modules not ready, npm i...')
-  const result = spawn('npm', 'i', { stdio: 'inherit' })
-  wire(result)
-}
-
-if (!fs.existsSync('dist')) {
-  console.log('Dist pre build needed...')
-  const result = spawn.sync('npm', ['run', 'build'])
-  wire(result)
-}
+run()

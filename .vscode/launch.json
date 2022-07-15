@@ -23,7 +23,7 @@
             "version": "stable"
         },
         {
-            "command": "nodemon -q lazy.js",
+            "command": "node lazy.js",
             "name": "Server Script",
             "request": "launch",
             "type": "node-terminal",
