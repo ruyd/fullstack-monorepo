@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
 const fs = require('fs')
-const { execSync, exec, spawn } = require('child_process');
+const { exec } = require('child_process');
 
 function wire(spw) {
   spw.stdout.on('data', (data) => {
@@ -22,7 +22,7 @@ function wire(spw) {
 }
 
 function wired(text) {
-  const spw = spawn(text)
+  const spw = exec(text)
   wire(spw)
   return spw
 }
@@ -35,7 +35,7 @@ function run() {
 //RUN
 
 if (!fs.existsSync('node_modules')) {
-  console.warn('Running "npm i" for you, this will take a few...')
+  console.warn('Initializing (npm i) workspace, client will load in ~3 minutes...')
   const spw = wired('npm i')
   spw.on('close', () => run())
   return
