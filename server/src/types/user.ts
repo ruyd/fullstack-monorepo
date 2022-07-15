@@ -1,6 +1,5 @@
 import { User } from '@root/lib'
-import { Model } from 'sequelize'
-import { DataTypes } from 'sequelize/types'
+import { Model, DataTypes } from 'sequelize'
 import db, { commonOptions } from '../shared/db'
 
 export type UserInstance = Model<User>

@@ -6,7 +6,7 @@ TypeScript App Template & FullStack Patterns Showcase
 
 - Hot Reload Heaven: client and server independently and both for packages
 - Modern Redux without boilerplate
-- End-to-End Typed APIs via shared package with runtime automation
+- Typed APIs via shared library with runtime automation
 - Workers for expensive computations
 
 ### Origins

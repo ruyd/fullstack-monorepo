@@ -3,9 +3,7 @@
     "compilerOptions": {
         "module": "es2020",
         "outDir": "dist",
-        "noEmit": false,
-        "composite": true,
-        "incremental": true
+        "noEmit": true
     },
     "references": [
         {
