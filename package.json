@@ -44,6 +44,7 @@
     "license": "MIT",
     "dependencies": {
         "@types/uuid": "^8.3.4",
+        "jsonwebtoken": "^8.5.1",
         "server": "^1.0.37"
     }
 }

@@ -1,7 +1,17 @@
-import { JwtPayload } from 'jsonwebtoken'
 export * from './drawing'
 
-export interface AppAccessToken extends JwtPayload {
+export interface Jwt {
+  [key: string]: unknown
+  iss?: string | undefined
+  sub?: string | undefined
+  aud?: string | string[] | undefined
+  exp?: number | undefined
+  nbf?: number | undefined
+  iat?: number | undefined
+  jti?: string | undefined
+}
+
+export interface AppAccessToken extends Jwt {
   userId: string
   roles: string[]
 }

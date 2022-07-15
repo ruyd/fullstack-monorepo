@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode'
+import decode from 'jwt-decode'
 import axios from 'axios'
 import { AppAccessToken, User } from '@root/lib'
 
@@ -19,7 +19,7 @@ export function decodeAccessToken(token: string): AppAccessToken | null {
     return null
   }
   try {
-    const accessToken = jwtDecode(token) as AppAccessToken
+    const accessToken = decode(token) as AppAccessToken
 
     //Check lifetime
     const now = new Date().getTime() / 1000
