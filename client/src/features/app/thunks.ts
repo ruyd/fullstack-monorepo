@@ -36,6 +36,9 @@ export async function request<
     })
   } catch (err: unknown) {
     const error = err as Error & { response: AxiosResponse }
+    if (error?.response?.data?.message.includes('expired')) {
+      window.location.assign('./login')
+    }
     dispatch(notifyError(error?.response?.data?.message || error.message))
     throw error
   } finally {

@@ -25,4 +25,6 @@ export const DrawingModel = db.define<Model<Drawing>>('drawing', {
 
 DrawingModel.hasOne(UserModel, {
   as: 'user',
+  foreignKey: 'userId',
+  sourceKey: 'userId',
 })

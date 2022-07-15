@@ -18,7 +18,12 @@ export default function Gallery() {
                 <CardHeader
                   title={item.name}
                   subheader={<Moment fromNow>{item.createdAt}</Moment>}
-                  avatar={<Avatar>{item.user?.firstName?.substring(1)}</Avatar>}
+                  avatar={
+                    <Avatar
+                      src={item?.user?.picture}
+                      alt={item?.user?.firstName}
+                    />
+                  }
                 />
                 <img
                   src={item.thumbnail}
