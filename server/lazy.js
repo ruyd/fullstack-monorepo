@@ -57,7 +57,7 @@ function runAsync(text) {
 }
 
 async function init() {
-  console.warn('node_modules and dist warm up...')
+  console.warn('Warming up node_modules and dist, will take a few...')
   await runAsync('npm i')
   console.log('node_modules: ✔')
   await runAsync('tsc')
