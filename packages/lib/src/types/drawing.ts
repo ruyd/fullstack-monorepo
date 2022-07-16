@@ -24,3 +24,9 @@ export interface Drawing extends Entity {
   thumbnail?: string
   user?: User
 }
+
+export function calcDuration(d: Drawing) {
+  const first = d.history[0]
+  const last = d.history[d.history.length - 1]
+  return first.ts.
+}
