@@ -72,6 +72,12 @@ async function init() {
 
 //RUN
 
+if (!fs.existsSync('.env')) {
+  console.warn('.env needs setup, creating... 👀')
+  const cfg = fs.readFileSync("setup/sample.env")
+  fs.writeFileSync(".env", cfg)
+}
+
 if (!fs.existsSync('node_modules')) {
   init()
   return
@@ -92,8 +98,4 @@ if (!fs.existsSync('dist')) {
   }
 }
 
-if (!fs.existsSync('.env')) {
-  console.error('Missing .env file for server')
-}
-
-run()
+//run()
