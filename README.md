@@ -4,13 +4,14 @@ TypeScript App Template & FullStack Patterns Showcase
 
 ## Developer Experience
 
-- Hot Reload Heaven: client and server independently and both for packages
+- Hot Reload Heaven: client, server and packages
 - Generic modern redux and react-query without boilerplate
-- Typed APIs via shared library with express automation
-- Workers for expensive computations
-- Lazy NPM script for server
+- Web Workers for expensive computations
+- Typed API requests via shared library with express automation
+- Automation of npm with custom scripts
+- vscode debug configurations
 
-### The Assignment
+### Challenge
 
 Create a drawing web application that allows users to draw/sketch on an empty piece of “paper”
 and upload it to a public list of drawings.

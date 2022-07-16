@@ -13,6 +13,11 @@ export interface AppRoute {
   hideFooter?: boolean
 }
 
+export enum Paths {
+  Login = '/login',
+  Draw = '/draw',
+}
+
 export const routes: AppRoute[] = [
   {
     title: 'Home',
@@ -21,7 +26,7 @@ export const routes: AppRoute[] = [
   },
   {
     title: 'Login',
-    path: '/login',
+    path: Paths.Login,
     component: React.lazy(() => import('../pages/Login')),
     profile: true,
   },
@@ -40,8 +45,8 @@ export const routes: AppRoute[] = [
   },
   {
     title: 'Your Canvas',
-    path: '/drawings',
-    component: React.lazy(() => import('../pages/Drawings')),
+    path: Paths.Draw,
+    component: React.lazy(() => import('../pages/Draw')),
     secure: true,
     hideFooter: true,
     link: true,

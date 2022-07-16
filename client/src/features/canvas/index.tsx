@@ -26,7 +26,8 @@ export default function CanvasControl() {
   const record = (t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth
     const st = contextRef.current?.strokeStyle as string
-    buffer.current = [...buffer.current, { x, y, t, w, st }]
+    const ts = new Date().getDate()
+    buffer.current = [...buffer.current, { x, y, t, w, st, ts }]
   }
 
   const clearCanvas = React.useCallback(() => {

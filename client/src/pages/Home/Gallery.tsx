@@ -4,13 +4,14 @@ import {
   Box,
   Card,
   CardActionArea,
+  CardContent,
   CardHeader,
   CardMedia,
   Container,
   Grid,
 } from '@mui/material'
 import config from '../../shared/config'
-import { Drawing } from '@root/lib'
+import { Drawing, estimateTimeSpent } from '@root/lib'
 import { useGet } from '../../features/app/thunks'
 import Moment from 'react-moment'
 import { useNavigate } from 'react-router-dom'
@@ -21,7 +22,7 @@ export default function Gallery() {
   const { data: items } = useGet<Drawing[]>('gallery', '/drawing')
   return (
     <Container>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} justifyContent="center">
         {items?.map((item: Drawing) => (
           <Grid item key={item.id}>
             <Card
@@ -54,6 +55,7 @@ export default function Gallery() {
                   width={config.thumbnails.width}
                   height={config.thumbnails.height}
                 />
+                <CardContent>Time: {estimateTimeSpent(item)}</CardContent>
               </CardActionArea>
             </Card>
           </Grid>
