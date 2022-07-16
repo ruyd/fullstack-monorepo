@@ -11,10 +11,11 @@ import {
   Grid,
 } from '@mui/material'
 import config from '../../shared/config'
-import { Drawing, estimateTimeSpent } from '@root/lib'
+import { Drawing, getDuration, getTimeSpent } from '@root/lib'
 import { useGet } from '../../features/app/thunks'
 import Moment from 'react-moment'
 import { useNavigate } from 'react-router-dom'
+import { Paths } from 'src/shared/routes'
 
 export default function Gallery() {
   //const newItems = useAppSelector(socket.items)
@@ -26,7 +27,7 @@ export default function Gallery() {
         {items?.map((item: Drawing) => (
           <Grid item key={item.id}>
             <Card
-              onClick={() => navigate(`/drawing/${item.id}`)}
+              onClick={() => navigate(`${Paths.Draw}/${item.id}`)}
               variant="outlined"
               sx={{
                 borderColor: 'secondary.dark',
@@ -55,7 +56,7 @@ export default function Gallery() {
                   width={config.thumbnails.width}
                   height={config.thumbnails.height}
                 />
-                <CardContent>Time: {estimateTimeSpent(item)}</CardContent>
+                <CardContent>Time: {getDuration(item)}</CardContent>
               </CardActionArea>
             </Card>
           </Grid>

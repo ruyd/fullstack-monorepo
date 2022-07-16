@@ -11,23 +11,24 @@ const Logo = styled('img')({
   height: 80,
 })
 
+const logos = [
+  ['TypeScript', ts],
+  ['React', react],
+  ['React Query', query],
+  ['Redux Toolkit', redux],
+  ['Sequelize', sequelize],
+  ['NodeJS', nodejs],
+]
+
 export default function Logos() {
-  const logos = [
-    ['TypeScript', ts],
-    ['React', react],
-    ['React Query', query],
-    ['Redux Toolkit', redux],
-    ['Sequelize', sequelize],
-    ['NodeJS', nodejs],
-  ]
   return (
-    <Box sx={{ margin: '2rem' }}>
+    <Box sx={{ margin: '6rem 0 0 0' }}>
       <Typography variant="body1" align="center" mb=".5rem">
         Made with
       </Typography>
       <Grid container spacing={3} justifyContent="center">
         {logos.map((l) => (
-          <Grid item>
+          <Grid item key={l[0]}>
             <Logo src={l[1]} alt={l[0]} title={l[0]} />
           </Grid>
         ))}

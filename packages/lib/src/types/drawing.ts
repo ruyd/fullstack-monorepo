@@ -32,9 +32,16 @@ export interface Drawing extends Entity {
   user?: User
 }
 
-export function estimateTimeSpent(d: Drawing): number {
+export function getTimeSpent(d: Drawing): number {
   const first = d.history[0]?.ts as number
   const last = d.history[d.history.length - 1]?.ts as number
   const millisecs = last - first
   return millisecs
+}
+
+export function getDuration(d: Drawing) {
+  const secs = Math.round(getTimeSpent(d) / 1000)
+  const mins = Math.round(secs / 60)
+  const hours = Math.round(mins / 60)
+  return `${hours}:${mins}:${secs}`
 }

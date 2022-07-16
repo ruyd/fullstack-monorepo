@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import LoadingLine from './LoadingLine'
 import { TypographyProps } from '@mui/system'
+import { Link } from 'react-router-dom'
 
 const Text = ({
   children,
@@ -22,12 +23,14 @@ export default function Footer() {
         <Box>
           <Grid container spacing={3}>
             <Grid item xs={6}>
-              <img
-                src="https://img.shields.io/badge/License-ISC-blue.svg"
-                style={{ margin: '0 .5rem -.2rem 0', width: 80, height: 20 }}
-                width={80}
-                height={20}
-              />
+              <a href="https://github.com/ruyd">
+                <img
+                  src="https://img.shields.io/badge/License-ISC-blue.svg"
+                  style={{ margin: '0 .5rem -.2rem 0', width: 80, height: 20 }}
+                  width={80}
+                  height={20}
+                />
+              </a>
               <Text>on {new Date().getFullYear()}</Text>
             </Grid>
             <Grid item textAlign="right" xs={6}>

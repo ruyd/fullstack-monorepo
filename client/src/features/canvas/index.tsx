@@ -26,7 +26,7 @@ export default function CanvasControl() {
   const record = (t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth
     const st = contextRef.current?.strokeStyle as string
-    const ts = new Date().getDate()
+    const ts = new Date().getTime()
     buffer.current = [...buffer.current, { x, y, t, w, st, ts }]
   }
 
