@@ -98,4 +98,4 @@ if (!fs.existsSync('dist')) {
   }
 }
 
-//run()
+run()
