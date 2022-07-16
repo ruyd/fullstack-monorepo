@@ -4,27 +4,27 @@
 const fs = require('fs')
 const { exec } = require('child_process');
 
-function wire(spw) {
-  spw.stdout.on('data', (data) => {
+function wire(job) {
+  job.stdout.on('data', (data) => {
     console.log(data)
   })
 
-  spw.stderr.on('data', (data) => {
+  job.stderr.on('data', (data) => {
     console.error(data)
   })
 
-  spw.on('close', (code) => {
+  job.on('close', (code) => {
     console.log('lazy exit: ' + code)
   })
-  spw.on('error', (code) => {
+  job.on('error', (code) => {
     console.error('error: ' + code)
   })
 }
 
 function wired(text) {
-  const spw = exec(text)
-  wire(spw)
-  return spw
+  const job = exec(text)
+  wire(job)
+  return job
 }
 
 function run() {
@@ -36,8 +36,8 @@ function run() {
 
 if (!fs.existsSync('node_modules')) {
   console.warn('Initializing (npm i) workspace, client will load in ~3 minutes...')
-  const spw = wired('npm i')
-  spw.on('close', () => run())
+  const job = wired('npm i')
+  job.on('exit', () => run())
   return
 } else {
   console.info('node_modules: check')
