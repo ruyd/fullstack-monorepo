@@ -18,11 +18,13 @@ import { deleteAsync, loadAsync } from './thunks'
 
 export default function Items() {
   const items = useAppSelector((store) => store.canvas.items)
+  const activeId = useAppSelector((store) => store.canvas.active?.id)
   const dispatch = useAppDispatch()
   const setItem = useCallback(
     (item: Drawing) => dispatch(actions.patchActive(item)),
     [dispatch]
   )
+  const isActive = (item: Drawing) => activeId === item?.id
 
   const deleteItem = async (item: Drawing) => {
     const result = await dispatch(deleteAsync(item.id as string))
@@ -40,7 +42,14 @@ export default function Items() {
       <Paper variant="elevation" sx={{ padding: '1rem' }}>
         <ImageList>
           {items.map((item) => (
-            <ImageListItem key={item.id}>
+            <ImageListItem
+              key={item.id}
+              sx={{
+                border: `solid 1px ${
+                  isActive(item) ? '#eafe34' : 'transparent'
+                }`,
+              }}
+            >
               <img
                 src={item.thumbnail}
                 alt={item.name}

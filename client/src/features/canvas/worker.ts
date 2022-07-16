@@ -10,10 +10,7 @@ export type WorkMessage = {
 
 const w = self as Window & typeof globalThis
 
-function processHistory(
-  { buffer, width, height, dpr }: WorkMessage,
-  source?: MessageEventSource
-) {
+function processHistory({ buffer, width, height, dpr }: WorkMessage) {
   const background = createOffscreen(width, height, dpr)
   if (!background) {
     return
@@ -34,18 +31,16 @@ function processHistory(
 
   const data = background.getImageData(0, 0, width, height)
   try {
-    console.log(source)
-    w?.postMessage(data, 'render')
+    // eslint-disable-next-line
+    w?.postMessage(data)
   } catch (err: unknown) {
     console.error(err)
-    // eslint-disable-next-line no-debugger
-    debugger
   }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-w.onmessage = ({ data, ev }: { data: WorkMessage; ev?: MessageEvent<any> }) => {
-  processHistory(data, ev?.ports[0])
+w.onmessage = ({ data }: { data: WorkMessage; ev?: MessageEvent<any> }) => {
+  processHistory(data)
 }
 
 export {}

@@ -34,9 +34,7 @@ export const canvasSlice = createSlice({
       return { ...state, active: { ...state.active, ...action.payload } }
     },
     onSave: (state, action: PayloadAction<Drawing>) => {
-      state.active.id = action.payload.id
-      state.active.updatedAt = action.payload.updatedAt
-      state.active.createdAt = action.payload.createdAt
+      state.active = action.payload
       const existing = state.items.find((item) => item.id === action.payload.id)
       if (existing) {
         state.items = state.items.map((item) =>
