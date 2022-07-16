@@ -4,7 +4,7 @@ import Gallery from './Gallery'
 import HeroSection from './HeroSection'
 export default function HomePage() {
   return (
-    <Container component="main" maxWidth="xl">
+    <Container>
       <HeroSection />
       <Gallery />
     </Container>

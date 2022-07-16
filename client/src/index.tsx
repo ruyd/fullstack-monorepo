@@ -23,7 +23,9 @@ function App() {
       <ThemeSwitch>
         <CssBaseline enableColorScheme />
         <Header />
-        <Routing />
+        <main>
+          <Routing />
+        </main>
         <Notifications />
         <DrawerRight />
         <Footer />

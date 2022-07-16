@@ -8,8 +8,8 @@ const StyledImage = styled(`img`)(() => ({
 }))
 
 export default function HeroSection({
-  title = 'TypeScript canvas sample app',
-  subtitle = 'FullStack patterns showcase and leveled up monorepo template',
+  title = 'FullStack TypeScript sample app',
+  subtitle = 'Patterns showcase and leveled up monorepo template',
   caption = 'See for yourself',
   children,
 }: {

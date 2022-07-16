@@ -1,5 +1,7 @@
 * {
   box-sizing: border-box;
+  /* debug layout */
+  outline: 1px dotted red;
 }
 
 html,
@@ -20,8 +22,8 @@ main {
   flex-flow: column;
 }
 
-#root > div,
-main div {
+/* <Container> */
+main > div {
   flex: 1 0 auto;
 }
 
