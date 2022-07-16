@@ -3,20 +3,21 @@
 /* eslint-disable no-undef */
 const fs = require('fs')
 const { exec, execSync } = require('child_process');
+const options = { env: { FORCE_COLOR: true } }
 
-function wire(spw) {
-  spw.stdout.on('data', (data) => {
+function wire(job) {
+  job.stdout.on('data', (data) => {
     console.log(data)
   })
 
-  spw.stderr.on('data', (data) => {
+  job.stderr.on('data', (data) => {
     console.error(data)
   })
 
-  spw.on('close', (code) => {
+  job.on('close', (code) => {
     console.log('lazy exit: ' + code)
   })
-  spw.on('error', (code) => {
+  job.on('error', (code) => {
     console.error('error: ' + code)
   })
 
@@ -25,9 +26,9 @@ function wire(spw) {
 function wired(text) {
   console.log(text)
   try {
-    const spw = exec(text)
-    wire(spw)
-    return spw
+    const job = exec(text, options)
+    wire(job)
+    return job
   } catch (err) {
     console.error(err)
   }
@@ -42,7 +43,7 @@ function run() {
 function runAsync(text) {
   return new Promise((resolve) => {
     try {
-      const job = execSync(text)
+      const job = execSync(text, options)
       console.log(job)
       job.on('exit', (code) => {
         console.log('exited')

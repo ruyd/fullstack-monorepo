@@ -3,6 +3,7 @@
 /* eslint-disable no-undef */
 const fs = require('fs')
 const { exec } = require('child_process');
+const options = { env: { FORCE_COLOR: true } }
 
 function wire(job) {
   job.stdout.on('data', (data) => {
@@ -22,7 +23,7 @@ function wire(job) {
 }
 
 function wired(text) {
-  const job = exec(text)
+  const job = exec(text, options)
   wire(job)
   return job
 }

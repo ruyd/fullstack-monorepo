@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export interface Config {
   apiUrl: string
   defaultTitle: string
@@ -14,6 +16,10 @@ const config: Config = {
     width: 300,
     height: 200,
   },
+}
+
+export function applyConfig() {
+  axios.defaults.baseURL = config.apiUrl
 }
 
 export default config

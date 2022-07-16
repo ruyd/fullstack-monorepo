@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { applyConfig } from './shared/config'
 import { store } from './shared/store'
 import CssBaseline from '@mui/material/CssBaseline'
 import Header from './layout/Header'
@@ -12,14 +13,11 @@ import { BrowserRouter } from 'react-router-dom'
 import Routing from './layout/Routing'
 import Notifications from './layout/Notifications'
 import { HelmetProvider } from 'react-helmet-async'
-import axios from 'axios'
-import config from './shared/config'
 import Footer from './layout/Footer'
 
+applyConfig()
+
 function App() {
-  useEffect(() => {
-    axios.defaults.baseURL = config.apiUrl
-  }, [])
   return (
     <React.Fragment>
       <ThemeSwitch>
