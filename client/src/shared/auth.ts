@@ -71,3 +71,10 @@ export function onLogin(payload?: { token: string; user: AppUser }) {
   }
   setHeader(payload?.token)
 }
+
+export function loginRedirect() {
+  window.location.assign(
+    './login?returnTo=' +
+      window.location.href.replace(window.location.origin, '')
+  )
+}

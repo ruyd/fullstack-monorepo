@@ -30,7 +30,7 @@ export const saveAsync = createAsyncThunk(
       payload.id = undefined
     }
 
-    const response = await request('/drawing', payload)
+    const response = await request<Drawing>('/drawing', payload)
     if (response.status === 200) {
       dispatch(actions.onSave(response.data))
     }

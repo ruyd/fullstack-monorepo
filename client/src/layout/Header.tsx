@@ -14,11 +14,12 @@ import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import routes from '../shared/routes'
 import { LogoutAsync } from '../features/app/thunks'
+import { Link } from '@mui/material'
 
-const pages = ['Drawings']
+const links = routes.filter((route) => route.link)
 const settings = routes.filter((route) => route.profile)
 
 export default function HeaderNavBar() {
@@ -65,7 +66,7 @@ export default function HeaderNavBar() {
           <Typography
             variant="h6"
             noWrap
-            component={Link}
+            component={RouterLink}
             to="/"
             sx={{
               mr: 2,
@@ -77,7 +78,7 @@ export default function HeaderNavBar() {
               textDecoration: 'none',
             }}
           >
-            DrawSpace
+            Drawspace
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -109,11 +110,11 @@ export default function HeaderNavBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page}>
-                  <Typography component={Link} to={page} textAlign="center">
-                    {page}....
-                  </Typography>
+              {links.map((route) => (
+                <MenuItem key={route.path}>
+                  <Link component={RouterLink} to={route.path} underline="none">
+                    {route.title}
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>
@@ -122,8 +123,8 @@ export default function HeaderNavBar() {
           <Typography
             variant="h5"
             noWrap
-            component={Link}
-            to="/drawings"
+            component={RouterLink}
+            to="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -135,18 +136,18 @@ export default function HeaderNavBar() {
               textDecoration: 'none',
             }}
           >
-            DrawSpacex
+            Drawspace
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {links.map((route) => (
               <Button
-                key={page}
+                key={route.path}
                 onClick={handleCloseNavMenu}
-                component={Link}
-                to={page}
+                component={RouterLink}
+                to={route.path}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {route.title}
               </Button>
             ))}
           </Box>
@@ -177,7 +178,7 @@ export default function HeaderNavBar() {
                 <MenuItem
                   key={setting.path}
                   onClick={handleCloseUserMenu}
-                  component={Link}
+                  component={RouterLink}
                   to={setting.path}
                 >
                   <Typography textAlign="center">{setting.title}</Typography>

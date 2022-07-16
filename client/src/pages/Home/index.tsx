@@ -10,3 +10,11 @@ export default function HomePage() {
     </Container>
   )
 }
+
+/**
+ * hero margins add
+ * galley cards like https://www.youtube.com/watch?v=evqUWEh46AA
+ * - image slider component check
+ * logos
+ *
+ */

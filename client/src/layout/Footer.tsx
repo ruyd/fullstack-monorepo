@@ -4,35 +4,39 @@ import React from 'react'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import LoadingLine from './LoadingLine'
+import { TypographyProps } from '@mui/system'
 
-const Text = ({ children, ...rest }: { children: React.ReactNode }) => (
-  <Typography variant="body1" color="gray" fontSize={12} {...rest}>
+const Text = ({
+  children,
+  ...rest
+}: TypographyProps & { children: React.ReactNode }) => (
+  <Typography component="span" color="gray" fontSize={12} {...rest}>
     {children}
   </Typography>
 )
 
 export default function Footer() {
   return (
-    <>
-      <Container component="footer" sx={{ position: 'sticky', bottom: 0 }}>
+    <footer>
+      <Container>
         <Box>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <Text>
-                <img
-                  src="https://img.shields.io/badge/License-ISC-blue.svg"
-                  style={{ margin: '0 1rem 0 0' }}
-                />
-                on {new Date().getFullYear()}
-              </Text>
+            <Grid item xs={6}>
+              <img
+                src="https://img.shields.io/badge/License-ISC-blue.svg"
+                style={{ margin: '0 .5rem -.2rem 0', width: 80, height: 20 }}
+                width={80}
+                height={20}
+              />
+              <Text>on {new Date().getFullYear()}</Text>
             </Grid>
-            <Grid item xs={12} md={6} textAlign="right">
+            <Grid item textAlign="right" xs={6}>
               <Text>Made with love by Ruy</Text>
             </Grid>
           </Grid>
         </Box>
       </Container>
       <LoadingLine />
-    </>
+    </footer>
   )
 }

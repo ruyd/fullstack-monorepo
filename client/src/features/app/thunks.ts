@@ -1,7 +1,7 @@
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
-import { AppUser, onLogin } from '../../shared/auth'
+import { AppUser, loginRedirect, onLogin } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
 import { notifyError, patch } from './slice'
 
@@ -16,8 +16,7 @@ export enum Method {
  * Axios wrapper for thunks with token from onLogin
  */
 export async function request<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  R = { success: true } | any,
+  R = { success: true } | unknown,
   T = Record<string, unknown>
 >(
   url: string,
@@ -37,7 +36,7 @@ export async function request<
   } catch (err: unknown) {
     const error = err as Error & { response: AxiosResponse }
     if (error?.response?.data?.message.includes('expired')) {
-      window.location.assign('./login')
+      loginRedirect()
     }
     dispatch(notifyError(error?.response?.data?.message || error.message))
     throw error
@@ -99,7 +98,10 @@ export const LoginAsync = createAsyncThunk(
 export const RegisterAsync = createAsyncThunk(
   'app/register',
   async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request('profile/register', payload)
+    const response = await request<{ token: string; user: AppUser }>(
+      'profile/register',
+      payload
+    )
     //For email validation rework this
     setLogin(dispatch, response.data.token, response.data.user)
   }
@@ -117,7 +119,10 @@ export const LogoutAsync = createAsyncThunk(
 export const EditProfileAsync = createAsyncThunk(
   'app/editProfile',
   async (payload: Record<string, unknown>, { dispatch, getState }) => {
-    const response = await request('profile/edit', payload)
+    const response = await request<{ token: string; user: AppUser }>(
+      'profile/edit',
+      payload
+    )
     const user = response.data.user
     if (user) {
       const token = (getState() as RootState)?.app?.token as string

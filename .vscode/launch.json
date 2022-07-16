@@ -24,14 +24,14 @@
         },
         {
             "command": "node lazy.js",
-            "name": "Server Script",
+            "name": " - Server Script",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceRoot}/server"
         },
         {
             "command": "node start.js",
-            "name": "Start Script",
+            "name": " - Start Script",
             "request": "launch",
             "type": "node-terminal",
             "cwd": "${workspaceRoot}"

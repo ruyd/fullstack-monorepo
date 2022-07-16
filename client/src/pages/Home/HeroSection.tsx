@@ -1,6 +1,6 @@
 import { Box, Button, Container, styled, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
 import HeroImage from '../../images/undraw_complete_design_re_h75h.svg'
-
 const StyledImage = styled(`img`)(() => ({
   maxHeight: '20rem',
   display: 'block',
@@ -8,9 +8,9 @@ const StyledImage = styled(`img`)(() => ({
 }))
 
 export default function HeroSection({
-  title = 'App that showcases drawings',
-  subtitle = 'FullStack patterns showcase and sample working monorepo for TypeScript apps',
-  caption = 'Get Started',
+  title = 'TypeScript canvas sample app',
+  subtitle = 'FullStack patterns showcase and leveled up monorepo template',
+  caption = 'See for yourself',
   children,
 }: {
   title?: string
@@ -19,11 +19,15 @@ export default function HeroSection({
   children?: React.ReactNode
 }) {
   return (
-    <Container>
+    <Container sx={{ m: '3rem 0 2.5rem 0' }}>
       <Box textAlign="center">
         <Typography variant="h4">{title}</Typography>
-        <Typography variant="h6">{subtitle}</Typography>
-        <Button variant="contained">{caption}</Button>
+        <Typography variant="h6" sx={{ m: '.5rem 0 1.5rem 0' }}>
+          {subtitle}
+        </Typography>
+        <Button component={Link} to="/drawings">
+          {caption}
+        </Button>
         {children}
       </Box>
     </Container>
