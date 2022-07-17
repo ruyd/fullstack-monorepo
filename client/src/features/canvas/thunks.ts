@@ -10,7 +10,7 @@ export const itemsAsync = createAsyncThunk(
   async (_, { dispatch }) => {
     const resp = await get<Drawing[]>(`/drawing`)
     if (resp.status === 200) {
-      dispatch(actions.patch({ items: resp.data }))
+      dispatch(actions.patch({ items: resp.data, loaded: true }))
     }
     return resp.data
   }
@@ -19,15 +19,18 @@ export const itemsAsync = createAsyncThunk(
 export const getAsync = createAsyncThunk(
   'canvas/get',
   async (id: string, { dispatch, getState }) => {
-    const resp = await get<Drawing>(`/drawing/${id}`)
-    let active = resp.data
-    if (resp.status === 200) {
-      const userId = (getState() as RootState).app.user?.userId
-      if (resp.data.userId !== userId) {
-        active = getCopy(resp.data)
+    let active: Drawing | undefined
+    const state = getState() as RootState
+    const userId = state.app.user?.userId
+    active = state.canvas.items.find((i) => i.id === id)
+    if (!active) {
+      const resp = await get<Drawing>(`/drawing/${id}`)
+      if (resp.status === 200) {
+        const own = resp.data.userId === userId
+        active = own ? resp.data : getCopy(resp.data)
       }
-      dispatch(actions.patch({ active }))
     }
+    dispatch(actions.patchActive(active as Drawing))
     return active
   }
 )

@@ -26,7 +26,7 @@ export default function CanvasControl() {
   const nameRef = useRef<HTMLInputElement | null>(null)
   const workerRef = useRef<Worker | null>(null)
   const { id: paramId } = useParams()
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const record = React.useCallback((t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth
@@ -127,7 +127,7 @@ export default function CanvasControl() {
       if (paramId && id !== paramId) {
         const res = await dispatch(getAsync(paramId))
         if ((res?.payload as Drawing)?.id === 'copy') {
-          // navigate(`${Paths.Draw}`, { replace: true })
+          navigate(`${Paths.Draw}`, { replace: true })
         }
       }
     }

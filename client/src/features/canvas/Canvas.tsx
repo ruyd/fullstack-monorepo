@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import { ActionType } from '@root/lib'
 import { adjustResolution } from './helpers'

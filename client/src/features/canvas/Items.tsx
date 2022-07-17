@@ -18,6 +18,7 @@ import { deleteAsync, itemsAsync } from './thunks'
 
 export default function Items() {
   const items = useAppSelector((store) => store.canvas.items)
+  const loaded = useAppSelector((store) => store.canvas.loaded)
   const activeId = useAppSelector((store) => store.canvas.active?.id)
   const dispatch = useAppDispatch()
   const setItem = useCallback(
@@ -34,8 +35,10 @@ export default function Items() {
   }
 
   React.useEffect(() => {
-    dispatch(itemsAsync())
-  }, [dispatch])
+    if (!loaded) {
+      dispatch(itemsAsync())
+    }
+  }, [dispatch, loaded])
 
   return (
     <Container maxWidth="xl">

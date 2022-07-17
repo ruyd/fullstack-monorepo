@@ -35,6 +35,7 @@ export interface Drawing extends Entity {
   user?: User
 }
 
+// might be better to add up all open closes hmm
 export function getTimeSpent(d: Drawing): number {
   const first = d.history[0]?.ts || (d.createdAt?.getTime() as number)
   const last = d.history[d.history.length - 1]?.ts as number

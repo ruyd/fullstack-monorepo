@@ -38,7 +38,7 @@ function App() {
 const container = document.getElementById('root')!
 const root = createRoot(container)
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false, cacheTime: 0 } },
+  defaultOptions: { queries: { retry: false } },
 })
 
 root.render(
