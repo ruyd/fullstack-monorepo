@@ -1,7 +1,7 @@
 import express from 'express'
 import { Model, ModelStatic, Order } from 'sequelize/types'
 import { entities } from '../../shared/db'
-import { ReqWithAuth } from '../../shared/auth'
+import { authCheckWare, ReqWithAuth, tokenCheckWare } from '../../shared/auth'
 import { createOrUpdate, deleteIfExists, getIfExists, list } from './controller'
 
 export interface AutoApiConfig {
@@ -126,19 +126,23 @@ export async function listHandler(
  **/
 export function autoApiRouterInject(
   models: ModelStatic<Model>[],
-  router: express.Router,
-  authMiddleware: express.Handler
+  router: express.Router
 ) {
   for (const model of models) {
     const prefix = model.name.toLowerCase()
-    let readAuth = authMiddleware
     const cfg = entities.find((m) => m.name === model.name)
-    if (cfg?.unsecureRead) {
-      readAuth = (rq, rp, n) => n()
+    const check = cfg ? authCheckWare(cfg).check : tokenCheckWare
+    const writeCheck: express.Handler[] = []
+    const readCheck: express.Handler[] = []
+    if (!cfg?.unsecure) {
+      writeCheck.push(check)
     }
-    router.get(`/${prefix}`, readAuth, listHandler.bind(model))
-    router.get(`/${prefix}/:id`, readAuth, getHandler.bind(model))
-    router.post(`/${prefix}`, authMiddleware, saveHandler.bind(model))
-    router.delete(`/${prefix}/:id`, authMiddleware, deleteHandler.bind(model))
+    if (!cfg?.unsecureRead) {
+      readCheck.push(check)
+    }
+    router.get(`/${prefix}`, readCheck, listHandler.bind(model))
+    router.get(`/${prefix}/:id`, readCheck, getHandler.bind(model))
+    router.post(`/${prefix}`, writeCheck, saveHandler.bind(model))
+    router.delete(`/${prefix}/:id`, writeCheck, deleteHandler.bind(model))
   }
 }

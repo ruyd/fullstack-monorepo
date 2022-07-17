@@ -4,7 +4,7 @@ import express, { Express, Request, Response } from 'express'
 import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
-import db from './shared/db'
+import db, { models } from './shared/db'
 import api, { autoApiModels } from './api'
 import { errorHandler } from './shared/errors'
 import { swaggerDocModelInject } from './api/_auto/swagger'
@@ -24,6 +24,7 @@ import { swaggerDocModelInject } from './api/_auto/swagger'
     apis: ['./src/**/swagger.yaml', './src/**/routes.ts'],
   })
 
+  console.log('models', autoApiModels, models)
   swaggerDocModelInject(autoApiModels, swaggerDoc)
 
   app.use(

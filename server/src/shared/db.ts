@@ -26,8 +26,18 @@ export const models: ModelStatic<Model>[] = []
 export const entities: ModelConfig[] = []
 export const db = new Sequelize(config.db.url, {
   ssl: config.db.ssl,
-})
+}) as Sequelize & { entities: ModelConfig[] }
+db.entities = entities
 
+/**
+ * Register defines db model and configures CRUD endpoints
+ *
+ * @param name - table name
+ * @param attributes - columns definitions
+ * @param unsecureRead - Set GET and LIST public (no token needed)
+ * @param roles - restrict to roles like Admin
+ * @returns
+ */
 export function register<T>(
   name: string,
   attributes: ModelAttributes<Model<T>, Attributes<Model<T>>>,

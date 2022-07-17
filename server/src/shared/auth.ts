@@ -5,6 +5,8 @@ import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import config from './config'
 import { AppAccessToken } from '@root/lib'
+import { entities, ModelConfig } from './db'
+import { Model, ModelStatic } from 'sequelize'
 
 export interface oAuthError {
   error?: string
@@ -58,6 +60,43 @@ export async function tokenCheckWare(
   }
 
   return jwtVerify(req, _res, next)
+}
+
+type AuthWare = {
+  config: ModelConfig<Model>
+  check: (
+    req: express.Request,
+    _res: express.Response,
+    next: express.NextFunction
+  ) => Promise<void>
+}
+export function authCheckWare(cfg: ModelConfig<Model>): AuthWare {
+  const self = {} as AuthWare
+  self.config = cfg
+  self.check = async (
+    req: express.Request,
+    _res: express.Response,
+    next: express.NextFunction
+  ) => {
+    const { header, token } = setRequest(req as ReqWithAuth)
+    if (config.auth?.algorithm === 'RS256' && header && token) {
+      const result = await jwkClient.getSigningKey(header.kid)
+      const key = result.getPublicKey()
+      const auth = jwt.verify(token, key, {
+        algorithms: ['RS256'],
+      }) as AppAccessToken
+      if (
+        self?.config?.roles?.length &&
+        !self?.config?.roles?.every((r) => auth.roles.includes(r))
+      ) {
+        throw Error('Unauthorized - you do not have needed role for request')
+      }
+      return next()
+    }
+
+    return jwtVerify(req, _res, next)
+  }
+  return self
 }
 
 export function hasRole(

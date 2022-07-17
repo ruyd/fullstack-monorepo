@@ -1,6 +1,6 @@
 import { User } from '@root/lib'
 import { Model, DataTypes } from 'sequelize'
-import db, { commonOptions } from '../shared/db'
+import db, { commonOptions, register } from '../shared/db'
 
 export type UserInstance = Model<User>
 
@@ -24,6 +24,4 @@ export const UserAttributes = {
   },
 }
 
-export const UserModel = db.define<UserInstance>('user', UserAttributes, {
-  ...commonOptions,
-})
+export const UserModel = register<User>('user', UserAttributes, false)
