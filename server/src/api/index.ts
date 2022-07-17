@@ -1,8 +1,7 @@
 import express from 'express'
 import { autoApiRouterInject } from './_auto/routes'
 import profile from './profile/routes'
-import { UserModel } from '../types/user'
-import { DrawingModel } from '../types'
+import { DrawingModel, UserModel } from '../types'
 
 const router = express.Router()
 router.use('/profile', profile)

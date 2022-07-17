@@ -43,41 +43,29 @@ const jwtVerify = expressjwt({
   algorithms: ['HS256'],
 })
 
-export async function tokenCheckWare(
-  req: express.Request,
-  _res: express.Response,
-  next: express.NextFunction
-) {
-  if (!config?.tokenSecret) {
-    return next()
-  }
-  const { header, token } = setRequest(req as ReqWithAuth)
-  if (config.auth?.algorithm === 'RS256' && header && token) {
-    const result = await jwkClient.getSigningKey(header.kid)
-    const key = result.getPublicKey()
-    jwt.verify(token, key, { algorithms: ['RS256'] })
-    return next()
-  }
-
-  return jwtVerify(req, _res, next)
-}
-
-type AuthWare = {
-  config: ModelConfig<Model>
-  check: (
-    req: express.Request,
-    _res: express.Response,
-    next: express.NextFunction
+export type ModelWare = {
+  config: ModelConfig
+  configWare: express.Handler
+  authWare: (
+    r: express.Request,
+    s: express.Response,
+    n: express.NextFunction
   ) => Promise<void>
 }
-export function authCheckWare(cfg: ModelConfig<Model>): AuthWare {
-  const self = {} as AuthWare
+/**
+ * Returns middleware instance that Checks JWT and Roles
+ * based on Model config
+ * @param cfg
+ * @returns
+ */
+export function getAuthWare(cfg: ModelConfig): ModelWare {
+  const self = {} as ModelWare
   self.config = cfg
-  self.check = async (
+  self.authWare = async function (
     req: express.Request,
     _res: express.Response,
     next: express.NextFunction
-  ) => {
+  ) {
     const { header, token } = setRequest(req as ReqWithAuth)
     if (config.auth?.algorithm === 'RS256' && header && token) {
       const result = await jwkClient.getSigningKey(header.kid)
@@ -86,14 +74,13 @@ export function authCheckWare(cfg: ModelConfig<Model>): AuthWare {
         algorithms: ['RS256'],
       }) as AppAccessToken
       if (
-        self?.config?.roles?.length &&
-        !self?.config?.roles?.every((r) => auth.roles.includes(r))
+        self.config?.roles?.length &&
+        !self.config?.roles?.every((r) => auth.roles.includes(r))
       ) {
         throw Error('Unauthorized - you do not have needed role for request')
       }
       return next()
     }
-
     return jwtVerify(req, _res, next)
   }
   return self
