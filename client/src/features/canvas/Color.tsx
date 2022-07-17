@@ -8,7 +8,7 @@ export default function Color() {
     <Box style={{ position: 'absolute', top: '30%', right: '5%' }}>
       <Stack spacing={1}>
         {colors.map((c) => (
-          <Fab sx={{ backgroundColor: c }} />
+          <Fab key={c} sx={{ backgroundColor: c }} />
         ))}
 
         <Fab>
