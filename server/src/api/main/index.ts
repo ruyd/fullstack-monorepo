@@ -2,6 +2,9 @@ import express from 'express'
 import { DrawingModel } from '../../types'
 import { list } from '../_auto/controller'
 
+/**
+ *  No subprefix, directly to /api
+ */
 const router = express.Router()
 
 router.get('/gallery', async (req, res) => {
