@@ -5,9 +5,10 @@ import cors from 'cors'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
 import db, { models } from './shared/db'
-import api, { autoApiModels } from './api'
+import api from './api'
 import { errorHandler } from './shared/errors'
 import { swaggerDocModelInject } from './api/_auto/swagger'
+import { autoApiRouter } from './api/_auto/routes'
 ;(async () => {
   //Initialize Models
   await db.authenticate()
@@ -15,18 +16,15 @@ import { swaggerDocModelInject } from './api/_auto/swagger'
   await db.sync({ alter: !config.production })
 
   const app: Express = express()
-  app.use(express.json({ limit: '1mb' }))
+  app.use(express.json({ limit: config.jsonLimit }))
   app.use(cors())
 
   //Swagger
   const swaggerDoc = swaggerJsdoc({
     swaggerDefinition: config.swaggerSetup,
-    apis: ['./src/**/swagger.yaml', './src/**/routes.ts'],
+    apis: ['./src/**/swagger.yaml', './src/api/**/*.ts'],
   })
-
-  console.log('models', autoApiModels, models)
-  swaggerDocModelInject(autoApiModels, swaggerDoc)
-
+  swaggerDocModelInject(models, swaggerDoc)
   app.use(
     '/docs',
     swaggerUi.serve,
@@ -36,6 +34,9 @@ import { swaggerDocModelInject } from './api/_auto/swagger'
       },
     })
   )
+
+  //Auto CRUD
+  autoApiRouter(models, api)
 
   //Apply API
   app.use(`/${config.prefix}`, api)

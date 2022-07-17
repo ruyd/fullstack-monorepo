@@ -8,13 +8,6 @@
             "cwd": "${workspaceRoot}/server"
         },
         {
-            "command": "npm start",
-            "name": "Server Lazy",
-            "request": "launch",
-            "type": "node-terminal",
-            "cwd": "${workspaceRoot}/server"
-        },
-        {
             "type": "chrome",
             "request": "launch",
             "name": "Client Chrome",

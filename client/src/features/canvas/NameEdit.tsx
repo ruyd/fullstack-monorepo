@@ -1,4 +1,4 @@
-import { TextField, debounce } from '@mui/material'
+import { TextField } from '@mui/material'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
@@ -20,8 +20,8 @@ export default function NameEdit({
   return (
     <TextField
       inputRef={inputRef}
-      defaultValue={active?.name}
-      onChange={debounce(onNameChange, 100)}
+      value={active?.name || ''}
+      onChange={onNameChange}
       key={`${active.id}-${active.createdAt}`}
     />
   )

@@ -9,6 +9,11 @@
     "baseUrl": ".",
     "outDir": "dist",
     "noEmitOnError": true,
+    "paths": {
+      "@types": [
+        "types"
+      ]
+    }
   },
   "include": [
     "src",

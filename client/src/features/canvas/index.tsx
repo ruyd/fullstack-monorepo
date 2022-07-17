@@ -16,7 +16,6 @@ import { Paths } from 'src/shared/routes'
 import LineSize from './LineSize'
 
 export default function CanvasControl() {
-  console.log('control')
   const dispatch = useAppDispatch()
   const history = useAppSelector((state) => state.canvas?.active?.history)
   const id = useAppSelector((state) => state.canvas?.active?.id)

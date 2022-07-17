@@ -151,10 +151,10 @@ export async function listHandler(
  * @param router - express router
  * @param authMiddleware - token check middleware
  **/
-export function autoApiRouterInject(
+export function autoApiRouter(
   models: ModelStatic<Model>[],
   router: express.Router
-) {
+): void {
   for (const model of models) {
     const cfg = entities.find((m) => m.name === model.name) as ModelConfig
     const authCheck = getAuthWare(cfg).authWare

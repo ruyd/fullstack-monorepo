@@ -7,7 +7,7 @@ TypeScript App Template & FullStack Patterns Showcase
 - Hot Reload Heaven
 - Generic modern redux and react-query without boilerplate
 - Web Workers for expensive computations
-- Automation of npm with custom scripts
+- Automation with custom nodejs scripts
 - vscode debug configurations
 
 ### Challenge

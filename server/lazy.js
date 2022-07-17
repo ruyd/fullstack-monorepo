@@ -5,17 +5,9 @@ const fs = require('fs')
 const { exec, execSync } = require('child_process');
 const options = { env: { FORCE_COLOR: true } }
 
-function wired(text) {
-  console.log(text)
-  const job = exec(text, options)
-  job.stdout.pipe(process.stdout)
-  return new Promise((resolve) => {
-    job.on('exit', () => resolve())
-  })
-}
-
 async function run() {
-  wired('npx tsc --watch')
+  const tsc = exec('npx tsc --watch')
+  tsc.stdout.pipe(process.stdout)
   //Doesn't debug unless execd directly
   const job = exec('nodemon -q dist/src/index.js')
   job.stdout.pipe(process.stdout)
@@ -42,7 +34,9 @@ async function init() {
   console.warn('Warming up node_modules and dist, will take a few...')
   await runAsync('npm i')
   console.log('node_modules: ✔')
-  await runAsync('tsc')
+  await runAsync('tsc').then((code) => {
+    console.log(code)
+  })
   if (fs.existsSync('dist')) {
     console.log('dist: ✔')
     run()

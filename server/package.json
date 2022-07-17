@@ -7,7 +7,8 @@
   "scripts": {
     "build": "npx tsc",
     "start": "node lazy.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
+    "dev": "node lazy.js",
+    "concurrently": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "dist": "nodemon -q dist/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf node_modules package-lock.json dist"
