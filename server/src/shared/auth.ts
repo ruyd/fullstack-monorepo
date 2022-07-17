@@ -84,17 +84,10 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
   return self
 }
 
-/** Just token, no role checks */
-export async function tokenCheckWare() {
-  return getAuthWare().authWare
-}
-
-export function hasRole(
-  req: express.Request & { auth: { roles: string[] } },
-  role: string
-): boolean {
-  return req.auth?.roles?.includes(role)
-}
+/**
+ * Solo JWT check
+ */
+export const tokenCheckWare = getAuthWare().authWare
 
 export function setRequest(req: ReqWithAuth): {
   header?: jwt.JwtHeader
