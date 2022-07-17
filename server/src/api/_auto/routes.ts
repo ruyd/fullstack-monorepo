@@ -2,7 +2,7 @@ import express from 'express'
 import { Model, ModelStatic, Order } from 'sequelize/types'
 import { entities, ModelConfig } from '../../shared/db'
 import { getAuthWare, ReqWithAuth } from '../../shared/auth'
-import { createOrUpdate, deleteIfExists, getIfExists, list } from './controller'
+import { createOrUpdate, getIfExists, list } from './controller'
 
 export interface AutoApiConfig {
   userIdColumn: string
@@ -44,8 +44,34 @@ export async function saveHandler(
   res.json(result)
 }
 
+export async function getUserRelatedRecord(
+  r: express.Request,
+  model: ModelStatic<Model>
+) {
+  const req = r as ReqWithAuth
+  const authId = autoApiConfig.getAuthUserId(req)
+  const instance = await getIfExists(model, req.params.id)
+  if (
+    authId &&
+    Object.keys(model.getAttributes()).includes(autoApiConfig.userIdColumn)
+  ) {
+    const roles = req.config?.roles || []
+    const hasRole = roles ? roles?.every((r) => roles.includes(r)) : false
+    const item = instance.get()
+    if (authId !== item[autoApiConfig.userIdColumn] && !hasRole) {
+      throw new Error('Unauthorized access of another user data')
+    } else {
+      console.warn(
+        `user accesing another user ${model.tableName} ${authId} != 
+        ${item[autoApiConfig.userIdColumn]}`
+      )
+    }
+  }
+  return instance
+}
+
 export async function deleteHandler(
-  this: typeof Model,
+  this: ModelStatic<Model>,
   req: express.Request,
   res: express.Response
 ) {
@@ -53,8 +79,9 @@ export async function deleteHandler(
     throw new Error('this is not defined')
   }
   const model = this as ModelStatic<Model>
-  const result = await deleteIfExists(model, req.params.id)
-  res.json(result)
+  const instance = await getUserRelatedRecord(req, model)
+  instance.destroy()
+  res.json({ success: true })
 }
 
 export async function getHandler(

@@ -29,7 +29,10 @@ export interface oAuthRegistered extends oAuthError {
   email_verified: boolean
 }
 
-export type ReqWithAuth = express.Request & { auth: AppAccessToken }
+export type ReqWithAuth = express.Request & {
+  auth: AppAccessToken
+  config?: ModelConfig
+}
 
 const jwkClient = jwksRsa({
   jwksUri: `${config.auth?.baseUrl}/.well-known/jwks.json`,
@@ -59,7 +62,7 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
     _res: express.Response,
     next: express.NextFunction
   ) {
-    const { header, token } = setRequest(req as ReqWithAuth)
+    const { header, token } = setRequest(req, self.config)
     if (config.auth?.algorithm === 'RS256' && header && token) {
       const result = await jwkClient.getSigningKey(header.kid)
       const key = result.getPublicKey()
@@ -84,10 +87,16 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
  */
 export const tokenCheckWare = getAuthWare().authWare
 
-export function setRequest(req: ReqWithAuth): {
+export function setRequest(
+  r: express.Request,
+  cfg: ModelConfig
+): {
   header?: jwt.JwtHeader
   token?: string
 } {
+  const req = r as ReqWithAuth
+  req.config = cfg
+
   if (!req.headers.authorization?.includes('Bearer ')) {
     return {}
   }
