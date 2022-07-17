@@ -5,8 +5,7 @@ import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import config from './config'
 import { AppAccessToken } from '@root/lib'
-import { entities, ModelConfig } from './db'
-import { Model, ModelStatic } from 'sequelize'
+import { ModelConfig } from './db'
 
 export interface oAuthError {
   error?: string
@@ -58,14 +57,16 @@ export type ModelWare = {
  * @param cfg
  * @returns
  */
-export function getAuthWare(cfg: ModelConfig): ModelWare {
+export function getAuthWare(cfg?: ModelConfig): ModelWare {
   const self = {} as ModelWare
-  self.config = cfg
+  self.config = cfg as ModelConfig
   self.authWare = async function (
     req: express.Request,
     _res: express.Response,
     next: express.NextFunction
   ) {
+    // eslint-disable-next-line no-debugger
+    debugger
     const { header, token } = setRequest(req as ReqWithAuth)
     if (config.auth?.algorithm === 'RS256' && header && token) {
       const result = await jwkClient.getSigningKey(header.kid)
@@ -84,6 +85,26 @@ export function getAuthWare(cfg: ModelConfig): ModelWare {
     return jwtVerify(req, _res, next)
   }
   return self
+}
+
+/** Just token, no role checks */
+export async function tokenCheckWare(
+  req: express.Request,
+  _res: express.Response,
+  next: express.NextFunction
+) {
+  if (!config?.tokenSecret) {
+    return next()
+  }
+  const { header, token } = setRequest(req as ReqWithAuth)
+  if (config.auth?.algorithm === 'RS256' && header && token) {
+    const result = await jwkClient.getSigningKey(header.kid)
+    const key = result.getPublicKey()
+    jwt.verify(token, key, { algorithms: ['RS256'] })
+    return next()
+  }
+
+  return jwtVerify(req, _res, next)
 }
 
 export function hasRole(

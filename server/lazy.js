@@ -5,39 +5,20 @@ const fs = require('fs')
 const { exec, execSync } = require('child_process');
 const options = { env: { FORCE_COLOR: true } }
 
-function wire(job) {
-  job.stdout.on('data', (data) => {
-    console.log(data)
-  })
-
-  job.stderr.on('data', (data) => {
-    console.error(data)
-  })
-
-  job.on('close', (code) => {
-    console.log('lazy exit: ' + code)
-  })
-  job.on('error', (code) => {
-    console.error('error: ' + code)
-  })
-
-}
-
 function wired(text) {
   console.log(text)
-  try {
-    const job = exec(text, options)
-    wire(job)
-    return job
-  } catch (err) {
-    console.error(err)
-  }
-  return null
+  const job = exec(text, options)
+  job.stdout.pipe(process.stdout)
+  return new Promise((resolve) => {
+    job.on('exit', () => resolve())
+  })
 }
 
-function run() {
+async function run() {
   wired('npx tsc --watch')
-  wired('nodemon -q dist/src/index.js')
+  //Doesn't debug unless execd directly
+  const job = exec('nodemon -q dist/src/index.js')
+  job.stdout.pipe(process.stdout)
 }
 
 function runAsync(text) {
