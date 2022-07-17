@@ -83,6 +83,17 @@ export function getDraft() {
   return draft
 }
 
+export function getCopy(original: Drawing) {
+  const active = { ...original, id: 'edit', name: 'Copy' }
+  active.createdAt = new Date()
+  active.updatedAt = active.createdAt
+  const ts = active.createdAt.getTime()
+  active.history.forEach((h) => {
+    h.ts = ts
+  })
+  return active
+}
+
 export function isEmptyCanvas(canvas: HTMLCanvasElement) {
   const blank = document.createElement('canvas')
   blank.width = canvas.width

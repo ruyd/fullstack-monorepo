@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { Drawing } from '@root/lib'
 import { RootState } from '../../shared/store'
 import { get, Method, request } from '../app/thunks'
-import { getDraft } from './helpers'
+import { getCopy, getDraft } from './helpers'
 import { actions } from './slice'
 
 export const itemsAsync = createAsyncThunk(
@@ -24,7 +24,7 @@ export const getAsync = createAsyncThunk(
     if (resp.status === 200) {
       const userId = (getState() as RootState).app.user?.userId
       if (resp.data.userId !== userId) {
-        active = { ...resp.data, id: 'edit', name: 'Copy' }
+        active = getCopy(resp.data)
       }
       dispatch(actions.patch({ active }))
     }
