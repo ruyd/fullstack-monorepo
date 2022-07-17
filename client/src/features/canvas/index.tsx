@@ -1,7 +1,7 @@
 import React, { useRef, startTransition } from 'react'
-import { DrawAction, ActionType } from '@root/lib'
+import { DrawAction, ActionType, Drawing } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { saveAsync } from './thunks'
+import { getAsync, saveAsync } from './thunks'
 import { Fab, Stack } from '@mui/material'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
@@ -11,7 +11,9 @@ import { Canvas } from './Canvas'
 import Color from './Color'
 import Player from './Player'
 import NameEdit from './NameEdit'
-import { useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Paths } from 'src/shared/routes'
+import { AsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 export default function CanvasControl() {
   const dispatch = useAppDispatch()
@@ -23,8 +25,9 @@ export default function CanvasControl() {
   const bufferId = useRef<string | null>(null)
   const nameRef = useRef<HTMLInputElement | null>(null)
   const workerRef = useRef<Worker | null>(null)
-  const params = useParams()
-  console.log(params)
+  const { id: paramId } = useParams()
+  const navigate = useNavigate()
+  const location = useLocation()
 
   const record = (t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth
@@ -119,6 +122,18 @@ export default function CanvasControl() {
       renderHistory()
     })
   }, [id, history, renderHistory, clearCanvas])
+
+  React.useEffect(() => {
+    async function run() {
+      if (paramId) {
+        const res = await dispatch(getAsync(paramId))
+        if ((res?.payload as Drawing)?.id === 'edit') {
+          navigate(`${Paths.Draw}`, { replace: true })
+        }
+      }
+    }
+    run()
+  }, [paramId])
 
   return (
     <>

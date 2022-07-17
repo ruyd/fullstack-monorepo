@@ -14,7 +14,7 @@ import { useCallback } from 'react'
 import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
-import { deleteAsync, loadAsync } from './thunks'
+import { deleteAsync, itemsAsync } from './thunks'
 
 export default function Items() {
   const items = useAppSelector((store) => store.canvas.items)
@@ -34,7 +34,7 @@ export default function Items() {
   }
 
   React.useEffect(() => {
-    dispatch(loadAsync())
+    dispatch(itemsAsync())
   }, [dispatch])
 
   return (

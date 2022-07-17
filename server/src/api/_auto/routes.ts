@@ -1,5 +1,6 @@
 import express from 'express'
 import { Model, ModelStatic, Order } from 'sequelize/types'
+import { entities } from '../../shared/db'
 import { ReqWithAuth } from '../../shared/auth'
 import { createOrUpdate, deleteIfExists, getIfExists, list } from './controller'
 
@@ -130,8 +131,13 @@ export function autoApiRouterInject(
 ) {
   for (const model of models) {
     const prefix = model.name.toLowerCase()
-    router.get(`/${prefix}`, authMiddleware, listHandler.bind(model))
-    router.get(`/${prefix}/:id`, authMiddleware, getHandler.bind(model))
+    let readAuth = authMiddleware
+    const cfg = entities.find((m) => m.name === model.name)
+    if (cfg?.unsecureRead) {
+      readAuth = (rq, rp, n) => n()
+    }
+    router.get(`/${prefix}`, readAuth, listHandler.bind(model))
+    router.get(`/${prefix}/:id`, readAuth, getHandler.bind(model))
     router.post(`/${prefix}`, authMiddleware, saveHandler.bind(model))
     router.delete(`/${prefix}/:id`, authMiddleware, deleteHandler.bind(model))
   }

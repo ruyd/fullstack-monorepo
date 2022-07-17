@@ -25,9 +25,10 @@ import { notify } from 'src/features/app'
 import { useAppDispatch } from 'src/shared/store'
 import ShareIcon from '@mui/icons-material/Share'
 import waiting from './images/looking.svg'
+import { Brightness1Outlined } from '@mui/icons-material'
 
 const StyledImage = styled('img')({
-  maxHeight: '45vh',
+  height: '45vh',
   maxWidth: '90%',
 })
 
@@ -44,24 +45,20 @@ export default function Gallery() {
 
   return (
     <Container>
-      <Grid container spacing={3} justifyContent="center" textAlign="center">
+      <Grid container spacing={3} justifyContent="center">
         {!items?.length && (
-          <Link to={Paths.Draw}>
+          <Link to={Paths.Draw} style={{ textAlign: 'center' }}>
             <StyledImage
               src={waiting}
               alt="looking"
-              title="Waiting for first drawing, be the first"
+              title="Waiting for first drawing"
+              loading="lazy"
             />
           </Link>
         )}
         {items?.map((item: Drawing) => (
           <Grid item key={item.id}>
-            <Card
-              variant="outlined"
-              sx={{
-                borderColor: 'secondary.dark',
-              }}
-            >
+            <Card variant="outlined">
               <CardHeader
                 title={item.name}
                 subheader={<Moment fromNow>{item.createdAt}</Moment>}
