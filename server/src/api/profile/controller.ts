@@ -41,10 +41,6 @@ export async function login(req: express.Request, res: express.Response) {
     throw new Error(response.error_description)
   }
 
-  // const accessToken = decodeToken(response.access_token)
-  // if (accessToken.verified) {
-  // }
-
   const user = await UserModel.findOne({
     where: { email },
   })

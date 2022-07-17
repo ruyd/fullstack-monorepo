@@ -44,12 +44,7 @@ const jwtVerify = expressjwt({
 
 export type ModelWare = {
   config: ModelConfig
-  configWare: express.Handler
-  authWare: (
-    r: express.Request,
-    s: express.Response,
-    n: express.NextFunction
-  ) => Promise<void>
+  authWare: express.Handler
 }
 /**
  * Returns config instance with middleware for JWT and Roles
@@ -75,7 +70,7 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
         self.config?.roles?.length &&
         !self.config?.roles?.every((r) => auth.roles.includes(r))
       ) {
-        throw Error('Unauthorized - you do not have needed role for request')
+        throw Error('Unauthorized - Needs user access role for request')
       }
       return next()
     }
