@@ -6,17 +6,41 @@ export type WorkMessage = {
   width: number
   height: number
   dpr: number
+  stopAt?: number
+  stream?: boolean
 }
 
 const w = self as Window & typeof globalThis
 
-function processHistory({ buffer, width, height, dpr }: WorkMessage) {
+function send(
+  background: OffscreenCanvasRenderingContext2D,
+  width: number,
+  height: number
+) {
+  try {
+    const data = background.getImageData(0, 0, width, height)
+    // eslint-disable-next-line
+    w?.postMessage(data)
+  } catch (err: unknown) {
+    console.error(err)
+  }
+}
+
+function processHistory({
+  buffer,
+  width,
+  height,
+  dpr,
+  stream,
+  stopAt,
+}: WorkMessage) {
   const background = createOffscreen(width, height, dpr)
   if (!background) {
     return
   }
 
-  buffer.forEach(({ t, x, y }) => {
+  let i = 0
+  for (const { t, x, y } of buffer) {
     if (t === ActionType.Open) {
       background.beginPath()
     }
@@ -26,16 +50,16 @@ function processHistory({ buffer, width, height, dpr }: WorkMessage) {
     }
     if (t === ActionType.Close) {
       background.closePath()
+      if (stream) {
+        send(background, width, height)
+      }
     }
-  })
-
-  const data = background.getImageData(0, 0, width, height)
-  try {
-    // eslint-disable-next-line
-    w?.postMessage(data)
-  } catch (err: unknown) {
-    console.error(err)
+    if (stopAt === i) {
+      return
+    }
+    i += 1
   }
+  send(background, width, height)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

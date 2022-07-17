@@ -11,8 +11,8 @@ export default function Color() {
           <Fab sx={{ backgroundColor: c }} />
         ))}
 
-        <Fab sx={{ backgroundColor: 'transparent' }}>
-          <Backspace htmlColor="white" />
+        <Fab>
+          <Backspace />
         </Fab>
       </Stack>
     </Box>
