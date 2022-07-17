@@ -29,6 +29,7 @@ export default function Footer() {
                   style={{ margin: '0 .5rem -.2rem 0', width: 80, height: 20 }}
                   width={80}
                   height={20}
+                  alt="ISC"
                 />
               </a>
               <Text>on {new Date().getFullYear()}</Text>

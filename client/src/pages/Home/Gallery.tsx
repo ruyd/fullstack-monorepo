@@ -1,11 +1,8 @@
 import React from 'react'
 import {
   Avatar,
-  Box,
-  Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardHeader,
   CardMedia,
@@ -25,7 +22,6 @@ import { notify } from 'src/features/app'
 import { useAppDispatch } from 'src/shared/store'
 import ShareIcon from '@mui/icons-material/Share'
 import waiting from './images/looking.svg'
-import { Brightness1Outlined } from '@mui/icons-material'
 
 const StyledImage = styled('img')({
   height: '45vh',
@@ -45,14 +41,13 @@ export default function Gallery() {
 
   return (
     <Container>
-      <Grid container spacing={3} justifyContent="center">
+      <Grid container spacing={2} justifyContent="center">
         {!items?.length && (
           <Link to={Paths.Draw} style={{ textAlign: 'center' }}>
             <StyledImage
               src={waiting}
               alt="looking"
               title="Waiting for first drawing"
-              loading="lazy"
             />
           </Link>
         )}
@@ -69,7 +64,10 @@ export default function Gallery() {
                   />
                 }
                 action={
-                  <IconButton onClick={() => copyLink(item)}>
+                  <IconButton
+                    onClick={() => copyLink(item)}
+                    aria-label="sharing link"
+                  >
                     <ShareIcon />
                   </IconButton>
                 }
@@ -81,7 +79,6 @@ export default function Gallery() {
                   component="img"
                   src={item.thumbnail}
                   alt={item.name}
-                  loading="lazy"
                   style={{
                     height: config.thumbnails.height,
                     width: config.thumbnails.width,

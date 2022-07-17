@@ -7,8 +7,12 @@ import sequelize from './images/sequelize.svg'
 import nodejs from './images/nodejs.svg'
 import { Box, Grid, Typography } from '@mui/material'
 
+const h = 80
+const w = 80
+
 const Logo = styled('img')({
-  height: 80,
+  height: h,
+  width: w,
 })
 
 const logos = [
@@ -29,7 +33,7 @@ export default function Logos() {
       <Grid container spacing={3} justifyContent="center">
         {logos.map((l) => (
           <Grid item key={l[0]}>
-            <Logo src={l[1]} alt={l[0]} title={l[0]} />
+            <Logo src={l[1]} alt={l[0]} title={l[0]} height={h} width={w} />
           </Grid>
         ))}
       </Grid>

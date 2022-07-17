@@ -4,8 +4,8 @@ import { Paths } from 'src/shared/routes'
 
 export default function HeroSection({
   title = 'Fullstack TypeScript sample app',
-  subtitle = 'Software patterns showcase featuring drawings and monorepo template',
-  caption = 'See for yourself',
+  subtitle = 'Software patterns showcase and monorepo template',
+  caption = 'Take it for a spin',
   children,
 }: {
   title?: string
@@ -14,13 +14,13 @@ export default function HeroSection({
   children?: React.ReactNode
 }) {
   return (
-    <Container sx={{ m: '3rem 0 2.5rem 0' }}>
+    <Container sx={{ m: '3rem 0 4rem 0' }}>
       <Box textAlign="center">
         <Typography variant="h4">{title}</Typography>
-        <Typography variant="h6" sx={{ m: '.5rem 0 1.5rem 0' }}>
+        <Typography variant="h5" sx={{ m: '.5rem 0 1.5rem 0' }}>
           {subtitle}
         </Typography>
-        <Button component={Link} to={Paths.Draw}>
+        <Button component={Link} to={Paths.Draw} variant="outlined">
           {caption}
         </Button>
         {children}
