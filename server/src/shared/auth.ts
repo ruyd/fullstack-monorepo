@@ -52,8 +52,7 @@ export type ModelWare = {
   ) => Promise<void>
 }
 /**
- * Returns middleware instance that Checks JWT and Roles
- * based on Model config
+ * Returns config instance with middleware for JWT and Roles
  * @param cfg
  * @returns
  */
@@ -65,8 +64,6 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
     _res: express.Response,
     next: express.NextFunction
   ) {
-    // eslint-disable-next-line no-debugger
-    debugger
     const { header, token } = setRequest(req as ReqWithAuth)
     if (config.auth?.algorithm === 'RS256' && header && token) {
       const result = await jwkClient.getSigningKey(header.kid)
@@ -88,23 +85,8 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
 }
 
 /** Just token, no role checks */
-export async function tokenCheckWare(
-  req: express.Request,
-  _res: express.Response,
-  next: express.NextFunction
-) {
-  if (!config?.tokenSecret) {
-    return next()
-  }
-  const { header, token } = setRequest(req as ReqWithAuth)
-  if (config.auth?.algorithm === 'RS256' && header && token) {
-    const result = await jwkClient.getSigningKey(header.kid)
-    const key = result.getPublicKey()
-    jwt.verify(token, key, { algorithms: ['RS256'] })
-    return next()
-  }
-
-  return jwtVerify(req, _res, next)
+export async function tokenCheckWare() {
+  return getAuthWare().authWare
 }
 
 export function hasRole(
