@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Paths } from 'src/shared/routes'
 import { useAppSelector } from '../shared/store'
 
 export default function AuthCheck({
@@ -11,11 +12,11 @@ export default function AuthCheck({
 }) {
   const token = useAppSelector((state) => state.app.token)
   const navigate = useNavigate()
-  const fullPath = window.location.href.replace(window.location.origin, '')
-  //to allow full url returns use href, state sec might be needed
   React.useEffect(() => {
     if (secure && !token) {
-      navigate('/login?returnTo=' + fullPath, {
+      //to allow full url returns use href, state sec might be needed
+      const fullPath = window.location.href.replace(window.location.origin, '')
+      navigate(Paths.Login + '?returnTo=' + fullPath, {
         replace: true,
       })
     }

@@ -4,10 +4,10 @@ TypeScript App Template & FullStack Patterns Showcase
 
 ## Developer Experience
 
-- Hot Reload Heaven: client, server and packages
+- Hot Reload Heaven
 - Generic modern redux and react-query without boilerplate
 - Web Workers for expensive computations
-- Typed API requests via shared library with express automation
+- Typed API requests via shared library with backend automation
 - Automation of npm with custom scripts
 - vscode debug configurations
 

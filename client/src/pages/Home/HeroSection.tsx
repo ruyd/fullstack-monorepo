@@ -1,18 +1,12 @@
-import { Box, Button, Container, styled, Typography } from '@mui/material'
+import { Box, Button, Container, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
-import HeroImage from '../../images/undraw_complete_design_re_h75h.svg'
-const StyledImage = styled(`img`)(() => ({
-  maxHeight: '20rem',
-  display: 'block',
-  margin: '2rem auto',
-}))
 
 export default function HeroSection({
-  title = 'FullStack TypeScript sample app',
-  subtitle = 'Patterns showcase featuring drawings and monorepo template',
+  title = 'Fullstack TypeScript sample app',
+  subtitle = 'Software patterns showcase featuring drawings and monorepo template',
   caption = 'See for yourself',
-  children = <></>,
+  children,
 }: {
   title?: string
   subtitle?: string

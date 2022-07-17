@@ -15,6 +15,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../shared/store'
 import { RegisterAsync } from '../features/app/thunks'
+import { Paths } from 'src/shared/routes'
 
 export default function Register() {
   const dispatch = useAppDispatch()
@@ -27,7 +28,7 @@ export default function Register() {
     data.forEach((value, key) => (obj[key] = value))
     dispatch(RegisterAsync(obj)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
-        navigate('/login')
+        navigate(Paths.Login)
       }
     })
   }

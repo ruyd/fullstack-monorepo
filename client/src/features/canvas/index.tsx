@@ -11,6 +11,7 @@ import { Canvas } from './Canvas'
 import Color from './Color'
 import Player from './Player'
 import NameEdit from './NameEdit'
+import { useParams } from 'react-router-dom'
 
 export default function CanvasControl() {
   const dispatch = useAppDispatch()
@@ -22,6 +23,8 @@ export default function CanvasControl() {
   const bufferId = useRef<string | null>(null)
   const nameRef = useRef<HTMLInputElement | null>(null)
   const workerRef = useRef<Worker | null>(null)
+  const params = useParams()
+  console.log(params)
 
   const record = (t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth

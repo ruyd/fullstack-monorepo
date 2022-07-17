@@ -43,5 +43,6 @@ export function getDuration(d: Drawing) {
   const secs = Math.round(getTimeSpent(d) / 1000)
   const mins = Math.round(secs / 60)
   const hours = Math.round(mins / 60)
-  return `${hours}:${mins}:${secs}`
+  const what = hours > 0 ? 'hours' : mins > 0 ? 'minutes' : 'seconds'
+  return `${hours}:${mins}:${secs} ${what}`
 }

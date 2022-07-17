@@ -49,7 +49,7 @@ export async function request<
 export const get = <T>(url: string) => request<T>(url, {}, Method.GET)
 
 /**
- * Generic GET Hook for components
+ * Generic API GET Hook for components
  * @param cacheKey
  * @param url
  * @param options react-query useQueryOptions

@@ -11,6 +11,7 @@ export interface AppRoute {
   link?: boolean
   profile?: boolean
   hideFooter?: boolean
+  params?: string[]
 }
 
 export enum Paths {
@@ -50,6 +51,7 @@ export const routes: AppRoute[] = [
     secure: true,
     hideFooter: true,
     link: true,
+    params: ['/:id'],
   },
 ]
 
