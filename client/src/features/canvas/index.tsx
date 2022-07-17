@@ -11,11 +11,11 @@ import { Canvas } from './Canvas'
 import Color from './Color'
 import Player from './Player'
 import NameEdit from './NameEdit'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
-import { AsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 export default function CanvasControl() {
+  console.log('control')
   const dispatch = useAppDispatch()
   const history = useAppSelector((state) => state.canvas?.active?.history)
   const id = useAppSelector((state) => state.canvas?.active?.id)
@@ -26,15 +26,14 @@ export default function CanvasControl() {
   const nameRef = useRef<HTMLInputElement | null>(null)
   const workerRef = useRef<Worker | null>(null)
   const { id: paramId } = useParams()
-  const navigate = useNavigate()
-  const location = useLocation()
+  // const navigate = useNavigate()
 
-  const record = (t: ActionType, x?: number, y?: number) => {
+  const record = React.useCallback((t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth
     const st = contextRef.current?.strokeStyle as string
     const ts = new Date().getTime()
     buffer.current = [...buffer.current, { x, y, t, w, st, ts }]
-  }
+  }, [])
 
   const clearCanvas = React.useCallback(() => {
     const canvas = canvasRef.current
@@ -88,7 +87,7 @@ export default function CanvasControl() {
     //Worker rendering
     dispatch(actions.patch({ loading: true }))
 
-    //Resizing support
+    //Resizing, retina support
     const { width, height } = canvasRef.current.getBoundingClientRect()
     workerRef.current.postMessage({
       buffer: buffer.current,
@@ -125,10 +124,10 @@ export default function CanvasControl() {
 
   React.useEffect(() => {
     async function run() {
-      if (paramId) {
+      if (paramId && id !== paramId) {
         const res = await dispatch(getAsync(paramId))
-        if ((res?.payload as Drawing)?.id === 'edit') {
-          navigate(`${Paths.Draw}`, { replace: true })
+        if ((res?.payload as Drawing)?.id === 'copy') {
+          // navigate(`${Paths.Draw}`, { replace: true })
         }
       }
     }

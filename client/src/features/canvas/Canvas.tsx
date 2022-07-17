@@ -12,6 +12,7 @@ export function Canvas({
   contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>
   record: (t: ActionType, x?: number, y?: number) => void
 }) {
+  console.log('canvas')
   const isDrawing = React.useRef<boolean>(false)
 
   const draw = React.useCallback(
@@ -81,7 +82,7 @@ export function Canvas({
     draw(offsetX, offsetY)
   }
 
-  const onLoadCanvasPrep = React.useCallback(() => {
+  React.useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) {
       return
@@ -89,22 +90,18 @@ export function Canvas({
 
     canvas.width = window.innerWidth - 20
     canvas.height = window.innerHeight - 80
+    adjustResolution(canvas)
 
     const context = canvas.getContext('2d')
     if (!context) {
       return
     }
-    adjustResolution(canvas)
     context.lineCap = 'round'
     context.strokeStyle = 'black'
     context.lineWidth = 5
 
     contextRef.current = context
-  }, [canvasRef, contextRef])
-
-  React.useEffect(() => {
-    onLoadCanvasPrep()
-  }, [onLoadCanvasPrep])
+  }, [canvasRef])
 
   return (
     <>

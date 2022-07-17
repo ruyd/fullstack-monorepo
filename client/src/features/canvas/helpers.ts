@@ -5,7 +5,6 @@ export function adjustResolution(canvas: HTMLCanvasElement) {
   if (!canvas) {
     return
   }
-  console.log('adjustResolution')
 
   const dpr = window.devicePixelRatio
   const rect = canvas.getBoundingClientRect()
@@ -84,7 +83,7 @@ export function getDraft() {
 }
 
 export function getCopy(original: Drawing) {
-  const active = { ...original, id: 'edit', name: 'Copy' }
+  const active = { ...original, id: 'copy', name: 'Copy' }
   active.createdAt = new Date()
   active.updatedAt = active.createdAt
   const ts = active.createdAt.getTime()

@@ -42,7 +42,7 @@ export const saveAsync = createAsyncThunk(
       thumbnail,
     }
 
-    if (['draft', 'edit'].includes(payload.id as string)) {
+    if (['draft', 'copy'].includes(payload.id as string)) {
       payload.id = undefined
     }
 
