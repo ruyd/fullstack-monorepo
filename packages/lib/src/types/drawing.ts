@@ -10,7 +10,6 @@ export enum ActionType {
  * Reducing space as much as possible
  *
  * c: color
- * st: style
  * w: width/size
  * ts: unix timestamp
  */
@@ -21,7 +20,6 @@ export interface DrawAction {
   x?: number
   y?: number
   c?: string
-  st?: string
   w?: number
   ts?: number
 }

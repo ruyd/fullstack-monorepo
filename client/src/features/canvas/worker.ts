@@ -40,7 +40,13 @@ function processHistory({
   }
 
   let i = 0
-  for (const { t, x, y } of buffer) {
+  for (const { t, x, y, c, w } of buffer) {
+    if (c) {
+      background.strokeStyle = c
+    }
+    if (w) {
+      background.lineWidth = w
+    }
     if (t === ActionType.Open) {
       background.beginPath()
     }

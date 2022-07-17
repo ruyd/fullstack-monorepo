@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { Drawing } from '@root/lib'
 import { RootState } from '../../shared/store'
+import { notifyError } from '../app'
 import { get, Method, request } from '../app/thunks'
 import { getCopy, getDraft } from './helpers'
 import { actions } from './slice'
@@ -25,10 +26,12 @@ export const getAsync = createAsyncThunk(
     active = state.canvas.items.find((i) => i.id === id)
     if (!active) {
       const resp = await get<Drawing>(`/drawing/${id}`)
-      if (resp.status === 200) {
-        const own = resp.data.userId === userId
-        active = own ? resp.data : getCopy(resp.data)
+      if (resp.status === 404) {
+        dispatch(notifyError(`Drawing ${id} not found`))
       }
+      const item = resp.data || getDraft()
+      const own = item.userId === userId
+      active = own ? item : getCopy(item)
     }
     dispatch(actions.patchActive(active as Drawing))
     return active

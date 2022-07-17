@@ -2,6 +2,7 @@ import React from 'react'
 
 import { ActionType } from '@root/lib'
 import { adjustResolution } from './helpers'
+import { useAppSelector } from 'src/shared/store'
 
 export function Canvas({
   canvasRef,
@@ -12,7 +13,8 @@ export function Canvas({
   contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>
   record: (t: ActionType, x?: number, y?: number) => void
 }) {
-  console.log('canvas')
+  const color = useAppSelector((state) => state.canvas.color)
+  const size = useAppSelector((state) => state.canvas.size)
   const isDrawing = React.useRef<boolean>(false)
 
   const draw = React.useCallback(
@@ -36,6 +38,13 @@ export function Canvas({
     contextRef.current.beginPath()
     contextRef.current.lineTo(offsetX + 1, offsetY + 1)
     contextRef.current.stroke()
+    if (color === 'transparent') {
+      contextRef.current.globalCompositeOperation = 'destination-out'
+    } else {
+      contextRef.current.globalCompositeOperation = 'source-over'
+      contextRef.current.strokeStyle = color || 'black'
+    }
+    contextRef.current.lineWidth = size || 5
     isDrawing.current = true
     canvasRef.current.style.cursor = 'crosshair'
     record(ActionType.Open, offsetX + 1, offsetY + 1)

@@ -13,6 +13,7 @@ import Player from './Player'
 import NameEdit from './NameEdit'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
+import LineSize from './LineSize'
 
 export default function CanvasControl() {
   console.log('control')
@@ -30,9 +31,9 @@ export default function CanvasControl() {
 
   const record = React.useCallback((t: ActionType, x?: number, y?: number) => {
     const w = contextRef.current?.lineWidth
-    const st = contextRef.current?.strokeStyle as string
+    const c = contextRef.current?.strokeStyle as string
     const ts = new Date().getTime()
-    buffer.current = [...buffer.current, { x, y, t, w, st, ts }]
+    buffer.current = [...buffer.current, { x, y, t, w, c, ts }]
   }, [])
 
   const clearCanvas = React.useCallback(() => {
@@ -137,13 +138,17 @@ export default function CanvasControl() {
   return (
     <>
       <Canvas canvasRef={canvasRef} contextRef={contextRef} record={record} />
+      <NameEdit inputRef={nameRef} />
       <Color />
-      <Stack sx={{ position: 'absolute', right: '1rem', bottom: '10%' }}>
-        <NameEdit inputRef={nameRef} />
+      <Stack
+        sx={{ position: 'absolute', right: '1rem', bottom: '10%' }}
+        spacing={1}
+      >
         <Fab onClick={newHandler}>New</Fab>
         <Fab onClick={clearCanvas}>Clear</Fab>
         <Fab onClick={saveCanvas}>Save</Fab>
       </Stack>
+      <LineSize />
       <LoadingCanvas />
       <Player buffer={buffer} />
       <Items />

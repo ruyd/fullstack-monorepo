@@ -11,6 +11,8 @@ import {
 import { Drawing } from '@root/lib'
 import React from 'react'
 import { useCallback } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Paths } from 'src/shared/routes'
 import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
@@ -21,16 +23,20 @@ export default function Items() {
   const loaded = useAppSelector((store) => store.canvas.loaded)
   const activeId = useAppSelector((store) => store.canvas.active?.id)
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const setItem = useCallback(
     (item: Drawing) => dispatch(actions.patchActive(item)),
     [dispatch]
   )
   const isActive = (item: Drawing) => activeId === item?.id
+  const { id } = useParams()
 
   const deleteItem = async (item: Drawing) => {
     const result = await dispatch(deleteAsync(item.id as string))
     if (result.meta.requestStatus === 'fulfilled') {
-      console.log('deleted')
+      if (id === item.id) {
+        navigate(Paths.Draw, { replace: true })
+      }
     }
   }
 

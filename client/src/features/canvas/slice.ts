@@ -2,18 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Drawing } from '@root/lib'
 import { getDraft } from './helpers'
 
-export interface Brush {
-  size: number
-  color?: string
-  style?: string
-}
-
 export interface CanvasState {
   active: Drawing
   items: Drawing[]
   loaded?: boolean
   loading?: boolean
-  brush?: Brush
+  size?: number
+  color?: string
+  style?: string
 }
 
 const active = getDraft()
