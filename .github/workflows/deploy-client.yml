@@ -24,6 +24,6 @@ jobs:
 
       - name: Build
         run: |
-          npm install -w client
+          npm install
           npm run build -w client
           npm run deploy -w client
