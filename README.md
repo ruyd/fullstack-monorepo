@@ -1,6 +1,6 @@
-# DrawSpace - TypeScript Monorepo Sample
+# Drawspace - TypeScript Monorepo Sample
 
-TypeScript App Template & FullStack Patterns Showcase
+Fullstack TypeScript App Template & Software Patterns Showcase
 
 ## Developer Experience
 
@@ -8,7 +8,8 @@ TypeScript App Template & FullStack Patterns Showcase
 - Generic modern redux and react-query without boilerplate
 - Web Workers for expensive computations
 - Automation with custom nodejs scripts
-- vscode debug configurations
+- Express Automated Backed with Sequelize
+- vscode debug ready and easy
 
 ### Challenge
 
