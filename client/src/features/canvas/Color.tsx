@@ -9,11 +9,19 @@ const colors = ['black', 'red', 'yellow', 'blue', 'green']
 export default function Color() {
   const dispatch = useAppDispatch()
   const activeColor = useAppSelector((state) => state.canvas.color)
-  const setColor = (color: string) => dispatch(actions.patch({ color }))
+  const [prev, setPrev] = React.useState<string | undefined>()
   const isActive = (c: string) => activeColor === c
+  const setColor = (requested: string) => {
+    const color =
+      requested === 'transparent' && activeColor === 'transparent'
+        ? prev
+        : requested
+    dispatch(actions.patch({ color }))
+    setPrev(activeColor)
+  }
 
   return (
-    <Box style={{ position: 'absolute', top: '30%', right: '5%' }}>
+    <Box style={{ position: 'absolute', top: '30%', right: '3%' }}>
       <Stack spacing={1}>
         {colors.map((c) => (
           <Fab

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DrawAction } from '@root/lib'
 import { useAppSelector } from '../../shared/store'
 import StyledSlider from '../../layout/StyledSlider'
@@ -11,12 +11,16 @@ export default function Player({
 }) {
   const active = useAppSelector((state) => state.canvas?.active)
   const max = buffer?.current?.length || 1
-  const marks = React.useMemo(() => {
+  const [marks, setMarks] = React.useState<{ value: number; label: string }[]>(
+    []
+  )
+
+  useEffect(() => {
     const m = [{ value: 0, label: '0' }]
     if (max > 0) {
       m.push({ value: max, label: `${max}` })
     }
-    return m
+    setMarks(m)
   }, [max])
 
   return (

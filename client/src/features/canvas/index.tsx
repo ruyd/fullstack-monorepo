@@ -140,12 +140,18 @@ export default function CanvasControl() {
       <NameEdit inputRef={nameRef} />
       <Color />
       <Stack
-        sx={{ position: 'absolute', right: '1rem', bottom: '10%' }}
+        sx={{ position: 'absolute', right: '3%', bottom: '10%' }}
         spacing={1}
       >
-        <Fab onClick={newHandler}>New</Fab>
-        <Fab onClick={clearCanvas}>Clear</Fab>
-        <Fab onClick={saveCanvas}>Save</Fab>
+        <Fab color="secondary" onClick={newHandler}>
+          New
+        </Fab>
+        <Fab color="secondary" onClick={clearCanvas}>
+          Clear
+        </Fab>
+        <Fab color="secondary" onClick={saveCanvas}>
+          Save
+        </Fab>
       </Stack>
       <LineSize />
       <LoadingCanvas />
