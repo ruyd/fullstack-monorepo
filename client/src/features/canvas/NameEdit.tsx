@@ -32,6 +32,7 @@ export default function NameEdit({
   return (
     <ContainerStyled>
       <TextField
+        variant="standard"
         autoFocus
         accessKey="N"
         inputRef={inputRef}

@@ -3,6 +3,7 @@ import { useAppSelector, useAppDispatch } from '../shared/store'
 import { patch } from '../features/app/slice'
 import {
   Card,
+  CardActionArea,
   Container,
   IconButton,
   SwipeableDrawer,
@@ -26,9 +27,11 @@ export default function DrawerRight() {
       }}
     >
       <Container className="centered" sx={{ flex: '1', textAlign: 'center' }}>
-        <Card sx={{ padding: '2rem' }}>
-          <Typography variant="h4">Placeholder</Typography>
-          <IconButton aria-label="close" onClick={toggleOpen}>
+        <Card sx={{ padding: '2rem' }} onClick={toggleOpen}>
+          <Typography variant="h4" sx={{ pointerEvents: 'none' }}>
+            Placeholder
+          </Typography>
+          <IconButton aria-label="close">
             <CloseIcon />
           </IconButton>
         </Card>

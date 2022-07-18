@@ -44,7 +44,8 @@ export default function CanvasControl() {
     context.clearRect(0, 0, canvas.width, canvas.height)
     buffer.current = []
     bufferId.current = null
-  }, [])
+    navigate(`${Paths.Draw}`, { replace: true })
+  }, [navigate])
 
   const newHandler = React.useCallback(() => {
     clearCanvas()

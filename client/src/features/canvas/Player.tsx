@@ -15,6 +15,8 @@ export default function Player({
     []
   )
 
+  console.log(active)
+
   useEffect(() => {
     const m = [{ value: 0, label: '0' }]
     if (max > 0) {
