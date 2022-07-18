@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-undef */
 const fs = require('fs')
-const { exec, execSync } = require('child_process');
+const { exec } = require('child_process');
 const options = { env: { FORCE_COLOR: true } }
 
 async function run() {
@@ -13,30 +13,14 @@ async function run() {
   job.stdout.pipe(process.stdout)
 }
 
-function runAsync(text) {
-  return new Promise((resolve) => {
-    try {
-      const job = execSync(text, options)
-      console.log(job)
-      job.on('exit', (code) => {
-        console.log('exited')
-        resolve(code)
-      })
-    }
-    catch {
-      console.warn(' ✔ 🙌 You may ignore error above - maybe npm i workplaces glitch"')
-      resolve(-1)
-    }
-  })
-}
-
 async function init() {
   console.warn('Warming up node_modules and dist, will take a few...')
-  await runAsync('npm i')
+  const npm = exec('npm i', options)
+  npm.stdout.pipe(process.stdout)
   console.log('node_modules: ✔')
-  await runAsync('tsc').then((code) => {
-    console.log(code)
-  })
+  const tsc = exec('tsc', options)
+  tsc.stdout.pipe(process.stdout)
+
   if (fs.existsSync('dist')) {
     console.log('dist: ✔')
     run()
