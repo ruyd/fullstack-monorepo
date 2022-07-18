@@ -2,7 +2,7 @@ import React, { useRef, startTransition } from 'react'
 import { DrawAction, ActionType, Drawing } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { getAsync, saveAsync } from './thunks'
-import { Fab, Stack } from '@mui/material'
+import { Container, Fab, Stack } from '@mui/material'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
@@ -136,7 +136,11 @@ export default function CanvasControl() {
   }, [paramId])
 
   return (
-    <>
+    <Container
+      maxWidth={false}
+      disableGutters
+      sx={{ display: 'flex', flexFlow: 'column' }}
+    >
       <Canvas canvasRef={canvasRef} contextRef={contextRef} record={record} />
       <NameEdit inputRef={nameRef} save={saveCanvas} />
       <Color />
@@ -158,6 +162,6 @@ export default function CanvasControl() {
       <LoadingCanvas />
       <Player buffer={buffer} />
       <Items />
-    </>
+    </Container>
   )
 }

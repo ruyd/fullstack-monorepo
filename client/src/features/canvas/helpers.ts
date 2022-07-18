@@ -1,17 +1,32 @@
 import { Drawing } from '@root/lib'
 import config from '../../shared/config'
 
-export function adjustResolution(canvas: HTMLCanvasElement) {
+export function setBrushDefaults(
+  context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
+) {
+  context.lineCap = 'round'
+  context.strokeStyle = 'black'
+  context.lineWidth = config.defaultLineSize
+  context.lineJoin = 'round'
+}
+
+export function adjustToResolution(
+  canvas: HTMLCanvasElement,
+  resize?: boolean
+) {
   if (!canvas) {
     return
   }
 
   const dpr = window.devicePixelRatio
   const rect = canvas.getBoundingClientRect()
-  canvas.width = rect.width * dpr
-  canvas.height = rect.height * dpr
+
+  if (!resize) {
+    console.log('reset')
+    canvas.width = rect.width * dpr
+    canvas.height = rect.height * dpr
+  }
   canvas.getContext('2d')?.scale(dpr, dpr)
-  //https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas
   canvas.style.width = rect.width + 'px'
   canvas.style.height = rect.height + 'px'
 }
@@ -37,7 +52,9 @@ export function createOffscreen(width: number, height: number, dpr: number) {
   if (!context) {
     return
   }
-  context.lineWidth = 5
+
+  setBrushDefaults(context)
+
   return context
 }
 

@@ -55,8 +55,10 @@ export default function Items() {
               key={item.id}
               sx={{
                 border: `solid 1px ${
-                  isActive(item) ? '#eafe34' : 'transparent'
+                  isActive(item) ? '#ab47bc' : 'transparent'
                 }`,
+                borderWidth: '0 0 1px 0',
+                transition: 'all 200ms ease-in',
               }}
             >
               <img

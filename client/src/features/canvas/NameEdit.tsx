@@ -3,7 +3,7 @@ import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
 
-const ContainerStyled = styled(Container)({
+const FieldStyled = styled(TextField)({
   position: 'absolute',
   top: '10%',
   left: '20%',
@@ -30,17 +30,15 @@ export default function NameEdit({
     }
   }
   return (
-    <ContainerStyled>
-      <TextField
-        variant="standard"
-        autoFocus
-        accessKey="N"
-        inputRef={inputRef}
-        value={active?.name || ''}
-        onChange={onNameChange}
-        key={`${active.id}-${active.createdAt}`}
-        onKeyUp={onKeyUp}
-      />
-    </ContainerStyled>
+    <FieldStyled
+      variant="standard"
+      autoFocus={active.id === 'draft'}
+      accessKey="N"
+      inputRef={inputRef}
+      value={active?.name || ''}
+      onChange={onNameChange}
+      key={`${active.id}-${active.createdAt}`}
+      onKeyUp={onKeyUp}
+    />
   )
 }

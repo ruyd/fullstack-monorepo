@@ -1,9 +1,10 @@
 import React from 'react'
 
 import { ActionType } from '@root/lib'
-import { adjustResolution } from './helpers'
+import { adjustToResolution, setBrushDefaults } from './helpers'
 import { useAppSelector } from '../../shared/store'
 import config from '../../shared/config'
+import { Box, Container, Paper } from '@mui/material'
 
 export function Canvas({
   canvasRef,
@@ -94,36 +95,32 @@ export function Canvas({
 
   React.useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) {
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context) {
       return
     }
-
-    canvas.width = window.innerWidth - 20
-    canvas.height = window.innerHeight - 80
-    adjustResolution(canvas)
-
-    const context = canvas.getContext('2d')
-    if (!context) {
-      return
-    }
-    context.lineCap = 'round'
-    context.strokeStyle = 'black'
-    context.lineWidth = config.defaultLineSize
-
+    setBrushDefaults(context)
     contextRef.current = context
+
+    //Responsive
+    adjustToResolution(canvas)
+    const handleResizing = () => {
+      adjustToResolution(canvas, true)
+    }
+    window.addEventListener('resize', handleResizing)
+    return () => window.removeEventListener('resize', () => handleResizing)
   }, [canvasRef])
 
   return (
-    <>
-      <canvas
-        onTouchStart={touchStart}
-        onTouchMove={touchMove}
-        onTouchEnd={finishDrawing}
-        onMouseDown={onMouseStart}
-        onMouseUp={finishDrawing}
-        onMouseMove={onMouseMove}
-        ref={canvasRef}
-      />
-    </>
+    <canvas
+      style={{ flex: 1 }}
+      onTouchStart={touchStart}
+      onTouchMove={touchMove}
+      onTouchEnd={finishDrawing}
+      onMouseDown={onMouseStart}
+      onMouseUp={finishDrawing}
+      onMouseMove={onMouseMove}
+      ref={canvasRef}
+    />
   )
 }
