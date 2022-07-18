@@ -2,13 +2,15 @@
 
 Fullstack TypeScript App Template & Software Patterns Showcase
 
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+
 ## Developer Experience
 
 - Hot Reload Heaven
 - Generic modern redux and react-query without boilerplate
 - Web Workers for expensive computations
 - Automation with custom nodejs scripts
-- Express Automated Backed with Sequelize
+- Express Automated Backend with Sequelize
 - vscode debug ready and easy
 
 ### Challenge
