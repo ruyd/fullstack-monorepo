@@ -14,7 +14,8 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 
 ### Challenge
 
-> Create a drawing web application that allows users to draw/> sketch on an empty piece of “paper” and upload it to a public list of drawings.
+> Create a drawing web application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings.
+
 > Each uploaded drawing will be saved in a persistence layer of your choosing on the backend.
-> IMPORTANT NOTE: The drawings should not be persisted as >bitmaps. This is important for
-> dealing with different display sizes and for keeping the >original data instead of a bitmap representation.
+
+> IMPORTANT NOTE: The drawings should not be persisted as bitmaps. This is important for dealing with different display sizes and for keeping the >original data instead of a bitmap representation.
