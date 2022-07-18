@@ -19,7 +19,7 @@ import { autoApiRouter } from './api/_auto/routes'
   app.use(express.json({ limit: config.jsonLimit }))
   app.use(cors())
 
-  //Swagger
+  //Auto Swagger
   const swaggerDoc = swaggerJsdoc({
     swaggerDefinition: config.swaggerSetup,
     apis: ['./src/**/swagger.yaml', './src/api/**/*.ts'],
@@ -46,7 +46,7 @@ import { autoApiRouter } from './api/_auto/routes'
 
   //Start server
   app.get('/', (req: Request, res: Response) => {
-    res.send('Starter Backend x')
+    res.send(`Starter Backend ${config.swaggerSetup.info.title}`)
   })
 
   app.listen(config.port, () => {
