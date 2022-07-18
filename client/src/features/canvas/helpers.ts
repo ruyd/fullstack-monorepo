@@ -5,7 +5,7 @@ export function setBrushDefaults(
   context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
 ) {
   context.lineCap = 'round'
-  context.strokeStyle = 'black'
+  context.strokeStyle = 'yellow'
   context.lineWidth = config.defaultLineSize
   context.lineJoin = 'round'
 }
@@ -14,24 +14,18 @@ export function adjustToResolution(
   canvas: HTMLCanvasElement,
   resize?: boolean
 ) {
-  if (!canvas) {
+  if (!canvas || resize) {
     return
   }
 
+  const dpr = window.devicePixelRatio
   const rect = canvas.getBoundingClientRect()
-  const percent = (canvas.width - window.innerWidth) / canvas.width
-  const context = canvas?.getContext('2d')
-  const data = context?.getImageData(0, 0, canvas.width, canvas.height)
-  if (rect.width != canvas.width) {
-    canvas.width = rect.width
-    canvas.height = rect.height
-    canvas.style.width = rect.width + 'px'
-    canvas.style.height = rect.height + 'px'
-    if (resize && context) {
-      console.log(percent, canvas.width - rect.width, canvas.width, rect.width)
-      context.putImageData(data as ImageData, 0, 0)
-    }
-  }
+  canvas.width = rect.width * dpr
+  canvas.height = rect.height * dpr
+  canvas.getContext('2d')?.scale(dpr, dpr)
+  //https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas
+  canvas.style.width = rect.width + 'px'
+  canvas.style.height = rect.height + 'px'
 }
 
 export function adjustOffscreenResolution(

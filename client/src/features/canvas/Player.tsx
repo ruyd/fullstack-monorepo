@@ -26,13 +26,8 @@ export default function Player({
   }, [max])
 
   return (
-    <Box sx={{ width: '90%', margin: '0 auto' }}>
-      <StyledSlider
-        valueLabelDisplay="on"
-        max={buffer?.current?.length}
-        color="secondary"
-        marks={marks}
-      />
+    <Box sx={{ width: '300px', margin: '0 auto' }}>
+      <StyledSlider max={buffer?.current?.length} marks={marks} />
     </Box>
   )
 }

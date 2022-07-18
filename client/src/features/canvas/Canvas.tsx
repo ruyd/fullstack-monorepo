@@ -4,7 +4,6 @@ import { ActionType } from '@root/lib'
 import { adjustToResolution, setBrushDefaults } from './helpers'
 import { useAppSelector } from '../../shared/store'
 import config from '../../shared/config'
-import { Box, Container, Paper } from '@mui/material'
 
 export function Canvas({
   canvasRef,
