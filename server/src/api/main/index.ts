@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.get('/gallery', async (req, res) => {
   const items = await list(DrawingModel, {
-    where: { private: true },
+    where: { private: false },
   })
   res.json(items)
 })
