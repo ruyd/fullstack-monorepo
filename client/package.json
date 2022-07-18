@@ -35,7 +35,8 @@
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -58,6 +59,7 @@
   "devDependencies": {
     "@types/offscreencanvas": "^2019.7.0",
     "@types/uuid": "^8.3.4",
+    "gh-pages": "^4.0.0",
     "ts-loader": "^9.3.1"
   }
 }
