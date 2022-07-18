@@ -46,7 +46,16 @@ import { autoApiRouter } from './api/_auto/routes'
 
   //Start server
   app.get('/', (req: Request, res: Response) => {
-    res.send(`Starter Backend ${config.swaggerSetup.info.title}`)
+    res.send(`<html><title>${config.swaggerSetup.info.title}</title>
+    <body style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    ">
+    <div>
+    ⚡️[server]: Server is running at https://localhost:${config.port} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
+    </div>
+    </body></html>`)
   })
 
   app.listen(config.port, () => {
