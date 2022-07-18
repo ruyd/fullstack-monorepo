@@ -14,6 +14,7 @@ import Routing from './layout/Routing'
 import Notifications from './layout/Notifications'
 import { HelmetProvider } from 'react-helmet-async'
 import Footer from './layout/Footer'
+import config from './shared/config'
 
 applyConfig()
 
@@ -46,7 +47,7 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <HelmetProvider>
-          <BrowserRouter>
+          <BrowserRouter basename={config.baseName}>
             <App />
           </BrowserRouter>
         </HelmetProvider>
