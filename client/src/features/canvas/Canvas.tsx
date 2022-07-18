@@ -104,6 +104,7 @@ export function Canvas({
 
     //Responsive
     adjustToResolution(canvas)
+
     const handleResizing = () => {
       adjustToResolution(canvas, true)
     }

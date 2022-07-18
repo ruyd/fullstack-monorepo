@@ -18,17 +18,20 @@ export function adjustToResolution(
     return
   }
 
-  const dpr = window.devicePixelRatio
   const rect = canvas.getBoundingClientRect()
-
-  if (!resize) {
-    console.log('reset')
-    canvas.width = rect.width * dpr
-    canvas.height = rect.height * dpr
+  const percent = (canvas.width - window.innerWidth) / canvas.width
+  const context = canvas?.getContext('2d')
+  const data = context?.getImageData(0, 0, canvas.width, canvas.height)
+  if (rect.width != canvas.width) {
+    canvas.width = rect.width
+    canvas.height = rect.height
+    canvas.style.width = rect.width + 'px'
+    canvas.style.height = rect.height + 'px'
+    if (resize && context) {
+      console.log(percent, canvas.width - rect.width, canvas.width, rect.width)
+      context.putImageData(data as ImageData, 0, 0)
+    }
   }
-  canvas.getContext('2d')?.scale(dpr, dpr)
-  canvas.style.width = rect.width + 'px'
-  canvas.style.height = rect.height + 'px'
 }
 
 export function adjustOffscreenResolution(

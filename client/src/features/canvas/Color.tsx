@@ -4,7 +4,7 @@ import { Box, Fab, Stack } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { actions } from './slice'
 
-const colors = ['black', 'red', 'yellow', 'blue', 'green']
+const colors = ['yellow', 'red', 'blue', 'green', 'black']
 
 export default function Color() {
   const dispatch = useAppDispatch()
