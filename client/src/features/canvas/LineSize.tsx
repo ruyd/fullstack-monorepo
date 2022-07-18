@@ -1,4 +1,5 @@
 import { Container, Slider, styled } from '@mui/material'
+import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { actions } from './slice'
 
@@ -17,7 +18,7 @@ export default function LineSize() {
   return (
     <ContainerStyled>
       <Slider
-        value={activeSize || 5}
+        value={activeSize || config.defaultLineSize}
         onChange={onSize}
         min={1}
         max={100}

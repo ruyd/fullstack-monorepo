@@ -137,7 +137,7 @@ export default function CanvasControl() {
   return (
     <>
       <Canvas canvasRef={canvasRef} contextRef={contextRef} record={record} />
-      <NameEdit inputRef={nameRef} />
+      <NameEdit inputRef={nameRef} save={saveCanvas} />
       <Color />
       <Stack
         sx={{ position: 'absolute', right: '3%', bottom: '10%' }}

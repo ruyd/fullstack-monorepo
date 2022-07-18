@@ -2,7 +2,8 @@ import React from 'react'
 
 import { ActionType } from '@root/lib'
 import { adjustResolution } from './helpers'
-import { useAppSelector } from 'src/shared/store'
+import { useAppSelector } from '../../shared/store'
+import config from '../../shared/config'
 
 export function Canvas({
   canvasRef,
@@ -44,7 +45,7 @@ export function Canvas({
       contextRef.current.globalCompositeOperation = 'source-over'
       contextRef.current.strokeStyle = color || 'black'
     }
-    contextRef.current.lineWidth = size || 5
+    contextRef.current.lineWidth = size || config.defaultLineSize
     isDrawing.current = true
     canvasRef.current.style.cursor = 'crosshair'
     record(ActionType.Open, offsetX + 1, offsetY + 1)
@@ -107,7 +108,7 @@ export function Canvas({
     }
     context.lineCap = 'round'
     context.strokeStyle = 'black'
-    context.lineWidth = 5
+    context.lineWidth = config.defaultLineSize
 
     contextRef.current = context
   }, [canvasRef])
