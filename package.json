@@ -41,6 +41,7 @@
         "eslint-plugin-no-only-tests": "^2.6.0",
         "eslint-plugin-react": "^7.30.1",
         "eslint-plugin-react-hooks": "^4.6.0",
+        "gh-pages": "^4.0.0",
         "source-map-loader": "^4.0.0",
         "tsconfig-paths-webpack-plugin": "^3.5.1",
         "typescript": "~4.7.4"

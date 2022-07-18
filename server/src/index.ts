@@ -53,14 +53,14 @@ import { autoApiRouter } from './api/_auto/routes'
       justify-content: center;
     ">
     <div>
-    ⚡️[server]: Server is running at https://localhost:${config.port} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
+    ⚡️[server]: Server is running at http://localhost:${config.port} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
     </div>
     </body></html>`)
   })
 
   app.listen(config.port, () => {
     console.log(
-      `⚡️[server]: Server is running at https://localhost:${config.port} with SwaggerUI Admin at ${config.swaggerSetup.basePath}`
+      `⚡️[server]: Server is running at http://localhost:${config.port} with SwaggerUI Admin at ${config.swaggerSetup.basePath}`
     )
   })
 })()
