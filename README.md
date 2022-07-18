@@ -10,7 +10,13 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 - Automated nodejs scripts
 - Automated Backend with Sequelize
 
-### Made with:
+### About App
+
+> Challenge: Create a drawing web application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings.
+> Each uploaded drawing will be saved in a persistence layer of your choosing on the backend.
+> NOTE: The drawings should not be persisted as bitmaps.
+
+### Made with
 
 - TypeScript
 - React
@@ -20,11 +26,5 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 - NodeJS/Express
 - Swagger
 - Sequelize
-
-### About App
-
-> Challenge: Create a drawing web application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings.
-> Each uploaded drawing will be saved in a persistence layer of your choosing on the backend.
-> NOTE: The drawings should not be persisted as bitmaps.
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
