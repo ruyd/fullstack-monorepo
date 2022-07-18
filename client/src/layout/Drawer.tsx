@@ -1,10 +1,13 @@
-import Drawer from '@mui/material/Drawer'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close'
 import { useAppSelector, useAppDispatch } from '../shared/store'
 import { patch } from '../features/app/slice'
-import { Paper } from '@mui/material'
+import {
+  Card,
+  Container,
+  IconButton,
+  SwipeableDrawer,
+  Typography,
+} from '@mui/material'
 
 export default function DrawerRight() {
   const dispatch = useAppDispatch()
@@ -13,29 +16,23 @@ export default function DrawerRight() {
     dispatch(patch({ drawerRightOpen: !open }))
   }
   return (
-    <Drawer
+    <SwipeableDrawer
       anchor="right"
-      open={open}
+      open={!!open}
       onClose={toggleOpen}
+      onOpen={() => ''}
       ModalProps={{
         keepMounted: true,
       }}
     >
-      <Paper sx={{ width: '300px', flex: 1 }}>
-        <div className="drawer-header">
-          <div className="drawer-header-title">
-            <Typography variant="h6">Drawer Right</Typography>
-          </div>
-          <div className="drawer-header-close">
-            <IconButton aria-label="close" onClick={toggleOpen}>
-              <CloseIcon />
-            </IconButton>
-          </div>
-        </div>
-        <div className="drawer-content">
-          <Typography variant="h6">Drawer Right</Typography>
-        </div>
-      </Paper>
-    </Drawer>
+      <Container className="centered" sx={{ flex: '1', textAlign: 'center' }}>
+        <Card sx={{ padding: '2rem' }}>
+          <Typography variant="h4">Placeholder</Typography>
+          <IconButton aria-label="close" onClick={toggleOpen}>
+            <CloseIcon />
+          </IconButton>
+        </Card>
+      </Container>
+    </SwipeableDrawer>
   )
 }

@@ -184,6 +184,9 @@ export default function HeaderNavBar() {
                   <Typography textAlign="center">{setting.title}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleMenuToggle}>
+                <Typography textAlign="center">Drawer</Typography>
+              </MenuItem>
               <MenuItem onClick={handleThemeToggle}>
                 <Typography textAlign="center">Theme</Typography>
               </MenuItem>

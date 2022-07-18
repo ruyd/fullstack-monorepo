@@ -2,7 +2,6 @@ import { Container, styled, TextField } from '@mui/material'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
-import { saveAsync } from './thunks'
 
 const ContainerStyled = styled(Container)({
   position: 'absolute',
