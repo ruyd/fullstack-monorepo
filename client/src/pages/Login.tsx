@@ -29,7 +29,7 @@ export default function Login() {
     })
   }
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" className="centered">
       <Box
         sx={{
           display: 'flex',

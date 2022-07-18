@@ -45,7 +45,7 @@ import { autoApiRouter } from './api/_auto/routes'
   app.use(errorHandler)
 
   //Start server
-  app.get('/', (req: Request, res: Response) => {
+  app.get('/', (_req: Request, res: Response) => {
     res.send(`<html><title>${config.swaggerSetup.info.title}</title>
     <body style="
       display: flex;

@@ -33,7 +33,7 @@ export default function Register() {
     })
   }
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" className="centered">
       <Box
         sx={{
           display: 'flex',
