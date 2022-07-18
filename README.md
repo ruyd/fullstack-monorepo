@@ -1,4 +1,4 @@
-# Drawspace - TypeScript Monorepo Sample
+# Drawspace - TypeScript Sample Monorepo
 
 Fullstack TypeScript App Template & Software Patterns Showcase
 
