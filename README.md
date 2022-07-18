@@ -6,7 +6,7 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 
 ## Developer Experience 🙌💕😎✨
 
-- Hot Reload and vscode Debug Heaven
+- Hot Reload and Debug Heaven
 - Generic modern redux and react-query
 - Web Workers for expensive computations
 - Automated nodejs scripts
