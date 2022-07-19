@@ -25,6 +25,6 @@ jobs:
           npm install
           npm run build -w client
           git config --global user.email "ruydelgado@gmail.com"
-          git config --global user.name = "Ruy-CI"
+          git config --global user.name = "RD"
           git config --global user.password = "${{ secrets.PAT }}$"
           npm run deploy -w client
