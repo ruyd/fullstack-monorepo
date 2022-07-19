@@ -1,9 +1,4 @@
-import {
-  AnyAction,
-  createAsyncThunk,
-  PayloadAction,
-  ThunkDispatch,
-} from '@reduxjs/toolkit'
+import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, loginRedirect, onLogin } from '../../shared/auth'

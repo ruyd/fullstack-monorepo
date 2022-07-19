@@ -5,7 +5,6 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import LoadingLine from './LoadingLine'
 import { TypographyProps } from '@mui/system'
-import { Link } from 'react-router-dom'
 
 const Text = ({
   children,

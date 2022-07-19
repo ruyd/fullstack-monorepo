@@ -3,7 +3,6 @@ import { useAppSelector, useAppDispatch } from '../shared/store'
 import { patch } from '../features/app/slice'
 import {
   Card,
-  CardActionArea,
   Container,
   IconButton,
   SwipeableDrawer,
