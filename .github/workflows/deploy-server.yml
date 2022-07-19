@@ -1,10 +1,10 @@
-name: Client CICD
+name: Server CICD
 
 on:
   push:
     branches: ["master"]
     paths:
-      - "client/**"
+      - "server/**"
 
 jobs:
   publish:
@@ -25,10 +25,11 @@ jobs:
       - name: Build
         run: |
           npm install
-          npm run build -w client
+          npm run build -w server
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./client/build
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "drawspace-api"
+          heroku_email: "ruydelgado@gmail.com"
