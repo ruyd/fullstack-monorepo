@@ -26,11 +26,3 @@ jobs:
           BRANCH: heroku
           FOLDER: "server"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Deploy
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "drawspace-api"
-          heroku_email: "ruydelgado@gmail.com"
-          branch: "heroku"
