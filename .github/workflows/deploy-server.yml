@@ -4,7 +4,8 @@ on:
   push:
     branches: ["master"]
     paths:
-      - "server/**"
+      - "*/**"
+      - "!client/**"
 
 jobs:
   publish:
