@@ -1,4 +1,4 @@
-name: Client Delivery
+name: Client CICD
 
 on:
   push:
