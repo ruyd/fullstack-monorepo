@@ -34,4 +34,4 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "drawspace-api"
           heroku_email: "ruydelgado@gmail.com"
-          appdir: "server, packages/lib "
+          appdir: "server, packages/lib"
