@@ -3,9 +3,11 @@ name: Client Delivery
 on:
   push:
     branches: ["master"]
+    paths:
+      - "client/**"
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     strategy:
