@@ -5,26 +5,11 @@ const fs = require('fs')
 const { exec } = require('child_process');
 const options = { env: { FORCE_COLOR: true } }
 
-function wire(job) {
-  job.stdout.on('data', (data) => {
-    console.log(data)
-  })
-
-  job.stderr.on('data', (data) => {
-    console.error(data)
-  })
-
-  job.on('close', (code) => {
-    console.log('lazy exit: ' + code)
-  })
-  job.on('error', (code) => {
-    console.error('error: ' + code)
-  })
-}
 
 function wired(text) {
   const job = exec(text, options)
-  wire(job)
+  job.stdout.pipe(process.stdout)
+  job.stderr.pipe(process.stdout)
   return job
 }
 
@@ -45,13 +30,17 @@ if (!fs.existsSync('node_modules')) {
 }
 
 if (!fs.existsSync('server/.env')) {
-  console.error('Missing .env file for server')
+  console.warn('client .env needs setup, creating... 👀')
+  const cfg = fs.readFileSync("setup/sample.env")
+  fs.writeFileSync("server/.env", cfg)
 } else {
   console.info('senv: check')
 }
 
 if (!fs.existsSync('client/.env')) {
-  console.error('Missing .env file for server')
+  console.warn('client .env needs setup, creating... 👀')
+  const cfg = fs.readFileSync("client/setup/sample.env")
+  fs.writeFileSync("client/.env", cfg)
 } else {
   console.info('cenv: check')
 }
