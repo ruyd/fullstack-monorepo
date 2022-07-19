@@ -25,13 +25,13 @@ jobs:
           node-version: 16.x
       - name: npm install and build
         run: |
-          npm install
-          npm run build
+          npm install -w server
+          npm run build -w server
 
       - name: copy build output to branch
         uses: s0/git-publish-subdir-action@develop
         env:
           REPO: self
-          FOLDER: build
+          FOLDER: server/build
           BRANCH: heroku
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

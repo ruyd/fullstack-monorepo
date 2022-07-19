@@ -2,7 +2,7 @@
   "name": "@root/server",
   "version": "1.0.0",
   "private": true,
-  "description": "",
+  "description": "Auto Express Backend",
   "main": "src/index.js",
   "scripts": {
     "build": "npx tsc",
