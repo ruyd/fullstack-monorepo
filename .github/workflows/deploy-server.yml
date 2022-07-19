@@ -1,4 +1,4 @@
-name: Server Delivery
+name: Server CICD
 
 on:
   push:
