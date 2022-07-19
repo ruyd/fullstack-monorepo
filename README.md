@@ -2,9 +2,10 @@
 
 Fullstack TypeScript App Template & Software Patterns Showcase
 
-[![Client Deploy](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml)(https://ruyd.github.io/fullstack-monorepo)
+[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml)
+[![Demo](https://img.shields.io/badge/DEMO-UP-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
 
-[![Server Deploy](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
+[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
 
 ## Developer Experience 🙌💕😎✨
 
