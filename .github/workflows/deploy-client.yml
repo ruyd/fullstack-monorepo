@@ -24,4 +24,6 @@ jobs:
         run: |
           npm install
           npm run build -w client
+          git config --global user.email "ruydelgado@gmail.com"
+          git config --global user.name = "Ruy Delgado"
           npm run deploy -w client
