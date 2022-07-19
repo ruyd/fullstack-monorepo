@@ -6,7 +6,7 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 [![Demo](https://img.shields.io/badge/Deployment-GITHUB%20PAGES-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
 
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
-[![Demo](https://img.shields.io/badge/Deployment-GOODLE%20CLOUD-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
+[![Demo](https://img.shields.io/badge/Deployment-HEROKU-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
 
 ## Developer Experience 🙌💕😎✨
 
