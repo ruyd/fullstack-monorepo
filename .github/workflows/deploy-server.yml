@@ -1,4 +1,4 @@
-name: Client Delivery
+name: Server Delivery
 
 on:
   push:
@@ -23,10 +23,8 @@ jobs:
       - name: Build
         run: |
           npm install
-          npm run build -w client
+          npm run build -w server
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./client/build
+        run: |
+          echo 'pending'
