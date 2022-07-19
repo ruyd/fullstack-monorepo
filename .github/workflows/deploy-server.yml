@@ -6,7 +6,7 @@ on:
     paths:
       - "*/**"
       - "!client/**"
-      - "!**/deploy-client.yaml"
+      - "!*/deploy-client.yml"
 
 jobs:
   publish:
