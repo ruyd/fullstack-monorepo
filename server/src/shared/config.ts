@@ -34,7 +34,7 @@ const config: Config = {
   tokenSecret: process.env.TOKEN_SECRET,
   jsonLimit: process.env.JSON_LIMIT || '1mb',
   db: {
-    url: process.env.DB_URL || '',
+    url: process.env.DATABASE_URL || '',
     schema: process.env.DB_SCHEMA || 'public',
     ssl: process.env.DB_SSL === 'true',
   },

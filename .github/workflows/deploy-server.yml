@@ -24,5 +24,5 @@ jobs:
         env:
           REPO: self
           BRANCH: heroku
-          FOLDER: "server"
+          FOLDER: server
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
