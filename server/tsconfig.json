@@ -3,6 +3,7 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "removeComments": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
