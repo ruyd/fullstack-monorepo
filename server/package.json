@@ -5,8 +5,8 @@
   "description": "Auto Express Backend",
   "main": "src/index.js",
   "scripts": {
-    "build": "npx tsc",
-    "start": "node lazy.js",
+    "build": "npx tsc --build --verbose",
+    "start": "node dist/server/src/index.js",
     "dev": "node lazy.js",
     "concurrently": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "dist": "nodemon -q dist/src/index.js",
