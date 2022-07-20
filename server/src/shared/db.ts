@@ -28,8 +28,9 @@ export const db = new Sequelize(config.db.url, {
   ssl: config.db.ssl,
   dialectOptions: config.db.ssl
     ? {
+        dialect: 'postgresql',
         ssl: {
-          require: config.db.ssl,
+          require: true,
           rejectUnauthorized: false,
         },
       }
