@@ -16,7 +16,7 @@ export enum Method {
  * Axios wrapper for thunks with token from onLogin
  */
 export async function request<
-  R = { success: true } | unknown,
+  R = { success: boolean; message: string },
   T = Record<string, unknown>
 >(
   url: string,
@@ -137,9 +137,7 @@ export const editProfileAsync = createAsyncThunk(
 export const forgotAsync = createAsyncThunk(
   'app/forgot',
   async (_, { dispatch }) => {
-    const response = await request<{ success: boolean; message: string }>(
-      'profile/forgot'
-    )
+    const response = await request('profile/forgot')
     dispatch(notify(response.data?.message || 'Recovery could not be sent'))
   }
 )
