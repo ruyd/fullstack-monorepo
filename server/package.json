@@ -2,14 +2,14 @@
   "name": "@root/server",
   "version": "1.0.0",
   "private": true,
-  "description": "Auto Express Backend",
+  "description": "Automated Express Backend",
   "main": "src/index.js",
   "scripts": {
     "build": "npx tsc --build --verbose",
-    "start": "node dist/server/src/index.js",
+    "start": "node dist/src/index.js",
     "dev": "node dev.js",
     "concurrently": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
-    "mon": "nodemon -q dist/server/src/index.js",
+    "mon": "nodemon -q dist/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf node_modules package-lock.json dist"
   },
