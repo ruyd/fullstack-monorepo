@@ -9,7 +9,7 @@ ENV_DIR=${3:-}
 
 PROJECT_PATH=src
 
-echo "-----> My Subdir buildpack: path is $PROJECT_PATH"
+echo "-----> monorepo post cleanup buildpack: path is $PROJECT_PATH"
 npm list
 # echo "       creating cache: $CACHE_DIR"
 # mkdir -p $CACHE_DIR
