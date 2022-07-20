@@ -53,7 +53,7 @@ import { autoApiRouter } from './api/_auto/routes'
       justify-content: center;
     ">
     <div>
-    ⚡️[server]: Backend is running at ${req.protocol}://${req.hostname}:${process.env.PORT} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
+    ⚡️[server]: Backend is running at ${req.protocol}://${req.headers.host} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
     </div>
     </body></html>`)
   })
