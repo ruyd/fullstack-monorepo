@@ -5,6 +5,7 @@ on:
     branches: ["master"]
     paths:
       - "client/**"
+      - "packages/**"
 jobs:
   publish:
     runs-on: ubuntu-latest
