@@ -32,7 +32,7 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 - Create Database and/or get connection URL
 - /npm start or vscode debug F5 to create .env files
 - Set server/.env DB_URL ie: postgres://postgres:password@localhost:5432/draw
-- For Auth0, set AUTH_CLIENT_ID and SECRET with values from dashboard
+- For Auth0, set AUTH BASE_URL CLIENT_ID and SECRET with values from dashboard
 - In dashboard/rules add enrichToken rule: /server/setup/Auth0.js
 - Rerun npm start and vscode F5 to start server
 
