@@ -101,7 +101,7 @@ export default function Login() {
                 component={Link}
                 to={`${Paths.Register}?returnTo=${returnTo}`}
               >
-                or Register if new here
+                or Register if new
               </MuiLink>
             </Grid>
           </Grid>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Backspace, Check } from '@mui/icons-material'
 import { Box, BoxProps, Fab, Stack } from '@mui/material'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
 
 const colors = ['yellow', 'red', 'blue', 'green', 'black']
