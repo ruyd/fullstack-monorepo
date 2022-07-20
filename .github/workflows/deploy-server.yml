@@ -6,6 +6,7 @@ on:
     paths:
       - "packages/**"
       - "server/**"
+      - ".github/workflows/deploy-server.yml"
 
 jobs:
   publish:
