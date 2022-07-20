@@ -7,13 +7,13 @@
     },
     "references": [
         {
-            "client": "client"
+            "path": "client"
         },
         {
-            "packages": "packages"
+            "path": "packages"
         },
         {
-            "server": "server"
+            "path": "server"
         }
     ],
 }

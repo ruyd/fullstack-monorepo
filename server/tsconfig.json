@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -25,7 +28,7 @@
   ],
   "references": [
     {
-      "@root/lib": "../packages/lib"
+      "path": "../packages/lib"
     }
   ]
 }

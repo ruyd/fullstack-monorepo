@@ -1,8 +1,11 @@
 {
   "name": "@root/lib",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": true,
-  "main": "src/index.js",
+  "exports": {
+    ".": "./dist/src/index.js",
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "build": "tsc --build",
     "lint": "eslint .",
