@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { Drawing } from '@root/lib'
 import { RootState } from '../../shared/store'
-import { notifyError } from '../app'
+import { notify, notifyError } from '../app'
 import { get, Method, request } from '../app/thunks'
 import { getCopy, getDraft } from './helpers'
 import { actions } from './slice'
@@ -55,6 +55,7 @@ export const saveAsync = createAsyncThunk(
     const response = await request<Drawing>('/drawing', payload)
     if (response.status === 200) {
       dispatch(actions.onSave(response.data))
+      dispatch(notify('Saved, scroll down to see'))
     }
     return response.data
   }

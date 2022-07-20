@@ -1,12 +1,12 @@
 import React from 'react'
 import { Backspace, Check } from '@mui/icons-material'
-import { Box, Fab, Stack } from '@mui/material'
+import { Box, BoxProps, Fab, Stack } from '@mui/material'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { actions } from './slice'
 
 const colors = ['yellow', 'red', 'blue', 'green', 'black']
 
-export default function Color() {
+export default function Color(props: BoxProps) {
   const dispatch = useAppDispatch()
   const activeColor = useAppSelector((state) => state.canvas.color)
   const [prev, setPrev] = React.useState<string | undefined>()
@@ -21,7 +21,7 @@ export default function Color() {
   }
 
   return (
-    <Box style={{ position: 'absolute', top: '30%', right: '3%' }}>
+    <Box {...props}>
       <Stack spacing={1}>
         {colors.map((c) => (
           <Fab

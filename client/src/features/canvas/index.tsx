@@ -2,7 +2,7 @@ import React, { useRef, startTransition } from 'react'
 import { DrawAction, ActionType, Drawing } from '@root/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { getAsync, saveAsync } from './thunks'
-import { Container, Fab, Stack } from '@mui/material'
+import { Box, Container, Fab, Stack } from '@mui/material'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import Items from './Items'
@@ -143,21 +143,20 @@ export default function CanvasControl() {
     >
       <Canvas canvasRef={canvasRef} contextRef={contextRef} record={record} />
       <NameEdit inputRef={nameRef} save={saveCanvas} />
-      <Color />
-      <Stack
-        sx={{ position: 'absolute', right: '3%', bottom: '10%' }}
-        spacing={1}
-      >
-        <Fab color="secondary" onClick={newHandler}>
-          New
-        </Fab>
-        <Fab color="secondary" onClick={clearCanvas}>
-          Clear
-        </Fab>
-        <Fab color="secondary" onClick={saveCanvas}>
-          Save
-        </Fab>
-      </Stack>
+      <Box sx={{ position: 'absolute', top: '30%', right: '3%' }}>
+        <Color />
+        <Stack spacing={1} mt="1rem">
+          <Fab color="secondary" onClick={newHandler}>
+            New
+          </Fab>
+          <Fab color="secondary" onClick={clearCanvas}>
+            Clear
+          </Fab>
+          <Fab color="secondary" onClick={saveCanvas}>
+            Save
+          </Fab>
+        </Stack>
+      </Box>
       <LineSize />
       <LoadingCanvas />
       <Player buffer={buffer} />
