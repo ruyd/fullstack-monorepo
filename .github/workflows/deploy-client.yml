@@ -4,10 +4,7 @@ on:
   push:
     branches: ["master"]
     paths:
-      - "*/**"
-      - "!server/**"
-      - "!.github/workflows/deploy-server.yml"
-
+      - "client/**"
 jobs:
   publish:
     runs-on: ubuntu-latest
