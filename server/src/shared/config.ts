@@ -54,12 +54,10 @@ const config: Config = {
     },
     servers: [
       {
-        url: `http://localhost:${process.env.PORT}/${prefix}`,
-        description: `localhost:${process.env.PORT}`,
-      },
-      {
-        url: `https://${process.env.HOST}:${process.env.PORT}/${prefix}`,
-        description: `${process.env.HOST}:${process.env.PORT}`,
+        url: `http${process.env.HOST ? 's' : ''}://${
+          process.env.HOST || 'localhost'
+        }:${process.env.PORT}/${prefix}`,
+        description: `${process.env.HOST || 'localhost'}:${process.env.PORT}`,
       },
     ],
     basePath: '/docs',
