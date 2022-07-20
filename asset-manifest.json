@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/fullstack-monorepo/static/css/main.a50beeed.css",
-    "main.js": "/fullstack-monorepo/static/js/main.cc7eea7d.js",
+    "main.js": "/fullstack-monorepo/static/js/main.38f31ee1.js",
     "static/js/273.d28b1de0.chunk.js": "/fullstack-monorepo/static/js/273.d28b1de0.chunk.js",
     "static/js/109.87eb12c4.chunk.js": "/fullstack-monorepo/static/js/109.87eb12c4.chunk.js",
     "static/js/343.3977884c.chunk.js": "/fullstack-monorepo/static/js/343.3977884c.chunk.js",
     "static/js/710.d48d0ecd.chunk.js": "/fullstack-monorepo/static/js/710.d48d0ecd.chunk.js",
     "static/js/699.9b579c62.chunk.js": "/fullstack-monorepo/static/js/699.9b579c62.chunk.js",
-    "static/js/800.324e7524.chunk.js": "/fullstack-monorepo/static/js/800.324e7524.chunk.js",
+    "static/js/800.4831d327.chunk.js": "/fullstack-monorepo/static/js/800.4831d327.chunk.js",
     "static/js/163.736bde53.chunk.js": "/fullstack-monorepo/static/js/163.736bde53.chunk.js",
     "static/js/435.79fc30ee.chunk.js": "/fullstack-monorepo/static/js/435.79fc30ee.chunk.js",
     "static/js/689.e71d1c90.chunk.js": "/fullstack-monorepo/static/js/689.e71d1c90.chunk.js",
@@ -21,13 +21,13 @@
     "static/media/redux.svg": "/fullstack-monorepo/static/media/redux.b2e5a01e505f739f1484b881277d5186.svg",
     "index.html": "/fullstack-monorepo/index.html",
     "main.a50beeed.css.map": "/fullstack-monorepo/static/css/main.a50beeed.css.map",
-    "main.cc7eea7d.js.map": "/fullstack-monorepo/static/js/main.cc7eea7d.js.map",
+    "main.38f31ee1.js.map": "/fullstack-monorepo/static/js/main.38f31ee1.js.map",
     "273.d28b1de0.chunk.js.map": "/fullstack-monorepo/static/js/273.d28b1de0.chunk.js.map",
     "109.87eb12c4.chunk.js.map": "/fullstack-monorepo/static/js/109.87eb12c4.chunk.js.map",
     "343.3977884c.chunk.js.map": "/fullstack-monorepo/static/js/343.3977884c.chunk.js.map",
     "710.d48d0ecd.chunk.js.map": "/fullstack-monorepo/static/js/710.d48d0ecd.chunk.js.map",
     "699.9b579c62.chunk.js.map": "/fullstack-monorepo/static/js/699.9b579c62.chunk.js.map",
-    "800.324e7524.chunk.js.map": "/fullstack-monorepo/static/js/800.324e7524.chunk.js.map",
+    "800.4831d327.chunk.js.map": "/fullstack-monorepo/static/js/800.4831d327.chunk.js.map",
     "163.736bde53.chunk.js.map": "/fullstack-monorepo/static/js/163.736bde53.chunk.js.map",
     "435.79fc30ee.chunk.js.map": "/fullstack-monorepo/static/js/435.79fc30ee.chunk.js.map",
     "689.e71d1c90.chunk.js.map": "/fullstack-monorepo/static/js/689.e71d1c90.chunk.js.map",
@@ -35,6 +35,6 @@
   },
   "entrypoints": [
     "static/css/main.a50beeed.css",
-    "static/js/main.cc7eea7d.js"
+    "static/js/main.38f31ee1.js"
   ]
 }
