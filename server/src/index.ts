@@ -39,7 +39,7 @@ import { autoApiRouter } from './api/_auto/routes'
   autoApiRouter(models, api)
 
   //Apply API
-  app.use(api)
+  app.use(config.prefix, api)
 
   //Errors
   app.use(errorHandler)
