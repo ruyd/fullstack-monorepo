@@ -193,9 +193,11 @@ export default function HeaderNavBar() {
               <MenuItem onClick={handleThemeToggle}>
                 <Typography textAlign="center">Theme</Typography>
               </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <Typography textAlign="center">Logout</Typography>
-              </MenuItem>
+              {authenticated && (
+                <MenuItem onClick={handleLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
         </Toolbar>
