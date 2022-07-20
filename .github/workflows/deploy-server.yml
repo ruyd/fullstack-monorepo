@@ -4,9 +4,8 @@ on:
   push:
     branches: ["master"]
     paths:
-      - "*/**"
-      - "!client/**"
-      - "!.github/workflows/deploy-client.yml"
+      - "packages/**"
+      - "server/**"
 
 jobs:
   publish:
