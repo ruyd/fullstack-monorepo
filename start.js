@@ -4,8 +4,7 @@
 const fs = require('fs')
 const { exec } = require('child_process');
 const options = { env: { FORCE_COLOR: true } }
-
-console.log(process.env)
+const heroku = process.env._ && process.env._.indexOf("heroku") !== -1
 
 function wired(text) {
   const job = exec(text, options)
@@ -15,6 +14,11 @@ function wired(text) {
 }
 
 function run() {
+  console.log(process.env)
+  if (heroku) {
+    wired('npm start -w server')
+    return
+  }
   const arg = process.execArgv[0] || 'run client'
   wired('npm ' + arg)
 }
