@@ -20,10 +20,11 @@ import { LogoutAsync } from '../features/app/thunks'
 import { Link } from '@mui/material'
 
 const links = routes.filter((route) => route.link)
-const settings = routes.filter((route) => route.profile)
+const profileLinks = routes.filter((route) => route.profile)
 
 export default function HeaderNavBar() {
   const dispatch = useAppDispatch()
+  const authenticated = useAppSelector((state) => state.app.token)
   const darkTheme = useAppSelector((store) => store.app.darkTheme)
   const drawerRightOpen = useAppSelector((store) => store.app.drawerRightOpen)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
@@ -174,16 +175,18 @@ export default function HeaderNavBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem
-                  key={setting.path}
-                  onClick={handleCloseUserMenu}
-                  component={RouterLink}
-                  to={setting.path}
-                >
-                  <Typography textAlign="center">{setting.title}</Typography>
-                </MenuItem>
-              ))}
+              {profileLinks
+                .filter((r) => (r.secure ? authenticated : true))
+                .map((setting) => (
+                  <MenuItem
+                    key={setting.path}
+                    onClick={handleCloseUserMenu}
+                    component={RouterLink}
+                    to={setting.path}
+                  >
+                    <Typography textAlign="center">{setting.title}</Typography>
+                  </MenuItem>
+                ))}
               <MenuItem onClick={handleMenuToggle}>
                 <Typography textAlign="center">Drawer</Typography>
               </MenuItem>

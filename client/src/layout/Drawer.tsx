@@ -1,3 +1,4 @@
+import React from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import { useAppSelector, useAppDispatch } from '../shared/store'
 import { patch } from '../features/app/slice'

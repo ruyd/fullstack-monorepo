@@ -133,7 +133,7 @@ export default function CanvasControl() {
       }
     }
     run()
-  }, [paramId])
+  }, [dispatch, id, navigate, paramId])
 
   return (
     <Container

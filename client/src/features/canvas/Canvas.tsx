@@ -109,7 +109,7 @@ export function Canvas({
     }
     window.addEventListener('resize', handleResizing)
     return () => window.removeEventListener('resize', () => handleResizing)
-  }, [canvasRef])
+  }, [canvasRef, contextRef])
 
   return (
     <canvas
