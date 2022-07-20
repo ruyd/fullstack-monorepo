@@ -4,6 +4,7 @@ import {
   authProviderLogin,
   authProviderRegister,
   ReqWithAuth,
+  authProviderChangePassword,
 } from '../../shared/auth'
 import { createOrUpdate } from '../_auto/controller'
 import { UserModel } from '../../types/user'
@@ -61,6 +62,20 @@ export async function login(req: express.Request, res: express.Response) {
     token: response.access_token,
     user,
   })
+}
+
+export async function forgot(req: express.Request, res: express.Response) {
+  const payload = req.body
+  if (!payload) {
+    throw new Error('Missing payload')
+  }
+
+  const user = await UserModel.findOne({ where: { email: req.body.email } })
+  if (user) {
+    const message = await authProviderChangePassword(payload)
+    res.json({ success: true, message })
+  }
+  res.json({ success: false, message: 'No record found' })
 }
 
 export async function edit(req: express.Request, res: express.Response) {

@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
-import { LoginAsync } from '../features/app/thunks'
+import { forgotAsync, loginAsync } from '../features/app/thunks'
 import { useAppDispatch } from '../shared/store'
 
 export default function Login() {
@@ -25,12 +25,15 @@ export default function Login() {
     const data = new FormData(event.currentTarget)
     const payload = {} as Record<string, unknown>
     data.forEach((value, key) => (payload[key] = value))
-    dispatch(LoginAsync(payload)).then(({ meta }) => {
+    dispatch(loginAsync(payload)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
         navigate(returnTo || '/')
       }
     })
   }
+
+  const forgotHandler = () => dispatch(forgotAsync())
+
   return (
     <Container maxWidth="xs" className="centered">
       <Box
@@ -80,6 +83,11 @@ export default function Login() {
             Sign In
           </Button>
           <Grid container justifyContent="flex-end">
+            <Grid item>
+              <MuiLink variant="body2" onClick={forgotHandler}>
+                Forgot Password
+              </MuiLink>
+            </Grid>
             <Grid item>
               <MuiLink
                 variant="body2"

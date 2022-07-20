@@ -5,15 +5,4 @@
         "outDir": "dist",
         "noEmit": true
     },
-    "references": [
-        {
-            "path": "client"
-        },
-        {
-            "path": "packages/lib"
-        },
-        {
-            "path": "server"
-        }
-    ],
 }

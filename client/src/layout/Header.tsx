@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
 import { Link as RouterLink } from 'react-router-dom'
 import routes from '../shared/routes'
-import { LogoutAsync } from '../features/app/thunks'
+import { logoutAsync } from '../features/app/thunks'
 import { Link } from '@mui/material'
 
 const links = routes.filter((route) => route.link)
@@ -56,7 +56,7 @@ export default function HeaderNavBar() {
   }
 
   const handleLogout = () => {
-    dispatch(LogoutAsync())
+    dispatch(logoutAsync())
   }
 
   return (

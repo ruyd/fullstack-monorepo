@@ -14,7 +14,7 @@ import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../shared/store'
-import { RegisterAsync } from '../features/app/thunks'
+import { registerAsync } from '../features/app/thunks'
 import { Paths } from 'src/shared/routes'
 
 export default function Register() {
@@ -27,7 +27,7 @@ export default function Register() {
     const data = new FormData(event.currentTarget)
     const obj = {} as Record<string, unknown>
     data.forEach((value, key) => (obj[key] = value))
-    dispatch(RegisterAsync(obj)).then(({ meta }) => {
+    dispatch(registerAsync(obj)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
         navigate(`${Paths.Login}?returnTo=${returnTo}`)
       }

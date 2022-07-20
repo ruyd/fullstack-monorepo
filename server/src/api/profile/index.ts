@@ -1,6 +1,6 @@
 import express from 'express'
 import { tokenCheckWare } from '../../shared/auth'
-import { edit, login, register } from './controller'
+import { edit, forgot, login, register } from './controller'
 
 const router = express.Router()
 
@@ -82,8 +82,6 @@ router.post('/logoff', (_req, res) => {
   res.json({ success: true })
 })
 
-router.post('/revoke', (_req, res) => {
-  res.json({ success: true })
-})
+router.post('/forgot', forgot)
 
 export default router

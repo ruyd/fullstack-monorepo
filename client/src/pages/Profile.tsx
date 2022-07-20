@@ -10,7 +10,7 @@ import {
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../shared/store'
-import { EditProfileAsync } from '../features/app/thunks'
+import { editProfileAsync } from '../features/app/thunks'
 
 export default function Profile() {
   const dispatch = useAppDispatch()
@@ -21,7 +21,7 @@ export default function Profile() {
     const data = new FormData(event.currentTarget)
     const payload = {} as Record<string, unknown>
     data.forEach((value, key) => (payload[key] = value))
-    dispatch(EditProfileAsync(payload))
+    dispatch(editProfileAsync(payload))
   }
   return (
     <Container maxWidth="xs" className="centered">

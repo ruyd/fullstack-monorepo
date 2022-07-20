@@ -85,7 +85,7 @@ function setLogin(
   onLogin({ token, user })
 }
 
-export const LoginAsync = createAsyncThunk(
+export const loginAsync = createAsyncThunk(
   'app/login',
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request<{ token: string; user: AppUser }>(
@@ -96,7 +96,7 @@ export const LoginAsync = createAsyncThunk(
   }
 )
 
-export const RegisterAsync = createAsyncThunk(
+export const registerAsync = createAsyncThunk(
   'app/register',
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request<{ token: string; user: AppUser }>(
@@ -108,7 +108,7 @@ export const RegisterAsync = createAsyncThunk(
   }
 )
 
-export const LogoutAsync = createAsyncThunk(
+export const logoutAsync = createAsyncThunk(
   'app/logout',
   async (_, { dispatch }) => {
     request('profile/logoff')
@@ -118,7 +118,7 @@ export const LogoutAsync = createAsyncThunk(
   }
 )
 
-export const EditProfileAsync = createAsyncThunk(
+export const editProfileAsync = createAsyncThunk(
   'app/editProfile',
   async (payload: Record<string, unknown>, { dispatch, getState }) => {
     const response = await request<{ token: string; user: AppUser }>(
@@ -131,5 +131,15 @@ export const EditProfileAsync = createAsyncThunk(
       dispatch(patch({ user }))
       onLogin({ token, user })
     }
+  }
+)
+
+export const forgotAsync = createAsyncThunk(
+  'app/forgot',
+  async (_, { dispatch }) => {
+    const response = await request<{ success: boolean; message: string }>(
+      'profile/forgot'
+    )
+    dispatch(notify(response.data?.message || 'Recovery could not be sent'))
   }
 )
