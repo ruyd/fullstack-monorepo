@@ -13,7 +13,7 @@ import { autoApiRouter } from './api/_auto/routes'
   //Initialize Models
   await db.authenticate()
   await db.createSchema(config.db.schema, {})
-  await db.sync({ alter: !config.production })
+  await db.sync({ alter: false, force: false })
 
   const app: Express = express()
   app.use(express.json({ limit: config.jsonLimit }))

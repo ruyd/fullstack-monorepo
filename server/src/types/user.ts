@@ -24,4 +24,4 @@ export const UserAttributes = {
   },
 }
 
-export const UserModel = register<User>('user', UserAttributes, false)
+export const UserModel = register<User>('user', UserAttributes)

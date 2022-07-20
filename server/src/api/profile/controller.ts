@@ -41,12 +41,13 @@ export async function login(req: express.Request, res: express.Response) {
     throw new Error(response.error_description)
   }
 
-  const user = await UserModel.findOne({
+  const [user] = await UserModel.findOrCreate({
     where: { email },
+    defaults: { email, userId: uuid() },
   })
 
   if (!user) {
-    throw new Error('User not found')
+    throw new Error('Database User Record not found, ')
   }
 
   res.json({
