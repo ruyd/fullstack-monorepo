@@ -23,7 +23,7 @@
             "version": "stable"
         },
         {
-            "command": "node lazy.js",
+            "command": "node dev.js",
             "name": " - Server Script",
             "request": "launch",
             "type": "node-terminal",

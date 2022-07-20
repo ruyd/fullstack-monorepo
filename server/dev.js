@@ -14,8 +14,10 @@ async function run() {
   }
   const tsc = exec('npx tsc --watch')
   tsc.stdout.pipe(process.stdout)
-  const job = exec('npm run mon')
+  tsc.stderr.pipe(process.stdout)
+  const job = exec('nodemon -q dist/src/index.js')
   job.stdout.pipe(process.stdout)
+  job.stderr.pipe(process.stdout)
 }
 
 async function init() {
