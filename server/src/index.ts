@@ -24,6 +24,7 @@ import { autoApiRouter } from './api/_auto/routes'
     swaggerDefinition: config.swaggerSetup,
     apis: ['**/api/swagger.yaml', '**/api/**/index.*s'],
   })
+  console.info('Parsed swagger', swaggerDoc)
   swaggerDocModelInject(models, swaggerDoc)
   app.use(
     '/docs',

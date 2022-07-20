@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, loginRedirect, onLogin } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
-import { notifyError, patch } from './slice'
+import { notify, notifyError, patch } from './slice'
 
 export enum Method {
   GET = 'get',
@@ -111,9 +111,10 @@ export const RegisterAsync = createAsyncThunk(
 export const LogoutAsync = createAsyncThunk(
   'app/logout',
   async (_, { dispatch }) => {
-    await request('profile/logoff')
+    request('profile/logoff')
     dispatch(patch({ token: undefined, user: undefined }))
     onLogin(undefined)
+    dispatch(notify('Have a nice day, bye'))
   }
 )
 

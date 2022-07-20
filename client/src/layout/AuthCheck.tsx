@@ -13,15 +13,18 @@ export default function AuthCheck({
 }) {
   const token = useAppSelector((state) => state.app.token)
   const navigate = useNavigate()
+  const denied = secure && !token
   React.useEffect(() => {
-    if (secure && !token) {
+    if (denied) {
       const fullPath = window.location.href
         .replace(window.location.origin, '')
         .replace(config.baseName, '')
-      navigate(`${Paths.Login}?returnTo=${fullPath}`, {
-        replace: true,
-      })
+      navigate(`${Paths.Login}?returnTo=${fullPath}`)
     }
-  }, [location, navigate, secure, token])
+  }, [denied, navigate])
+  if (denied) {
+    console.error('denied')
+    return null
+  }
   return children as JSX.Element
 }

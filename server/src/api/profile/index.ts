@@ -78,11 +78,11 @@ router.post('/oauthcallback', (req, res) => {
   res.json({ token })
 })
 
-router.post('/logoff', tokenCheckWare, (req, res) => {
+router.post('/logoff', (_req, res) => {
   res.json({ success: true })
 })
 
-router.post('/revoke', (req, res) => {
+router.post('/revoke', (_req, res) => {
   res.json({ success: true })
 })
 

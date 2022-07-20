@@ -2,6 +2,7 @@ import decode from 'jwt-decode'
 import axios from 'axios'
 import { AppAccessToken, User } from '@root/lib'
 import { Paths } from './routes'
+import config from './config'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppUser extends User {
@@ -74,9 +75,8 @@ export function onLogin(payload?: { token: string; user: AppUser }) {
 }
 
 export function loginRedirect() {
+  const returnTo = window.location.href.replace(window.location.origin, '')
   window.location.assign(
-    Paths.Login +
-      '?returnTo=' +
-      window.location.href.replace(window.location.origin, '')
+    `${config.baseName}${Paths.Login}?returnTo=${returnTo}`
   )
 }

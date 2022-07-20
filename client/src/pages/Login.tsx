@@ -1,3 +1,4 @@
+import React from 'react'
 import { LockOutlined } from '@mui/icons-material'
 import {
   Avatar,
@@ -80,7 +81,11 @@ export default function Login() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <MuiLink variant="body2" component={Link} to={Paths.Register}>
+              <MuiLink
+                variant="body2"
+                component={Link}
+                to={`${Paths.Register}?returnTo=${returnTo}`}
+              >
                 or Register if new here
               </MuiLink>
             </Grid>

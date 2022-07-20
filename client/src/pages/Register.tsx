@@ -20,6 +20,7 @@ import { Paths } from 'src/shared/routes'
 export default function Register() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const returnTo = new URLSearchParams(window.location.search).get('returnTo')
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -28,7 +29,7 @@ export default function Register() {
     data.forEach((value, key) => (obj[key] = value))
     dispatch(RegisterAsync(obj)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled') {
-        navigate(Paths.Login)
+        navigate(`${Paths.Login}?returnTo=${returnTo}`)
       }
     })
   }
@@ -115,7 +116,11 @@ export default function Register() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <MuiLink component={Link} to={Paths.Login} variant="body2">
+              <MuiLink
+                component={Link}
+                to={`${Paths.Login}?returnTo=${returnTo}`}
+                variant="body2"
+              >
                 Already have an account? Sign in
               </MuiLink>
             </Grid>
