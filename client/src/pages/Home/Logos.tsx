@@ -1,4 +1,3 @@
-import React from 'react'
 import { styled } from '@mui/system'
 import react from './images/react.svg'
 import ts from './images/ts.svg'

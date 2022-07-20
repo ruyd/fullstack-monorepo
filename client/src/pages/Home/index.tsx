@@ -1,4 +1,3 @@
-import React from 'react'
 import { Container } from '@mui/material'
 import Gallery from './Gallery'
 import HeroSection from './HeroSection'

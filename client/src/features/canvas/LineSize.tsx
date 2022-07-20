@@ -1,4 +1,3 @@
-import React from 'react'
 import { Container, Slider, styled } from '@mui/material'
 import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
