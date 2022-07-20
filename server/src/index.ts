@@ -45,7 +45,7 @@ import { autoApiRouter } from './api/_auto/routes'
   app.use(errorHandler)
 
   //Start server
-  app.get('/', (_req: Request, res: Response) => {
+  app.get('/', (req: Request, res: Response) => {
     res.send(`<html><title>${config.swaggerSetup.info.title}</title>
     <body style="
       display: flex;
@@ -53,14 +53,14 @@ import { autoApiRouter } from './api/_auto/routes'
       justify-content: center;
     ">
     <div>
-    ⚡️[server]: Server is running at http://localhost:${config.port} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
+    ⚡️[server]: Backend is running at ${req.protocol}://${req.hostname}:${config.port} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
     </div>
     </body></html>`)
   })
 
   app.listen(config.port, () => {
     console.log(
-      `⚡️[server]: Server is running at http://localhost:${config.port} with SwaggerUI Admin at ${config.swaggerSetup.basePath}`
+      `⚡️[server]: Server is running at port ${config.port} with SwaggerUI Admin at ${config.swaggerSetup.basePath}`
     )
   })
 })()
