@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
@@ -34,12 +35,19 @@ export async function request<
       timeout: 10000,
     })
   } catch (err: unknown) {
-    const error = err as Error & { response: AxiosResponse }
-    if (error?.response?.data?.message.includes('jwt')) {
+    const error = err as Error
+    const resp = (
+      error as unknown as {
+        response: AxiosResponse<{ message: string }>
+      }
+    ).response
+    if (
+      resp.status === 200 &&
+      resp?.data?.message?.toLowerCase().includes('jwt')
+    ) {
       loginRedirect()
-    } else {
-      dispatch(notifyError(error?.response?.data?.message || error.message))
     }
+    dispatch(notifyError(resp?.data?.message || error.message))
     throw error
   } finally {
     dispatch(patch({ loading: false }))
@@ -136,8 +144,8 @@ export const editProfileAsync = createAsyncThunk(
 
 export const forgotAsync = createAsyncThunk(
   'app/forgot',
-  async (_, { dispatch }) => {
-    const response = await request('profile/forgot')
+  async (payload: { email: string }, { dispatch }) => {
+    const response = await request('profile/forgot', payload)
     dispatch(notify(response.data?.message || 'Recovery could not be sent'))
   }
 )

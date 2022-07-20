@@ -19,6 +19,7 @@ export default function Login() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const returnTo = new URLSearchParams(window.location.search).get('returnTo')
+  const emailRef = React.useRef<HTMLInputElement>(null)
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -32,7 +33,11 @@ export default function Login() {
     })
   }
 
-  const forgotHandler = () => dispatch(forgotAsync())
+  const forgotHandler = () => {
+    if (emailRef.current?.value) {
+      dispatch(forgotAsync({ email: emailRef.current?.value }))
+    }
+  }
 
   return (
     <Container maxWidth="xs" className="centered">
@@ -53,6 +58,7 @@ export default function Login() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                inputRef={emailRef}
                 autoComplete="email"
                 required
                 fullWidth
@@ -82,7 +88,7 @@ export default function Login() {
           >
             Sign In
           </Button>
-          <Grid container justifyContent="flex-end">
+          <Grid container justifyContent="flex-end" spacing={1}>
             <Grid item>
               <MuiLink variant="body2" onClick={forgotHandler}>
                 Forgot Password
