@@ -1,5 +1,4 @@
 import React from 'react'
-
 export interface AppRoute {
   path: string
   component: React.LazyExoticComponent<() => JSX.Element>
@@ -14,9 +13,10 @@ export interface AppRoute {
   params?: string[]
 }
 
-export enum Paths {
-  Login = '/login',
-  Draw = '/draw',
+export const Paths = {
+  Login: `/login`,
+  Register: `/register`,
+  Draw: `/draw`,
 }
 
 export const routes: AppRoute[] = [

@@ -34,7 +34,7 @@ export default function Gallery() {
   const { data: items } = useGet<Drawing[]>('gallery', '/gallery')
   const copyLink = (item: Drawing) => {
     navigator.clipboard.writeText(
-      `${window.location.origin}${Paths.Draw}/${item.id}`
+      `${window.location.origin}${config.baseName}${Paths.Draw}/${item.id}`
     )
     dispatch(notify('Link copied to clipboard!'))
   }

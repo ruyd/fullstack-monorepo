@@ -7,8 +7,10 @@ import {
   Grid,
   TextField,
   Typography,
+  Link as MuiLink,
 } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Paths } from 'src/shared/routes'
 import { LoginAsync } from '../features/app/thunks'
 import { useAppDispatch } from '../shared/store'
 
@@ -76,6 +78,13 @@ export default function Login() {
           >
             Sign In
           </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <MuiLink variant="body2" component={Link} to={Paths.Register}>
+                or Register if new here
+              </MuiLink>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
     </Container>

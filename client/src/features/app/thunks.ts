@@ -35,10 +35,11 @@ export async function request<
     })
   } catch (err: unknown) {
     const error = err as Error & { response: AxiosResponse }
-    if (error?.response?.data?.message.includes('expired')) {
+    if (error?.response?.data?.message.includes('jwt')) {
       loginRedirect()
+    } else {
+      dispatch(notifyError(error?.response?.data?.message || error.message))
     }
-    dispatch(notifyError(error?.response?.data?.message || error.message))
     throw error
   } finally {
     dispatch(patch({ loading: false }))

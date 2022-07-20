@@ -115,7 +115,7 @@ export default function Register() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <MuiLink component={Link} to="/login" variant="body2">
+              <MuiLink component={Link} to={Paths.Login} variant="body2">
                 Already have an account? Sign in
               </MuiLink>
             </Grid>
