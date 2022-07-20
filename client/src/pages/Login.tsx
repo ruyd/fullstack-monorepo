@@ -34,7 +34,8 @@ export default function Login() {
   }
 
   const forgotHandler = () => {
-    if (emailRef.current?.value) {
+    emailRef.current?.reportValidity()
+    if (emailRef.current?.validity.valid && emailRef.current?.value) {
       dispatch(forgotAsync({ email: emailRef.current?.value }))
     }
   }
@@ -91,7 +92,7 @@ export default function Login() {
           <Grid container justifyContent="flex-end" spacing={1}>
             <Grid item>
               <MuiLink variant="body2" onClick={forgotHandler}>
-                Forgot Password
+                Forgot Password?
               </MuiLink>
             </Grid>
             <Grid item>
