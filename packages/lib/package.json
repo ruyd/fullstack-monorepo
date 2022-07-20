@@ -1,15 +1,13 @@
 {
   "name": "@root/lib",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "main": "src/index.js",
-  "exports": {
-    ".": "./dist/src/index.js"
-  },
   "scripts": {
     "build": "tsc --build",
     "lint": "eslint .",
-    "test": "npm run test"
+    "test": "npm run test",
+    "clean": "rm -rf node_modules package-lock.json dist"
   },
   "dependencies": {
     "uuid": "^8.3.2"

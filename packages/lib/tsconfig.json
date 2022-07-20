@@ -5,6 +5,8 @@
     "baseUrl": "."
   },
   "include": [
-    "src"
+    "src",
+    ".eslintrc.js",
+    "package.json"
   ],
 }
