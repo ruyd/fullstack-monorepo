@@ -75,7 +75,9 @@ export function onLogin(payload?: { token: string; user: AppUser }) {
 }
 
 export function loginRedirect() {
-  const returnTo = window.location.href.replace(window.location.origin, '')
+  const returnTo = window.location.href
+    .replace(window.location.origin, '')
+    .replace(config.baseName, '')
   window.location.assign(
     `${config.baseName}${Paths.Login}?returnTo=${returnTo}`
   )
