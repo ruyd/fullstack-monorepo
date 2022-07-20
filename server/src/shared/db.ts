@@ -21,13 +21,11 @@ export interface ModelConfig<M extends Model = Model> {
   unsecure?: boolean
 }
 
-const isSSL = !config.db.url.includes('localhost:')
-
 //Instance
 export const models: ModelStatic<Model>[] = []
 export const entities: ModelConfig[] = []
 export const db = new Sequelize(config.db.url, {
-  ssl: isSSL,
+  ssl: config.db.ssl,
 }) as Sequelize & { entities: ModelConfig[] }
 db.entities = entities
 
