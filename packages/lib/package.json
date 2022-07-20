@@ -22,16 +22,5 @@
     "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ruyd/drawspace.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ruyd/drawspace/issues"
-  },
-  "homepage": "https://github.com/ruyd/drawspace#readme",
-  "description": ""
+  }
 }

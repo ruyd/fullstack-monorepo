@@ -37,7 +37,8 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "clean": "rm -rf node_modules package-lock.json dist build"
   },
   "eslintConfig": {
     "extends": [

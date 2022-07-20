@@ -8,9 +8,13 @@ const options = { env: { FORCE_COLOR: true } }
 const heroku = process.env._ && process.env._.indexOf("heroku") !== -1
 
 async function run() {
+  if (heroku) {
+    console.error('Dev script - not for heroku..', process.env)
+    return
+  }
   const tsc = exec('npx tsc --watch')
   tsc.stdout.pipe(process.stdout)
-  const job = exec('nodemon -q dist/src/index.js')
+  const job = exec('npm run mon')
   job.stdout.pipe(process.stdout)
 }
 
