@@ -10,7 +10,7 @@
             "path": "client"
         },
         {
-            "path": "packages"
+            "path": "packages/lib"
         },
         {
             "path": "server"
