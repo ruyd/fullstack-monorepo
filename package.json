@@ -12,9 +12,8 @@
     ],
     "outDir": "dist",
     "scripts": {
-        "start": "node start.js",
-        "build": "node start.js buildcmd",
-        "buildcmd": "tsc --build",
+        "start": "npm start -w server",
+        "build": "npm run build -w server",
         "dev": "npm start -w server dev",
         "client": "npm run -w client start",
         "server": "npm run -w server dev",

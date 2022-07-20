@@ -5,10 +5,11 @@ const fs = require('fs')
 const { exec } = require('child_process');
 const options = { env: { FORCE_COLOR: true } }
 
+const heroku = process.env._ && process.env._.indexOf("heroku") !== -1
+
 async function run() {
   const tsc = exec('npx tsc --watch')
   tsc.stdout.pipe(process.stdout)
-  //Doesn't debug unless execd directly
   const job = exec('nodemon -q dist/src/index.js')
   job.stdout.pipe(process.stdout)
 }
@@ -32,10 +33,12 @@ async function init() {
 
 //RUN
 
-if (!fs.existsSync('.env')) {
-  console.warn('.env needs setup, creating... 👀')
-  const cfg = fs.readFileSync("setup/sample.env")
-  fs.writeFileSync(".env", cfg)
+if (!fs.existsSync('.env') && !heroku) {
+  if (fs.existsSync('setup/sample.env')) {
+    console.warn('.env needs setup, creating... 👀')
+    const cfg = fs.readFileSync("setup/sample.env")
+    fs.writeFileSync('.env', cfg)
+  }
 }
 
 if (!fs.existsSync('node_modules')) {
@@ -49,13 +52,7 @@ if (!fs.existsSync('dist')) {
   init()
   return
 } else {
-  if (fs.existsSync('dist/packages')) {
-    console.warn('dist/src/ not combining output, happens when @root/lib not present|resolved')
-    console.warn('npm "run clean" then "i @root/lib" to fix 🙌')
-    wired('npm i @root/lib | tsc')
-  } else {
-    console.info('dist: ✔')
-  }
+  console.info('dist: ✔')
 }
 
 run()

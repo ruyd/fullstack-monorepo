@@ -10,6 +10,7 @@ ENV_DIR=${3:-}
 PROJECT_PATH=src
 
 echo "-----> My Subdir buildpack: path is $PROJECT_PATH"
+npm list
 # echo "       creating cache: $CACHE_DIR"
 # mkdir -p $CACHE_DIR
 # TMP_DIR=`mktemp -d $CACHE_DIR/subdirXXXXX`

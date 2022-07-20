@@ -5,6 +5,7 @@ const fs = require('fs')
 const { exec } = require('child_process');
 const options = { env: { FORCE_COLOR: true } }
 
+console.log(process.env)
 
 function wired(text) {
   const job = exec(text, options)
