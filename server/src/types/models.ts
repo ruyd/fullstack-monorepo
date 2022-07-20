@@ -27,8 +27,7 @@ export const DrawingModel = register<Drawing>(
   true
 )
 
-DrawingModel.hasOne(UserModel, {
+DrawingModel.belongsTo(UserModel, {
   as: 'user',
   foreignKey: 'userId',
-  sourceKey: 'userId',
 })
