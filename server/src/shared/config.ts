@@ -57,6 +57,10 @@ const config: Config = {
         url: `http://localhost:${process.env.PORT}/${prefix}`,
         description: `localhost:${process.env.PORT}`,
       },
+      {
+        url: `https://${process.env.HOST}:${process.env.PORT}/${prefix}`,
+        description: `${process.env.HOST}:${process.env.PORT}`,
+      },
     ],
     basePath: '/docs',
   },
