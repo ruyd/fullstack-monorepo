@@ -13,9 +13,9 @@
     "outDir": "dist",
     "scripts": {
         "start": "npm run client",
-        "client": "npm run -w client start",
-        "dev": "npm start -w server dev",
-        "server": "npm run -w server dev",
+        "dev": "npm run server",
+        "client": "npm run start -w client",
+        "server": "npm run dev -w server",
         "build": "npm run build -w server",
         "lint": "eslint .",
         "test": "npm run test",

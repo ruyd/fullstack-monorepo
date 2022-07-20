@@ -21,7 +21,7 @@ export interface ModelConfig<M extends Model = Model> {
   unsecure?: boolean
 }
 
-const isSSL = config.db.url.startsWith('https')
+const isSSL = !config.db.url.includes('localhost:')
 
 //Instance
 export const models: ModelStatic<Model>[] = []
