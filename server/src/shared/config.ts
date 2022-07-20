@@ -13,7 +13,6 @@ export interface Config {
   db: {
     url: string
     schema: string
-    ssl?: boolean
   }
   auth?: {
     baseUrl: string
@@ -36,7 +35,6 @@ const config: Config = {
   db: {
     url: process.env.DATABASE_URL || '',
     schema: process.env.DB_SCHEMA || 'public',
-    ssl: process.env.DB_SSL === 'true',
   },
   auth: {
     baseUrl: process.env.AUTH_BASE_URL || '',
