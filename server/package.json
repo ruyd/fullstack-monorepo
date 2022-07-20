@@ -9,7 +9,7 @@
     "start": "node dist/server/src/index.js",
     "dev": "node dev.js",
     "concurrently": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
-    "mon": "nodemon -q dist/src/index.js",
+    "mon": "nodemon -q dist/server/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf node_modules package-lock.json dist"
   },
