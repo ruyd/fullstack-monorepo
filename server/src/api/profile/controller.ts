@@ -9,6 +9,7 @@ import { createOrUpdate } from '../_auto/controller'
 import { UserModel } from '../../types/user'
 import { AppAccessToken, getPictureMock } from '@root/lib'
 import { v4 as uuid } from 'uuid'
+import { decode } from 'jsonwebtoken'
 
 export async function register(req: express.Request, res: express.Response) {
   const payload = req.body
@@ -41,13 +42,19 @@ export async function login(req: express.Request, res: express.Response) {
     throw new Error(response.error_description)
   }
 
-  const [user] = await UserModel.findOrCreate({
-    where: { email },
-    defaults: { email, userId: uuid() },
-  })
+  let user = (
+    await UserModel.findOne({
+      where: { email },
+    })
+  )?.get()
 
   if (!user) {
-    throw new Error('Database User Record not found, ')
+    const decoded = decode(response.access_token) as AppAccessToken
+    user = await createOrUpdate(UserModel, { email, userId: decoded.userId })
+  }
+
+  if (!user) {
+    throw new Error('Database User could not be created')
   }
 
   res.json({
