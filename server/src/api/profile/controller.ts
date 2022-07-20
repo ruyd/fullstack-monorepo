@@ -54,7 +54,7 @@ export async function login(req: express.Request, res: express.Response) {
   }
 
   if (!user) {
-    throw new Error('Database User could not be created')
+    throw new Error('Database User could not be get/put')
   }
 
   res.json({

@@ -22,7 +22,7 @@ import { autoApiRouter } from './api/_auto/routes'
   //Auto Swagger
   const swaggerDoc = swaggerJsdoc({
     swaggerDefinition: config.swaggerSetup,
-    apis: ['./src/**/swagger.yaml', './src/api/**/*'],
+    apis: ['./src/**/swagger.yaml', './src/api/**/*.*s'],
   })
   swaggerDocModelInject(models, swaggerDoc)
   app.use(
@@ -39,7 +39,7 @@ import { autoApiRouter } from './api/_auto/routes'
   autoApiRouter(models, api)
 
   //Apply API
-  app.use(`/${config.prefix}`, api)
+  app.use(api)
 
   //Errors
   app.use(errorHandler)
