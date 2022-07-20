@@ -1,8 +1,8 @@
 //Not Inherited - Shared Options for All Packages
 {
     "compilerOptions": {
-        // "composite": true,
-        // "declaration": true,
+        "composite": true,
+        "declaration": true,
         "strict": true,
         "sourceMap": true,
         "resolveJsonModule": true,

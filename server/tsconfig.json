@@ -23,4 +23,9 @@
     "dist",
     "node_modules"
   ],
+  "references": [
+    {
+      "@root/lib": "../packages/lib"
+    }
+  ]
 }
