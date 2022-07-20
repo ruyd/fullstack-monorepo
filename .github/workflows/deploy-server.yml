@@ -6,7 +6,7 @@ on:
     paths:
       - "*/**"
       - "!client/**"
-      - "!*/deploy-client.yml"
+      - "!.github/workflows/deploy-client.yml"
 
 jobs:
   publish:
