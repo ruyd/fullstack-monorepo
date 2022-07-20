@@ -23,6 +23,9 @@ export const DrawingModel = register<Drawing>(
     thumbnail: {
       type: DataTypes.TEXT,
     },
+    private: {
+      type: DataTypes.BOOLEAN,
+    },
   },
   true
 )
