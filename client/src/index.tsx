@@ -15,6 +15,7 @@ import Notifications from './layout/Notifications'
 import { HelmetProvider } from 'react-helmet-async'
 import Footer from './layout/Footer'
 import config from './shared/config'
+import LoadingLine from './layout/LoadingLine'
 
 applyConfig()
 
@@ -23,6 +24,7 @@ function App() {
     <React.Fragment>
       <ThemeSwitch>
         <CssBaseline enableColorScheme />
+        <LoadingLine />
         <Header />
         <main>
           <Routing />

@@ -3,7 +3,6 @@ import Container from '@mui/material/Container'
 import React from 'react'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import LoadingLine from './LoadingLine'
 import { TypographyProps } from '@mui/system'
 
 const Text = ({
@@ -39,7 +38,6 @@ export default function Footer() {
           </Grid>
         </Box>
       </Container>
-      <LoadingLine />
     </footer>
   )
 }

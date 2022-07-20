@@ -7,7 +7,7 @@ export default function LoadingLine() {
   return (
     <LinearProgress
       className={`${loading ? '' : 'invisible'}`}
-      sx={{ height: '1.2px' }}
+      sx={{ height: '1.2px', position: 'sticky', top: 0 }}
     />
   )
 }
