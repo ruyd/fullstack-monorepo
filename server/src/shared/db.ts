@@ -26,6 +26,14 @@ export const models: ModelStatic<Model>[] = []
 export const entities: ModelConfig[] = []
 export const db = new Sequelize(config.db.url, {
   ssl: config.db.ssl,
+  dialectOptions: config.db.ssl
+    ? {
+        ssl: {
+          require: config.db.ssl,
+          rejectUnauthorized: false,
+        },
+      }
+    : {},
 }) as Sequelize & { entities: ModelConfig[] }
 db.entities = entities
 

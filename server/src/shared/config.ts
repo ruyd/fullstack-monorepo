@@ -36,7 +36,7 @@ const config: Config = {
   db: {
     url: process.env.DATABASE_URL || '',
     schema: process.env.DB_SCHEMA || 'public',
-    ssl: Boolean(process.env.DB_SSL ?? true),
+    ssl: !process.env.DATABASE_URL?.includes('localhost'),
   },
   auth: {
     baseUrl: process.env.AUTH_BASE_URL || '',
