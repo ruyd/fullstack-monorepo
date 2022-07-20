@@ -31,7 +31,7 @@ const config: Config = {
   production: process.env.NODE_ENV === 'production',
   prefix,
   port: Number(process.env.PORT || 3001),
-  tokenSecret: process.env.TOKEN_SECRET,
+  tokenSecret: process.env.TOKEN_SECRET || 'x',
   jsonLimit: process.env.JSON_LIMIT || '1mb',
   db: {
     url: process.env.DATABASE_URL || '',
