@@ -18,7 +18,8 @@ import { useAppDispatch } from '../shared/store'
 export default function Login() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const returnTo = new URLSearchParams(window.location.search).get('returnTo')
+  const returnPath = new URLSearchParams(window.location.search).get('returnTo')
+  const returnTo = returnPath ? `?returnTo=${returnPath}` : ''
   const emailRef = React.useRef<HTMLInputElement>(null)
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,6 +60,7 @@ export default function Login() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
+                autoFocus
                 inputRef={emailRef}
                 autoComplete="email"
                 required
@@ -91,7 +93,12 @@ export default function Login() {
           </Button>
           <Grid container justifyContent="flex-end" spacing={1}>
             <Grid item>
-              <MuiLink variant="body2" onClick={forgotHandler}>
+              <MuiLink
+                variant="body2"
+                component={Link}
+                to={''}
+                onClick={forgotHandler}
+              >
                 Forgot Password?
               </MuiLink>
             </Grid>
@@ -99,7 +106,7 @@ export default function Login() {
               <MuiLink
                 variant="body2"
                 component={Link}
-                to={`${Paths.Register}?returnTo=${returnTo}`}
+                to={`${Paths.Register}${returnTo}`}
               >
                 or Register if new
               </MuiLink>
