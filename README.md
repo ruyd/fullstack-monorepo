@@ -54,9 +54,10 @@ NPM
 "client",
 "server"
 ],
-``
+```
 
 ### Setup
+
 - Create Database and/or get connection URL
 - Run npm start to create .env files
 - Set server/.env DATABASE_URL ie: postgres://postgres:password@localhost:5432/draw
@@ -71,4 +72,7 @@ NPM
 > NOTE: The drawings should not be persisted as bitmaps.
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+
+```
+
 ```
