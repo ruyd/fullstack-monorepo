@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "module": "esnext",
     "lib": [
       "dom",
@@ -21,8 +22,8 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@root/*": [
-        "../packages/*/src",
+      "@root/lib": [
+        "../packages/lib/src",
       ],
     },
   },
@@ -33,5 +34,10 @@
   "exclude": [
     "node_modules",
     "build",
+  ],
+  "references": [
+    {
+      "path": "../packages/lib/tsconfig.json"
+    }
   ]
 }
