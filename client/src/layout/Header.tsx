@@ -25,8 +25,9 @@ const profileLinks = routes.filter((route) => route.profile)
 export default function HeaderNavBar() {
   const dispatch = useAppDispatch()
   const authenticated = useAppSelector((state) => state.app.token)
-  const darkTheme = useAppSelector((store) => store.app.darkTheme)
-  const drawerRightOpen = useAppSelector((store) => store.app.drawerRightOpen)
+  const user = useAppSelector((state) => state.app.user)
+  const darkTheme = useAppSelector((state) => state.app.darkTheme)
+  const drawerRightOpen = useAppSelector((state) => state.app.drawerRightOpen)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -156,7 +157,7 @@ export default function HeaderNavBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar src={user?.picture} alt={user?.firstName} />
               </IconButton>
             </Tooltip>
             <Menu
