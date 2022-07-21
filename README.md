@@ -43,7 +43,7 @@ packages
 
 server
 
-- Composite: true with references to packages, tsc bundled output
+- Composite: true with references to packages
 - Packages Hot Reload note: paths' need non-wildcarded dir names
 
 NPM
