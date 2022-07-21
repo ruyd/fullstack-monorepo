@@ -5,6 +5,7 @@
         "declaration": true,
         "strict": true,
         "sourceMap": true,
+        "preserveConstEnums": true,
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "outDir": "dist",

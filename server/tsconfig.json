@@ -11,10 +11,9 @@
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "noEmitOnError": true,
     "paths": {
-      "@root/*": [
-        "../packages/*/src"
+      "@root/lib": [
+        "../packages/lib/src"
       ]
     }
   },
@@ -29,7 +28,7 @@
   ],
   "references": [
     {
-      "path": "../packages/lib"
+      "path": "../packages/lib/tsconfig.json"
     }
   ]
 }
