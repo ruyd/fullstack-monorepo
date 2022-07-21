@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "composite": true,
     "module": "esnext",
     "lib": [
       "dom",
@@ -35,9 +34,4 @@
     "node_modules",
     "build",
   ],
-  "references": [
-    {
-      "path": "../packages/lib/tsconfig.json"
-    }
-  ]
 }
