@@ -27,14 +27,42 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 - Swagger
 - Sequelize
 
-### Setup
+## TypeScript Configuration
 
+client
+
+- Composite: false
+- No references due to github actions: TS6305: Output file has not been built from source
+- Uses Create React App's internal webpack untouched, module lookup directories modified with craco
+- Packages linked via paths and workplace
+
+packages
+
+- Composite: true
+- package.json exports
+
+server
+
+- Composite: true with references to packages, tsc bundled output
+- Packages Hot Reload note: paths' need non-wildcarded dir names
+
+NPM
+
+```json
+"workspaces": [
+"packages/*",
+"client",
+"server"
+],
+``
+
+### Setup
 - Create Database and/or get connection URL
-- /npm start or vscode debug F5 to create .env files
-- Set server/.env DB_URL ie: postgres://postgres:password@localhost:5432/draw
+- Run npm start to create .env files
+- Set server/.env DATABASE_URL ie: postgres://postgres:password@localhost:5432/draw
 - For Auth0, set AUTH BASE_URL CLIENT_ID and SECRET with values from dashboard
 - In dashboard/rules add enrichToken rule: /server/setup/Auth0.js
-- Rerun npm start and vscode F5 to start server
+- Rerun npm start, it's ready
 
 ### About App
 
@@ -43,3 +71,4 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 > NOTE: The drawings should not be persisted as bitmaps.
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+```
