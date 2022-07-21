@@ -13,7 +13,7 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title></title>
     <script type="text/javascript">
-      // https://github.com/rafrex/spa-github-pages
+      //github.com/rafrex/spa-github-pages
       ;(function (l) {
         if (l.search[1] === '/') {
           var decoded = l.search
@@ -23,6 +23,7 @@
               return s.replace(/~and~/g, '&')
             })
             .join('?')
+          console.log(decoded, l.hash)
           window.history.replaceState(
             null,
             null,
