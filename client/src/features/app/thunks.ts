@@ -42,7 +42,7 @@ export async function request<
       }
     ).response
     if (
-      resp.status === 200 &&
+      resp?.status === 200 &&
       resp?.data?.message?.toLowerCase().includes('jwt')
     ) {
       loginRedirect()
