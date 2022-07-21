@@ -12,7 +12,7 @@
     ],
     "outDir": "dist",
     "scripts": {
-        "start": "npm run client",
+        "start": "node start.js",
         "dev": "npm run server",
         "client": "npm run start -w client",
         "server": "npm run dev -w server",
