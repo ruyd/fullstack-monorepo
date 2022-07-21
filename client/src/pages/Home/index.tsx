@@ -11,10 +11,3 @@ export default function HomePage() {
     </Container>
   )
 }
-
-/**
- * home page
- * ImageList wall
- * react-responsive-carousel
- *
- */
