@@ -9,7 +9,6 @@ import Items from './Items'
 import { generateThumbnail, getDraft } from './helpers'
 import { Canvas } from './Canvas'
 import Color from './Color'
-import Player from './Player'
 import NameEdit from './NameEdit'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
@@ -159,8 +158,7 @@ export default function CanvasControl() {
       </Box>
       <LineSize />
       <LoadingCanvas />
-      <Player buffer={buffer} />
-      <Items />
+      <Items sx={{ mb: '1rem' }} />
     </Container>
   )
 }

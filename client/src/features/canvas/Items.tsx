@@ -2,6 +2,7 @@ import { Delete } from '@mui/icons-material'
 import {
   Button,
   Container,
+  ContainerProps,
   IconButton,
   ImageList,
   ImageListItem,
@@ -18,7 +19,7 @@ import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
 import { deleteAsync, itemsAsync } from './thunks'
 
-export default function Items() {
+export default function Items(props: ContainerProps) {
   const items = useAppSelector((store) => store.canvas.items)
   const loaded = useAppSelector((store) => store.canvas.loaded)
   const activeId = useAppSelector((store) => store.canvas.active?.id)
@@ -47,7 +48,7 @@ export default function Items() {
   }, [dispatch, loaded])
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" {...props}>
       <Paper variant="elevation" sx={{ padding: '1rem' }}>
         <ImageList>
           {items.map((item) => (
