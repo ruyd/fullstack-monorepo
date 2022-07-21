@@ -72,7 +72,3 @@ NPM
 > NOTE: The drawings should not be persisted as bitmaps.
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
-
-```
-
-```
