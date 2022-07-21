@@ -58,7 +58,7 @@ NPM
 
 ### Setup
 
-- Create Database and/or get connection URL
+- Get/Create your Database connection URL
 - Run npm start to create .env files
 - Set server/.env DATABASE_URL ie: postgres://postgres:password@localhost:5432/draw
 - For Auth0, set AUTH BASE_URL CLIENT_ID and SECRET with values from dashboard
