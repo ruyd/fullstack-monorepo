@@ -9,7 +9,6 @@ import Items from './Items'
 import { generateThumbnail, getDraft } from './helpers'
 import { Canvas } from './Canvas'
 import Color from './Color'
-import Player from './Player'
 import NameEdit from './NameEdit'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
@@ -77,6 +76,7 @@ export default function CanvasControl() {
       const worker = new Worker(new URL('./worker.ts', import.meta.url))
       worker.onmessage = (e) => {
         if (!contextRef.current) {
+          // eslint-disable-next-line no-console
           console.error('no context for result')
         }
         contextRef.current?.putImageData(e.data, 0, 0)
@@ -159,8 +159,7 @@ export default function CanvasControl() {
       </Box>
       <LineSize />
       <LoadingCanvas />
-      <Player buffer={buffer} />
-      <Items />
+      <Items sx={{ mb: '1rem' }} />
     </Container>
   )
 }

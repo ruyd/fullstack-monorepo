@@ -23,7 +23,6 @@ export default function AuthCheck({
     }
   }, [denied, navigate])
   if (denied) {
-    console.error('denied')
     return null
   }
   return children as JSX.Element
