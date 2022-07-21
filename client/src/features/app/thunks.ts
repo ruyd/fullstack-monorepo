@@ -41,10 +41,7 @@ export async function request<
         response: AxiosResponse<{ message: string }>
       }
     ).response
-    if (
-      resp?.status === 200 &&
-      resp?.data?.message?.toLowerCase().includes('jwt')
-    ) {
+    if (resp?.status && resp?.data?.message?.toLowerCase().includes('jwt')) {
       loginRedirect()
     }
     dispatch(notifyError(resp?.data?.message || error.message))
