@@ -32,7 +32,6 @@ export async function request<
       url,
       data,
       method,
-      timeout: 10000,
     })
   } catch (err: unknown) {
     const error = err as Error
