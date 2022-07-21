@@ -43,7 +43,7 @@ packages
 
 server
 
-- Composite: true with references to packages
+- Composite: true with paths and references to packages
 - Packages Hot Reload note: paths' need non-wildcarded dir names
 
 NPM
