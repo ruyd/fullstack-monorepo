@@ -25,10 +25,12 @@ module.exports = {
     'react-hooks',
     '@typescript-eslint'
   ],
+  ignorePatterns: ["build"],
   rules: {
     '@typescript-eslint/no-unused-vars': 'error',
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'error'
+    'react-hooks/exhaustive-deps': 'error',
+    'no-console': 'error',
   },
 }
 

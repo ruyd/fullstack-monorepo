@@ -22,6 +22,7 @@ function send(
     // eslint-disable-next-line
     w?.postMessage(data)
   } catch (err: unknown) {
+    // eslint-disable-next-line no-console
     console.error(err)
   }
 }

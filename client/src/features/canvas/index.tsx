@@ -76,6 +76,7 @@ export default function CanvasControl() {
       const worker = new Worker(new URL('./worker.ts', import.meta.url))
       worker.onmessage = (e) => {
         if (!contextRef.current) {
+          // eslint-disable-next-line no-console
           console.error('no context for result')
         }
         contextRef.current?.putImageData(e.data, 0, 0)
