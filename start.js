@@ -36,7 +36,7 @@ if (!fs.existsSync('node_modules')) {
 
 if (!fs.existsSync('server/.env')) {
   console.warn('client .env needs setup, creating... 👀')
-  const cfg = fs.readFileSync("setup/sample.env")
+  const cfg = fs.readFileSync("server/setup/sample.env")
   fs.writeFileSync("server/.env", cfg)
 } else {
   console.info('senv: check')
