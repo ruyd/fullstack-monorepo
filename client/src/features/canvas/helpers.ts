@@ -59,13 +59,13 @@ export function createOffscreen(width: number, height: number, dpr: number) {
 export async function generateThumbnail(
   canvas: HTMLCanvasElement,
   width = config.thumbnails.width,
-  height = config.thumbnails.width
+  height = config.thumbnails.height
 ): Promise<string> {
   const data = canvas.toDataURL()
   const img = new Image(canvas.width, canvas.height)
   img.src = data
-  img.height = width
-  img.width = height
+  img.height = height
+  img.width = width
 
   const srcAsync = (): Promise<string> =>
     new Promise((resolve) => {
