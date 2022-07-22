@@ -112,7 +112,7 @@ export function Canvas({
 
   return (
     <canvas
-      style={{ flex: 1 }}
+      style={{ flex: 1, touchAction: 'pinch-zoom' }}
       onTouchStart={touchStart}
       onTouchMove={touchMove}
       onTouchEnd={finishDrawing}
