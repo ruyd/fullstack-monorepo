@@ -100,8 +100,8 @@ export function Canvas({
     }
     contextRef.current = context
 
-    setBrushDefaults(context)
     adjustToResolution(canvas)
+    setBrushDefaults(context)
 
     const handleResizing = () => {
       adjustToResolution(canvas, true)
