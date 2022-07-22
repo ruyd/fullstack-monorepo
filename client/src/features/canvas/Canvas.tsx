@@ -43,7 +43,7 @@ export function Canvas({
       contextRef.current.globalCompositeOperation = 'destination-out'
     } else {
       contextRef.current.globalCompositeOperation = 'source-over'
-      contextRef.current.strokeStyle = color || 'black'
+      contextRef.current.strokeStyle = color || config.defaultColor
     }
     contextRef.current.lineWidth = size || config.defaultLineSize
     isDrawing.current = true
@@ -98,10 +98,9 @@ export function Canvas({
     if (!canvas || !context) {
       return
     }
-    setBrushDefaults(context)
     contextRef.current = context
 
-    //Responsive
+    setBrushDefaults(context)
     adjustToResolution(canvas)
 
     const handleResizing = () => {
