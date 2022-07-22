@@ -4,6 +4,8 @@ import React from 'react'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { TypographyProps } from '@mui/system'
+import github from '../pages/Home/images/github.svg'
+import { Link } from '@mui/material'
 
 const Text = ({
   children,
@@ -21,7 +23,7 @@ export default function Footer() {
         <Box>
           <Grid container spacing={3}>
             <Grid item xs={6}>
-              <a href="https://github.com/ruyd">
+              <a href="https://github.com/ruyd/fullstack-monorepo">
                 <img
                   src="https://img.shields.io/badge/License-ISC-blue.svg"
                   style={{ margin: '0 .5rem -.2rem 0', width: 80, height: 20 }}
@@ -33,7 +35,15 @@ export default function Footer() {
               <Text>on {new Date().getFullYear()}</Text>
             </Grid>
             <Grid item textAlign="right" xs={6}>
-              <Text>Made with love by Ruy</Text>
+              <Link href="https://github.com/ruyd/fullstack-monorepo">
+                <img
+                  src={github}
+                  style={{ margin: '0 .5rem -.2rem 0', width: 20, height: 20 }}
+                  width={20}
+                  height={20}
+                />
+                <Text>Made with love by Ruy</Text>
+              </Link>
             </Grid>
           </Grid>
         </Box>
