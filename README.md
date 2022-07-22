@@ -74,6 +74,6 @@ NPM
 
 Backend might be sleeping, takes a bit to wake up
 
-![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/self.png)
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/self.PNG)](https://ruyd.github.io/fullstack-monorepo)
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
