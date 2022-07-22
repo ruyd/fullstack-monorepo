@@ -39,8 +39,8 @@ export function adjustToResolution(
     w: 375,
     h: 667,
   }
-  const iw = window.innerWidth
-  const ih = window.innerHeight
+  const iw = window.innerWidth - 20
+  const ih = window.innerHeight - 95
   const w = iw < min.w ? min.w : iw
   const h = ih < min.h ? min.h : ih
   if ((resize && w < canvas.width) || h < canvas.height) {
