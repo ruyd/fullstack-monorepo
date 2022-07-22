@@ -5,7 +5,7 @@ export function setBrushDefaults(
   context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
 ) {
   context.lineCap = 'round'
-  context.strokeStyle = 'yellow'
+  context.strokeStyle = config.defaultColor
   context.lineWidth = config.defaultLineSize
   context.lineJoin = 'round'
 }
