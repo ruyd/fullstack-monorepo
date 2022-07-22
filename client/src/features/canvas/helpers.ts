@@ -4,10 +4,11 @@ import config from '../../shared/config'
 export function setBrushDefaults(
   context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
 ) {
-  context.lineCap = 'round'
   context.strokeStyle = config.defaultColor
   context.lineWidth = config.defaultLineSize
+  context.lineCap = 'round'
   context.lineJoin = 'round'
+  //context.miterLimit = 2
 }
 
 export function adjustToResolution(
