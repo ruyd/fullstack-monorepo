@@ -64,10 +64,18 @@ NPM
 - In dashboard/rules add enrichToken rule: /server/setup/Auth0.js
 - Rerun npm start, it's ready
 
-### About App
+### About Sample App
+
+Inspired by:
 
 > Challenge: Create a drawing web application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings.
 > Each uploaded drawing will be saved in a persistence layer of your choosing on the backend.
 > NOTE: The drawings should not be persisted as bitmaps.
+
+### [Click for Demo](https://ruyd.github.io/fullstack-monorepo)
+
+Backend might be sleeping, takes a bit to wake up
+
+![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/self.png)
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
