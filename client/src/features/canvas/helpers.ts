@@ -11,22 +11,42 @@ export function setBrushDefaults(
   //context.miterLimit = 2
 }
 
+function setWH(canvas: HTMLCanvasElement, w: number, h: number) {
+  const context = canvas.getContext('2d')
+  const existing = canvas
+    .getContext('2d')
+    ?.getImageData(0, 0, canvas.width, canvas.height)
+  const dpr = window.devicePixelRatio
+  canvas.width = w * dpr
+  canvas.height = h * dpr
+  context?.scale(dpr, dpr)
+  //https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas
+  canvas.style.width = w + 'px'
+  canvas.style.height = h + 'px'
+  if (existing) {
+    context?.putImageData(existing, 0, 0)
+  }
+}
+
 export function adjustToResolution(
   canvas: HTMLCanvasElement,
   resize?: boolean
 ) {
-  if (!canvas || resize) {
+  if (!canvas) {
     return
   }
-
-  const dpr = window.devicePixelRatio
-  const rect = canvas.getBoundingClientRect()
-  canvas.width = rect.width * dpr
-  canvas.height = rect.height * dpr
-  canvas.getContext('2d')?.scale(dpr, dpr)
-  //https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas
-  canvas.style.width = rect.width + 'px'
-  canvas.style.height = rect.height + 'px'
+  const min = {
+    w: 375,
+    h: 667,
+  }
+  const iw = window.innerWidth
+  const ih = window.innerHeight
+  const w = iw < min.w ? min.w : iw
+  const h = ih < min.h ? min.h : ih
+  if ((resize && w < canvas.width) || h < canvas.height) {
+    return
+  }
+  setWH(canvas, w, h)
 }
 
 export function adjustOffscreenResolution(
