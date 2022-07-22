@@ -112,7 +112,7 @@ export function Canvas({
 
   return (
     <canvas
-      style={{ flex: 1 }}
+      style={{ flex: 1, touchAction: 'none' }}
       onTouchStart={touchStart}
       onTouchMove={touchMove}
       onTouchEnd={finishDrawing}
