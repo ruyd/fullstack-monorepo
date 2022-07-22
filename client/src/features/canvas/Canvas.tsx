@@ -103,11 +103,12 @@ export function Canvas({
     adjustToResolution(canvas)
     setBrushDefaults(context)
 
-    const handleResizing = () => {
-      adjustToResolution(canvas, true)
-    }
-    window.addEventListener('resize', handleResizing)
-    return () => window.removeEventListener('resize', () => handleResizing)
+    //rework into fixed paper sizes
+    // const handleResizing = () => {
+    //   adjustToResolution(canvas, true)
+    // }
+    // window.addEventListener('resize', handleResizing)
+    // return () => window.removeEventListener('resize', () => handleResizing)
   }, [canvasRef, contextRef])
 
   return (
