@@ -47,6 +47,10 @@ export default function Items(props: ContainerProps) {
     }
   }, [dispatch, loaded])
 
+  if (!items.length) {
+    return null
+  }
+
   return (
     <Container maxWidth="xl" {...props}>
       <Paper variant="elevation" sx={{ padding: '1rem' }}>
