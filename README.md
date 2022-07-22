@@ -12,7 +12,6 @@ Fullstack TypeScript App Template & Software Patterns Showcase
 
 - Hot Reload Heaven
 - Generic redux and react-query
-- Web Workers for expensive computations
 - Automated NPM scripts
 - Automated Backend
 
