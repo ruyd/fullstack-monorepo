@@ -18,8 +18,7 @@ import { useAppDispatch } from '../shared/store'
 export default function Login() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const returnPath = new URLSearchParams(window.location.search).get('returnTo')
-  const returnTo = returnPath ? `?returnTo=${returnPath}` : ''
+  const returnTo = new URLSearchParams(window.location.search).get('returnTo')
   const emailRef = React.useRef<HTMLInputElement>(null)
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
