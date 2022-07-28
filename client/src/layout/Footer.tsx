@@ -42,7 +42,7 @@ export default function Footer() {
                   width={20}
                   height={20}
                 />
-                <Text>Made with love by Ruy</Text>
+                <Text>Template Source by Ruy</Text>
               </Link>
             </Grid>
           </Grid>
