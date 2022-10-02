@@ -25,7 +25,7 @@ module.exports = {
     'react-hooks',
     '@typescript-eslint'
   ],
-  ignorePatterns: ["build"],
+  ignorePatterns: ['build', 'node_modules', '*.js'],
   rules: {
     '@typescript-eslint/no-unused-vars': 'error',
     'react-hooks/rules-of-hooks': 'error',
