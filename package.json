@@ -13,7 +13,7 @@
   "outDir": "dist",
   "scripts": {
     "start": "node start.js",
-    "dev": "yarn install && concurrently \"yarn server\" \"yarn client\"",
+    "dev": "yarn install && docker compose up --wait && concurrently \"yarn server\" \"yarn client\"",
     "client": "yarn workspace client start",
     "server": "yarn workspace server dev",
     "build": "yarn workspace server build",

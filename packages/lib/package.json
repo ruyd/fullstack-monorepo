@@ -7,10 +7,10 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "tsc --build",
+    "build": "yarn tsc --build",
     "lint": "eslint .",
-    "test": "npm run test",
-    "clean": "rm -rf node_modules package-lock.json dist"
+    "test": "yarn jest",
+    "clean": "rm -rf node_modules dist"
   },
   "dependencies": {
     "uuid": "^8.3.2"
