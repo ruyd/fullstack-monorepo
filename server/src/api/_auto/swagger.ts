@@ -18,14 +18,12 @@ const conversions: Record<string, string> = {
 export function getSchema(model: ModelStatic<Model>) {
   const excluded = ['createdAt', 'updatedAt', 'deletedAt']
   const columns = Object.entries(model.getAttributes()).filter(
-    ([name]) => !excluded.includes(name)
+    ([name]) => !excluded.includes(name),
   ) as [[string, { type: string; allowNull: boolean }]]
   const properties: { [key: string]: Schema } = {}
   for (const [name, attribute] of columns) {
     const type: string = conversions[attribute.type] || 'string'
-    const definition: Schema = attribute.allowNull
-      ? { type, required: true }
-      : { type }
+    const definition: Schema = attribute.allowNull ? { type, required: true } : { type }
     properties[name] = definition
   }
   return {
@@ -148,7 +146,7 @@ export function getPaths(model: typeof Model) {
 
 export function swaggerDocModelInject(
   models: ModelStatic<Model>[],
-  swaggerDoc: Partial<SwaggerDefinition>
+  swaggerDoc: Partial<SwaggerDefinition>,
 ) {
   for (const model of models) {
     const schema = getSchema(model)

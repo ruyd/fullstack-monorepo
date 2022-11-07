@@ -19,19 +19,17 @@ import routes from '../shared/routes'
 import { logoutAsync } from '../features/app/thunks'
 import { Link } from '@mui/material'
 
-const links = routes.filter((route) => route.link)
-const profileLinks = routes.filter((route) => route.profile)
+const links = routes.filter(route => route.link)
+const profileLinks = routes.filter(route => route.profile)
 
 export default function HeaderNavBar() {
   const dispatch = useAppDispatch()
-  const authenticated = useAppSelector((state) => state.app.token)
-  const user = useAppSelector((state) => state.app.user)
-  const darkTheme = useAppSelector((state) => state.app.darkTheme)
-  const drawerRightOpen = useAppSelector((state) => state.app.drawerRightOpen)
+  const authenticated = useAppSelector(state => state.app.token)
+  const user = useAppSelector(state => state.app.user)
+  const darkTheme = useAppSelector(state => state.app.darkTheme)
+  const drawerRightOpen = useAppSelector(state => state.app.drawerRightOpen)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  )
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
@@ -112,7 +110,7 @@ export default function HeaderNavBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {links.map((route) => (
+              {links.map(route => (
                 <MenuItem key={route.path}>
                   <Link component={RouterLink} to={route.path} underline="none">
                     {route.title}
@@ -141,7 +139,7 @@ export default function HeaderNavBar() {
             Drawspace
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {links.map((route) => (
+            {links.map(route => (
               <Button
                 key={route.path}
                 onClick={handleCloseNavMenu}
@@ -177,8 +175,8 @@ export default function HeaderNavBar() {
               onClose={handleCloseUserMenu}
             >
               {profileLinks
-                .filter((r) => (r.secure ? authenticated : true))
-                .map((setting) => (
+                .filter(r => (r.secure ? authenticated : true))
+                .map(setting => (
                   <MenuItem
                     key={setting.path}
                     onClick={handleCloseUserMenu}

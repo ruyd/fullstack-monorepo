@@ -1,14 +1,9 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import {
-  configureStore,
-  ThunkAction,
-  Action,
-  Middleware,
-} from '@reduxjs/toolkit'
+import { configureStore, ThunkAction, Action, Middleware } from '@reduxjs/toolkit'
 import appReducer from '../features/app/slice'
 import canvasReducer from '../features/canvas/slice'
 
-export const customMiddleware: Middleware = () => (next) => (action) => {
+export const customMiddleware: Middleware = () => next => action => {
   const result = next(action)
   return result
 }
@@ -18,8 +13,7 @@ export const store = configureStore({
     app: appReducer,
     canvas: canvasReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(customMiddleware),
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(customMiddleware),
 })
 
 export type AppDispatch = typeof store.dispatch

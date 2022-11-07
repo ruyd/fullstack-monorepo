@@ -55,5 +55,5 @@ root.render(
         </HelmetProvider>
       </Provider>
     </QueryClientProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 )

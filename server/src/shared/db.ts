@@ -1,11 +1,4 @@
-import {
-  Attributes,
-  Model,
-  ModelAttributes,
-  ModelOptions,
-  ModelStatic,
-  Sequelize,
-} from 'sequelize'
+import { Attributes, Model, ModelAttributes, ModelOptions, ModelStatic, Sequelize } from 'sequelize'
 import config from './config'
 
 export const commonOptions: ModelOptions = {
@@ -51,7 +44,7 @@ export function register<T>(
   name: string,
   attributes: ModelAttributes<Model<T>, Attributes<Model<T>>>,
   unsecureRead?: boolean,
-  roles?: string[]
+  roles?: string[],
 ): ModelStatic<Model<T, T>> {
   const cfg = {
     name,
@@ -61,7 +54,7 @@ export function register<T>(
   }
   entities.push(cfg)
   const model = db.define<Model<T>>(cfg.name, cfg.attributes, commonOptions)
-  const existing = models.find((m) => m.name === model.name)
+  const existing = models.find(m => m.name === model.name)
   if (!existing) {
     models.push(model)
   }

@@ -2,7 +2,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useAppSelector } from '../../shared/store'
 
 export default function LoadingCanvas() {
-  const loading = useAppSelector((store) => store.canvas.loading)
+  const loading = useAppSelector(store => store.canvas.loading)
   return (
     <>
       <CircularProgress

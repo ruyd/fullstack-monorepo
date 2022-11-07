@@ -2,10 +2,10 @@ name: Client CI
 
 on:
   push:
-    branches: ["master"]
+    branches: ['master']
     paths:
-      - "client/**"
-      - "packages/**"
+      - 'client/**'
+      - 'packages/**'
 jobs:
   publish:
     runs-on: ubuntu-latest

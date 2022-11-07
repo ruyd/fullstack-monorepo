@@ -7,10 +7,7 @@ import { TypographyProps } from '@mui/system'
 import github from '../pages/Home/images/github.svg'
 import { Link } from '@mui/material'
 
-const Text = ({
-  children,
-  ...rest
-}: TypographyProps & { children: React.ReactNode }) => (
+const Text = ({ children, ...rest }: TypographyProps & { children: React.ReactNode }) => (
   <Typography component="span" color="gray" fontSize={12} {...rest}>
     {children}
   </Typography>

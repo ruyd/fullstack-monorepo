@@ -11,7 +11,7 @@ export interface AutoApiConfig {
 
 export const autoApiConfig: AutoApiConfig = {
   userIdColumn: 'userId',
-  getAuthUserId: (req) => (req as ReqWithAuth).auth?.userId,
+  getAuthUserId: req => (req as ReqWithAuth).auth?.userId,
 }
 
 /**
@@ -20,11 +20,7 @@ export const autoApiConfig: AutoApiConfig = {
  * @param res
  * @returns
  */
-export async function saveHandler(
-  this: typeof Model,
-  req: express.Request,
-  res: express.Response
-) {
+export async function saveHandler(this: typeof Model, req: express.Request, res: express.Response) {
   if (!this) {
     throw new Error('this is not defined')
   }
@@ -44,26 +40,20 @@ export async function saveHandler(
   res.json(result)
 }
 
-export async function getUserRelatedRecord(
-  r: express.Request,
-  model: ModelStatic<Model>
-) {
+export async function getUserRelatedRecord(r: express.Request, model: ModelStatic<Model>) {
   const req = r as ReqWithAuth
   const authId = autoApiConfig.getAuthUserId(req)
   const instance = await getIfExists(model, req.params.id)
-  if (
-    authId &&
-    Object.keys(model.getAttributes()).includes(autoApiConfig.userIdColumn)
-  ) {
+  if (authId && Object.keys(model.getAttributes()).includes(autoApiConfig.userIdColumn)) {
     const roles = req.config?.roles || []
-    const hasRole = roles ? roles?.every((r) => roles.includes(r)) : false
+    const hasRole = roles ? roles?.every(r => roles.includes(r)) : false
     const item = instance.get()
     if (authId !== item[autoApiConfig.userIdColumn] && !hasRole) {
       throw new Error('Unauthorized access of another user data')
     } else {
       console.warn(
         `user accesing another user ${model.tableName} ${authId} != 
-        ${item[autoApiConfig.userIdColumn]}`
+        ${item[autoApiConfig.userIdColumn]}`,
       )
     }
   }
@@ -73,7 +63,7 @@ export async function getUserRelatedRecord(
 export async function deleteHandler(
   this: ModelStatic<Model>,
   req: express.Request,
-  res: express.Response
+  res: express.Response,
 ) {
   if (!this) {
     throw new Error('this is not defined')
@@ -84,11 +74,7 @@ export async function deleteHandler(
   res.json({ success: true })
 }
 
-export async function getHandler(
-  this: typeof Model,
-  req: express.Request,
-  res: express.Response
-) {
+export async function getHandler(this: typeof Model, req: express.Request, res: express.Response) {
   if (!this) {
     throw new Error('this is not defined')
   }
@@ -105,11 +91,7 @@ export async function getHandler(
  * @param req
  * @param res
  */
-export async function listHandler(
-  this: typeof Model,
-  req: express.Request,
-  res: express.Response
-) {
+export async function listHandler(this: typeof Model, req: express.Request, res: express.Response) {
   if (!this) {
     throw new Error('this is not defined')
   }
@@ -151,12 +133,9 @@ export async function listHandler(
  * @param router - express router
  * @param authMiddleware - token check middleware
  **/
-export function autoApiRouter(
-  models: ModelStatic<Model>[],
-  router: express.Router
-): void {
+export function autoApiRouter(models: ModelStatic<Model>[], router: express.Router): void {
   for (const model of models) {
-    const cfg = entities.find((m) => m.name === model.name) as ModelConfig
+    const cfg = entities.find(m => m.name === model.name) as ModelConfig
     const authCheck = getAuthWare(cfg).authWare
     const unsecure: express.Handler = (_r, _p, n) => n()
     const readCheck = cfg.unsecure || cfg.unsecureRead ? unsecure : authCheck

@@ -14,8 +14,7 @@ export interface Config {
 
 const config: Config = {
   baseName: process.env.REACT_APP_BASE_NAME || '/fullstack-monorepo',
-  apiUrl:
-    process.env.REACT_APP_BACKEND || 'https://drawspace-api.herokuapp.com/v1',
+  apiUrl: process.env.REACT_APP_BACKEND || 'https://drawspace-api.herokuapp.com/v1',
   defaultTitle: 'Drawspace',
   defaultColor: 'yellow',
   defaultLineSize: 20,

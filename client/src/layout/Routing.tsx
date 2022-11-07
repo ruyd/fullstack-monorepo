@@ -20,23 +20,19 @@ const RouteElement = ({ route }: { route: AppRoute }) => (
 export default function Routing() {
   return (
     <Routes>
-      {routes.map((route) => (
-        <Route
-          key={route.path}
-          path={route.path}
-          element={<RouteElement route={route} />}
-        />
+      {routes.map(route => (
+        <Route key={route.path} path={route.path} element={<RouteElement route={route} />} />
       ))}
       {routes
-        .filter((r) => !!r.params)
-        .map((route) =>
-          route.params?.map((pathParam) => (
+        .filter(r => !!r.params)
+        .map(route =>
+          route.params?.map(pathParam => (
             <Route
               key={route.path + pathParam}
               path={route.path + pathParam}
               element={<RouteElement route={route} />}
             />
-          ))
+          )),
         )}
     </Routes>
   )

@@ -81,32 +81,17 @@ export default function Login() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
           <Grid container justifyContent="flex-end" spacing={1}>
             <Grid item>
-              <MuiLink
-                variant="body2"
-                component={Link}
-                to={''}
-                onClick={forgotHandler}
-              >
+              <MuiLink variant="body2" component={Link} to={''} onClick={forgotHandler}>
                 Forgot Password?
               </MuiLink>
             </Grid>
             <Grid item>
-              <MuiLink
-                variant="body2"
-                component={Link}
-                to={`${Paths.Register}${returnTo}`}
-              >
+              <MuiLink variant="body2" component={Link} to={`${Paths.Register}${returnTo}`}>
                 or Register if new
               </MuiLink>
             </Grid>

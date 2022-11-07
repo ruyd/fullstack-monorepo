@@ -2,11 +2,11 @@ name: Server CI
 
 on:
   push:
-    branches: ["master"]
+    branches: ['master']
     paths:
-      - "packages/**"
-      - "server/**"
-      - ".github/workflows/deploy-server.yml"
+      - 'packages/**'
+      - 'server/**'
+      - '.github/workflows/deploy-server.yml'
 
 jobs:
   publish:

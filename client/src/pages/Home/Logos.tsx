@@ -31,7 +31,7 @@ export default function Logos() {
         Made with
       </Typography>
       <Grid container spacing={3} justifyContent="center">
-        {logos.map((l) => (
+        {logos.map(l => (
           <Grid item key={l[0]}>
             <Logo src={l[1]} alt={l[0]} title={l[0]} height={h} width={w} />
           </Grid>

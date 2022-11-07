@@ -33,7 +33,7 @@ import { autoApiRouter } from './api/_auto/routes'
       swaggerOptions: {
         persistAuthorization: true,
       },
-    })
+    }),
   )
 
   //Auto CRUD
@@ -61,7 +61,7 @@ import { autoApiRouter } from './api/_auto/routes'
 
   app.listen(config.port, () => {
     console.log(
-      `⚡️[server]: Server is running at port ${config.port} with SwaggerUI Admin at ${config.swaggerSetup.basePath}`
+      `⚡️[server]: Server is running at port ${config.port} with SwaggerUI Admin at ${config.swaggerSetup.basePath}`,
     )
   })
 })()

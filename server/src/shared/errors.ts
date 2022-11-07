@@ -181,9 +181,7 @@ export class HttpInternalServerError extends HttpError {
   }
 }
 
-type HttpErrorResponse = Required<
-  Pick<HttpErrorParams, 'status' | 'message'> & { code: string }
-> &
+type HttpErrorResponse = Required<Pick<HttpErrorParams, 'status' | 'message'> & { code: string }> &
   Pick<HttpErrorParams, 'data' | 'stack'>
 
 /**
@@ -197,7 +195,7 @@ export function errorHandler(
   err: HttpError,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void {
   const response: HttpErrorResponse = {
     status: err.status || httpStatus.INTERNAL_SERVER_ERROR,
@@ -209,7 +207,7 @@ export function errorHandler(
 
   console.error(
     `Client with IP="${req.ip}" failed to complete request to="${req.method}" originating from="${req.originalUrl}". Status="${response.status}" Message="${err.message}"`,
-    err
+    err,
   )
 
   res.status(response.status)

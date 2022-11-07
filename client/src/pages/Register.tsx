@@ -49,12 +49,7 @@ export default function Register() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box
-          component="form"
-          sx={{ mt: 3 }}
-          onSubmit={submitHandler}
-          autoComplete="on"
-        >
+        <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler} autoComplete="on">
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -106,22 +101,12 @@ export default function Register() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <MuiLink
-                component={Link}
-                to={`${Paths.Login}${returnTo}`}
-                variant="body2"
-              >
+              <MuiLink component={Link} to={`${Paths.Login}${returnTo}`} variant="body2">
                 Already have an account? Sign in
               </MuiLink>
             </Grid>

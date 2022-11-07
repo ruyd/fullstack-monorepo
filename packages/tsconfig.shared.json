@@ -1,13 +1,13 @@
 //Not Inherited - Shared Options for All Packages
 {
-    "compilerOptions": {
-        "composite": true,
-        "declaration": true,
-        "strict": true,
-        "sourceMap": true,
-        "preserveConstEnums": true,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "outDir": "dist",
-    }
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "strict": true,
+    "sourceMap": true,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "outDir": "dist"
+  }
 }

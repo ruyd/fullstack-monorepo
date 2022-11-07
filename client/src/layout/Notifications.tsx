@@ -4,7 +4,7 @@ import { AppNotification, patch } from '../features/app/slice'
 import { Alert, Snackbar } from '@mui/material'
 
 export default function Notifications() {
-  const notifications = useAppSelector((store) => store.app.notifications)
+  const notifications = useAppSelector(store => store.app.notifications)
   const dispatch = useAppDispatch()
   const [open, setOpen] = React.useState(false)
   const [message, setMessage] = React.useState<AppNotification | null>(null)
@@ -13,7 +13,7 @@ export default function Notifications() {
     (notifications: AppNotification[]) => {
       dispatch(patch({ notifications }))
     },
-    [dispatch]
+    [dispatch],
   )
 
   const close = React.useCallback(() => {
@@ -39,12 +39,7 @@ export default function Notifications() {
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       autoHideDuration={3000}
     >
-      <Alert
-        key={message?.id}
-        onClose={close}
-        severity={message?.severity}
-        sx={{ mb: '2rem' }}
-      >
+      <Alert key={message?.id} onClose={close} severity={message?.severity} sx={{ mb: '2rem' }}>
         {message?.message}
       </Alert>
     </Snackbar>

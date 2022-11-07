@@ -16,13 +16,13 @@ export default function NameEdit({
   inputRef: React.RefObject<HTMLInputElement>
   save: () => void
 }) {
-  const active = useAppSelector((state) => state.canvas?.active)
+  const active = useAppSelector(state => state.canvas?.active)
   const dispatch = useAppDispatch()
   const onNameChange = React.useCallback(
     (e: { target: { value: string } }) => {
       dispatch(actions.patchActive({ name: e.target.value }))
     },
-    [dispatch]
+    [dispatch],
   )
   const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

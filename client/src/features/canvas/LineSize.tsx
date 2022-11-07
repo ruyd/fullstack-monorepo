@@ -11,10 +11,9 @@ const ContainerStyled = styled(Container)({
 })
 
 export default function LineSize() {
-  const activeSize = useAppSelector((state) => state.canvas.size)
+  const activeSize = useAppSelector(state => state.canvas.size)
   const dispatch = useAppDispatch()
-  const onSize = (e: Event, v: number | number[]) =>
-    dispatch(actions.patch({ size: v as number }))
+  const onSize = (e: Event, v: number | number[]) => dispatch(actions.patch({ size: v as number }))
   return (
     <ContainerStyled>
       <Slider

@@ -18,12 +18,8 @@ export enum Method {
  */
 export async function request<
   R = { success: boolean; message: string },
-  T = Record<string, unknown>
->(
-  url: string,
-  data?: T,
-  method: Method = Method.POST
-): Promise<AxiosResponse<R>> {
+  T = Record<string, unknown>,
+>(url: string, data?: T, method: Method = Method.POST): Promise<AxiosResponse<R>> {
   let response: AxiosResponse<R>
   const dispatch = store.dispatch
   try {
@@ -60,31 +56,27 @@ export const get = <T>(url: string) => request<T>(url, {}, Method.GET)
  * @param options react-query useQueryOptions
  * @returns
  */
-export const useGet = <T>(
-  cacheKey: string,
-  url: string,
-  options?: UseQueryOptions<T>
-) =>
+export const useGet = <T>(cacheKey: string, url: string, options?: UseQueryOptions<T>) =>
   useQuery<T>(
     cacheKey,
     async () => {
       const resp = await get<T>(url)
       return resp.data
     },
-    options
+    options,
   )
 
 function setLogin(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
   token: string,
-  user: AppUser
+  user: AppUser,
 ) {
   dispatch(
     patch({
       token,
       user,
       loaded: !!token,
-    })
+    }),
   )
   onLogin({ token, user })
 }
@@ -92,50 +84,38 @@ function setLogin(
 export const loginAsync = createAsyncThunk(
   'app/login',
   async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request<{ token: string; user: AppUser }>(
-      'profile/login',
-      payload
-    )
+    const response = await request<{ token: string; user: AppUser }>('profile/login', payload)
     setLogin(dispatch, response.data.token, response.data.user)
-  }
+  },
 )
 
 export const registerAsync = createAsyncThunk(
   'app/register',
   async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request<{ token: string; user: AppUser }>(
-      'profile/register',
-      payload
-    )
+    const response = await request<{ token: string; user: AppUser }>('profile/register', payload)
     //For email validation rework this
     setLogin(dispatch, response.data.token, response.data.user)
-  }
+  },
 )
 
-export const logoutAsync = createAsyncThunk(
-  'app/logout',
-  async (_, { dispatch }) => {
-    request('profile/logoff')
-    dispatch(patch({ token: undefined, user: undefined }))
-    onLogin(undefined)
-    dispatch(notify('Have a nice day, bye'))
-  }
-)
+export const logoutAsync = createAsyncThunk('app/logout', async (_, { dispatch }) => {
+  request('profile/logoff')
+  dispatch(patch({ token: undefined, user: undefined }))
+  onLogin(undefined)
+  dispatch(notify('Have a nice day, bye'))
+})
 
 export const editProfileAsync = createAsyncThunk(
   'app/editProfile',
   async (payload: Record<string, unknown>, { dispatch, getState }) => {
-    const response = await request<{ token: string; user: AppUser }>(
-      'profile/edit',
-      payload
-    )
+    const response = await request<{ token: string; user: AppUser }>('profile/edit', payload)
     const user = response.data.user
     if (user) {
       const token = (getState() as RootState)?.app?.token as string
       dispatch(patch({ user }))
       onLogin({ token, user })
     }
-  }
+  },
 )
 
 export const forgotAsync = createAsyncThunk(
@@ -143,5 +123,5 @@ export const forgotAsync = createAsyncThunk(
   async (payload: { email: string }, { dispatch }) => {
     const response = await request('profile/forgot', payload)
     dispatch(notify(response.data?.message || 'Recovery could not be sent'))
-  }
+  },
 )

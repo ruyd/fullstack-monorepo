@@ -11,7 +11,7 @@ export default function AuthCheck({
   children: React.ReactNode
   secure?: boolean
 }) {
-  const token = useAppSelector((state) => state.app.token)
+  const token = useAppSelector(state => state.app.token)
   const navigate = useNavigate()
   const denied = secure && !token
   React.useEffect(() => {

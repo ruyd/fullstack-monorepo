@@ -1,12 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Grid,
-  TextField,
-  Typography,
-  Container,
-} from '@mui/material'
+import { Avatar, Box, Button, Grid, TextField, Typography, Container } from '@mui/material'
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../shared/store'
@@ -14,7 +6,7 @@ import { editProfileAsync } from '../features/app/thunks'
 
 export default function Profile() {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((store) => store.app.user)
+  const user = useAppSelector(store => store.app.user)
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -76,13 +68,7 @@ export default function Profile() {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
             Save Changes
           </Button>
         </Box>
