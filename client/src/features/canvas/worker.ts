@@ -1,4 +1,4 @@
-import { ActionType, DrawAction } from '@root/lib'
+import { ActionType, DrawAction } from '@shared/lib'
 import { createOffscreen } from './helpers'
 
 export type WorkMessage = {
@@ -12,11 +12,7 @@ export type WorkMessage = {
 
 const w = self as Window & typeof globalThis
 
-function send(
-  background: OffscreenCanvasRenderingContext2D,
-  width: number,
-  height: number
-) {
+function send(background: OffscreenCanvasRenderingContext2D, width: number, height: number) {
   try {
     const data = background.getImageData(0, 0, width, height)
     // eslint-disable-next-line
@@ -27,14 +23,7 @@ function send(
   }
 }
 
-function processHistory({
-  buffer,
-  width,
-  height,
-  dpr,
-  stream,
-  stopAt,
-}: WorkMessage) {
+function processHistory({ buffer, width, height, dpr, stream, stopAt }: WorkMessage) {
   const background = createOffscreen(width, height, dpr)
   if (!background) {
     return

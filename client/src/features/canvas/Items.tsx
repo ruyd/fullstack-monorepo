@@ -9,7 +9,7 @@ import {
   ImageListItemBar,
   Paper,
 } from '@mui/material'
-import { Drawing } from '@root/lib'
+import { Drawing } from '@shared/lib'
 import React from 'react'
 import { useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -20,15 +20,12 @@ import { actions } from './slice'
 import { deleteAsync, itemsAsync } from './thunks'
 
 export default function Items(props: ContainerProps) {
-  const items = useAppSelector((store) => store.canvas.items)
-  const loaded = useAppSelector((store) => store.canvas.loaded)
-  const activeId = useAppSelector((store) => store.canvas.active?.id)
+  const items = useAppSelector(store => store.canvas.items)
+  const loaded = useAppSelector(store => store.canvas.loaded)
+  const activeId = useAppSelector(store => store.canvas.active?.id)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const setItem = useCallback(
-    (item: Drawing) => dispatch(actions.patchActive(item)),
-    [dispatch]
-  )
+  const setItem = useCallback((item: Drawing) => dispatch(actions.patchActive(item)), [dispatch])
   const isActive = (item: Drawing) => activeId === item?.id
   const { id } = useParams()
 
@@ -55,13 +52,11 @@ export default function Items(props: ContainerProps) {
     <Container maxWidth="xl" {...props}>
       <Paper variant="elevation" sx={{ padding: '1rem' }}>
         <ImageList>
-          {items.map((item) => (
+          {items.map(item => (
             <ImageListItem
               key={item.id}
               sx={{
-                border: `solid 1px ${
-                  isActive(item) ? '#ab47bc' : 'transparent'
-                }`,
+                border: `solid 1px ${isActive(item) ? '#ab47bc' : 'transparent'}`,
                 borderWidth: '0 0 1px 0',
                 transition: 'all 200ms ease-in',
               }}

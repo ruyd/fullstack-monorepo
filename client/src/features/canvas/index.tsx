@@ -1,5 +1,5 @@
 import React, { useRef, startTransition } from 'react'
-import { DrawAction, ActionType, Drawing } from '@root/lib'
+import { DrawAction, ActionType, Drawing } from '@shared/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { getAsync, saveAsync } from './thunks'
 import { Box, Container, Fab, Stack } from '@mui/material'
@@ -16,8 +16,8 @@ import LineSize from './LineSize'
 
 export default function CanvasControl() {
   const dispatch = useAppDispatch()
-  const history = useAppSelector((state) => state.canvas?.active?.history)
-  const id = useAppSelector((state) => state.canvas?.active?.id)
+  const history = useAppSelector(state => state.canvas?.active?.history)
+  const id = useAppSelector(state => state.canvas?.active?.id)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
   const buffer = useRef<DrawAction[]>([])
@@ -74,7 +74,7 @@ export default function CanvasControl() {
     //Lazy worker
     if (!workerRef.current) {
       const worker = new Worker(new URL('./worker.ts', import.meta.url))
-      worker.onmessage = (e) => {
+      worker.onmessage = e => {
         if (!contextRef.current) {
           // eslint-disable-next-line no-console
           console.error('no context for result')
@@ -136,11 +136,7 @@ export default function CanvasControl() {
   }, [dispatch, id, navigate, paramId])
 
   return (
-    <Container
-      maxWidth={false}
-      disableGutters
-      sx={{ display: 'flex', flexFlow: 'column' }}
-    >
+    <Container maxWidth={false} disableGutters sx={{ display: 'flex', flexFlow: 'column' }}>
       <Canvas canvasRef={canvasRef} contextRef={contextRef} record={record} />
       <NameEdit inputRef={nameRef} save={saveCanvas} />
       <Box sx={{ position: 'absolute', top: '30%', right: '3%' }}>

@@ -1,6 +1,6 @@
 import decode from 'jwt-decode'
 import axios from 'axios'
-import { AppAccessToken, User } from '@root/lib'
+import { AppAccessToken, User } from '@shared/lib'
 import { Paths } from './routes'
 import config from './config'
 
@@ -30,9 +30,7 @@ export function decodeAccessToken(token: string): AppAccessToken | null {
     }
 
     //Remove prefix
-    const keys = Object.keys(accessToken).filter((key) =>
-      key.includes(RULE_PREFIX)
-    )
+    const keys = Object.keys(accessToken).filter(key => key.includes(RULE_PREFIX))
     for (const key of keys) {
       accessToken[key.replace(RULE_PREFIX, '')] = accessToken[key]
       delete accessToken[key]
@@ -78,7 +76,5 @@ export function loginRedirect() {
   const returnTo = window.location.href
     .replace(window.location.origin, '')
     .replace(config.baseName, '')
-  window.location.assign(
-    `${config.baseName}${Paths.Login}?returnTo=${returnTo}`
-  )
+  window.location.assign(`${config.baseName}${Paths.Login}?returnTo=${returnTo}`)
 }

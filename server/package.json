@@ -1,20 +1,19 @@
 {
-  "name": "@root/server",
+  "name": "server",
   "version": "1.0.1",
   "private": true,
   "description": "Automated Express Backend",
   "main": "src/index.js",
   "scripts": {
-    "build": "npx tsc --build --verbose",
+    "build": "yarn tsc --build --verbose",
     "start": "node dist/src/index.js",
-    "dev": "node dev.js",
-    "concurrently": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "mon": "nodemon -q dist/src/index.js",
+    "dev": "concurrently \"npx tsc --watch\" \"yarn mon\"ß",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf node_modules package-lock.json dist"
   },
   "dependencies": {
-    "@root/lib": "file:../packages/lib",
+    "lib": "file:../packages/lib",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",

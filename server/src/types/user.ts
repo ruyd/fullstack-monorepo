@@ -1,4 +1,4 @@
-import { User } from '@root/lib'
+import { User } from '@shared/lib'
 import { Model, DataTypes } from 'sequelize'
 import { register } from '../shared/db'
 

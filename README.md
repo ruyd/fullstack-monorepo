@@ -15,6 +15,11 @@ Fullstack TypeScript Drawing Canvas App
 - Automated NPM scripts
 - Automated Backend
 
+```
+yarn network timeout issue due to: @mui/icons-material
+fix: yarn config set disable-self-update-check true
+```
+
 ### Made with
 
 - TypeScript
@@ -30,7 +35,6 @@ Fullstack TypeScript Drawing Canvas App
 
 client
 
-- Composite: false
 - No references due to github actions: TS6305: Output file has not been built from source
 - Uses Create React App's internal webpack untouched, module lookup directories modified with craco
 - Packages linked via paths and workplace

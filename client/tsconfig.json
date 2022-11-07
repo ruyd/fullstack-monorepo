@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,17 +17,9 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@root/lib": [
-        "../packages/lib/src",
-      ],
-    },
+      "@shared/*": ["../packages/*/src"]
+    }
   },
-  "include": [
-    "src",
-    ".eslintrc.*",
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-  ],
+  "include": ["src", ".eslintrc.*"],
+  "exclude": ["node_modules", "build"]
 }

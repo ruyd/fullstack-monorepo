@@ -8,7 +8,7 @@ import {
 } from '../../shared/auth'
 import { createOrUpdate } from '../_auto/controller'
 import { UserModel } from '../../types/user'
-import { AppAccessToken, getPictureMock } from '@root/lib'
+import { AppAccessToken, getPictureMock } from '@shared/lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 

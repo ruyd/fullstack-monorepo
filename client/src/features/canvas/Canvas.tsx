@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ActionType } from '@root/lib'
+import { ActionType } from '@shared/lib'
 import { adjustToResolution, setBrushDefaults } from './helpers'
 import { useAppSelector } from '../../shared/store'
 import config from '../../shared/config'
@@ -14,8 +14,8 @@ export function Canvas({
   contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>
   record: (t: ActionType, x?: number, y?: number) => void
 }) {
-  const color = useAppSelector((state) => state.canvas.color)
-  const size = useAppSelector((state) => state.canvas.size)
+  const color = useAppSelector(state => state.canvas.color)
+  const size = useAppSelector(state => state.canvas.size)
   const isDrawing = React.useRef<boolean>(false)
 
   const draw = React.useCallback(
@@ -29,7 +29,7 @@ export function Canvas({
         record(ActionType.Stroke, offsetX, offsetY)
       }
     },
-    [contextRef, record]
+    [contextRef, record],
   )
 
   const startDrawing = (offsetX: number, offsetY: number) => {

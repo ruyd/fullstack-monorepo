@@ -1,8 +1,8 @@
-import { Drawing } from '@root/lib'
+import { Drawing } from '@shared/lib'
 import config from '../../shared/config'
 
 export function setBrushDefaults(
-  context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
+  context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
 ) {
   context.strokeStyle = config.defaultColor
   context.lineWidth = config.defaultLineSize
@@ -13,9 +13,7 @@ export function setBrushDefaults(
 
 function setWH(canvas: HTMLCanvasElement, w: number, h: number) {
   const context = canvas.getContext('2d')
-  const existing = canvas
-    .getContext('2d')
-    ?.getImageData(0, 0, canvas.width, canvas.height)
+  const existing = canvas.getContext('2d')?.getImageData(0, 0, canvas.width, canvas.height)
   const dpr = window.devicePixelRatio
   canvas.width = w * dpr
   canvas.height = h * dpr
@@ -28,10 +26,7 @@ function setWH(canvas: HTMLCanvasElement, w: number, h: number) {
   }
 }
 
-export function adjustToResolution(
-  canvas: HTMLCanvasElement,
-  resize?: boolean
-) {
+export function adjustToResolution(canvas: HTMLCanvasElement, resize?: boolean) {
   if (!canvas) {
     return
   }
@@ -53,7 +48,7 @@ export function adjustOffscreenResolution(
   canvas: OffscreenCanvas,
   width: number,
   height: number,
-  dpr: number
+  dpr: number,
 ) {
   if (!canvas) {
     return
@@ -79,7 +74,7 @@ export function createOffscreen(width: number, height: number, dpr: number) {
 export async function generateThumbnail(
   canvas: HTMLCanvasElement,
   width = config.thumbnails.width,
-  height = config.thumbnails.height
+  height = config.thumbnails.height,
 ): Promise<string> {
   const data = canvas.toDataURL()
   const img = new Image(canvas.width, canvas.height)
@@ -88,7 +83,7 @@ export async function generateThumbnail(
   img.width = width
 
   const srcAsync = (): Promise<string> =>
-    new Promise((resolve) => {
+    new Promise(resolve => {
       img.onload = () => {
         const off = document.createElement('canvas')
         off.width = width
@@ -122,7 +117,7 @@ export function getCopy(original: Drawing) {
   active.createdAt = new Date()
   active.updatedAt = active.createdAt
   const ts = active.createdAt.getTime()
-  active.history.forEach((h) => {
+  active.history.forEach(h => {
     h.ts = ts
   })
   return active

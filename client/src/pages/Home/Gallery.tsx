@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material'
 import config from '../../shared/config'
-import { Drawing, getDuration } from '@root/lib'
+import { Drawing, getDuration } from '@shared/lib'
 import { useGet } from '../../features/app/thunks'
 import Moment from 'react-moment'
 import { Link, useNavigate } from 'react-router-dom'
@@ -33,7 +33,7 @@ export default function Gallery() {
   const { data: items } = useGet<Drawing[]>('gallery', '/gallery')
   const copyLink = (item: Drawing) => {
     navigator.clipboard.writeText(
-      `${window.location.origin}${config.baseName}${Paths.Draw}/${item.id}`
+      `${window.location.origin}${config.baseName}${Paths.Draw}/${item.id}`,
     )
     dispatch(notify('Link copied to clipboard!'))
   }
@@ -43,11 +43,7 @@ export default function Gallery() {
       <Grid container spacing={2} justifyContent="center">
         {!items?.length && (
           <Link to={Paths.Draw} style={{ textAlign: 'center' }}>
-            <StyledImage
-              src={waiting}
-              alt="looking"
-              title="Waiting for first drawing"
-            />
+            <StyledImage src={waiting} alt="looking" title="Waiting for first drawing" />
           </Link>
         )}
         {items?.map((item: Drawing) => (
@@ -56,24 +52,14 @@ export default function Gallery() {
               <CardHeader
                 title={item.name}
                 subheader={<Moment fromNow>{item.createdAt}</Moment>}
-                avatar={
-                  <Avatar
-                    src={item?.user?.picture}
-                    alt={item?.user?.firstName}
-                  />
-                }
+                avatar={<Avatar src={item?.user?.picture} alt={item?.user?.firstName} />}
                 action={
-                  <IconButton
-                    onClick={() => copyLink(item)}
-                    aria-label="sharing link"
-                  >
+                  <IconButton onClick={() => copyLink(item)} aria-label="sharing link">
                     <ShareIcon />
                   </IconButton>
                 }
               />
-              <CardActionArea
-                onClick={() => navigate(`${Paths.Draw}/${item.id}`)}
-              >
+              <CardActionArea onClick={() => navigate(`${Paths.Draw}/${item.id}`)}>
                 <CardMedia
                   component="img"
                   src={item.thumbnail}

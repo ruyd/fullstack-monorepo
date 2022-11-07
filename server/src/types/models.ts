@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import { Drawing } from '@root/lib'
+import { Drawing } from '@shared/lib'
 import { UserModel } from './user'
 import { register } from '../shared/db'
 

@@ -1,19 +1,13 @@
 import React, { useEffect } from 'react'
-import { DrawAction } from '@root/lib'
+import { DrawAction } from '@shared/lib'
 // import { useAppSelector } from '../../shared/store'
 import StyledSlider from '../../layout/StyledSlider'
 import Box from '@mui/material/Box'
 
-export default function Player({
-  buffer,
-}: {
-  buffer: React.RefObject<DrawAction[]>
-}) {
+export default function Player({ buffer }: { buffer: React.RefObject<DrawAction[]> }) {
   // const active = useAppSelector((state) => state.canvas?.active)
   const max = buffer?.current?.length || 1
-  const [marks, setMarks] = React.useState<{ value: number; label: string }[]>(
-    []
-  )
+  const [marks, setMarks] = React.useState<{ value: number; label: string }[]>([])
 
   useEffect(() => {
     const m = [{ value: 0, label: '0' }]

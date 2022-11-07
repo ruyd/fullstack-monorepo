@@ -1,21 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Drawing } from '@root/lib'
+import { Drawing } from '@shared/lib'
 import { RootState } from '../../shared/store'
 import { notify, notifyError } from '../app'
 import { get, Method, request } from '../app/thunks'
 import { getCopy, getDraft } from './helpers'
 import { actions } from './slice'
 
-export const itemsAsync = createAsyncThunk(
-  'canvas/list',
-  async (_, { dispatch }) => {
-    const resp = await get<Drawing[]>(`/drawing`)
-    if (resp.status === 200) {
-      dispatch(actions.patch({ items: resp.data, loaded: true }))
-    }
-    return resp.data
+export const itemsAsync = createAsyncThunk('canvas/list', async (_, { dispatch }) => {
+  const resp = await get<Drawing[]>(`/drawing`)
+  if (resp.status === 200) {
+    dispatch(actions.patch({ items: resp.data, loaded: true }))
   }
-)
+  return resp.data
+})
 
 export const getAsync = createAsyncThunk(
   'canvas/get',
@@ -23,7 +20,7 @@ export const getAsync = createAsyncThunk(
     let active: Drawing | undefined
     const state = getState() as RootState
     const userId = state.app.user?.userId
-    active = state.canvas.items.find((i) => i.id === id)
+    active = state.canvas.items.find(i => i.id === id)
     if (!active) {
       const resp = await get<Drawing>(`/drawing/${id}`)
       if (resp.status === 404) {
@@ -35,7 +32,7 @@ export const getAsync = createAsyncThunk(
     }
     dispatch(actions.patchActive(active as Drawing))
     return active
-  }
+  },
 )
 
 export const saveAsync = createAsyncThunk(
@@ -58,7 +55,7 @@ export const saveAsync = createAsyncThunk(
       dispatch(notify('Saved, scroll down to see'))
     }
     return response.data
-  }
+  },
 )
 
 export const deleteAsync = createAsyncThunk(
@@ -69,8 +66,8 @@ export const deleteAsync = createAsyncThunk(
       return
     }
     const state = (getState() as RootState).canvas.items
-    const items = state.filter((item) => item.id !== id)
-    const active = items.find((item) => item.id === id) || getDraft()
+    const items = state.filter(item => item.id !== id)
+    const active = items.find(item => item.id === id) || getDraft()
     dispatch(actions.patch({ items, active }))
-  }
+  },
 )

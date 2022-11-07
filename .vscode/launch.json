@@ -1,40 +1,32 @@
 {
-    "configurations": [
-        {
-            "command": "npm run dev",
-            "name": "Server",
-            "request": "launch",
-            "type": "node-terminal",
-            "cwd": "${workspaceRoot}/server"
-        },
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Client Chrome",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/client",
-        },
-        {
-            "type": "msedge",
-            "request": "launch",
-            "name": "Client Edge",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/client",
-            "version": "stable"
-        },
-        {
-            "command": "node dev.js",
-            "name": " - Server Script",
-            "request": "launch",
-            "type": "node-terminal",
-            "cwd": "${workspaceRoot}/server"
-        },
-        {
-            "command": "node start.js",
-            "name": " - Start Script",
-            "request": "launch",
-            "type": "node-terminal",
-            "cwd": "${workspaceRoot}"
-        },
-    ]
+  "configurations": [
+    {
+      "command": "yarn dev",
+      "name": "dev",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "yarn worksplace server start",
+      "name": "server",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceRoot}/server"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "client Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/client"
+    },
+    {
+      "type": "msedge",
+      "request": "launch",
+      "name": "client Edge",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/client",
+      "version": "stable"
+    }
+  ]
 }
