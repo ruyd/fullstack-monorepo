@@ -2,7 +2,7 @@ import { FindOptions, Model, ModelStatic } from 'sequelize/types'
 import { MakeNullishOptional } from 'sequelize/types/utils'
 import { HttpNotFoundError } from '../../shared/errors'
 
-export async function list<T>(
+export async function list<T extends object>(
   model: ModelStatic<Model<T>>,
   options: FindOptions = { limit: 100, offset: 0 },
 ): Promise<T[]> {
@@ -15,7 +15,10 @@ export async function list<T>(
   return items
 }
 
-export async function getIfExists<T>(model: ModelStatic<Model<T>>, id: string): Promise<Model<T>> {
+export async function getIfExists<T extends object>(
+  model: ModelStatic<Model<T>>,
+  id: string,
+): Promise<Model<T>> {
   const item = await model.findByPk(id)
   if (!item) {
     throw new HttpNotFoundError(`Record with id ${id} not found`)
@@ -32,7 +35,10 @@ export async function createOrUpdate<T extends object>(
   return item.get()
 }
 
-export async function deleteIfExists<T>(model: ModelStatic<Model<T>>, id: string): Promise<T> {
+export async function deleteIfExists<T extends Record<string, unknown>>(
+  model: ModelStatic<Model<T>>,
+  id: string,
+): Promise<T> {
   const item = await getIfExists(model, id)
   await item.destroy()
   return item.get()

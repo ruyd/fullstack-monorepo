@@ -40,7 +40,8 @@ db.entities = entities
  * @param roles - restrict to roles like Admin
  * @returns
  */
-export function register<T>(
+
+export function register<T extends {}>(
   name: string,
   attributes: ModelAttributes<Model<T>, Attributes<Model<T>>>,
   unsecureRead?: boolean,
