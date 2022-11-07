@@ -14,7 +14,7 @@
   "scripts": {
     "start": "node start.js",
     "dev": "yarn install && concurrently \"yarn server\" \"yarn client\"",
-    "client": "yarn workspace client dev",
+    "client": "yarn workspace client start",
     "server": "yarn workspace server dev",
     "build": "yarn workspace server build",
     "lint": "eslint .",

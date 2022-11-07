@@ -8,7 +8,7 @@
     "build": "yarn tsc --build --verbose",
     "start": "node dist/src/index.js",
     "mon": "nodemon -q dist/src/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"yarn mon\"ß",
+    "dev": "concurrently \"npx tsc --watch\" \"yarn mon\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf node_modules package-lock.json dist"
   },
