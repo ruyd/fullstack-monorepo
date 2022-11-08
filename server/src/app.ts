@@ -7,7 +7,7 @@ import { Connection } from './shared/db'
 import { applyModelsToSwaggerDoc } from './shared/model-api/swagger'
 import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
-import api from './api'
+import api from './routes'
 
 export default function createBackendApp(): express.Express {
   const app = express()
@@ -26,7 +26,7 @@ export default function createBackendApp(): express.Express {
   // Swagger Endpoint
   const swaggerDoc = swaggerJsdoc({
     swaggerDefinition: config.swaggerSetup as OAS3Definition,
-    apis: ['**/*/swagger.yaml', '**/api/**/routes.*s'],
+    apis: ['**/*/swagger.yaml', '**/routes/**/index.*s'],
   }) as OAS3Definition
 
   applyModelsToSwaggerDoc(Connection.models, swaggerDoc)

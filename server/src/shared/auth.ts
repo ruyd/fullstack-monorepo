@@ -62,6 +62,13 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
     _res: express.Response,
     next: express.NextFunction,
   ) {
+    const hasAuth =
+      (config.auth?.baseUrl && config.auth?.clientId && config.auth?.clientSecret) ||
+      config.tokenSecret
+    if (!hasAuth) {
+      return next()
+    }
+
     const { header, token } = setRequest(req, self.config)
     if (config.auth?.algorithm === 'RS256' && header && token) {
       const result = await jwkClient.getSigningKey(header.kid)
@@ -74,6 +81,7 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
       }
       return next()
     }
+
     return jwtVerify(req, _res, next)
   }
   return self

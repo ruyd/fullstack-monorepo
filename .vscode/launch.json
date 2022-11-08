@@ -16,14 +16,14 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "client Chrome",
+      "name": "Chrome",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}/client"
     },
     {
       "type": "msedge",
       "request": "launch",
-      "name": "client Edge",
+      "name": "Edge",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}/client",
       "version": "stable"

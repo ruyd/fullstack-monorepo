@@ -32,7 +32,7 @@ export interface Config {
 //rework with secrets
 const { database, host, username, password, ssl, schema } = sequelizeConfig.development
 const DB_URL = process.env.DB_URL || `postgres://${username}:${password}@${host}/${database}`
-const port = Number(process.env.PORT || 3000)
+const port = Number(process.env.PORT || 3001)
 const config: Config = {
   production: process.env.NODE_ENV === 'production',
   port,

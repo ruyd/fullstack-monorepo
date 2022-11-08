@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import express from 'express'
 import fs from 'fs'
 import path from 'path'
@@ -6,11 +5,15 @@ import logger from '../shared/logger'
 
 const router = express.Router()
 
-//todo: webpack script to bundle this
-const dirs = fs.readdirSync(__dirname, { withFileTypes: false })
+const dirs = fs
+  .readdirSync(__dirname, { withFileTypes: true })
+  .filter(d => d.isDirectory())
+  .map(d => d.name)
+
 for (const dir of dirs) {
   logger.info(`Found API: ${dir}`)
-  const router = require(path.resolve(__dirname, dir as string)).default
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const router = require(path.resolve(__dirname, dir)).default
   router.use(router)
 }
 
