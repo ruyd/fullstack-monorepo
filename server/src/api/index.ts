@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import express from 'express'
-// import profile from './profile'
-// import main from './main'
 import fs from 'fs'
+import path from 'path'
+import logger from '../shared/logger'
 
 const router = express.Router()
-fs.readdirSync(__dirname).forEach(file => {
-  if (file === 'index.ts') return
-  const router = require(`./${file}`).default
-  router.use(router)
-})
 
-// router.use(main)
-// router.use(profile)
+//todo: webpack script to bundle this
+const dirs = fs.readdirSync(__dirname, { withFileTypes: false })
+for (const dir of dirs) {
+  logger.info(`Found API: ${dir}`)
+  const router = require(path.resolve(__dirname, dir as string)).default
+  router.use(router)
+}
 
 export default router
