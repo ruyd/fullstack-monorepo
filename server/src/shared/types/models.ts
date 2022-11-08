@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize'
 import { Drawing } from '@shared/lib'
 import { UserModel } from './user'
-import { register } from '../shared/db'
+import { register } from '../db'
 
 export const DrawingModel = register<Drawing>('drawing', {
   id: {

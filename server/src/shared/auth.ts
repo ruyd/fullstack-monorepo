@@ -4,7 +4,7 @@ import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import config from './config'
-import { AppAccessToken } from '@shared/lib'
+import { AppAccessToken } from './types'
 import { ModelConfig } from './db'
 
 export interface oAuthError {
@@ -41,7 +41,7 @@ const jwkClient = jwksRsa({
 })
 
 const jwtVerify = expressjwt({
-  secret: config.tokenSecret as string,
+  secret: config.tokenSecret || 'off',
   algorithms: ['HS256'],
 })
 

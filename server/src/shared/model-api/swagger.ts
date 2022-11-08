@@ -1,5 +1,5 @@
 import { Model, ModelStatic } from 'sequelize/types'
-import { Schema, SwaggerDefinition } from 'swagger-jsdoc'
+import { OAS3Definition, Schema } from 'swagger-jsdoc'
 
 const conversions: Record<string, string> = {
   INTEGER: 'number',
@@ -144,20 +144,37 @@ export function getPaths(model: typeof Model) {
   return paths
 }
 
-export function swaggerDocModelInject(
-  models: ModelStatic<Model>[],
-  swaggerDoc: Partial<SwaggerDefinition>,
-) {
+export function autoCompleteResponses(swaggerDoc: OAS3Definition) {
+  for (const path in swaggerDoc.paths) {
+    const def = swaggerDoc.paths[path]
+    for (const method in def) {
+      if (!def[method]) {
+        def[method] = { summary: 'No summary' }
+      }
+      if (!def[method].responses) {
+        def[method].responses = { 200: swaggerDoc.components?.responses?.Success }
+      }
+    }
+  }
+}
+
+export function applyModelsToSwaggerDoc(models: ModelStatic<Model>[], swaggerDoc: OAS3Definition) {
+  autoCompleteResponses(swaggerDoc)
   for (const model of models) {
     const schema = getSchema(model)
     if (!swaggerDoc?.components?.schemas) {
+      if (!swaggerDoc.components) {
+        swaggerDoc.components = {}
+      }
       swaggerDoc.components.schemas = {}
     }
     const existingSchema = swaggerDoc?.components?.schemas[model.name]
     if (!existingSchema) {
       swaggerDoc.components.schemas[model.name] = schema
     }
-
+    if (!swaggerDoc.paths) {
+      swaggerDoc.paths = {}
+    }
     const paths = getPaths(model)
     for (const p in paths) {
       const existingPath = swaggerDoc.paths[p]

@@ -1,6 +1,6 @@
 import { User } from '@shared/lib'
 import { Model, DataTypes } from 'sequelize'
-import { register } from '../shared/db'
+import { register } from '../db'
 
 export type UserInstance = Model<User>
 

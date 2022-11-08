@@ -15,7 +15,7 @@
       "@shared/*": ["../packages/*/src"]
     }
   },
-  "include": ["src", ".eslintrc.js", "package.json"],
+  "include": ["src", ".eslintrc.js", "package.json", "setup/db.json"],
   "exclude": ["dist", "node_modules"],
   "references": [
     {

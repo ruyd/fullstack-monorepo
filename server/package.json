@@ -14,7 +14,6 @@
     "clean": "rm -rf node_modules dist"
   },
   "dependencies": {
-    "lib": "file:../packages/lib",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
@@ -25,11 +24,14 @@
     "http-status": "^1.5.2",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.1.4",
+    "lib": "file:../packages/lib",
     "pg": "^8.7.3",
     "sequelize": "^6.19.1",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
-    "uuid": "^8.3.2"
+    "umzug": "^3.2.1",
+    "uuid": "^8.3.2",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
