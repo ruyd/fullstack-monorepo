@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material'
 import config from '../../shared/config'
-import { Drawing, getDuration } from '@shared/lib'
+import { Drawing, getDuration, PagedResult } from '@shared/lib'
 import { useGet } from '../../features/app/thunks'
 import Moment from 'react-moment'
 import { Link, useNavigate } from 'react-router-dom'
@@ -30,7 +30,8 @@ const StyledImage = styled('img')({
 export default function Gallery() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { data: items } = useGet<Drawing[]>('gallery', '/gallery')
+  const { data } = useGet<PagedResult<Drawing>>('gallery', '/gallery')
+  const items = data?.items || []
   const copyLink = (item: Drawing) => {
     navigator.clipboard.writeText(
       `${window.location.origin}${config.baseName}${Paths.Draw}/${item.id}`,

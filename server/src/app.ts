@@ -7,12 +7,14 @@ import { Connection } from './shared/db'
 import { applyModelsToSwaggerDoc } from './shared/model-api/swagger'
 import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
+import cors from 'cors'
 import api from './routes'
 
 export default function createBackendApp(): express.Express {
   const app = express()
 
   // Basics
+  app.use(cors())
   app.use(express.json({ limit: config.jsonLimit }))
 
   app.use(

@@ -33,3 +33,11 @@ export interface User extends Entity {
   lastName?: string
   picture?: string
 }
+
+export interface PagedResult<T> {
+  items: T[]
+  offset: number
+  limit: number
+  hasMore: boolean
+  total: number
+}
