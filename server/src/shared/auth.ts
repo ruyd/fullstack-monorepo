@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken'
 import config from './config'
 import { AppAccessToken } from './types'
 import { ModelConfig } from './db'
+// /import { HttpUnauthorizedError } from './errorHandler'
 
 export interface oAuthError {
   error?: string
@@ -62,15 +63,11 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
     _res: express.Response,
     next: express.NextFunction,
   ) {
-    const hasAuth =
-      (config.auth?.baseUrl && config.auth?.clientId && config.auth?.clientSecret) ||
-      config.tokenSecret
-    if (!hasAuth) {
-      return next()
-    }
-
     const { header, token } = setRequest(req, self.config)
-    if (config.auth?.algorithm === 'RS256' && header && token) {
+    const hasAuthProvider =
+      config.auth?.baseUrl && config.auth?.clientId && config.auth?.clientSecret
+
+    if (hasAuthProvider && config.auth?.algorithm === 'RS256' && header && token) {
       const result = await jwkClient.getSigningKey(header.kid)
       const key = result.getPublicKey()
       const auth = jwt.verify(token, key, {

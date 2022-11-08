@@ -36,7 +36,7 @@ const port = Number(process.env.PORT || 3001)
 const config: Config = {
   production: process.env.NODE_ENV === 'production',
   port,
-  tokenSecret: process.env.TOKEN_SECRET,
+  tokenSecret: process.env.TOKEN_SECRET || 'blank',
   jsonLimit: process.env.JSON_LIMIT || '1mb',
   db: {
     force: false,
