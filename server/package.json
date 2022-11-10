@@ -50,6 +50,7 @@
     "node-polyfill-webpack-plugin": "^2.0.1",
     "nodemon": "^2.0.16",
     "openapi-types": "^12.0.2",
+    "ts-loader": "^9.4.1",
     "tsconfig-paths-webpack-plugin": "^4.0.0",
     "typescript": "^4.6.4",
     "webpack": "^5.75.0",
