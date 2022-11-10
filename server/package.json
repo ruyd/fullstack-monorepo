@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "mon": "nodemon -q dist/index.js",
     "watch": "yarn webpack watch",
-    "dev": "concurrently \"yarn watch\" \"yarn mon\"",
+    "dev": "yarn tsc --build --verbose && concurrently \"yarn watch\" \"yarn mon\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf node_modules dist"
   },
@@ -52,7 +52,7 @@
     "openapi-types": "^12.0.2",
     "ts-loader": "^9.4.1",
     "tsconfig-paths-webpack-plugin": "^4.0.0",
-    "typescript": "^4.6.4",
+    "typescript": "^4.8.4",
     "webpack": "^5.75.0",
     "webpack-cli": "^4.10.0",
     "webpack-node-externals": "^3.0.0"

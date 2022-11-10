@@ -13,14 +13,14 @@
   "outDir": "dist",
   "scripts": {
     "start": "node start.js",
-    "dev": "yarn install && docker compose up --wait && concurrently \"yarn server\" \"yarn client\"",
+    "dev": "NODE_ENV=development yarn install && docker compose up --wait && concurrently \"yarn server\" \"yarn client\"",
     "client": "yarn workspace client start",
     "server": "yarn workspace server dev",
     "build": "yarn workspace server build",
     "lint": "eslint .",
     "test": "yarn jest",
     "prettify": "yarn prettier . --write",
-    "clean": "rm -rf node_modules **/node_modules package-lock.json **/dist **/build"
+    "clean": "rm -rf node_modules **/*/node_modules package-lock.json yarn.lock **/*/dist **/*/build"
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",
@@ -42,7 +42,7 @@
     "gh-pages": "^4.0.0",
     "prettier": "^2.7.1",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
-    "typescript": "~4.7.4"
+    "typescript": "~4.8.4"
   },
   "dependencies": {
     "@types/uuid": "^8.3.4",
