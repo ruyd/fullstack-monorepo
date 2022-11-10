@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
+    "module": "commonjs",
     "removeComments": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -12,7 +10,7 @@
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
-      "@shared/*": ["../packages/*/src"]
+      "@shared/lib": ["../packages/lib/src"]
     }
   },
   "include": ["src", ".eslintrc.js", "package.json", "setup/db.json"],

@@ -16,14 +16,14 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Chrome",
+      "name": "chrome",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}/client"
     },
     {
       "type": "msedge",
       "request": "launch",
-      "name": "Edge",
+      "name": "edge",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}/client",
       "version": "stable"
