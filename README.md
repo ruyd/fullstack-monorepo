@@ -25,31 +25,9 @@ Fullstack TypeScript Drawing Canvas App
 - NodeJS/Express
 - Swagger
 - Sequelize
-
-## TypeScript Configuration
-
-```
-yarn network timeout issue due to: @mui/icons-material
-fix: yarn config set disable-self-update-check true
-```
-
-client
-
-- No ts.config references due to github actions: TS6305: Output file has not been built from source, hot reload via webpack
-- Modified CRA webpack
-- Packages linked via paths
-
-packages
-
-- Composite: true
-- package.json exports
-
-server
-
-- Composite: true with paths and references to packages
-- Packages Hot Reload note: paths' need non-wildcarded dir names
-
-NPM
+- Webpack
+ 
+### Workspace
 
 ```json
 "workspaces": [
