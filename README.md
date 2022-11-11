@@ -8,14 +8,15 @@
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
 [![Demo](https://img.shields.io/badge/Deployment-HEROKU-GREEN.svg)](https://drawspace-api.herokuapp.com/docs)
 
-### Best Practices Template 🙌💕😎✨
+### Best Practices Template 🙌
 
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
 
-- Fully customizable
+### Developer Experience 💕😎✨
 - VSCode Launchers for debugging code and tests
 - Shared Package Libraries
-- Webpack with Fast Hot Reload and Deploy Ready
+- Webpack with Super Fast Hot Reload
+- Deploy Ready
 
 ### Made with
 
