@@ -7,6 +7,10 @@ on:
       - 'packages/**'
       - 'server/**'
       - '.github/workflows/deploy-server.yml'
+    paths-ignore:
+      - '*.md'
+      - '**/*/*.md'
+      - 'docs/**'
 
 jobs:
   publish:
