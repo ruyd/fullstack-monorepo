@@ -42,7 +42,7 @@
 - [Docker](https://www.docker.com/) 
 ### About Drawspace App
 
-Create a drawing web application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings
+A drawing web and mobile application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings
 
 ### [Click for Demo](https://ruyd.github.io/fullstack-monorepo)
 
