@@ -8,9 +8,9 @@ Fullstack TypeScript Drawing Canvas App
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
 [![Demo](https://img.shields.io/badge/Deployment-HEROKU-GREEN.svg)](https://drawspace-api.herokuapp.com/docs)
 
-## Developer Experience 🙌💕😎✨
+## Experience 🙌💕😎✨
 
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo/draw)
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
 ### Made with
 
 - TypeScript
@@ -42,11 +42,9 @@ Fullstack TypeScript Drawing Canvas App
 
 ### Requirements
 - [Docker](https://www.docker.com/) 
-### About Sample App
+### About Drawspace App
 
-> Challenge: Create a drawing web application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings.
-> Each uploaded drawing will be saved in a persistence layer of your choosing on the backend.
-> NOTE: The drawings should not be persisted as bitmaps.
+Create a drawing web application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings
 
 ### [Click for Demo](https://ruyd.github.io/fullstack-monorepo)
 
