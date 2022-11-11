@@ -11,6 +11,12 @@
 ### Best Practices Template 🙌💕😎✨
 
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
+
+- Fully customizable
+- VSCode Launchers for debugging code and tests
+- Shared Package Libraries
+- Webpack with Fast Hot Reload and ready for deploys
+
 ### Made with
 
 - TypeScript
@@ -21,6 +27,7 @@
 - Sequelize
 - Webpack
 - Jest and Docker
+- [Automated Backend](https://github.com/ruyd/automated-express-backend)
  
 ### Workspace
 
@@ -42,9 +49,9 @@
 - [Docker](https://www.docker.com/) 
 ### About Drawspace App
 
-A drawing web and mobile application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings
+A drawing web and mobile application that allows users to sketch on an empty piece of “paper” and upload it to a public list of drawings
 
-### [Click for Demo](https://ruyd.github.io/fullstack-monorepo)
+### [Frontend Demo](https://ruyd.github.io/fullstack-monorepo)
 
 Backend might be sleeping, takes a bit to wake up
 
