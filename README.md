@@ -22,12 +22,11 @@
 - TypeScript
 - React, Redux and React Query
 - Material UI
-- NodeJS/Express
 - Swagger
 - Sequelize
 - Webpack
 - Jest and Docker
-- [Automated Backend](https://github.com/ruyd/automated-express-backend)
+- [Automated NodeJS/Express](https://github.com/ruyd/automated-express-backend)
  
 ### Workspace
 
