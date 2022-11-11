@@ -2,7 +2,7 @@
   "configurations": [
     {
       "command": "yarn dev",
-      "name": "dev client + server",
+      "name": "dev client:server",
       "request": "launch",
       "type": "node-terminal"
     },

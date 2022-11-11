@@ -10,11 +10,7 @@ Fullstack TypeScript Drawing Canvas App
 
 ## Developer Experience 🙌💕😎✨
 
-- Hot Reload Heaven
-- Generic redux and react-query
-- Automated Sequelize Backend
-- Automated Testing
-
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo/draw)
 ### Made with
 
 - TypeScript
