@@ -48,7 +48,7 @@ export const routes: AppRoute[] = [
     title: 'Your Canvas',
     path: Paths.Draw,
     component: React.lazy(() => import('../pages/Draw')),
-    secure: true,
+    secure: false,
     hideFooter: true,
     link: true,
     params: ['/:id'],
