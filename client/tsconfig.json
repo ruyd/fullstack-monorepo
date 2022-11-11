@@ -20,6 +20,12 @@
       "@shared/lib": ["../packages/lib/src"]
     }
   },
-  "include": ["src", ".eslintrc.*"],
+  "include": [
+    "src",
+    ".eslintrc.*",
+    "tests/App.test.tsx",
+    "tests/index.test.tsx",
+    "tests/setupTests.ts"
+  ],
   "exclude": ["node_modules", "build"]
 }

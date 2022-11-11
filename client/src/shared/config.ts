@@ -12,8 +12,9 @@ export interface Config {
   }
 }
 
+const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : '/fullstack-monorepo'
 const config: Config = {
-  baseName: process.env.REACT_APP_BASE_NAME || '/fullstack-monorepo',
+  baseName: process.env.REACT_APP_BASE_NAME || defaultBaseName,
   apiUrl: process.env.REACT_APP_BACKEND || 'https://drawspace-api.herokuapp.com/v1',
   defaultTitle: 'Drawspace',
   defaultColor: 'yellow',

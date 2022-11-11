@@ -18,7 +18,7 @@
     "server": "yarn workspace server dev",
     "build": "yarn workspace server build && yarn workspace client build",
     "lint": "eslint .",
-    "test": "yarn jest",
+    "test": "yarn workspace server test && yarn workspace client test",
     "prettify": "yarn prettier . --write",
     "clean": "rm -rf node_modules **/*/node_modules package-lock.json yarn.lock **/*/dist **/*/build"
   },

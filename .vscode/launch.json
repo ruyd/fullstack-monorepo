@@ -14,19 +14,25 @@
       "cwd": "${workspaceRoot}/server"
     },
     {
-      "type": "chrome",
+      "command": "yarn workspace client test",
+      "name": "test:client",
       "request": "launch",
-      "name": "chrome",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/client"
+      "type": "node-terminal",
+      "cwd": "${workspaceRoot}/client"
     },
     {
-      "type": "msedge",
+      "type": "node",
       "request": "launch",
-      "name": "edge",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/client",
-      "version": "stable"
+      "name": "jest",
+      "env": { "NODE_ENV": "test" },
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "cwd": "${workspaceRoot}/client",
+      "args": ["${fileBasenameNoExtension}", "--config", "jest.config.js"],
+      "console": "integratedTerminal",
+      "disableOptimisticBPs": true,
+      "windows": {
+        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+      }
     }
   ]
 }
