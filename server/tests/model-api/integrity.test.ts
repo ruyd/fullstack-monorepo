@@ -1,4 +1,4 @@
-import { checkDatabase } from '../../src/shared/db'
+import { checkDatabase, Connection } from '../../src/shared/db'
 
 describe('integrity check', () => {
   test('sync', async () => {
@@ -7,5 +7,8 @@ describe('integrity check', () => {
 
     // If data loss is no big deal, we can use sync() to update schema automatically
     // sequelize.sync({ force: true, match: /_test$/ });
+  })
+  afterAll(async () => {
+    await Connection.db.close()
   })
 })
