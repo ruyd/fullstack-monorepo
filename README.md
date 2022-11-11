@@ -1,6 +1,6 @@
 # Drawspace - TypeScript Sample Monorepo
 
-Fullstack TypeScript Drawing Canvas App
+## Fullstack Canvas Drawing App
 
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml)
 [![Demo](https://img.shields.io/badge/Deployment-GITHUB%20PAGES-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
@@ -8,21 +8,19 @@ Fullstack TypeScript Drawing Canvas App
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
 [![Demo](https://img.shields.io/badge/Deployment-HEROKU-GREEN.svg)](https://drawspace-api.herokuapp.com/docs)
 
-## Experience 🙌💕😎✨
+### Best Practices Template 🙌💕😎✨
 
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/pages/Home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
 ### Made with
 
 - TypeScript
-- React
-- Redux
-- React Query
+- React, Redux and React Query
 - Material UI
 - NodeJS/Express
 - Swagger
 - Sequelize
 - Webpack
-- Jest
+- Jest and Docker
  
 ### Workspace
 
