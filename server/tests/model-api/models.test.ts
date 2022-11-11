@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals'
-import { checkDatabase, Connection } from '../../src/shared/db'
+import { Connection } from '../../src/shared/db'
 import createBackend from '../../src/app'
 import { ModelStatic, Model } from 'sequelize'
 import { v4 as uuid } from 'uuid'
@@ -78,16 +78,6 @@ export function toMatchObjectExceptTimestamps(
     }
   }
 }
-
-describe('integrity check', () => {
-  test('sync', async () => {
-    const seq = await checkDatabase()
-    expect(seq).toBeTruthy()
-
-    // If data loss is no big deal, we can use sync() to update schema automatically
-    // sequelize.sync({ force: true, match: /_test$/ });
-  })
-})
 
 describe('model-api', () => {
   beforeAll(() => {

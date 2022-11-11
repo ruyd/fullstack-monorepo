@@ -14,7 +14,7 @@
     }
   },
   "include": ["src", ".eslintrc.js", "package.json", "setup/db.json"],
-  "exclude": ["dist", "node_modules"],
+  "exclude": ["dist", "node_modules", "../node_modules"],
   "references": [
     {
       "path": "../packages/lib/tsconfig.json"

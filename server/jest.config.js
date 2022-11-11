@@ -7,18 +7,12 @@ module.exports = {
   reporters: ['default', 'github-actions'],
   collectCoverage: true,
   collectCoverageFrom: ['src/api/**/*.ts'],
-  modulePathIgnorePatterns: ['<rootDir>/build/'],
+  modulePathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/dist/'],
   projects: [
     {
       displayName: 'server',
       preset: 'ts-jest',
-      testMatch: ['<rootDir>/tests/server/**/*.test.ts'],
+      testMatch: ['<rootDir>/tests/**/*.test.ts'],
     },
-    {
-      displayName: 'deploy',
-      preset: 'ts-jest',
-      testMatch: ['<rootDir>/tests/deploy.ts'],
-    },
-  ]
-};
-
+  ],
+}

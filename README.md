@@ -12,8 +12,8 @@ Fullstack TypeScript Drawing Canvas App
 
 - Hot Reload Heaven
 - Generic redux and react-query
-- Automated NPM scripts
-- Automated Backend
+- Automated Sequelize Backend
+- Automated Testing
 
 ### Made with
 
@@ -26,26 +26,26 @@ Fullstack TypeScript Drawing Canvas App
 - Swagger
 - Sequelize
 - Webpack
+- Jest
  
 ### Workspace
 
 ```json
 "workspaces": [
-"packages/*",
 "client",
+"packages/*",
 "server"
 ],
 ```
 
-### Setup
+### Quick Start
 
-- Get/Create your Database connection URL
-- Run npm start to create .env files
-- Set server/.env DATABASE_URL ie: postgres://postgres:password@localhost:5432/draw
-- For Auth0, set AUTH BASE_URL CLIENT_ID and SECRET with values from dashboard
-- In dashboard/rules add enrichToken rule: /server/setup/Auth0.js
-- Rerun npm start, it's ready
+- `git clone https://github.com/ruyd/fullstack-monorepo`
+- `yarn dev` or open in vscode and run debug  
+- For Auth0, set AUTH_TOKEN with admin token from dashboard
 
+### Requirements
+- [Docker](https://www.docker.com/) 
 ### About Sample App
 
 > Challenge: Create a drawing web application that allows users to draw/sketch on an empty piece of “paper” and upload it to a public list of drawings.

@@ -10,7 +10,7 @@
     "mon": "nodemon -q dist/index.js",
     "watch": "yarn webpack watch",
     "dev": "yarn tsc --build --verbose && concurrently \"yarn watch\" \"yarn mon\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "yarn jest",
     "clean": "rm -rf node_modules dist"
   },
   "dependencies": {
@@ -34,6 +34,7 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "@jest/types": "^29.3.1",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/express-unless": "^0.5.3",
@@ -47,9 +48,11 @@
     "concurrently": "^7.2.0",
     "eslint": "^8.19.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
+    "jest": "^29.3.1",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "nodemon": "^2.0.16",
     "openapi-types": "^12.0.2",
+    "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.1",
     "tsconfig-paths-webpack-plugin": "^4.0.0",
     "typescript": "^4.8.4",
