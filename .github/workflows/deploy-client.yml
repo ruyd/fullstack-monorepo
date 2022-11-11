@@ -6,6 +6,7 @@ on:
     paths:
       - 'client/**'
       - 'packages/**'
+      - '.github/workflows/deploy-client.yml'
 
 jobs:
   publish:
