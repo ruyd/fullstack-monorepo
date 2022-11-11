@@ -1,6 +1,6 @@
-# Drawspace - TypeScript Sample Monorepo
+# Drawspace - Fullstack Canvas Drawing App
 
-## Fullstack Canvas Drawing App
+## TypeScript Sample Monorepo
 
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml)
 [![Demo](https://img.shields.io/badge/Deployment-GITHUB%20PAGES-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
