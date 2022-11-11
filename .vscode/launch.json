@@ -14,25 +14,11 @@
       "cwd": "${workspaceRoot}/server"
     },
     {
-      "command": "yarn workspace client test",
+      "command": "yarn workspace client test ${fileBasenameNoExtension}",
       "name": "test:client",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceRoot}/client"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "jest",
-      "env": { "NODE_ENV": "test" },
-      "program": "${workspaceFolder}/node_modules/.bin/jest",
-      "cwd": "${workspaceRoot}/client",
-      "args": ["${fileBasenameNoExtension}", "--config", "jest.config.js"],
-      "console": "integratedTerminal",
-      "disableOptimisticBPs": true,
-      "windows": {
-        "program": "${workspaceFolder}/node_modules/jest/bin/jest"
-      }
     }
   ]
 }

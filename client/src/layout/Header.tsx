@@ -12,6 +12,7 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
+import config from '../shared/config'
 import { useAppDispatch, useAppSelector } from '../shared/store'
 import { patch } from '../features/app/slice'
 import { Link as RouterLink } from 'react-router-dom'
@@ -78,7 +79,7 @@ export default function HeaderNavBar() {
               textDecoration: 'none',
             }}
           >
-            Drawspace
+            {config.defaultTitle}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -136,7 +137,7 @@ export default function HeaderNavBar() {
               textDecoration: 'none',
             }}
           >
-            Drawspace
+            {config.defaultTitle}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {links.map(route => (
