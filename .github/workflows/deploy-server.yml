@@ -7,9 +7,6 @@ on:
       - 'packages/**'
       - 'server/**'
       - '.github/workflows/deploy-server.yml'
-      - '!*.md'
-      - '!**/*/*.md'
-      - '!docs/**'
 
 jobs:
   publish:

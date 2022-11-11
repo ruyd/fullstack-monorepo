@@ -6,9 +6,7 @@ on:
     paths:
       - 'client/**'
       - 'packages/**'
-      - '!*.md'
-      - '!**/*/*.md'
-      - '!docs/**'
+
 jobs:
   publish:
     runs-on: ubuntu-latest
