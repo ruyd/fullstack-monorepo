@@ -15,7 +15,7 @@
 - Fully customizable
 - VSCode Launchers for debugging code and tests
 - Shared Package Libraries
-- Webpack with Fast Hot Reload and ready for deploys
+- Webpack with Fast Hot Reload and Deploy Ready
 
 ### Made with
 
