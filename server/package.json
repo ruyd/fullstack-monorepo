@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "mon": "nodemon -q dist/index.js",
     "watch": "yarn webpack watch",
-    "dev": "yarn tsc --build --verbose && concurrently \"yarn watch\" \"yarn mon\"",
+    "dev": "yarn tsc --build --verbose && NODE_ENV=development yarn concurrently \"yarn watch\" \"yarn mon\"",
     "test": "yarn jest",
     "clean": "rm -rf node_modules dist"
   },

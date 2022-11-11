@@ -38,6 +38,7 @@ export default function Footer() {
                   style={{ margin: '0 .5rem -.2rem 0', width: 20, height: 20 }}
                   width={20}
                   height={20}
+                  alt="GitHub"
                 />
                 <Text>Template Source by Ruy</Text>
               </Link>

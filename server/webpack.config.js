@@ -1,4 +1,4 @@
-console.log('SERVER WEBPACK')
+console.log(`SERVER WEBPACK (${process.env.NODE_ENV})`)
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
