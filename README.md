@@ -36,9 +36,9 @@ Fullstack TypeScript Drawing Canvas App
 
 ### Quick Start
 
-- `git clone https://github.com/ruyd/fullstack-monorepo`
+- `git clone https://github.com/ruyd/fullstack-monorepo desiredName`
 - `yarn dev` or open in vscode and run debug  
-- For Auth0, set AUTH_TOKEN with admin token from dashboard
+- For Auth0, set AUTH_CONFIG_TOKEN with admin token
 
 ### Requirements
 - [Docker](https://www.docker.com/) 
