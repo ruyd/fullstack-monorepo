@@ -10,15 +10,16 @@
   ],
   "outDir": "dist",
   "scripts": {
-    "start": "NODE_ENV=production concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
+    "start": "NODE_ENV=production yarn workspace server start",
+    "build": "yarn workspace lib build && NODE_ENV=production yarn workspace server build",
+    "prod": "NODE_ENV=production concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
     "dev": "NODE_ENV=development yarn install && docker compose up --wait && yarn concurrently \"yarn server\" \"yarn client\"",
     "client": "yarn workspace client dev",
     "server": "yarn workspace server dev",
-    "build": "yarn workspace server build && yarn workspace client build",
     "lint": "eslint .",
     "test": "yarn workspace server test && yarn workspace client test",
     "prettify": "yarn prettier . --write",
-    "clean": "rm -rf node_modules **/*/node_modules package-lock.json yarn.lock **/*/dist **/*/build"
+    "clean": "rm -rf node_modules client/node_modules server/node_modules packages/*/node_modules package-lock.json yarn.lock client/build server/dist packages/*/dist"
   },
   "devDependencies": {
     "@jest/types": "^29.3.1",
