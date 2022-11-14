@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "incremental": true,
     "removeComments": false,
     "moduleResolution": "node",
     "esModuleInterop": true,

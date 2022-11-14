@@ -7,9 +7,9 @@ const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
-const createEnvironmentHash = require('../tools/createEnvironmentHash')
-const getClientEnvironment = require('../tools/env')
-const paths = require('../tools/paths')
+const createEnvironmentHash = require('../../tools/createEnvironmentHash')
+const getClientEnvironment = require('../../tools/env')
+const paths = require('../../tools/paths')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = process.env.NODE_ENV || 'production'
 const isDevelopment = mode === 'development'
@@ -28,7 +28,7 @@ module.exports = {
   externalsPresets: { node: true },
   externals: [
     nodeExternals({
-      additionalModuleDirs: [path.resolve(__dirname, '../node_modules')],
+      additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')],
     }),
   ],
   plugins: [
