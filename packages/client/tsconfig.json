@@ -17,7 +17,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@shared/lib": ["../packages/lib/src"]
+      "@shared/lib": ["../lib/src"]
     }
   },
   "include": ["src", ".eslintrc.*"],

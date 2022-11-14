@@ -10,14 +10,14 @@
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
-      "@shared/lib": ["../packages/lib/src"]
+      "@shared/lib": ["../lib/src"]
     }
   },
   "include": ["src", ".eslintrc.js", "package.json", "setup/db.json"],
   "exclude": ["dist", "node_modules", "../node_modules"],
   "references": [
     {
-      "path": "../packages/lib/tsconfig.json"
+      "path": "../lib/tsconfig.json"
     }
   ]
 }
