@@ -1,4 +1,4 @@
-import CanvasControl from './Container'
+import CanvasControl from './Control'
 
 export default function Draw() {
   return (

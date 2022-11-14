@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { AppNotification, patch } from '../app/slice'
+import { AppNotification, patch } from '../app'
 import { Alert, Snackbar } from '@mui/material'
 
 export default function Notifications() {

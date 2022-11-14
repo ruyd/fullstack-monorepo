@@ -1,18 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppUser, getPersistedAuthFromStorage } from '../../shared/auth'
+import { AppNotification, NotificationSeverity } from './types'
 
-export enum NotificationSeverity {
-  info = 'info',
-  success = 'success',
-  warning = 'warning',
-  error = 'error',
-}
-export interface AppNotification {
-  id: string
-  message: string
-  severity?: NotificationSeverity
-  closed?: boolean
-}
 export interface AppState {
   user?: AppUser
   token?: string
@@ -22,6 +11,7 @@ export interface AppState {
   drawerRightOpen?: boolean
   loading?: boolean
   loaded?: boolean
+  dialog?: string
 }
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')

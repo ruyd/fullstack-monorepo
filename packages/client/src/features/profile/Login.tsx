@@ -15,7 +15,7 @@ import { Paths } from 'src/shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch } from '../../shared/store'
 
-export default function Login() {
+export default function Login(): JSX.Element {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const returnTo = new URLSearchParams(window.location.search).get('returnTo')
