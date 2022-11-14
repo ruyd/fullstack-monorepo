@@ -1,6 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close'
-import { useAppSelector, useAppDispatch } from '../shared/store'
-import { patch } from '../features/app/slice'
+import { useAppSelector, useAppDispatch } from '../../shared/store'
+import { patch } from '../app/slice'
 import { Card, Container, IconButton, SwipeableDrawer, Typography } from '@mui/material'
 
 export default function DrawerRight() {

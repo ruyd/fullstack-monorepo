@@ -2,8 +2,8 @@ import { CircularProgress } from '@mui/material'
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Route, Routes } from 'react-router-dom'
-import config from '../shared/config'
-import routes, { AppRoute } from '../shared/routes'
+import config from '../../shared/config'
+import routes, { AppRoute } from '../../shared/routes'
 import AuthCheck from './AuthCheck'
 
 const RouteElement = ({ route }: { route: AppRoute }) => (

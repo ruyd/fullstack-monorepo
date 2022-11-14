@@ -13,8 +13,8 @@ import {
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../shared/store'
-import { registerAsync } from '../features/app/thunks'
+import { useAppDispatch } from '../../shared/store'
+import { registerAsync } from '../app/thunks'
 import { Paths } from 'src/shared/routes'
 
 export default function Register() {

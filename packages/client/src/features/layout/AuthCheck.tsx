@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import config from 'src/shared/config'
 import { Paths } from 'src/shared/routes'
-import { useAppSelector } from '../shared/store'
+import { useAppSelector } from '../../shared/store'
 
 export default function AuthCheck({
   children,

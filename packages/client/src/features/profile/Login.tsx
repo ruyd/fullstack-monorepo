@@ -12,8 +12,8 @@ import {
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
-import { forgotAsync, loginAsync } from '../features/app/thunks'
-import { useAppDispatch } from '../shared/store'
+import { forgotAsync, loginAsync } from '../app/thunks'
+import { useAppDispatch } from '../../shared/store'
 
 export default function Login() {
   const dispatch = useAppDispatch()

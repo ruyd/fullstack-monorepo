@@ -1,8 +1,8 @@
 import { Avatar, Box, Button, Grid, TextField, Typography, Container } from '@mui/material'
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../shared/store'
-import { editProfileAsync } from '../features/app/thunks'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
+import { editProfileAsync } from '../app/thunks'
 
 export default function Profile() {
   const dispatch = useAppDispatch()

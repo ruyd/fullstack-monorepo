@@ -1,6 +1,6 @@
 import { createTheme, Theme, ThemeOptions, ThemeProvider } from '@mui/material/styles'
 import React from 'react'
-import { useAppSelector } from '../shared/store'
+import { useAppSelector } from '../../shared/store'
 const darkOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
