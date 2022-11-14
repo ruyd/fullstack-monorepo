@@ -4,7 +4,7 @@ import React from 'react'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { TypographyProps } from '@mui/system'
-import github from '../pages/Home/images/github.svg'
+import github from '../home/images/github.svg'
 import { Link } from '@mui/material'
 
 const Text = ({ children, ...rest }: TypographyProps & { children: React.ReactNode }) => (
