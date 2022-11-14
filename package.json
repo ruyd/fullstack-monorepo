@@ -6,9 +6,7 @@
   "license": "ISC",
   "private": true,
   "workspaces": [
-    "packages/*",
-    "client",
-    "server"
+    "packages/*"
   ],
   "outDir": "dist",
   "scripts": {

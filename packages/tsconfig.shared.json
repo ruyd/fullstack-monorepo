@@ -1,4 +1,3 @@
-//Not Inherited - Shared Options for All Packages
 {
   "compilerOptions": {
     "composite": true,
