@@ -12,8 +12,8 @@
   ],
   "outDir": "dist",
   "scripts": {
-    "start": "HEROKU=1 NODE_ENV=production yarn workspace server start",
-    "build": "HEROKU=1 NODE_ENV=production yarn workspace lib build && yarn workspace server build",
+    "start": "NODE_ENV=production yarn workspace server start",
+    "build": "yarn workspace lib build && NODE_ENV=production yarn workspace server build",
     "prod": "NODE_ENV=production concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
     "dev": "NODE_ENV=development yarn install && docker compose up --wait && yarn concurrently \"yarn server\" \"yarn client\"",
     "client": "yarn workspace client dev",
