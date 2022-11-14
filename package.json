@@ -19,7 +19,7 @@
     "lint": "eslint .",
     "test": "yarn workspace server test && yarn workspace client test",
     "prettify": "yarn prettier . --write",
-    "clean": "rm -rf node_modules client/node_modules server/node_modules packages/*/node_modules package-lock.json yarn.lock client/build server/dist packages/*/dist"
+    "clean": "rm -rf node_modules packages/*/node_modules package-lock.json yarn.lock packages/*/build packages/*/dist"
   },
   "devDependencies": {
     "@jest/types": "^29.3.1",
