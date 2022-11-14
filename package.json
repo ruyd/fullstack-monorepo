@@ -12,7 +12,8 @@
   ],
   "outDir": "dist",
   "scripts": {
-    "start": "NODE_ENV=production concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
+    "start": "NODE_ENV=production yarn workspace server start",
+    "prod": "NODE_ENV=production concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
     "dev": "NODE_ENV=development yarn install && docker compose up --wait && yarn concurrently \"yarn server\" \"yarn client\"",
     "client": "yarn workspace client dev",
     "server": "yarn workspace server dev",
