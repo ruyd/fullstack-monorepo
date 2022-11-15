@@ -18,7 +18,8 @@ import { useAppDispatch } from '../../shared/store'
 export default function Login(): JSX.Element {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const returnTo = new URLSearchParams(window.location.search).get('returnTo')
+  const returnTo = new URLSearchParams(window.location.search).get('returnTo') || ''
+  const isRoutedPage = window.location.pathname.toLowerCase().includes('login')
   const emailRef = React.useRef<HTMLInputElement>(null)
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +28,7 @@ export default function Login(): JSX.Element {
     const payload = {} as Record<string, unknown>
     data.forEach((value, key) => (payload[key] = value))
     dispatch(loginAsync(payload)).then(({ meta }) => {
-      if (meta.requestStatus === 'fulfilled') {
+      if (meta.requestStatus === 'fulfilled' && (returnTo || isRoutedPage)) {
         navigate(returnTo || '/')
       }
     })
