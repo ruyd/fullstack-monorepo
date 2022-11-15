@@ -9,9 +9,14 @@ import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
+import { activateAxiosTrace } from './shared/logger'
 
 export default function createBackendApp(): express.Express {
   const app = express()
+
+  if (!config.production) {
+    activateAxiosTrace()
+  }
 
   // Basics
   app.use(cors())

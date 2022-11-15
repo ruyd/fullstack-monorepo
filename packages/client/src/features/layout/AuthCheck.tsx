@@ -1,8 +1,9 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import config from 'src/shared/config'
-import { Paths } from 'src/shared/routes'
+// import { useNavigate } from 'react-router-dom'
+// import config from 'src/shared/config'
+// import { Paths } from 'src/shared/routes'
 import { useAppSelector } from '../../shared/store'
+import Login from '../profile/Login'
 
 export default function AuthCheck({
   children,
@@ -12,18 +13,18 @@ export default function AuthCheck({
   secure?: boolean
 }) {
   const token = useAppSelector(state => state.app.token)
-  const navigate = useNavigate()
+  //const navigate = useNavigate()
   const denied = secure && !token
-  React.useEffect(() => {
-    if (denied) {
-      const fullPath = window.location.href
-        .replace(window.location.origin, '')
-        .replace(config.baseName, '')
-      navigate(`${Paths.Login}?returnTo=${fullPath}`)
-    }
-  }, [denied, navigate])
+  // React.useEffect(() => {
+  //   if (denied) {
+  //     const fullPath = window.location.href
+  //       .replace(window.location.origin, '')
+  //       .replace(config.baseName, '')
+  //     navigate(`${Paths.Login}?returnTo=${fullPath}`)
+  //   }
+  // }, [denied, navigate])
   if (denied) {
-    return null
+    return <Login />
   }
   return children as JSX.Element
 }

@@ -7,7 +7,7 @@
   "scripts": {
     "build": "yarn webpack",
     "start": "node dist/index.js",
-    "mon": "nodemon -q dist/index.js",
+    "mon": "yarn nodemon -q dist/index.js",
     "watch": "NODE_ENV=development yarn webpack watch",
     "dev": "yarn tsc --build && yarn concurrently \"yarn watch\" \"yarn mon\"",
     "test": "yarn jest",

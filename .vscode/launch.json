@@ -17,8 +17,7 @@
       "command": "yarn workspace server dev",
       "name": "dev server",
       "request": "launch",
-      "type": "node-terminal",
-      "cwd": "${workspaceRoot}/packages/server"
+      "type": "node-terminal"
     },
     {
       "command": "yarn workspace client test ${fileBasenameNoExtension}",

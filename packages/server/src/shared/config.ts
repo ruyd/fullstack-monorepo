@@ -5,6 +5,8 @@ import sequelizeConfig from '../../setup/db.json'
 
 dotenv.config({})
 
+const env = process.env || {}
+
 export interface Config {
   production: boolean
   port: number
@@ -31,13 +33,13 @@ export interface Config {
 
 //rework with secrets
 const { database, host, username, password, ssl, schema } = sequelizeConfig.development
-const DB_URL = process.env.DB_URL || `postgres://${username}:${password}@${host}/${database}`
-const port = Number(process.env.PORT || 3001)
+const DB_URL = env.DB_URL || `postgres://${username}:${password}@${host}/${database}`
+const port = Number(env.PORT || 3001)
 const config: Config = {
-  production: process.env.NODE_ENV === 'production',
+  production: env.NODE_ENV === 'production',
   port,
-  tokenSecret: process.env.TOKEN_SECRET || 'blank',
-  jsonLimit: process.env.JSON_LIMIT || '1mb',
+  tokenSecret: env.TOKEN_SECRET || 'blank',
+  jsonLimit: env.JSON_LIMIT || '1mb',
   db: {
     force: false,
     alter: false,
@@ -47,9 +49,9 @@ const config: Config = {
     ssl,
   },
   auth: {
-    baseUrl: process.env.AUTH_BASE_URL || '',
-    clientId: process.env.AUTH_CLIENT_ID || '',
-    clientSecret: process.env.AUTH_CLIENT_SECRET || '',
+    baseUrl: env.AUTH_BASE_URL || '',
+    clientId: env.AUTH_CLIENT_ID || '',
+    clientSecret: env.AUTH_CLIENT_SECRET || '',
     ruleNamespace: 'https://',
     algorithm: 'RS256',
   },

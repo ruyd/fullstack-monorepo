@@ -10,7 +10,7 @@
 
 ### Best Practices Template 🙌
 
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/features/home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/packages/client/src/features/home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
 
 ### Developer Experience 💕😎✨
 - VSCode Launchers for debugging code and tests
