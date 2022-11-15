@@ -9,6 +9,10 @@ applications:
           commands:
             - yarn workspace server build
             - amplifyPush --simples
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
   - frontend:
       phases:
         preBuild:
