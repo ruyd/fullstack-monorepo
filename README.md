@@ -14,8 +14,7 @@
 
 ### Developer Experience 💕😎✨
 - VSCode Launchers for debugging code and tests
-- Shared Package Libraries
-- Webpack with Super Fast Hot Reload
+- Webpack with Fast Hot Reload
 - Deploy Ready
 
 ### Made with
@@ -55,6 +54,6 @@ A drawing web and mobile application that allows users to sketch on an empty pie
 
 Backend might be sleeping, takes a bit to wake up
 
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/client/src/features/home/images/self.PNG)](https://ruyd.github.io/fullstack-monorepo/draw)
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/packages/client/src/features/home/images/self.PNG)](https://ruyd.github.io/fullstack-monorepo/draw)
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
