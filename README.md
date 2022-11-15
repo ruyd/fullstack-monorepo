@@ -27,16 +27,6 @@
 - Webpack
 - Jest and Docker
 - [Automated NodeJS/Express](https://github.com/ruyd/automated-express-backend)
- 
-### Workspace
-
-```json
-"workspaces": [
-"client",
-"packages/*",
-"server"
-],
-```
 
 ### Quick Start
 

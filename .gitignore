@@ -12,8 +12,8 @@
 /**/dist
 /**/build
 
-packages/server/src/certs
-
+certs
+workspaces/server/src/certs
 
 # misc
 .DS_Store

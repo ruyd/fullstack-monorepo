@@ -11,7 +11,7 @@
       "name": "dev client",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceRoot}/packages/client"
+      "cwd": "${workspaceRoot}/workspaces/client"
     },
     {
       "command": "yarn workspace server dev",
@@ -24,14 +24,14 @@
       "name": "test client",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceRoot}/packages/client"
+      "cwd": "${workspaceRoot}/workspaces/client"
     },
     {
       "command": "yarn workspace server test ${fileBasenameNoExtension}",
       "name": "test server",
       "request": "launch",
       "type": "node-terminal",
-      "cwd": "${workspaceRoot}/packages/server"
+      "cwd": "${workspaceRoot}/workspaces/server"
     }
   ]
 }

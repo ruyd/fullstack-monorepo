@@ -9,7 +9,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@shared/*": ["../../packages/*/src"]
+      "@shared/*": ["../../workspaces/*/src"]
     }
   },
   "include": ["./**/*.ts"],

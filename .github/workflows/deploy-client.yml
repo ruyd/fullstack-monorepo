@@ -4,8 +4,8 @@ on:
   push:
     branches: ['master']
     paths:
-      - 'client/**'
-      - 'packages/**'
+      - 'workspaces/lib/**'
+      - 'workspaces/client/**'
       - '.github/workflows/deploy-client.yml'
 
 jobs:
@@ -33,4 +33,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/client/build
+          publish_dir: ./workspaces/client/build

@@ -4,8 +4,8 @@ on:
   push:
     branches: ['master']
     paths:
-      - 'packages/**'
-      - 'server/**'
+      - 'workspaces/lib/**'
+      - 'workspaces/server/**'
       - '.github/workflows/deploy-server.yml'
 
 jobs:
