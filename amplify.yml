@@ -13,6 +13,7 @@ applications:
         baseDirectory: dist
         files:
           - '**/*'
+    appRoot: workspaces/server
   - frontend:
       phases:
         preBuild:
