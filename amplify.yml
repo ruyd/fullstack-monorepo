@@ -1,0 +1,27 @@
+version: 1
+applications:
+  - backend:
+      phases:
+        preBuild:
+          commands:
+            - yarn install
+        build:
+          commands:
+            - yarn workspace server build
+            - amplifyPush --simples
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            - yarn install
+        build:
+          commands:
+            - yarn workspace client build
+      artifacts:
+        baseDirectory: build
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+    appRoot: workspaces/client
