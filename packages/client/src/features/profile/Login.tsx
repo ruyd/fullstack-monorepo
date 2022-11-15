@@ -14,11 +14,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch } from '../../shared/store'
+//import config from '../../shared/config'
 
 export default function Login(): JSX.Element {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const returnTo = new URLSearchParams(window.location.search).get('returnTo') || ''
+  // const currentRoute = window.location.href
+  //   .replace(window.location.origin, '')
+  //   .replace(config.baseName, '')
+  const returnPath = new URLSearchParams(window.location.search).get('returnTo')
+  const returnTo = returnPath ? `?returnTo=${returnPath}` : ''
   const isRoutedPage = window.location.pathname.toLowerCase().includes('login')
   const emailRef = React.useRef<HTMLInputElement>(null)
 
