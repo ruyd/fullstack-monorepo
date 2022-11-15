@@ -1,4 +1,5 @@
 import axios from 'axios'
+import packageJson from '../../package.json'
 
 export interface Config {
   baseName: string
@@ -12,7 +13,7 @@ export interface Config {
   }
 }
 
-const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : '/fullstack-monorepo'
+const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : packageJson.homepage || '/'
 const config: Config = {
   baseName: process.env.REACT_APP_BASE_NAME || defaultBaseName,
   apiUrl: process.env.REACT_APP_BACKEND || 'https://drawspace-api.herokuapp.com/v1',
