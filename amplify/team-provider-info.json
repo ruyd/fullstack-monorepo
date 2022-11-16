@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fsmclient-dev-104539-authRole",
+      "UnauthRoleArn": "arn:aws:iam::693552021707:role/amplify-fsmclient-dev-104539-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::693552021707:role/amplify-fsmclient-dev-104539-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-fsmclient-dev-104539-deployment",
+      "UnauthRoleName": "amplify-fsmclient-dev-104539-unauthRole",
+      "StackName": "amplify-fsmclient-dev-104539",
+      "StackId": "arn:aws:cloudformation:us-east-1:693552021707:stack/amplify-fsmclient-dev-104539/8f0ea030-64fc-11ed-8ef1-0e5e82b7d939",
+      "AmplifyAppId": "d2z6naqczx1d6r"
+    },
+    "categories": {
+      "function": {
+        "fsmclientfd407e60": {},
+        "fsmclientad124a12": {}
+      }
+    }
+  }
+}

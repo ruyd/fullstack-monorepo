@@ -11,6 +11,11 @@ export interface Config {
     width: number
     height: number
   }
+  auth?: {
+    google?: {
+      clientId: string
+    }
+  }
 }
 
 const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : packageJson.homepage || '/'
@@ -23,6 +28,11 @@ const config: Config = {
   thumbnails: {
     width: 300,
     height: 200,
+  },
+  auth: {
+    google: {
+      clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID || '',
+    },
   },
 }
 
