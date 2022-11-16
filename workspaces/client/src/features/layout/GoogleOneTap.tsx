@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react'
 import { useAppDispatch, store } from 'src/shared/store'
 import config from '../../shared/config'
@@ -31,7 +30,7 @@ export interface OneTapHookOptions extends OneTapBase {
   ref?: React.MutableRefObject<OneTapAPI | null>
 }
 
-export function googleOneTap({
+export function loadScriptAndInit({
   clientId,
   autoSelect = false,
   cancelOnTapOutside = true,
@@ -81,7 +80,7 @@ export function GoogleOneTap({ children }: React.PropsWithChildren): JSX.Element
 
   React.useEffect(() => {
     if (!loaded.current) {
-      googleOneTap({
+      loadScriptAndInit({
         ...initOptions,
         ref,
       })
