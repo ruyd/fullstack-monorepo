@@ -1,32 +1,37 @@
 /* eslint-disable no-console */
 import React from 'react'
-import { useAppDispatch } from 'src/shared/store'
+import { useAppDispatch, store } from 'src/shared/store'
 import config from '../../shared/config'
 import { socialLoginAsync } from '../app'
 
-type TabBaseOptions = {
+type OneTapBase = {
   context?: 'use' | 'signin' | 'signup'
   callback?: (response: { credentials?: string }) => void
 }
 
-export interface GoogleOneTapParams extends TabBaseOptions {
+const initOptions: OneTapParams = {
+  client_id: config.auth?.google?.clientId,
+  callback: ok => store.dispatch(socialLoginAsync(ok)),
+}
+
+export interface OneTapParams extends OneTapBase {
   client_id?: string
   auto_select?: boolean
   cancel_on_tap_outside?: boolean
 }
 export type OneTapAPI = {
-  accounts: { id: { initialize: (options: GoogleOneTapParams) => void; prompt: () => void } }
+  accounts: { id: { initialize: (options: OneTapParams) => void; prompt: () => void } }
 }
 export type WindowWithGoogle = Window & typeof globalThis & { google: OneTapAPI }
 
-export interface OneTapHookOptions extends TabBaseOptions {
+export interface OneTapHookOptions extends OneTapBase {
   clientId?: string
   autoSelect?: boolean
   cancelOnTapOutside?: boolean
   ref?: React.MutableRefObject<OneTapAPI | null>
 }
 
-export default function googleOneTap({
+export function googleOneTap({
   clientId,
   autoSelect = false,
   cancelOnTapOutside = true,
@@ -64,11 +69,11 @@ export default function googleOneTap({
 }
 
 export const prompt = () => {
-  const g = (window as WindowWithGoogle).google
-  console.log('g', g?.accounts?.id)
-  g?.accounts?.id.initialize({ client_id: config.auth?.google?.clientId })
-  g?.accounts?.id.prompt()
+  const tap = (window as WindowWithGoogle).google?.accounts?.id
+  tap.initialize(initOptions)
+  tap.prompt()
 }
+
 export function GoogleOneTap({ children }: React.PropsWithChildren): JSX.Element {
   const dispatch = useAppDispatch()
   const loaded = React.useRef(false)
@@ -77,8 +82,7 @@ export function GoogleOneTap({ children }: React.PropsWithChildren): JSX.Element
   React.useEffect(() => {
     if (!loaded.current) {
       googleOneTap({
-        clientId: config.auth?.google?.clientId,
-        callback: ok => dispatch(socialLoginAsync(ok)),
+        ...initOptions,
         ref,
       })
       loaded.current = true
@@ -87,3 +91,5 @@ export function GoogleOneTap({ children }: React.PropsWithChildren): JSX.Element
 
   return <>{children}</>
 }
+
+export default GoogleOneTap
