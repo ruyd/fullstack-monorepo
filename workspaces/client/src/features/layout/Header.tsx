@@ -19,6 +19,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import routes from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Link } from '@mui/material'
+import { prompt } from './GoogleOneTap'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
@@ -28,7 +29,7 @@ export default function HeaderNavBar() {
   const authenticated = useAppSelector(state => state.app.token)
   const user = useAppSelector(state => state.app.user)
   const darkTheme = useAppSelector(state => state.app.darkTheme)
-  const drawerRightOpen = useAppSelector(state => state.app.drawerRightOpen)
+  // const drawerRightOpen = useAppSelector(state => state.app.drawerRightOpen)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
@@ -52,7 +53,8 @@ export default function HeaderNavBar() {
   }
 
   const handleMenuToggle = () => {
-    dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
+    prompt()
+    //dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
   }
 
   const handleLogout = () => {

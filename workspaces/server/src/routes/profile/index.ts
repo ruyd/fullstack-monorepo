@@ -72,8 +72,8 @@ router.post('/profile/register', register)
 
 router.post('/profile/edit', tokenCheckWare, edit)
 
-router.post('/profile/oauthcallback', (req, res) => {
-  const { oauthToken: token } = req.body
+router.post('/profile/social', (req, res) => {
+  const { token } = req.body
 
   res.json({ token })
 })

@@ -7,7 +7,7 @@
       "type": "node-terminal"
     },
     {
-      "command": "yarn workspace client start",
+      "command": "yarn workspace client dev",
       "name": "dev client",
       "request": "launch",
       "type": "node-terminal",
