@@ -16,6 +16,7 @@ export interface Config {
     baseUrl: string
     redirectUrl: string
     clientId: string
+    audience: string
     google?: {
       clientId: string
     }
@@ -36,7 +37,8 @@ const config: Config = {
   auth: {
     domain: `${env.AUTH_ACCOUNT}.auth0.com`,
     baseUrl: `https://${env.AUTH_ACCOUNT}.auth0.com`,
-    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000',
+    audience: `https://${env.AUTH_ACCOUNT}.auth0.com/api/v2/`,
+    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
     clientId: env.AUTH_CLIENT_ID || '',
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || '',

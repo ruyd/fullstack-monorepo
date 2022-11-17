@@ -3,7 +3,7 @@ import React from 'react'
 // import config from 'src/shared/config'
 // import { Paths } from 'src/shared/routes'
 import { useAppSelector } from '../../shared/store'
-import Login from '../profile/Login'
+import Login from './Login'
 
 export default function AuthCheck({
   children,

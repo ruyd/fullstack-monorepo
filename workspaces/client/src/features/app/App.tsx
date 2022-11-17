@@ -7,7 +7,7 @@ import { store } from '../../shared/store'
 import config from '../../shared/config'
 import '../../styles/index.css'
 import { MainLayout } from '../layout/MainLayout'
-import { GoogleOneTap } from '../layout/GoogleOneTap'
+import { GoogleOneTap } from '../profile/GoogleOneTap'
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false } },

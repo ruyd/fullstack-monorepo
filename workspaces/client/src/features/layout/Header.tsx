@@ -19,7 +19,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import routes from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Link } from '@mui/material'
-import { prompt } from './GoogleOneTap'
+import { prompt } from '../profile/GoogleOneTap'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)

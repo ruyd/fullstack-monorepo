@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { Route, Routes } from 'react-router-dom'
 import config from '../../shared/config'
 import routes, { AppRoute } from '../../shared/routes'
-import AuthCheck from './AuthCheck'
+import AuthCheck from '../profile/AuthCheck'
 
 const RouteElement = ({ route }: { route: AppRoute }) => (
   <AuthCheck secure={route.secure}>
