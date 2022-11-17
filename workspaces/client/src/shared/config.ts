@@ -12,16 +12,20 @@ export interface Config {
     height: number
   }
   auth?: {
+    domain: string
+    baseUrl: string
+    redirectUrl: string
+    clientId: string
     google?: {
       clientId: string
     }
   }
 }
-
+const env = process.env
 const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : packageJson.homepage || '/'
 const config: Config = {
-  baseName: process.env.REACT_APP_BASE_NAME || defaultBaseName,
-  apiUrl: process.env.REACT_APP_BACKEND || 'https://drawspace-api.herokuapp.com/v1',
+  baseName: env.BASE_NAME || defaultBaseName,
+  apiUrl: env.BACKEND || 'https://drawspace-api.herokuapp.com/v1',
   defaultTitle: 'Drawspace',
   defaultColor: 'yellow',
   defaultLineSize: 20,
@@ -30,8 +34,12 @@ const config: Config = {
     height: 200,
   },
   auth: {
+    domain: `${env.AUTH_ACCOUNT}.auth0.com`,
+    baseUrl: `https://${env.AUTH_ACCOUNT}.auth0.com`,
+    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000',
+    clientId: env.AUTH_CLIENT_ID || '',
     google: {
-      clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID || '',
+      clientId: process.env.GOOGLE_CLIENT_ID || '',
     },
   },
 }

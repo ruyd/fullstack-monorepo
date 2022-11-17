@@ -1,16 +1,40 @@
 import React from 'react'
-import { useAppDispatch, store } from 'src/shared/store'
+import { useAppDispatch } from 'src/shared/store'
+import { IdentityToken } from '../../../../lib/src/types'
 import config from '../../shared/config'
-import { socialLoginAsync } from '../app'
+import decode from 'jwt-decode'
+import authProvider from 'auth0-js'
 
 type OneTapBase = {
   context?: 'use' | 'signin' | 'signup'
-  callback?: (response: { credentials?: string }) => void
+  callback?: (response: { credential?: string }) => void
 }
 
 const initOptions: OneTapParams = {
   client_id: config.auth?.google?.clientId,
-  callback: ok => store.dispatch(socialLoginAsync(ok)),
+  callback: async ok => {
+    const token = await authProviderSocialLogin(ok.credential as string)
+    // eslint-disable-next-line no-console
+    console.log(token)
+  },
+}
+
+export async function authProviderSocialLogin(credential: string) {
+  const email = (decode(credential) as IdentityToken)?.email
+  const options = {
+    domain: config.auth?.domain as string,
+    clientID: config.auth?.clientId as string,
+    redirectUri: config.auth?.redirectUrl as string,
+    responseType: 'token id_token',
+    connection: 'google-oauth2',
+    scope: 'openid profile email',
+    loginHint: email,
+  }
+  const webAuth = new authProvider.WebAuth(options)
+  webAuth.popup.authorize(options, x => {
+    // eslint-disable-next-line no-console
+    console.log('auth callback', x)
+  })
 }
 
 export interface OneTapParams extends OneTapBase {

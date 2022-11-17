@@ -22,6 +22,7 @@ export interface Config {
   }
   auth?: {
     baseUrl: string
+    redirectUrl: string
     clientId: string
     clientSecret: string
     ruleNamespace: string
@@ -50,6 +51,7 @@ const config: Config = {
   },
   auth: {
     baseUrl: env.AUTH_BASE_URL || '',
+    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000',
     clientId: env.AUTH_CLIENT_ID || '',
     clientSecret: env.AUTH_CLIENT_SECRET || '',
     ruleNamespace: 'https://',
