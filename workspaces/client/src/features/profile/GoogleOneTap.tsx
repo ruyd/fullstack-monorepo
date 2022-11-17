@@ -1,9 +1,6 @@
 import React from 'react'
-import { useAppDispatch } from 'src/shared/store'
-import { IdentityToken } from '../../../../lib/src/types'
+import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import config from '../../shared/config'
-import decode from 'jwt-decode'
-import authProvider from 'auth0-js'
 
 type OneTapBase = {
   context?: 'use' | 'signin' | 'signup'
@@ -12,29 +9,10 @@ type OneTapBase = {
 
 const initOptions: OneTapParams = {
   client_id: config.auth?.google?.clientId,
-  callback: async ok => {
-    const token = await authProviderSocialLogin(ok.credential as string)
-    // eslint-disable-next-line no-console
-    console.log(token)
+  callback: () => {
+    /* response.credential should be enough for google cloud backends,
+    using Callback.tsx for auth0 */
   },
-}
-
-export async function authProviderSocialLogin(credential: string) {
-  const email = (decode(credential) as IdentityToken)?.email
-  const options = {
-    domain: config.auth?.domain as string,
-    clientID: config.auth?.clientId as string,
-    audience: config.auth?.audience as string,
-    redirectUri: config.auth?.redirectUrl as string,
-    responseType: 'id_token token',
-    connection: 'google-oauth2',
-    scope: 'openid profile email',
-    loginHint: email,
-  }
-  const webAuth = new authProvider.WebAuth(options)
-  webAuth.popup.authorize(options, () => {
-    /* nothing interesting */
-  })
 }
 
 export interface OneTapParams extends OneTapBase {
@@ -97,22 +75,23 @@ export const prompt = () => {
   tap.prompt()
 }
 
-export function GoogleOneTap({ children }: React.PropsWithChildren): JSX.Element {
+export function GoogleOneTap(): JSX.Element {
   const dispatch = useAppDispatch()
   const loaded = React.useRef(false)
   const ref = React.useRef<OneTapAPI | null>(null)
+  const token = useAppSelector(state => state.app.token)
 
   React.useEffect(() => {
-    if (!loaded.current) {
+    if (!loaded.current && !token) {
       loadScriptAndInit({
         ...initOptions,
         ref,
       })
       loaded.current = true
     }
-  }, [dispatch, loaded])
+  }, [dispatch, loaded, token])
 
-  return <>{children}</>
+  return <></>
 }
 
 export default GoogleOneTap

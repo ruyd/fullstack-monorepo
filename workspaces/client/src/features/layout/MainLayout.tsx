@@ -8,6 +8,7 @@ import Routing from './Routing'
 import Notifications from './Notifications'
 import Footer from './Footer'
 import LoadingLine from './LoadingLine'
+import AuthProviders from '../profile/AuthProviders'
 
 export function MainLayout() {
   return (
@@ -22,6 +23,7 @@ export function MainLayout() {
         <Notifications />
         <DrawerRight />
         <Footer />
+        <AuthProviders />
       </ThemeSwitch>
     </React.Fragment>
   )

@@ -1,11 +1,10 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import config from '../../shared/config'
 import authProvider from 'auth0-js'
 import { useAppDispatch } from 'src/shared/store'
 import Alert from '@mui/material/Alert'
 import { AlertTitle, Container } from '@mui/material'
+import { socialLoginAsync } from '../app'
 
 export default function Callback(): JSX.Element {
   const dispatch = useAppDispatch()
@@ -20,10 +19,10 @@ export default function Callback(): JSX.Element {
         clientID: config.auth?.clientId as string,
         audience: config.auth?.audience as string,
       })
-      console.log('access_token', access_token, id_token)
-      //   auth.popup.callback({
-      //     hash: window.location.hash,
-      //   })
+      auth.popup.callback({
+        hash: window.location.hash,
+      })
+      dispatch(socialLoginAsync({ access_token, id_token }))
     }
   }, [dispatch, access_token, id_token])
 

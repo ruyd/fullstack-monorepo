@@ -7,7 +7,6 @@ import { store } from '../../shared/store'
 import config from '../../shared/config'
 import '../../styles/index.css'
 import { MainLayout } from '../layout/MainLayout'
-import { GoogleOneTap } from '../profile/GoogleOneTap'
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false } },
@@ -19,13 +18,11 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <GoogleOneTap>
-          <HelmetProvider>
-            <BrowserRouter basename={config.baseName}>
-              <MainLayout />
-            </BrowserRouter>
-          </HelmetProvider>
-        </GoogleOneTap>
+        <HelmetProvider>
+          <BrowserRouter basename={config.baseName}>
+            <MainLayout />
+          </BrowserRouter>
+        </HelmetProvider>
       </Provider>
     </QueryClientProvider>
   )
