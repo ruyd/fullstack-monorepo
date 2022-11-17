@@ -5,10 +5,11 @@ import {
   authProviderRegister,
   ReqWithAuth,
   authProviderChangePassword,
+  authProviderSocial,
 } from '../../shared/auth'
 import { createOrUpdate } from '../../shared/model-api/controller'
 import { UserModel } from '../../shared/types/user'
-import { AppAccessToken, getPictureMock } from '@shared/lib'
+import { AppAccessToken, getPictureMock, IdentityToken } from '@shared/lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 
@@ -39,6 +40,41 @@ export async function login(req: express.Request, res: express.Response) {
   const { email, password } = req.body
 
   const response = await authProviderLogin(email, password)
+  if (response.error) {
+    throw new Error(response.error_description)
+  }
+
+  let user = (
+    await UserModel.findOne({
+      where: { email },
+    })
+  )?.get()
+
+  if (!user) {
+    const decoded = decode(response.access_token) as AppAccessToken
+    user = await createOrUpdate(UserModel, { email, userId: decoded.userId })
+  }
+
+  if (!user) {
+    throw new Error('Database User could not be get/put')
+  }
+
+  res.json({
+    token: response.access_token,
+    user,
+  })
+}
+
+export async function socialLogin(req: express.Request, res: express.Response) {
+  const { credentials } = req.body
+
+  const decoded = decode(credentials) as IdentityToken
+  if (!decoded) {
+    throw new Error('Invalid token')
+  }
+
+  const { email } = decoded
+  const response = await authProviderSocial(email)
   if (response.error) {
     throw new Error(response.error_description)
   }

@@ -156,6 +156,24 @@ export async function authProviderLogin(
   return response.data
 }
 
+export async function authProviderSocial(email: string): Promise<oAuthResponse> {
+  const response = await axios.post(
+    `${config.auth?.baseUrl}/authorize`,
+    {
+      client_id: config.auth?.clientId,
+      client_secret: config.auth?.clientSecret,
+      response_type: 'token',
+      connection: 'google-oauth2',
+      redirect_uri: 'http://localhost:3000',
+      login_hint: email,
+    },
+    {
+      validateStatus: () => true,
+    },
+  )
+  return response.data
+}
+
 export async function authProviderRegister(
   payload: Record<string, string>,
 ): Promise<Partial<oAuthRegistered>> {

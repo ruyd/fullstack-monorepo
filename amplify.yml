@@ -1,19 +1,5 @@
 version: 1
 applications:
-  - backend:
-      phases:
-        preBuild:
-          commands:
-            - yarn install
-        build:
-          commands:
-            - yarn workspace server build
-            - amplifyPush --simples
-      artifacts:
-        baseDirectory: dist
-        files:
-          - '**/*'
-    appRoot: workspaces/server
   - frontend:
       phases:
         preBuild:

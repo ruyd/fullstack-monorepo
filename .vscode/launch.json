@@ -1,10 +1,11 @@
 {
   "configurations": [
     {
-      "command": "yarn dev",
+      "command": "yarn workspace server dev",
       "name": "dev client:server",
       "request": "launch",
-      "type": "node-terminal"
+      "type": "node-terminal",
+      "preLaunchTask": "client.watch"
     },
     {
       "command": "yarn workspace client dev",

@@ -16,6 +16,14 @@ export interface AppAccessToken extends Jwt {
   roles: string[]
 }
 
+export interface IdentityToken extends Jwt {
+  picture?: string | undefined
+  email: string
+  name: string
+  given_name: string
+  family_name: string
+}
+
 /**
  * Common Model Options
  * ie: Timestamps
