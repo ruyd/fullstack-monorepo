@@ -61,7 +61,7 @@ const config: Config = {
     tenant: env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
     domain: `${env.AUTH_TENANT}.auth0.com`,
     baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
-    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000',
+    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
     explorerAudience: `https://${env.AUTH_TENANT}.auth0.com/api/v2/`,
     explorerId: env.AUTH_EXPLORER_ID || '',
     explorerSecret: env.AUTH_EXPLORER_SECRET || '',
@@ -85,6 +85,18 @@ const config: Config = {
     ],
     basePath: '/docs',
   },
+}
+
+export function getClientConfig() {
+  return {
+    auth: {
+      domain: config.auth.domain,
+      baseUrl: config.auth.baseUrl,
+      audience: config.auth.clientAudience,
+      clientId: config.auth.clientId,
+      redirectUrl: config.auth.redirectUrl,
+    },
+  }
 }
 
 export default config

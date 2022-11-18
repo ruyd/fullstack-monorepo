@@ -2,6 +2,7 @@ import axios from 'axios'
 import packageJson from '../../package.json'
 
 export interface Config {
+  [key: string]: any
   baseName: string
   apiUrl: string
   defaultTitle: string
@@ -11,7 +12,7 @@ export interface Config {
     width: number
     height: number
   }
-  auth?: {
+  auth: {
     domain: string
     baseUrl: string
     redirectUrl: string
@@ -38,16 +39,23 @@ const config: Config = {
     domain: `${env.AUTH_TENANT}.auth0.com`,
     baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
     audience: `https://backend`,
-    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
     clientId: env.AUTH_CLIENT_ID || '',
+    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || '',
     },
   },
 }
 
-export function applyConfig() {
+export async function applyConfig() {
   axios.defaults.baseURL = config.apiUrl
+  // Remotish config
+  const serverConfig = (await axios.get<Config>('/config'))?.data
+  if (serverConfig) {
+    Object.keys(serverConfig).forEach(key => {
+      config[key] = { ...config[key], ...serverConfig[key] }
+    })
+  }
 }
 
 export default config

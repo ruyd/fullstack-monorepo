@@ -232,16 +232,16 @@ export async function authProviderPatch(payload: {
 }
 
 export async function lazyLoadManagementToken(): Promise<boolean> {
-  if (!config.auth?.clientId || config.auth?.manageToken) {
+  if (!config.auth?.explorerId || config.auth?.manageToken) {
     return false
   }
   logger.info('Getting management token...')
   const response = await axios.post(
     `${config.auth?.baseUrl}/oauth/token`,
     {
-      client_id: config.auth?.explorerId,
-      client_secret: config.auth?.explorerSecret,
-      audience: `${config.auth?.baseUrl}/api/v2/`,
+      client_id: config.auth.explorerId,
+      client_secret: config.auth.explorerSecret,
+      audience: config.auth.explorerAudience,
       grant_type: 'client_credentials',
     },
     {

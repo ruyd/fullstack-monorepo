@@ -79,9 +79,9 @@ export function loginRedirect() {
   window.location.assign(`${config.baseName}${Paths.Login}?returnTo=${returnTo}`)
 }
 
-export async function checkSocialToken(token: string): Promise<{ userId?: string }> {
+export async function checkSocialToken(token: string): Promise<string | undefined> {
   const response = await axios.post<{ userId?: string }>(`profile/social/check`, {
     token,
   })
-  return response.data
+  return response.data?.userId
 }

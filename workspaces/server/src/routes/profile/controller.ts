@@ -113,6 +113,21 @@ export async function social(req: express.Request, res: express.Response) {
   })
 }
 
+export async function socialCheck(req: express.Request, res: express.Response) {
+  logger.info('Social Email Check', req.body)
+  const { token } = req.body
+  const decoded = decode(token) as IdentityToken
+  const { email } = decoded
+  const user = (
+    await UserModel.findOne({
+      where: { email },
+    })
+  )?.get()
+  res.json({
+    userId: user?.userId,
+  })
+}
+
 export async function forgot(req: express.Request, res: express.Response) {
   const payload = req.body
   if (!payload) {

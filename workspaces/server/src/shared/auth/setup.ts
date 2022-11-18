@@ -11,7 +11,7 @@ const readOptions = () => ({
 })
 
 const log = (s: string, o?: unknown) =>
-  logger.info(`AUTH0-SETUP::${s}: ${o ? JSON.stringify(o, null, 2) : ''}`)
+  logger.info(`AUTH0-SYNC::${s}: ${o ? JSON.stringify(o, null, 2) : ''}`)
 const get = <T>(url: string) => axios.get<T>(`${config.auth?.baseUrl}/api/v2/${url}`, readOptions())
 const post = <T>(url: string, data: unknown) =>
   axios.post<T>(`${config.auth?.baseUrl}/api/v2/${url}`, data, readOptions())
@@ -24,25 +24,24 @@ const post = <T>(url: string, data: unknown) =>
  * - Check for Client Grants
  * - Check for Rules
  */
-export async function authProviderAutoSetup(): Promise<boolean> {
-  if (!config.auth?.tenant || !config.auth?.explorerId || !config.auth?.explorerSecret) {
-    log('Auth0 explorer credentials not set - skipping auto-setup')
+export async function authProviderSync(): Promise<boolean> {
+  if (!config.auth.tenant || !config.auth.explorerId || !config.auth.explorerSecret) {
+    log('Auth0 explorer credentials not set - skipping sync')
     // eslint-disable-next-line no-console
     console.warn(
-      '\x1b[33m*****************************\n\x1b[33m*** EXPLORER ID AND SECRET NOT SET - AUTO SETUP TURNED OFF ***\n\x1b[33m***************************** \x1b[0m',
+      '\x1b[33m*****************************\n\x1b[33m*** AUTH_EXPLORER_ID AND SECRET NOT SET - AUTH SYNC TURNED OFF ***\n\x1b[33m***************************** \x1b[0m',
     )
-
     return false
   }
   const success = await lazyLoadManagementToken()
   if (!success) {
-    logger.warn('Failed to get auth0 management token - skipping auto-setup')
+    logger.warn('Failed to get auth0 management token - skipping')
     return false
   }
   await ensureResourceServers()
   await ensureClients()
   await ensureRules()
-  log('Check complete')
+  log(`Auth0 Check Complete > For clients use AUTH_CLIENT_ID: ${config.auth.clientId} `)
   return true
 }
 
