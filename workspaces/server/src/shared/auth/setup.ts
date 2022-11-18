@@ -29,7 +29,7 @@ export async function authProviderSync(): Promise<boolean> {
     log('Auth0 explorer credentials not set - skipping sync')
     // eslint-disable-next-line no-console
     console.warn(
-      '\x1b[33m*****************************\n\x1b[33m*** AUTH_EXPLORER_ID AND SECRET NOT SET - AUTH SYNC TURNED OFF ***\n\x1b[33m***************************** \x1b[0m',
+      '\x1b[33m*****************************\n\x1b[33m*** AUTH_TENANT AUTH_EXPLORER_ID AND AUTH_EXPLORER_SECRET ARE NOT SET - AUTH0 SYNC TURNED OFF ***\n\x1b[33m***************************** \x1b[0m',
     )
     return false
   }
