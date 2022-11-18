@@ -1,5 +1,6 @@
 import axios from 'axios'
 import winston from 'winston'
+import config from './config'
 
 const logger = winston.createLogger({
   level: 'info',
@@ -14,17 +15,17 @@ const logger = winston.createLogger({
 })
 
 export function activateAxiosTrace() {
-  axios.interceptors.request.use(config => {
+  axios.interceptors.request.use(req => {
     // using console to avoid sensitive data in logs
     // eslint-disable-next-line no-console
-    console.log('Request', config.url, config.method, config.data)
-    return config
+    console.log('Request', req.url, req.method, config.trace ? req.data : '')
+    return req
   })
 
-  axios.interceptors.response.use(config => {
+  axios.interceptors.response.use(req => {
     // eslint-disable-next-line no-console
-    console.log('Response', config.data, config.statusText)
-    return config
+    console.log('Response', req.status, req.statusText, config.trace ? req.data : '')
+    return req
   })
 }
 

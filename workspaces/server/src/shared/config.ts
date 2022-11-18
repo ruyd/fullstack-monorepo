@@ -8,6 +8,7 @@ dotenv.config({})
 const env = process.env || {}
 
 export interface Config {
+  trace: boolean
   production: boolean
   port: number
   jsonLimit: string
@@ -25,10 +26,12 @@ export interface Config {
     domain: string
     baseUrl: string
     redirectUrl: string
+    explorerAudience: string
     explorerId: string
     explorerSecret: string
     ruleNamespace: string
     algorithm: 'RS256' | 'HS256'
+    clientAudience: string
     clientId?: string
     clientSecret?: string
     manageToken?: string
@@ -41,6 +44,7 @@ const { database, host, username, password, ssl, schema } = sequelizeConfig.deve
 const DB_URL = env.DB_URL || `postgres://${username}:${password}@${host}/${database}`
 const port = Number(env.PORT || 3001)
 const config: Config = {
+  trace: false,
   production: env.NODE_ENV === 'production',
   port,
   jsonLimit: env.JSON_LIMIT || '1mb',
@@ -58,8 +62,10 @@ const config: Config = {
     domain: `${env.AUTH_TENANT}.auth0.com`,
     baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
     redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000',
+    explorerAudience: `https://${env.AUTH_TENANT}.auth0.com/api/v2/`,
     explorerId: env.AUTH_EXPLORER_ID || '',
     explorerSecret: env.AUTH_EXPLORER_SECRET || '',
+    clientAudience: env.AUTH_AUDIENCE || 'https://client',
     clientId: env.AUTH_CLIENT_ID || '',
     clientSecret: env.AUTH_CLIENT_SECRET || '',
     ruleNamespace: 'https://',

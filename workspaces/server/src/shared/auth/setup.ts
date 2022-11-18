@@ -10,11 +10,14 @@ const readOptions = () => ({
   validateStatus: () => true,
 })
 
+const log = (s: string, o?: unknown) =>
+  logger.info(`AUTH0-SETUP::${s}: ${o ? JSON.stringify(o, null, 2) : ''}`)
 const get = <T>(url: string) => axios.get<T>(`${config.auth?.baseUrl}/api/v2/${url}`, readOptions())
 const post = <T>(url: string, data: unknown) =>
   axios.post<T>(`${config.auth?.baseUrl}/api/v2/${url}`, data, readOptions())
 
 /**
+ * Auth0 can be tricky enough to merit, experimental automated setup
  * Check exists and if not found, create:
  * - Check for Resource Servers
  * - Check for Clients and sets clientId and clientSecret
@@ -23,7 +26,12 @@ const post = <T>(url: string, data: unknown) =>
  */
 export async function authProviderAutoSetup(): Promise<boolean> {
   if (!config.auth?.tenant || !config.auth?.explorerId || !config.auth?.explorerSecret) {
-    logger.info('Auth0 explorer credentials not set - skipping auto-setup')
+    log('Auth0 explorer credentials not set - skipping auto-setup')
+    // eslint-disable-next-line no-console
+    console.warn(
+      '\x1b[33m*****************************\n\x1b[33m*** EXPLORER ID AND SECRET NOT SET - AUTO SETUP TURNED OFF ***\n\x1b[33m***************************** \x1b[0m',
+    )
+
     return false
   }
   const success = await lazyLoadManagementToken()
@@ -34,57 +42,11 @@ export async function authProviderAutoSetup(): Promise<boolean> {
   await ensureResourceServers()
   await ensureClients()
   await ensureRules()
+  log('Check complete')
   return true
 }
 
 async function ensureClients() {
-  const clients = [
-    {
-      name: 'client',
-      allowed_clients: [],
-      allowed_logout_urls: [],
-      callbacks: [
-        'http://localhost:3000',
-        'http://localhost:3000/callback',
-        'http://localhost:3001',
-        'https://accounts.google.com/gsi/client',
-      ],
-      native_social_login: {
-        apple: {
-          enabled: false,
-        },
-        facebook: {
-          enabled: false,
-        },
-      },
-      allowed_origins: ['http://localhost:3000'],
-      client_aliases: [],
-      token_endpoint_auth_method: 'client_secret_post',
-      app_type: 'regular_web',
-      grant_types: [
-        'authorization_code',
-        'implicit',
-        'refresh_token',
-        'client_credentials',
-        'password',
-        'http://auth0.com/oauth/grant-type/password-realm',
-        'http://auth0.com/oauth/grant-type/passwordless/otp',
-        'http://auth0.com/oauth/grant-type/mfa-oob',
-        'http://auth0.com/oauth/grant-type/mfa-otp',
-        'http://auth0.com/oauth/grant-type/mfa-recovery-code',
-      ],
-      web_origins: ['http://localhost:3000'],
-      custom_login_page_on: true,
-    },
-    {
-      name: 'backend',
-      token_endpoint_auth_method: 'client_secret_post',
-      app_type: 'non_interactive',
-      grant_types: ['client_credentials'],
-      custom_login_page_on: true,
-    },
-  ]
-
   interface AuthClient {
     id: string
     name: string
@@ -93,45 +55,127 @@ async function ensureClients() {
     scopes: string[]
     client_id: string
     client_secret: string
+    [key: string]: unknown
   }
 
-  const existing = await get<AuthClient[]>(`clients`)
-  let authClient = existing.data.find(e => e.name === 'client')
-  const missing = clients.filter(rs => !existing.data.find(e => e.name === rs.name))
-  if (missing.length) {
-    logger.info(`Creating missing clients: ${missing.map(m => m.name).join(', ')}`)
-    for (const client of missing) {
-      const result = await post<AuthClient>(`clients`, client)
-      if (!result.data?.id) {
-        logger.error(`Failed to create client ${client.name}`)
-        continue
-      }
-      if (client.name === 'client') {
-        authClient = result.data
-      }
-      logger.info(`Created client ${client.name} with id ${result.data.id}`)
-      const grantResult = await post<{
-        id: string
-        client_id: string
-        audience: string
-        scope: string[]
-      }>(`client-grants`, {
-        client_id: result.data.id,
-        audience: 'https://backend',
-        scope: [],
-      })
-      if (grantResult.data?.id) {
-        logger.info(`Created client grant ${grantResult.data.id}`)
-      } else {
-        logger.error(`Failed to create client grant for ${client.name}`)
-      }
+  interface Grant {
+    id: string
+    client_id: string
+    audience: string
+    scope: string[]
+  }
+
+  const clientClient = {
+    name: 'client',
+    allowed_clients: [],
+    allowed_logout_urls: [],
+    callbacks: [
+      'http://localhost:3000',
+      'http://localhost:3000/callback',
+      'http://localhost:3001',
+      'https://accounts.google.com/gsi/client',
+    ],
+    native_social_login: {
+      apple: {
+        enabled: false,
+      },
+      facebook: {
+        enabled: false,
+      },
+    },
+    allowed_origins: ['http://localhost:3000'],
+    client_aliases: [],
+    token_endpoint_auth_method: 'client_secret_post',
+    app_type: 'regular_web',
+    grant_types: [
+      'authorization_code',
+      'implicit',
+      'refresh_token',
+      'client_credentials',
+      'password',
+      'http://auth0.com/oauth/grant-type/password-realm',
+      'http://auth0.com/oauth/grant-type/passwordless/otp',
+      'http://auth0.com/oauth/grant-type/mfa-oob',
+      'http://auth0.com/oauth/grant-type/mfa-otp',
+      'http://auth0.com/oauth/grant-type/mfa-recovery-code',
+    ],
+    web_origins: ['http://localhost:3000'],
+    custom_login_page_on: true,
+  }
+
+  const backendClient = {
+    name: 'backend',
+    token_endpoint_auth_method: 'client_secret_post',
+    app_type: 'non_interactive',
+    grant_types: ['client_credentials'],
+    custom_login_page_on: true,
+  }
+
+  const grants = (await get<Grant[]>('client-grants'))?.data
+  const grant = async (client: AuthClient, audience: string) => {
+    log(`Creating client grant for ${client.name}`)
+    const grantResult = await post<Grant>(`client-grants`, {
+      client_id: client.client_id,
+      audience,
+      scope: [],
+    })
+    if (grantResult.data?.id) {
+      log(`Created client grant`, grantResult.data)
+      grants.push(grantResult.data)
+    } else {
+      logger.error(
+        `Failed to create client grant for ${client.name}` + JSON.stringify(grantResult.data),
+      )
     }
   }
 
-  if (!config.auth.clientId && authClient) {
-    logger.info(`Setting auth.clientId to ${authClient.client_id}`)
-    config.auth.clientId = authClient.client_id
-    config.auth.clientSecret = authClient.client_secret
+  const addClient = async (client: Partial<AuthClient>, audience: string) => {
+    log('Creating client', { client, audience })
+    const result = await post<AuthClient>(`clients`, client)
+    if (!result.data?.client_id) {
+      logger.error(`Failed to create client ${client.name}` + JSON.stringify(result.data))
+    }
+    log(`Created client ${client.name}`, result.data)
+    await grant(result.data, audience)
+    return result.data
+  }
+
+  const existing = await get<AuthClient[]>(`clients`)
+  const authManager = existing.data.find(c => c.name === 'API Explorer Application')
+  let existingBackend = existing.data.find(e => e.name === 'backend')
+  if (!existingBackend) {
+    existingBackend = await addClient(backendClient, config.auth.explorerAudience)
+  }
+  let existingClient = existing.data.find(e => e.name === 'client')
+  if (!existingClient) {
+    existingClient = await addClient(clientClient, config.auth.clientAudience)
+  }
+
+  // backend has manager
+  // client has backend
+  if (
+    existingBackend &&
+    authManager?.identifier &&
+    !grants.find(
+      g => g.client_id === existingBackend?.client_id && g.audience === authManager.identifier,
+    )
+  ) {
+    await grant(existingBackend, authManager?.identifier)
+  }
+
+  if (
+    existingClient &&
+    !grants.find(
+      g => g.client_id === existingClient?.client_id && g.audience === config.auth.clientAudience,
+    )
+  ) {
+    grant(existingClient, config.auth.clientAudience)
+  }
+
+  if (!config.auth.clientId && existingClient) {
+    log(`Setting auth.clientId to ${existingClient.client_id}`)
+    config.auth.clientId = existingClient.client_id
+    config.auth.clientSecret = existingClient.client_secret
   }
 }
 
@@ -139,7 +183,7 @@ async function ensureResourceServers() {
   const resourceServers = [
     {
       name: 'backend',
-      identifier: 'https://backend',
+      identifier: config.auth.clientAudience,
     },
   ]
 
@@ -156,10 +200,10 @@ async function ensureResourceServers() {
     rs => !existing.data.find(e => e.name === rs.name || e.identifier === rs.identifier),
   )
   if (missing.length) {
-    logger.info(`Creating missing resource servers: ${missing.map(m => m.name).join(', ')}`)
+    log(`Creating missing resource servers: ${missing.map(m => m.name).join(', ')}`)
     for (const rs of missing) {
       const result = await post<ResourceServer>(`resource-servers`, rs)
-      logger.info(`Created resource server ${rs.name} with id ${result.data.id}`)
+      log(`Created resource server ${rs.name} with id ${result.data.id}`)
     }
   }
 }
@@ -196,10 +240,10 @@ async function ensureRules() {
   const existing = await get<Rule[]>(`rules`)
   const missing = rules.filter(rule => !existing.data.find(erule => erule.name === rule.name))
   if (missing.length) {
-    logger.info('Missing rules, creating... ' + JSON.stringify(missing))
+    log('Missing rules, creating... ' + JSON.stringify(missing))
     for (const rule of missing) {
       const result = await post<Rule>(`rules`, rule)
-      logger.info('Result: ' + JSON.stringify(result.data))
+      log('Result: ' + JSON.stringify(result.data))
     }
   }
 }

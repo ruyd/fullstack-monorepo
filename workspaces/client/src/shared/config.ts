@@ -37,7 +37,7 @@ const config: Config = {
   auth: {
     domain: `${env.AUTH_TENANT}.auth0.com`,
     baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
-    audience: `https://${env.AUTH_TENANT}.auth0.com/api/v2/`,
+    audience: `https://client`,
     redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
     clientId: env.AUTH_CLIENT_ID || '',
     google: {
