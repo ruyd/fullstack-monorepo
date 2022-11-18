@@ -1,6 +1,6 @@
 import express from 'express'
 import { tokenCheckWare } from '../../shared/auth'
-import { edit, forgot, login, register } from './controller'
+import { edit, forgot, login, register, social } from './controller'
 
 const router = express.Router()
 
@@ -77,5 +77,12 @@ router.post('/profile/logoff', (_req, res) => {
 })
 
 router.post('/profile/forgot', forgot)
+
+/**
+ * @swagger
+ * /profile/social:
+ *  post:
+ */
+router.post('/profile/social', social)
 
 export default router

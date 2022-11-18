@@ -54,6 +54,7 @@ export const routes: AppRoute[] = [
     params: ['/:id'],
   },
   {
+    title: 'Authenticating...',
     path: '/callback',
     component: React.lazy(() => import('../features/profile/Callback')),
   },

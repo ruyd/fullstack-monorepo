@@ -1,6 +1,11 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import { IdentityToken } from '../../../../lib/src/types'
 import config from '../../shared/config'
+import decode from 'jwt-decode'
+import authProvider from 'auth0-js'
+import { checkSocialToken } from 'src/shared/auth'
+import { v4 as uuid } from 'uuid'
 
 type OneTapBase = {
   context?: 'use' | 'signin' | 'signup'
@@ -9,10 +14,33 @@ type OneTapBase = {
 
 const initOptions: OneTapParams = {
   client_id: config.auth?.google?.clientId,
-  callback: () => {
+  callback: async ok => {
+    popupSocialLogin(ok.credential as string)
     /* response.credential should be enough for google cloud backends,
     using Callback.tsx for auth0 */
   },
+}
+
+export async function popupSocialLogin(credential: string) {
+  const userId = await checkSocialToken(credential)
+  const email = (decode(credential) as IdentityToken)?.email
+  const options = {
+    domain: config.auth?.domain as string,
+    clientID: config.auth?.clientId as string,
+    audience: config.auth?.audience as string,
+    redirectUri: config.auth?.redirectUrl as string,
+    responseType: 'id_token token',
+    connection: 'google-oauth2',
+    scope: 'openid profile email',
+    loginHint: email,
+    user_metadata: {
+      id: userId || uuid(),
+    },
+  }
+  const webAuth = new authProvider.WebAuth(options)
+  webAuth.popup.authorize(options, () => {
+    /* not interesting */
+  })
 }
 
 export interface OneTapParams extends OneTapBase {
@@ -21,7 +49,13 @@ export interface OneTapParams extends OneTapBase {
   cancel_on_tap_outside?: boolean
 }
 export type OneTapAPI = {
-  accounts: { id: { initialize: (options: OneTapParams) => void; prompt: () => void } }
+  accounts: {
+    id: {
+      initialize: (options: OneTapParams) => void
+      prompt: () => void
+      setLogLevel: (l: 'info' | 'none') => void
+    }
+  }
 }
 export type WindowWithGoogle = Window & typeof globalThis & { google: OneTapAPI }
 

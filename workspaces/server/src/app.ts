@@ -10,6 +10,7 @@ import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
 import { activateAxiosTrace } from './shared/logger'
+import { authProviderAutoSetup } from './shared/auth/setup'
 
 export default function createBackendApp(): express.Express {
   const app = express()
@@ -17,6 +18,8 @@ export default function createBackendApp(): express.Express {
   if (!config.production) {
     activateAxiosTrace()
   }
+
+  authProviderAutoSetup()
 
   // Basics
   app.use(cors())

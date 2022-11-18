@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import config from '../../shared/config'
 import authProvider from 'auth0-js'
@@ -19,9 +20,9 @@ export default function Callback(): JSX.Element {
         clientID: config.auth?.clientId as string,
         audience: config.auth?.audience as string,
       })
-      auth.popup.callback({
-        hash: window.location.hash,
-      })
+      // auth.popup.callback({
+      //   hash: window.location.hash,
+      // })
       dispatch(socialLoginAsync({ access_token, id_token }))
     }
   }, [dispatch, access_token, id_token])

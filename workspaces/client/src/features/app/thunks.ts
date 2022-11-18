@@ -93,6 +93,8 @@ export const socialLoginAsync = createAsyncThunk(
   'app/login/social',
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request<{ token: string; user: AppUser }>('profile/social', payload)
+    // eslint-disable-next-line no-console
+    console.log('social', response)
     setLogin(dispatch, response.data.token, response.data.user)
   },
 )

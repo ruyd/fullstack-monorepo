@@ -1,0 +1,106 @@
+{
+    "servers": [
+        {
+            "name": "backend",
+            "identifier": "https://backend",
+            "allow_offline_access": false,
+            "skip_consent_for_verifiable_first_party_clients": true,
+            "token_lifetime": 86400,
+            "token_lifetime_for_web": 7200,
+            "signing_alg": "RS256"
+        }
+    ],
+    "clients": [
+        {
+            "tenant": "ruy",
+            "global": false,
+            "is_token_endpoint_ip_header_trusted": false,
+            "name": "client",
+            "is_first_party": true,
+            "oidc_conformant": true,
+            "sso_disabled": false,
+            "cross_origin_auth": false,
+            "refresh_token": {
+                "expiration_type": "non-expiring",
+                "leeway": 0,
+                "infinite_token_lifetime": true,
+                "infinite_idle_token_lifetime": true,
+                "token_lifetime": 31557600,
+                "idle_token_lifetime": 2592000,
+                "rotation_type": "non-rotating"
+            },
+            "allowed_clients": [],
+            "allowed_logout_urls": [],
+            "callbacks": [
+                "http://localhost:3000",
+                "http://localhost:3000/callback",
+                "http://localhost:3001",
+                "https://accounts.google.com/gsi/client"
+            ],
+            "native_social_login": {
+                "apple": {
+                    "enabled": false
+                },
+                "facebook": {
+                    "enabled": false
+                }
+            },
+            "allowed_origins": [
+                "http://localhost:3000"
+            ],
+            "client_aliases": [],
+            "token_endpoint_auth_method": "client_secret_post",
+            "app_type": "regular_web",
+            "grant_types": [
+                "authorization_code",
+                "implicit",
+                "refresh_token",
+                "client_credentials",
+                "password",
+                "http://auth0.com/oauth/grant-type/password-realm",
+                "http://auth0.com/oauth/grant-type/passwordless/otp",
+                "http://auth0.com/oauth/grant-type/mfa-oob",
+                "http://auth0.com/oauth/grant-type/mfa-otp",
+                "http://auth0.com/oauth/grant-type/mfa-recovery-code"
+            ],
+            "web_origins": [
+                "http://localhost:3000"
+            ],
+            "custom_login_page_on": true
+        },
+        {
+            "tenant": "ruy",
+            "global": false,
+            "is_token_endpoint_ip_header_trusted": false,
+            "name": "backend (Test Application)",
+            "is_first_party": true,
+            "oidc_conformant": true,
+            "sso_disabled": false,
+            "cross_origin_auth": false,
+            "refresh_token": {
+                "expiration_type": "non-expiring",
+                "leeway": 0,
+                "infinite_token_lifetime": true,
+                "infinite_idle_token_lifetime": true,
+                "token_lifetime": 31557600,
+                "idle_token_lifetime": 2592000,
+                "rotation_type": "non-rotating"
+            },
+            "callback_url_template": false,
+            "token_endpoint_auth_method": "client_secret_post",
+            "app_type": "non_interactive",
+            "grant_types": [
+                "client_credentials"
+            ],
+            "custom_login_page_on": true
+        }
+    ],
+    "rules": [
+        {
+            "enabled": true,
+            "script": "function enrichToken(user, context, callback) {\n  let accessTokenClaims = context.accessToken || {};\n  const assignedRoles = (context.authorization || {}).roles;\n  accessTokenClaims[`https://roles`] = assignedRoles;\n  user.user_metadata = user.user_metadata || {};\n  accessTokenClaims[`https://userId`] = user.user_metadata.id;\n  accessTokenClaims[`https://verified`] = user.email_verified;\n  context.accessToken = accessTokenClaims;\n  return callback(null, user, context);\n}",
+            "name": "enrichToken",
+            "order": 1
+        }
+    ]
+}

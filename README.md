@@ -32,7 +32,12 @@
 
 - `git clone https://github.com/ruyd/fullstack-monorepo desiredName`
 - `yarn dev` or open in vscode and run debug  
-- For Auth0, set AUTH_CONFIG_TOKEN with admin token
+- For Auth0 Auto Setup, copy sample.env to workspaces/server/.env and populate with:
+  Dashboard > Applications > API Explorer Application > Settings
+  - AUTH_TENANT=`tenant` domain without `tenant`.auth0.com
+  - AUTH_EXPLORER_ID=`Client ID`
+  - AUTH_EXPLORER_SECRET=`Client Secret`
+
 
 ### Requirements
 - [Docker](https://www.docker.com/) 
@@ -47,3 +52,4 @@ Backend might be sleeping, takes a bit to wake up
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/packages/client/src/features/home/images/self.PNG)](https://ruyd.github.io/fullstack-monorepo/draw)
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+

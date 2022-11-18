@@ -3,9 +3,11 @@ import express from 'express'
 import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
-import config from './config'
-import { AppAccessToken } from './types'
-import { ModelConfig } from './db'
+import config from '../config'
+import { AppAccessToken } from '../types'
+import { ModelConfig } from '../db'
+import logger from '../logger'
+
 // /import { HttpUnauthorizedError } from './errorHandler'
 
 export interface oAuthError {
@@ -42,7 +44,7 @@ const jwkClient = jwksRsa({
 })
 
 const jwtVerify = expressjwt({
-  secret: config.tokenSecret || 'off',
+  secret: config.auth.tokenSecret || 'off',
   algorithms: ['HS256'],
 })
 
@@ -120,7 +122,7 @@ export function setRequest(
  * @returns
  */
 export function createToken(obj: object): string {
-  const token = jwt.sign(obj, config.tokenSecret as string)
+  const token = jwt.sign(obj, config.auth.tokenSecret as string)
   return token
 }
 
@@ -160,23 +162,15 @@ export async function authProviderRegister(
   payload: Record<string, string>,
 ): Promise<Partial<oAuthRegistered>> {
   try {
-    const response = await axios.post(
-      `${config.auth?.baseUrl}/dbconnections/signup`,
-      {
-        connection: 'Username-Password-Authentication',
-        client_id: config.auth?.clientId,
-        email: payload.email,
-        password: payload.password,
-        user_metadata: {
-          id: payload.userId,
-        },
+    const response = await axios.post(`${config.auth?.baseUrl}/dbconnections/signup`, {
+      connection: 'Username-Password-Authentication',
+      client_id: config.auth?.clientId,
+      email: payload.email,
+      password: payload.password,
+      user_metadata: {
+        id: payload.userId,
       },
-      {
-        headers: {
-          Authorization: `Negotiate`,
-        },
-      },
-    )
+    })
     return response.data
   } catch (err: unknown) {
     const error = err as Error & {
@@ -209,15 +203,15 @@ export async function authProviderChangePassword(
 }
 
 export async function authProviderPatch(payload: {
-  id: string
-  email: string
-  password: string
+  user_id: string
+  connection: string
+  user_metadata: Record<string, string>
+  [key: string]: unknown
 }): Promise<oAuthError | string> {
   try {
     const response = await axios.patch(
       `${config.auth?.baseUrl}/api/v2/users/${payload.id}`,
       {
-        connection: 'Username-Password-Authentication',
         client_id: config.auth?.clientId,
         ...payload,
       },
@@ -235,4 +229,31 @@ export async function authProviderPatch(payload: {
       error_description: error.response?.data?.description,
     }
   }
+}
+
+export async function lazyLoadManagementToken(): Promise<boolean> {
+  if (!config.auth?.clientId || config.auth?.manageToken) {
+    return false
+  }
+  logger.info('Getting management token...')
+  const response = await axios.post(
+    `${config.auth?.baseUrl}/oauth/token`,
+    {
+      client_id: config.auth?.explorerId,
+      client_secret: config.auth?.explorerSecret,
+      audience: `${config.auth?.baseUrl}/api/v2/`,
+      grant_type: 'client_credentials',
+    },
+    {
+      validateStatus: () => true,
+    },
+  )
+
+  logger.info('response' + JSON.stringify(response.data))
+
+  if (response.data.access_token) {
+    config.auth.manageToken = response.data.access_token
+  }
+
+  return true
 }

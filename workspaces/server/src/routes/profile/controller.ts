@@ -5,12 +5,15 @@ import {
   authProviderRegister,
   ReqWithAuth,
   authProviderChangePassword,
+  lazyLoadManagementToken,
+  authProviderPatch,
 } from '../../shared/auth'
 import { createOrUpdate } from '../../shared/model-api/controller'
 import { UserModel } from '../../shared/types/user'
-import { AppAccessToken, getPictureMock } from '@shared/lib'
+import { AppAccessToken, getPictureMock, IdentityToken } from '@shared/lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
+import logger from '../../shared/logger'
 
 export async function register(req: express.Request, res: express.Response) {
   const payload = req.body
@@ -60,6 +63,52 @@ export async function login(req: express.Request, res: express.Response) {
 
   res.json({
     token: response.access_token,
+    user,
+  })
+}
+
+/**
+ * Create Email DB record if it doesn't exist
+ * Update profile metadata with userId
+ * Reissue access_token with userId (or client?)
+ * auth0-node.socialLogin() better?
+ * @param req access_token, id_token
+ */
+export async function social(req: express.Request, res: express.Response) {
+  logger.info('Social login', req.body)
+  const { id_token, access_token } = req.body
+  const access = decode(access_token) as AppAccessToken
+  const decoded = decode(id_token) as IdentityToken
+  const { email } = decoded
+
+  let user = (
+    await UserModel.findOne({
+      where: { email },
+    })
+  )?.get()
+
+  if (!user) {
+    user = await createOrUpdate(UserModel, { email, userId: uuid() })
+
+    if (!user) {
+      throw new Error('Database User could not be get/put')
+    }
+  }
+
+  if (access.userId !== user.userId) {
+    logger.info('Updating metadata userId', access.userId, user.userId)
+    await lazyLoadManagementToken()
+    const response = await authProviderPatch({
+      connection: 'google-oauth2',
+      user_id: decoded.sub as string,
+      user_metadata: {
+        userId: user.userId,
+      },
+    })
+    logger.info('success' + JSON.stringify(response))
+  }
+
+  res.json({
     user,
   })
 }

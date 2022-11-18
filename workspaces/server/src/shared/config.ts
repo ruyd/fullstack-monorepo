@@ -10,7 +10,6 @@ const env = process.env || {}
 export interface Config {
   production: boolean
   port: number
-  tokenSecret?: string
   jsonLimit: string
   db: {
     name: string
@@ -20,13 +19,18 @@ export interface Config {
     force: boolean
     alter: boolean
   }
-  auth?: {
+  auth: {
+    tokenSecret?: string
+    tenant: string
+    domain: string
     baseUrl: string
     redirectUrl: string
-    clientId: string
-    clientSecret: string
+    explorerId: string
+    explorerSecret: string
     ruleNamespace: string
     algorithm: 'RS256' | 'HS256'
+    clientId?: string
+    clientSecret?: string
     manageToken?: string
   }
   swaggerSetup: Partial<OAS3Definition>
@@ -39,7 +43,6 @@ const port = Number(env.PORT || 3001)
 const config: Config = {
   production: env.NODE_ENV === 'production',
   port,
-  tokenSecret: env.TOKEN_SECRET || 'blank',
   jsonLimit: env.JSON_LIMIT || '1mb',
   db: {
     force: false,
@@ -50,8 +53,13 @@ const config: Config = {
     ssl,
   },
   auth: {
-    baseUrl: env.AUTH_BASE_URL || '',
+    tokenSecret: env.TOKEN_SECRET || 'blank',
+    tenant: env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
+    domain: `${env.AUTH_TENANT}.auth0.com`,
+    baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
     redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000',
+    explorerId: env.AUTH_EXPLORER_ID || '',
+    explorerSecret: env.AUTH_EXPLORER_SECRET || '',
     clientId: env.AUTH_CLIENT_ID || '',
     clientSecret: env.AUTH_CLIENT_SECRET || '',
     ruleNamespace: 'https://',

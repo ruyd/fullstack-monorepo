@@ -78,3 +78,10 @@ export function loginRedirect() {
     .replace(config.baseName, '')
   window.location.assign(`${config.baseName}${Paths.Login}?returnTo=${returnTo}`)
 }
+
+export async function checkSocialToken(token: string): Promise<{ userId?: string }> {
+  const response = await axios.post<{ userId?: string }>(`profile/social/check`, {
+    token,
+  })
+  return response.data
+}
