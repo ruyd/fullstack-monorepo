@@ -197,7 +197,7 @@ async function ensureResourceServers() {
 
   const existing = await get<ResourceServer[]>(`resource-servers`)
   const missing = resourceServers.filter(
-    rs => !existing.data.find(e => e.name === rs.name || e.identifier === rs.identifier),
+    rs => !existing.data.find(e => e.identifier === rs.identifier),
   )
   if (missing.length) {
     log(`Creating missing resource servers: ${missing.map(m => m.name).join(', ')}`)

@@ -65,7 +65,7 @@ const config: Config = {
     explorerAudience: `https://${env.AUTH_TENANT}.auth0.com/api/v2/`,
     explorerId: env.AUTH_EXPLORER_ID || '',
     explorerSecret: env.AUTH_EXPLORER_SECRET || '',
-    clientAudience: env.AUTH_AUDIENCE || 'https://client',
+    clientAudience: env.AUTH_AUDIENCE || 'https://backend',
     clientId: env.AUTH_CLIENT_ID || '',
     clientSecret: env.AUTH_CLIENT_SECRET || '',
     ruleNamespace: 'https://',
