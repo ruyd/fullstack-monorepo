@@ -3,46 +3,44 @@ import { lazyLoadManagementToken } from '.'
 import config from '../config'
 import logger from '../logger'
 
-const options = {
+const readOptions = () => ({
   headers: {
-    Authorization: `Bearer ${config.auth?.manageToken}`,
+    Authorization: `Bearer ${config.auth.manageToken || 'error not set'}`,
   },
-}
-const get = <T>(url: string) => axios.get<T>(`${config.auth?.baseUrl}${url}`, options)
-// check client registered
-// check api registered
-// check m2m app created
-// check rule created
+  validateStatus: () => true,
+})
+
+const get = <T>(url: string) => axios.get<T>(`${config.auth?.baseUrl}/api/v2/${url}`, readOptions())
+const post = <T>(url: string, data: unknown) =>
+  axios.post<T>(`${config.auth?.baseUrl}/api/v2/${url}`, data, readOptions())
+
+/**
+ * Check exists and if not found, create:
+ * - Check for Resource Servers
+ * - Check for Clients and sets clientId and clientSecret
+ * - Check for Client Grants
+ * - Check for Rules
+ */
 export async function authProviderAutoSetup(): Promise<boolean> {
-  if (!config.auth?.explorerId || !config.auth?.explorerSecret) {
-    logger.info('Auth0 explorer credentials not set - skipping auth0 auto-setup')
+  if (!config.auth?.tenant || !config.auth?.explorerId || !config.auth?.explorerSecret) {
+    logger.info('Auth0 explorer credentials not set - skipping auto-setup')
     return false
   }
-  await lazyLoadManagementToken()
-  ensureRules()
+  const success = await lazyLoadManagementToken()
+  if (!success) {
+    logger.warn('Failed to get auth0 management token - skipping auto-setup')
+    return false
+  }
+  await ensureResourceServers()
+  await ensureClients()
+  await ensureRules()
   return true
 }
 
-export async function ensureClients() {
-  const resourceServers = [
+async function ensureClients() {
+  const clients = [
     {
-      tenant: 'ruy',
-      global: false,
-      is_token_endpoint_ip_header_trusted: false,
       name: 'client',
-      is_first_party: true,
-      oidc_conformant: true,
-      sso_disabled: false,
-      cross_origin_auth: false,
-      refresh_token: {
-        expiration_type: 'non-expiring',
-        leeway: 0,
-        infinite_token_lifetime: true,
-        infinite_idle_token_lifetime: true,
-        token_lifetime: 31557600,
-        idle_token_lifetime: 2592000,
-        rotation_type: 'non-rotating',
-      },
       allowed_clients: [],
       allowed_logout_urls: [],
       callbacks: [
@@ -79,24 +77,7 @@ export async function ensureClients() {
       custom_login_page_on: true,
     },
     {
-      tenant: config.auth?.tenant,
-      global: false,
-      is_token_endpoint_ip_header_trusted: false,
-      name: 'backend (Test Application)',
-      is_first_party: true,
-      oidc_conformant: true,
-      sso_disabled: false,
-      cross_origin_auth: false,
-      refresh_token: {
-        expiration_type: 'non-expiring',
-        leeway: 0,
-        infinite_token_lifetime: true,
-        infinite_idle_token_lifetime: true,
-        token_lifetime: 31557600,
-        idle_token_lifetime: 2592000,
-        rotation_type: 'non-rotating',
-      },
-      callback_url_template: false,
+      name: 'backend',
       token_endpoint_auth_method: 'client_secret_post',
       app_type: 'non_interactive',
       grant_types: ['client_credentials'],
@@ -104,30 +85,57 @@ export async function ensureClients() {
     },
   ]
 
-  interface ResourceServer {
+  interface AuthClient {
     id: string
     name: string
     is_system: boolean
     identifier: string
     scopes: string[]
+    client_id: string
+    client_secret: string
   }
 
-  const existing = await get<ResourceServer[]>(`/api/v2/resource-servers`)
-  const missing = resourceServers.filter(rs => !existing.data.find(e => e.name === rs.name))
+  const existing = await get<AuthClient[]>(`clients`)
+  let authClient = existing.data.find(e => e.name === 'client')
+  const missing = clients.filter(rs => !existing.data.find(e => e.name === rs.name))
   if (missing.length) {
-    logger.info(`Creating missing resource servers: ${missing.map(m => m.name).join(', ')}`)
-    for (const rs of missing) {
-      const result = await axios.post(
-        `${config.auth?.baseUrl}/api/v2/resource-servers`,
-        rs,
-        options,
-      )
-      logger.info(`Created resource server ${rs.name} with id ${result.data.id}`)
+    logger.info(`Creating missing clients: ${missing.map(m => m.name).join(', ')}`)
+    for (const client of missing) {
+      const result = await post<AuthClient>(`clients`, client)
+      if (!result.data?.id) {
+        logger.error(`Failed to create client ${client.name}`)
+        continue
+      }
+      if (client.name === 'client') {
+        authClient = result.data
+      }
+      logger.info(`Created client ${client.name} with id ${result.data.id}`)
+      const grantResult = await post<{
+        id: string
+        client_id: string
+        audience: string
+        scope: string[]
+      }>(`client-grants`, {
+        client_id: result.data.id,
+        audience: 'https://backend',
+        scope: [],
+      })
+      if (grantResult.data?.id) {
+        logger.info(`Created client grant ${grantResult.data.id}`)
+      } else {
+        logger.error(`Failed to create client grant for ${client.name}`)
+      }
     }
+  }
+
+  if (!config.auth.clientId && authClient) {
+    logger.info(`Setting auth.clientId to ${authClient.client_id}`)
+    config.auth.clientId = authClient.client_id
+    config.auth.clientSecret = authClient.client_secret
   }
 }
 
-export async function ensureAudiences() {
+async function ensureResourceServers() {
   const resourceServers = [
     {
       name: 'backend',
@@ -143,22 +151,20 @@ export async function ensureAudiences() {
     scopes: string[]
   }
 
-  const existing = await get<ResourceServer[]>(`/api/v2/resource-servers`)
-  const missing = resourceServers.filter(rs => !existing.data.find(e => e.name === rs.name))
+  const existing = await get<ResourceServer[]>(`resource-servers`)
+  const missing = resourceServers.filter(
+    rs => !existing.data.find(e => e.name === rs.name || e.identifier === rs.identifier),
+  )
   if (missing.length) {
     logger.info(`Creating missing resource servers: ${missing.map(m => m.name).join(', ')}`)
     for (const rs of missing) {
-      const result = await axios.post(
-        `${config.auth?.baseUrl}/api/v2/resource-servers`,
-        rs,
-        options,
-      )
+      const result = await post<ResourceServer>(`resource-servers`, rs)
       logger.info(`Created resource server ${rs.name} with id ${result.data.id}`)
     }
   }
 }
 
-export async function ensureRules() {
+async function ensureRules() {
   const rules = [
     {
       name: 'enrichToken',
@@ -187,29 +193,13 @@ export async function ensureRules() {
     stage: string
   }
 
-  const existing = await axios.get<Rule[]>(`${config.auth?.baseUrl}/api/v2/rules`, {
-    headers: {
-      Authorization: `Bearer ${config.auth?.manageToken}`,
-    },
-  })
+  const existing = await get<Rule[]>(`rules`)
   const missing = rules.filter(rule => !existing.data.find(erule => erule.name === rule.name))
   if (missing.length) {
     logger.info('Missing rules, creating... ' + JSON.stringify(missing))
     for (const rule of missing) {
-      const result = await axios.post(`${config.auth?.baseUrl}/api/v2/rules`, rule, {
-        headers: {
-          Authorization: `Bearer ${config.auth.manageToken}`,
-        },
-        validateStatus: () => true,
-      })
+      const result = await post<Rule>(`rules`, rule)
       logger.info('Result: ' + JSON.stringify(result.data))
     }
   }
-}
-
-export const clientGrant = {
-  id: 'cgr_pfipbMCYcfGthu9T',
-  client_id: 'xxoZLRwiqzfVGwz5u1QrpXymMWOjfidv',
-  audience: 'https://backend',
-  scope: [],
 }
