@@ -2,6 +2,7 @@ import axios from 'axios'
 import packageJson from '../../package.json'
 
 export interface Config {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   baseName: string
   apiUrl: string

@@ -6,7 +6,7 @@ import config from '../../shared/config'
 import routes, { AppRoute } from '../../shared/routes'
 import AuthCheck from '../profile/AuthCheck'
 
-const RouteElement = ({ route }: { route: AppRoute }) => (
+export const RouteElement = ({ route }: { route: AppRoute }) => (
   <AuthCheck secure={route.secure}>
     <Helmet>
       <title>{`${route.title} - ${config.defaultTitle}`}</title>

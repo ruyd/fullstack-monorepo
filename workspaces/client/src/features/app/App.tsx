@@ -9,7 +9,7 @@ import '../../styles/index.css'
 import { MainLayout } from '../layout/MainLayout'
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false } },
+  defaultOptions: { queries: { retry: false, cacheTime: 2000 } },
 })
 
 applyConfig()

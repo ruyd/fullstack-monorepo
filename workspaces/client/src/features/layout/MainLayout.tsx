@@ -4,13 +4,17 @@ import Header from './Header'
 import ThemeSwitch from './ThemeSwitch'
 import '../../styles/index.css'
 import DrawerRight from './Drawer'
-import Routing from './Routing'
+import Routing, { RouteElement } from './Routing'
 import Notifications from './Notifications'
 import Footer from './Footer'
 import LoadingLine from './LoadingLine'
 import AuthProviders from '../profile/AuthProviders'
+import { currentRoute } from 'src/shared/routes'
 
 export function MainLayout() {
+  const route = currentRoute()
+  if (route?.popup) return <RouteElement route={route} />
+
   return (
     <React.Fragment>
       <ThemeSwitch>

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import React from 'react'
-import config from '../../shared/config'
-import authProvider from 'auth0-js'
 import { useAppDispatch } from 'src/shared/store'
 import Alert from '@mui/material/Alert'
 import { AlertTitle, Container } from '@mui/material'
 import { socialLoginAsync } from '../app'
+import { getAuthProvider } from 'src/shared/auth'
 
 export default function Callback(): JSX.Element {
   const dispatch = useAppDispatch()
@@ -14,18 +14,25 @@ export default function Callback(): JSX.Element {
   const error = new URLSearchParams(window.location.hash).get('#error')
   const errorDescription = new URLSearchParams(window.location.href).get('error_description')
   React.useEffect(() => {
-    if (access_token) {
-      const auth = new authProvider.WebAuth({
-        domain: config.auth?.domain as string,
-        clientID: config.auth?.clientId as string,
-        audience: config.auth?.audience as string,
+    const parseCallback = async () => {
+      //await dispatch(socialLoginAsync({ access_token, id_token }))
+      window.opener.postMessage({
+        type: 'social',
+        access_token: access_token,
+        id_token: id_token,
+        href: window.location.href,
+        hash: window.location.hash,
       })
-      // auth.popup.callback({
-      //   hash: window.location.hash,
-      // })
-      dispatch(socialLoginAsync({ access_token, id_token }))
+      const auth = getAuthProvider()
+      auth.popup.callback({
+        hash: window.location.hash,
+      })
     }
-  }, [dispatch, access_token, id_token])
+    if (access_token && id_token) {
+      parseCallback()
+    }
+    parseCallback()
+  }, [access_token, id_token])
 
   if (error) {
     return (
@@ -37,5 +44,9 @@ export default function Callback(): JSX.Element {
     )
   }
 
-  return <></>
+  return (
+    <Container>
+      <h1 className="centered">Authenticating...</h1>
+    </Container>
+  )
 }

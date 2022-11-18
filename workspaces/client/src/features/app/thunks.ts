@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
+import { Auth0Error } from 'auth0-js'
 import axios, { AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
-import { AppUser, loginRedirect, onLogin } from '../../shared/auth'
+import { AppUser, loginRedirect, onLogin, getAuthProvider } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
 
@@ -89,13 +91,30 @@ export const loginAsync = createAsyncThunk(
   },
 )
 
+/**
+ * Link with local backend, update metadata
+ */
 export const socialLoginAsync = createAsyncThunk(
   'app/login/social',
   async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request<{ token: string; user: AppUser }>('profile/social', payload)
-    // eslint-disable-next-line no-console
-    console.log('social', response)
-    setLogin(dispatch, response.data.token, response.data.user)
+    const response = await request<{ token: string; user: AppUser; renew: boolean }>(
+      'profile/social',
+      payload,
+    )
+    console.log('social', response.data)
+    const { user, renew } = response.data
+    let token = response.data.token
+    if (renew) {
+      const auth = getAuthProvider()
+      auth.renewAuth({}, (err, result) => {
+        if (err) {
+          dispatch(notifyError(JSON.stringify(err)))
+          return
+        }
+        token = result.accessToken
+      })
+      setLogin(dispatch, token, user)
+    }
   },
 )
 

@@ -202,17 +202,18 @@ export async function authProviderChangePassword(
   }
 }
 
-export async function authProviderPatch(payload: {
-  user_id: string
-  connection: string
-  user_metadata: Record<string, string>
-  [key: string]: unknown
-}): Promise<oAuthError | string> {
+export async function authProviderPatch(
+  sub: string,
+  payload: {
+    connection: string
+    user_metadata: Record<string, string>
+    [key: string]: unknown
+  },
+): Promise<oAuthError | string> {
   try {
     const response = await axios.patch(
-      `${config.auth?.baseUrl}/api/v2/users/${payload.id}`,
+      `${config.auth?.baseUrl}/api/v2/users/${sub}`,
       {
-        client_id: config.auth?.clientId,
         ...payload,
       },
       {
@@ -225,16 +226,27 @@ export async function authProviderPatch(payload: {
   } catch (err: unknown) {
     const error = err as Error & { response: AxiosResponse }
     return {
-      error: error.response?.data?.name,
-      error_description: error.response?.data?.description,
+      error: error.response?.data?.error,
+      error_description: error.response?.data?.message,
     }
   }
 }
 
 export async function lazyLoadManagementToken(): Promise<boolean> {
-  if (!config.auth?.explorerId || config.auth?.manageToken) {
+  if (!config.auth?.explorerId) {
     return false
   }
+
+  if (config.auth?.manageToken) {
+    const decoded = jwt.decode(config.auth?.manageToken) as jwt.JwtPayload
+    if (decoded.exp && decoded.exp > Date.now() / 1000) {
+      return true
+    } else {
+      logger.info('Management token expired')
+      config.auth.manageToken = undefined
+    }
+  }
+
   logger.info('Getting management token...')
   const response = await axios.post(
     `${config.auth?.baseUrl}/oauth/token`,

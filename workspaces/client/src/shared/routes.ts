@@ -6,7 +6,7 @@ export interface AppRoute {
   description?: string
   secure?: boolean
   animate?: string
-  modal?: boolean
+  popup?: boolean
   link?: boolean
   profile?: boolean
   hideFooter?: boolean
@@ -56,8 +56,11 @@ export const routes: AppRoute[] = [
   {
     title: 'Authenticating...',
     path: '/callback',
+    popup: true,
     component: React.lazy(() => import('../features/profile/Callback')),
   },
 ]
+
+export const currentRoute = () => routes.find(r => r.path === window.location.pathname)
 
 export default routes

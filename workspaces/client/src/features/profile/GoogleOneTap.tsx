@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import React from 'react'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
 import config from '../../shared/config'
 import decode from 'jwt-decode'
 import authProvider from 'auth0-js'
-import { checkSocialToken } from 'src/shared/auth'
+import { authOptions, checkSocialToken } from 'src/shared/auth'
 import { v4 as uuid } from 'uuid'
 
 type OneTapBase = {
@@ -21,28 +23,28 @@ const initOptions: OneTapParams = {
   },
 }
 
-export async function popupSocialLogin(credential: string) {
-  const userId = await checkSocialToken(credential)
+window.onmessage = function (e: MessageEvent<{ type: string; data: any }>) {
+  console.log('renew::msg', e.type, e.data)
+  if (e.type === 'social') {
+    //await dispatch(socialLoginAsync({ access_token, id_token }))
+  }
+}
+
+export async function popupSocialLogin(credential: string): Promise<void> {
   const email = (decode(credential) as IdentityToken)?.email
+  const userId = await checkSocialToken(credential)
   const options = {
-    domain: config.auth?.domain as string,
-    clientID: config.auth?.clientId as string,
-    audience: config.auth?.audience as string,
-    redirectUri: config.auth?.redirectUrl as string,
-    responseType: 'id_token token',
+    ...authOptions(),
     connection: 'google-oauth2',
-    scope: 'openid profile email',
     loginHint: email,
-    user_metadata: {
-      id: userId || uuid(),
-    },
+    user_id_metadata: userId,
   }
   const webAuth = new authProvider.WebAuth(options)
-  webAuth.popup.authorize(options, () => {
+  webAuth.popup.authorize(options, (err, result) => {
+    console.log('authorize', err, result)
     /* not interesting */
   })
 }
-
 export interface OneTapParams extends OneTapBase {
   client_id?: string
   auto_select?: boolean

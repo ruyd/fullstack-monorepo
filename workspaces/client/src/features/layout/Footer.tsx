@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import { TypographyProps } from '@mui/system'
 import github from '../home/images/github.svg'
 import { Link } from '@mui/material'
+import { currentRoute } from 'src/shared/routes'
 
 const Text = ({ children, ...rest }: TypographyProps & { children: React.ReactNode }) => (
   <Typography component="span" color="gray" fontSize={12} {...rest}>
@@ -14,6 +15,7 @@ const Text = ({ children, ...rest }: TypographyProps & { children: React.ReactNo
 )
 
 export default function Footer() {
+  if (currentRoute()?.popup) return null
   return (
     <footer>
       <Container>

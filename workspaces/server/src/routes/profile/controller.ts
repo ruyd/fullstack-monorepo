@@ -7,6 +7,7 @@ import {
   authProviderChangePassword,
   lazyLoadManagementToken,
   authProviderPatch,
+  decodeToken,
 } from '../../shared/auth'
 import { createOrUpdate } from '../../shared/model-api/controller'
 import { UserModel } from '../../shared/types/user'
@@ -77,7 +78,8 @@ export async function login(req: express.Request, res: express.Response) {
 export async function social(req: express.Request, res: express.Response) {
   logger.info('Social login', req.body)
   const { id_token, access_token } = req.body
-  const access = decode(access_token) as AppAccessToken
+  //validate tocket instead of just decode?
+  const access = decodeToken(access_token)
   const decoded = decode(id_token) as IdentityToken
   const { email } = decoded
 
@@ -89,27 +91,34 @@ export async function social(req: express.Request, res: express.Response) {
 
   if (!user) {
     user = await createOrUpdate(UserModel, { email, userId: uuid() })
-
-    if (!user) {
-      throw new Error('Database User could not be get/put')
-    }
   }
 
+  if (!user) {
+    throw new Error('Database User could not be found or created')
+  }
+
+  if (!access.sub) {
+    throw new Error('No sub in access token')
+  }
+
+  let renew = false
   if (access.userId !== user.userId) {
     logger.info('Updating metadata userId', access.userId, user.userId)
     await lazyLoadManagementToken()
-    const response = await authProviderPatch({
+    const response = await authProviderPatch(access.sub, {
       connection: 'google-oauth2',
-      user_id: decoded.sub as string,
       user_metadata: {
-        userId: user.userId,
+        id: user.userId,
       },
     })
     logger.info('success' + JSON.stringify(response))
+    renew = true
   }
 
   res.json({
     user,
+    token: access_token,
+    renew,
   })
 }
 

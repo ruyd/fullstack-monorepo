@@ -3,6 +3,7 @@ import axios from 'axios'
 import { AppAccessToken, User } from '@shared/lib'
 import { Paths } from './routes'
 import config from './config'
+import authProvider from 'auth0-js'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppUser extends User {
@@ -84,4 +85,16 @@ export async function checkSocialToken(token: string): Promise<string | undefine
     token,
   })
   return response.data?.userId
+}
+export const authOptions = () => ({
+  domain: config.auth.domain,
+  clientID: config.auth.clientId,
+  audience: config.auth.audience,
+  redirectUri: config.auth.redirectUrl,
+  responseType: 'id_token token',
+  scope: 'openid profile email',
+})
+
+export function getAuthProvider() {
+  return new authProvider.WebAuth(authOptions())
 }

@@ -41,7 +41,9 @@ export async function authProviderSync(): Promise<boolean> {
   await ensureResourceServers()
   await ensureClients()
   await ensureRules()
-  log(`Auth0 Check Complete > For clients use AUTH_CLIENT_ID: ${config.auth.clientId} `)
+  if (config.auth.clientId) {
+    log(`Auth0 Check Complete > For clients use AUTH_CLIENT_ID: ${config.auth.clientId} `)
+  }
   return true
 }
 
@@ -175,6 +177,8 @@ async function ensureClients() {
     log(`Setting auth.clientId to ${existingClient.client_id}`)
     config.auth.clientId = existingClient.client_id
     config.auth.clientSecret = existingClient.client_secret
+  } else {
+    log(`Auth.clientId already set to ${config.auth.clientId}`, config.auth)
   }
 }
 
