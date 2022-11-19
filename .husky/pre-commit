@@ -10,14 +10,17 @@ declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEA
 declare HAS_CLIENT_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/client')
 
 if [ -n "$HAS_CLIENT_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
+  echo "Client or shared changed, running client build"
   yarn workspace client test
 fi
 
 if [ -n "$HAS_SERVER_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
+  echo "Server or shared changed, running server build"
   yarn workspace server test
 fi
 
 # if no changes then run all tests
-if [ -z "$HAS_CLIENT_CHANGE" ] && [ -z "$HAS_SERVER_CHANGE" ] && [ -z "$HAS_SHARED_CHANGE" ]; then
+if [ -z "$HAS_CLIENT_CHANGE" ] && [ -z "$HAS_SERVER_CHANGE" ]; then
+  echo "No client or server changes, running all tests"
   yarn test
 fi
