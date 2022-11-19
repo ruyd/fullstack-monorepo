@@ -29,7 +29,7 @@ jobs:
           echo "Found: ${HOMEPAGE}"
         shell: bash
 
-      - name: package.json set ${{ env.HOMEPAGE }} as homepage for gh-pages
+      - name: package.json set $HOMEPAGE as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         env:
           REPOPATH: ${{ env.HOMEPAGE }}
