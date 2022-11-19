@@ -24,14 +24,14 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Parse Repository Path
-        run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $REPOSITORY_NAME
+        run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $GITHUB_ENV
 
       - name: package.json set repository path as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         with:
           data: |
             {
-              "homepage": ${{ REPOSITORY_NAME }}
+              "homepage": ${{ github.repositoy.name }}
             }
 
       - name: Build
