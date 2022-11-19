@@ -11,6 +11,8 @@ const dotenv = require('dotenv').config()
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getClientEnvironment = require('../../tools/env')
 const paths = require('../../tools/paths')
+const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
+const packageJson = require('./package.json')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = process.env.NODE_ENV || 'production'
 const isDevelopment = mode === 'development'
@@ -33,6 +35,7 @@ module.exports = {
   externals: [
     nodeExternals({
       additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')],
+      allowlist: ['ieee754', 'isarray', 'buffer', 'base64-js'],
     }),
   ],
   plugins: [
@@ -41,6 +44,7 @@ module.exports = {
     }),
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
+    new GeneratePackageJsonPlugin(packageJson),
   ],
   module: {
     rules: [
