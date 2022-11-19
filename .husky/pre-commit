@@ -17,3 +17,7 @@ if [ -n "$HAS_SERVER_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
   yarn workspace server test
 fi
 
+# if no changes then run all tests
+if [ -z "$HAS_CLIENT_CHANGE" ] && [ -z "$HAS_SERVER_CHANGE" ] && [ -z "$HAS_SHARED_CHANGE" ]; then
+  yarn test
+fi
