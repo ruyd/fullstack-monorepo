@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Set Env ${{ GITHUB_REPOSITORY#*/ }}
+      - name: Set Env ${{ github.repository }}
         run: |
           HOMEPAGE=${GITHUB_REPOSITORY#*/}
           echo "Found: ${HOMEPAGE}"
