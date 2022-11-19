@@ -26,11 +26,11 @@ jobs:
       - name: package.json set ${{ github.repository }} path as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         env:
-          REPOPATH: ${{ github.repository#*/ }}
+          REPOPATH: '${{ github.repository }}'
         with:
           data: |
             {
-              "homepage": "${{ env.REPOPATH }}"
+              "homepage": "${{ env.REPOPATH }}#*/"
             }
 
       - name: Build
