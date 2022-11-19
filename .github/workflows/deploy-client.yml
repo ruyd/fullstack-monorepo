@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: set repository name
+      - name: Parse Repository Path
         run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $REPOSITORY_NAME
 
       - name: package.json set repository path as homepage for gh-pages
