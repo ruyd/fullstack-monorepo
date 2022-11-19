@@ -23,10 +23,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: package.json set ${{ GITHUB_REPOSITORY }} path as homepage for gh-pages
+      - name: package.json set ${{ github.repository }} path as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         env:
-          REPOPATH: ${{ GITHUB_REPOSITORY#*/ }}
+          REPOPATH: ${{ github.repository#*/ }}
         with:
           data: |
             {
