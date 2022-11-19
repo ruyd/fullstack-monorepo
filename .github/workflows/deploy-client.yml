@@ -28,7 +28,6 @@ jobs:
           HOMEPAGE=${GITHUB_REPOSITORY#*/}
           echo "Found: ${HOMEPAGE}"
           echo "HOMEPAGE=${HOMEPAGE}" >> $GITHUB_ENV
-        shell: bash
 
       - name: package.json set ${{ env.HOMEPAGE }} as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
