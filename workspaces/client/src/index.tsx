@@ -7,7 +7,7 @@ import App from './features/app/App'
 const container = document.getElementById('root')!
 const root = createRoot(container)
 root.render(
-  <React.StrictMode>
+  <React.StrictModex>
     <App />
   </React.StrictMode>,
 )
