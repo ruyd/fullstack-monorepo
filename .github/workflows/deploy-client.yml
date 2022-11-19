@@ -30,7 +30,7 @@ jobs:
           echo "HOMEPAGE=${HOMEPAGE}" >> $GITHUB_ENV
         shell: bash
 
-      - name: package.json set ${{ HOMEPAGE }} as homepage for gh-pages
+      - name: package.json set ${{ env.HOMEPAGE }} as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         with:
           data: |
