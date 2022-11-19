@@ -26,6 +26,7 @@
     "http-status": "^1.5.2",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.1.4",
+    "openapi-types": "^12.0.2",
     "pg": "^8.7.3",
     "sequelize": "^6.19.1",
     "swagger-jsdoc": "^6.2.1",
