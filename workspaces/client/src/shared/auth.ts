@@ -18,6 +18,7 @@ export interface Nonce {
 }
 
 export const STORAGE_KEY = 'auth'
+export const NONCE_KEY = 'nonce'
 
 /**
  * Note: Auth0 rules custom props use namespace prefix: https://field
@@ -78,6 +79,7 @@ export function onLogin(payload?: { token: string; user: AppUser }) {
     localStorage.removeItem(STORAGE_KEY)
   }
   setHeader(payload?.token)
+  clearNonce()
 }
 
 export function loginRedirect() {
@@ -108,11 +110,15 @@ export function getAuthProvider(overrides: Partial<typeof authOptions> = {}) {
 
 export function generateNonce(userId?: string) {
   const session = { userId, state: v4(), nonce: v4() }
-  localStorage.setItem('nonce', JSON.stringify(session))
+  localStorage.setItem(NONCE_KEY, JSON.stringify(session))
   return session
 }
 
 export function getNonce() {
-  const nonce = localStorage.getItem('nonce')
+  const nonce = localStorage.getItem(NONCE_KEY)
   return JSON.parse(nonce || '{}')
+}
+
+export function clearNonce() {
+  localStorage.removeItem(NONCE_KEY)
 }
