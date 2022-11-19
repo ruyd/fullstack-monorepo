@@ -12,12 +12,5 @@ yarn workspace server test || {
         echo "***********************************************************************************************************"
         exit 1
       }
-yarn workspace client test || {
-        echo
-        echo "husky > pre-commit|push hook failed (add --no-verify to bypass)"
-        echo "***********************************************************************************************************"
-        echo "**** Nice try, but you can't commit this. Happy bug hunting and error fixing, good luck!"
-        echo "***********************************************************************************************************"
-        exit 1
-      }
+yarn workspace client test
 
