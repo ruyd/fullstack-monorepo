@@ -11,16 +11,17 @@ declare HAS_CLIENT_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEA
 
 if [ -n "$HAS_CLIENT_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
   echo "Client or shared changed, running client build"
-  yarn workspace client test
+  yarn workspace client tsc --build && yarn workspace client test
 fi
 
 if [ -n "$HAS_SERVER_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
   echo "Server or shared changed, running server build"
-  yarn workspace server test
+  yarn workspace server tsc --build && yarn workspace server test
 fi
 
 # if no changes then run all tests
 if [ -z "$HAS_CLIENT_CHANGE" ] && [ -z "$HAS_SERVER_CHANGE" ]; then
-  echo "No client or server changes, running all tests"
+  echo "No client or server changes, building and testing all"
+  find ./workspaces/*/tsconfig.json -exec yarn tsc --project {} \;  
   yarn test
 fi
