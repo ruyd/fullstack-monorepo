@@ -26,17 +26,18 @@ jobs:
       - name: set env
         run: |
           HOMEPAGE=${GITHUB_REPOSITORY#*/}
+          echo "HOMEPAGE=${HOMEPAGE}" >> $GITHUB_ENV
           echo "GITHUB_HOMEPAGE=${HOMEPAGE}" >> $GITHUB_ENV
         shell: bash
 
       - name: package.json set ${{ env.HOMEPAGE }} ${{ github.homepage }} path as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         env:
-          REPOPATH: /${{ env.HOMEPAGE }}
+          REPOPATH: ${{ env.HOMEPAGE }}
         with:
           data: |
             {
-              "homepage": "${{ env.REPOPATH }}"
+              "homepage": "/${{ env.REPOPATH }}"
             }
 
       - name: Build
