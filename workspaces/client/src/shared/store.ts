@@ -32,3 +32,5 @@ export const useAppDispatch = () => useDispatch<AppDispatch>()
 /**
  * Use instead of plain `useSelector` */
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+export default store

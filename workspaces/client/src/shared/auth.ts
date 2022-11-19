@@ -1,13 +1,20 @@
 import decode from 'jwt-decode'
 import axios from 'axios'
-import { AppAccessToken, User } from '@shared/lib'
+import { Jwt, User } from '@shared/lib'
 import { Paths } from './routes'
 import config from './config'
 import authProvider from 'auth0-js'
+import { v4 } from 'uuid'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppUser extends User {
   // client props
+}
+
+export interface Nonce {
+  userId?: string
+  nonce: string
+  state: string
 }
 
 export const STORAGE_KEY = 'auth'
@@ -17,12 +24,12 @@ export const STORAGE_KEY = 'auth'
  */
 export const RULE_PREFIX = 'https://'
 
-export function decodeAccessToken(token: string): AppAccessToken | null {
+export function decodeToken(token: string): Jwt | null {
   if (!token) {
     return null
   }
   try {
-    const accessToken = decode(token) as AppAccessToken
+    const accessToken = decode(token) as Jwt
 
     //Check lifetime
     const now = new Date().getTime() / 1000
@@ -52,7 +59,7 @@ export function getPersistedAuthFromStorage(): {
   }
 
   const { token, user } = JSON.parse(json)
-  const accessToken = decodeAccessToken(token)
+  const accessToken = decodeToken(token)
   if (!accessToken) {
     return null
   }
@@ -95,6 +102,17 @@ export const authOptions = () => ({
   scope: 'openid profile email',
 })
 
-export function getAuthProvider() {
-  return new authProvider.WebAuth(authOptions())
+export function getAuthProvider(overrides: Partial<typeof authOptions> = {}) {
+  return new authProvider.WebAuth({ ...authOptions(), ...overrides })
+}
+
+export function generateNonce(userId?: string) {
+  const session = { userId, state: v4(), nonce: v4() }
+  localStorage.setItem('nonce', JSON.stringify(session))
+  return session
+}
+
+export function getNonce() {
+  const nonce = localStorage.getItem('nonce')
+  return JSON.parse(nonce || '{}')
 }

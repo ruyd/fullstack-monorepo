@@ -101,18 +101,17 @@ export const socialLoginAsync = createAsyncThunk(
       'profile/social',
       payload,
     )
-    console.log('social', response.data)
-    const { user, renew } = response.data
-    let token = response.data.token
+    const { token, user, renew } = response.data
     if (renew) {
       const auth = getAuthProvider()
-      auth.renewAuth({}, (err, result) => {
+      auth.checkSession({}, (err, result) => {
         if (err) {
           dispatch(notifyError(JSON.stringify(err)))
           return
         }
-        token = result.accessToken
+        setLogin(dispatch, result.accessToken, user)
       })
+    } else {
       setLogin(dispatch, token, user)
     }
   },

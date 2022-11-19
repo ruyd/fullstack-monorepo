@@ -16,7 +16,7 @@ import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from '../app/slice'
 import { Link as RouterLink } from 'react-router-dom'
-import routes, { currentRoute } from '../../shared/routes'
+import routes from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Link } from '@mui/material'
 import { prompt } from '../profile/GoogleOneTap'
@@ -60,8 +60,6 @@ export default function HeaderNavBar() {
   const handleLogout = () => {
     dispatch(logoutAsync())
   }
-
-  if (currentRoute()?.popup) return null
 
   return (
     <AppBar position="static">

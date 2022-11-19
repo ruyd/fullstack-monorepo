@@ -77,10 +77,10 @@ export async function login(req: express.Request, res: express.Response) {
  */
 export async function social(req: express.Request, res: express.Response) {
   logger.info('Social login', req.body)
-  const { id_token, access_token } = req.body
+  const { idToken, accessToken } = req.body
   //validate tocket instead of just decode?
-  const access = decodeToken(access_token)
-  const decoded = decode(id_token) as IdentityToken
+  const access = decodeToken(accessToken)
+  const decoded = decode(idToken) as IdentityToken
   const { email } = decoded
 
   let user = (
@@ -117,7 +117,7 @@ export async function social(req: express.Request, res: express.Response) {
 
   res.json({
     user,
-    token: access_token,
+    token: accessToken,
     renew,
   })
 }

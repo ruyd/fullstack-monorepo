@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import React from 'react'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import store, { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
 import config from '../../shared/config'
 import decode from 'jwt-decode'
 import authProvider from 'auth0-js'
-import { authOptions, checkSocialToken } from 'src/shared/auth'
+import { authOptions, checkSocialToken, generateNonce } from 'src/shared/auth'
 import { v4 as uuid } from 'uuid'
+import { notifyError, socialLoginAsync } from '../app'
 
 type OneTapBase = {
   context?: 'use' | 'signin' | 'signup'
@@ -23,26 +24,36 @@ const initOptions: OneTapParams = {
   },
 }
 
-window.onmessage = function (e: MessageEvent<{ type: string; data: any }>) {
-  console.log('renew::msg', e.type, e.data)
-  if (e.type === 'social') {
-    //await dispatch(socialLoginAsync({ access_token, id_token }))
+export async function popupMessageHandler(
+  e: MessageEvent<{ type: string; access_token: string; id_token: string; hash: string }>,
+) {
+  console.log('popup', e.data.type, e.data)
+  if (e.data.type === 'social') {
+    const { access_token, id_token, hash } = e.data
+    //await store.dispatch(socialLoginAsync({ access_token, id_token }))
   }
 }
 
 export async function popupSocialLogin(credential: string): Promise<void> {
   const email = (decode(credential) as IdentityToken)?.email
   const userId = await checkSocialToken(credential)
+  const session = generateNonce(userId)
   const options = {
     ...authOptions(),
     connection: 'google-oauth2',
     loginHint: email,
-    user_id_metadata: userId,
+    state: session.state,
+    nonce: session.nonce,
+    appUserId: userId,
   }
-  const webAuth = new authProvider.WebAuth(options)
-  webAuth.popup.authorize(options, (err, result) => {
-    console.log('authorize', err, result)
-    /* not interesting */
+  const auth = new authProvider.WebAuth(options)
+  auth.popup.authorize(options, (err, result) => {
+    if (err) {
+      store.dispatch(notifyError(err.description as string))
+      return
+    }
+    const { accessToken, idToken } = result
+    store.dispatch(socialLoginAsync({ accessToken, idToken }))
   })
 }
 export interface OneTapParams extends OneTapBase {
@@ -123,6 +134,7 @@ export function GoogleOneTap(): JSX.Element {
         ...initOptions,
         ref,
       })
+      window.onmessage = popupMessageHandler
       loaded.current = true
     }
   }, [dispatch, loaded, token])
