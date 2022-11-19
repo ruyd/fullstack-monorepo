@@ -32,7 +32,7 @@ jobs:
       - name: package.json set ${{ env.HOMEPAGE }} as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         with:
-          input: 'workspaces/client/package.json'
+          path: 'workspaces/client/package.json'
           data: |
             {
               "homepage": "/${{ env.HOMEPAGE }}"
