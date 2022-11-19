@@ -26,8 +26,8 @@ jobs:
       - name: set env
         run: |
           HOMEPAGE=${GITHUB_REPOSITORY#*/}
-          echo $HOMEPAGE >> $GITHUB_ENV
-          # echo "HOMEPAGE=${HOMEPAGE}" >> $GITHUB_ENV
+          #echo $HOMEPAGE >> $GITHUB_ENV
+          echo "HOMEPAGE=${HOMEPAGE}" >> $GITHUB_ENV
         shell: bash
 
       - name: print env
