@@ -28,7 +28,7 @@ const env = process.env
 const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : packageJson.homepage || '/'
 const config: Config = {
   baseName: env.BASE_NAME || defaultBaseName,
-  apiUrl: env.BACKEND || 'https://drawspace-api.herokuapp.com/v1',
+  apiUrl: env.BACKEND || 'https://drawspace-api.herokuapp.com',
   defaultTitle: 'Drawspace',
   defaultColor: 'yellow',
   defaultLineSize: 20,
@@ -41,7 +41,7 @@ const config: Config = {
     baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
     audience: `https://backend`,
     clientId: env.AUTH_CLIENT_ID || '',
-    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
+    redirectUrl: env.AUTH_REDIRECT_URL || 'https://drawspace-api.herokuapp.com/callback',
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || '',
     },
