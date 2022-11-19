@@ -26,7 +26,7 @@ jobs:
       - name: package.json set repository path as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         env:
-          REPO_PATH: ${GITHUB_REPOSITORY#*/}
+          REPO_PATH: '${GITHUB_REPOSITORY#*/}'
         with:
           data: |
             {
