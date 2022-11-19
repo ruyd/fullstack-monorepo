@@ -5,12 +5,15 @@
 # yarn tsc --build
 # yarn build
 # yarn lint
-yarn workspace server test || {
-        echo "husky > pre-commit|push hook failed (add --no-verify to bypass)"
-        echo "***********************************************************************************************************"
-        echo "**** Nice try, but you can't commit this. Happy bug hunting and error fixing, good luck!"
-        echo "***********************************************************************************************************"
-        exit 1
-      }
-yarn workspace client test
+declare HAS_SHARED_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/lib')
+declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/server')
+declare HAS_CLIENT_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/client')
+
+if [ -n "$HAS_CLIENT_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
+  yarn workspace client test
+fi
+
+if [ -n "$HAS_SERVER_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
+  yarn workspace server test
+fi
 
