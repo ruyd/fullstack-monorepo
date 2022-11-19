@@ -23,6 +23,5 @@ fi
 if [ -z "$HAS_CLIENT_CHANGE" ] && [ -z "$HAS_SERVER_CHANGE" ]; then
   echo "No client or server changes, building and testing all"
   #find ./workspaces/*/tsconfig.json -exec yarn tsc --project {} \;  
-  yarn workspace client tsc --build && yarn workspace client test
-  yarn workspace server tsc --build && yarn workspace server test
+  yarn workspace client tsc --build && yarn workspace client test && yarn workspace server tsc --build && yarn workspace server test
 fi
