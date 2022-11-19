@@ -14,6 +14,9 @@ const paths = require('../../tools/paths')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = process.env.NODE_ENV || 'production'
 const isDevelopment = mode === 'development'
+const outputPath = isDevelopment
+  ? path.resolve(__dirname, 'dist')
+  : path.resolve(__dirname, '../../dist/server')
 
 module.exports = {
   mode,
@@ -22,7 +25,7 @@ module.exports = {
   },
   devtool: isDevelopment ? 'source-map' : false,
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: outputPath,
     filename: '[name].js',
     chunkFilename: '[name].[contenthash].js',
   },
