@@ -1,1 +1,1 @@
-web: node ./server/dist/index.js
+web: node ./workspaces/server/dist/index.js
