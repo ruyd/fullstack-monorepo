@@ -23,14 +23,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Set Env ${GITHUB_REPOSITORY#*/}
+      - name: Set Env ${{ GITHUB_REPOSITORY#*/}}
         run: |
           HOMEPAGE=${GITHUB_REPOSITORY#*/}
           echo "Found: ${HOMEPAGE}"
-          echo "HOMEPAGE=${HOMEPAGE}" >> $GITHUB_ENV
         shell: bash
 
-      - name: package.json set ${HOMEPAGE} as homepage for gh-pages
+      - name: package.json set ${{ env.HOMEPAGE }} as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         env:
           REPOPATH: ${{ env.HOMEPAGE }}
