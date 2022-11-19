@@ -13,9 +13,11 @@
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/workspaces/client/src/features/home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
 
 ### Developer Experience 💕😎✨
-- VSCode Launchers for debugging code and tests
-- Webpack with Fast Hot Reload
-- Deploy Ready
+- VSCode split window debugging client, server and tests
+- Fast Client, Server, Lib Webpack Hot Reloading with Cache
+- Git Pre-Commit Hook that run tests and block bad commits
+- Repositoryless shared code packages (bundled by webpack)
+- Github Actions for major clouds (Bucket + Functions|Container)
 
 ### Made with
 

@@ -18,13 +18,13 @@ export function activateAxiosTrace() {
   axios.interceptors.request.use(req => {
     // using console to avoid sensitive data in logs
     // eslint-disable-next-line no-console
-    console.log('Request', req.url, req.method, config.trace ? req.data : '')
+    console.log(req.method?.toUpperCase() || 'Request', req.url, config.trace ? req.data : '')
     return req
   })
 
   axios.interceptors.response.use(req => {
     // eslint-disable-next-line no-console
-    console.log('Response', req.status, req.statusText, config.trace ? req.data : '')
+    console.log('> Response:', req.status, req.statusText, config.trace ? req.data : '')
     return req
   })
 }

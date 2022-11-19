@@ -19,7 +19,9 @@ export default function createBackendApp(): express.Express {
     activateAxiosTrace()
   }
 
-  authProviderSync()
+  if (process.env.NODE_ENV !== 'test') {
+    authProviderSync()
+  }
 
   // Basics
   app.use(cors())
