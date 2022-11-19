@@ -10,7 +10,7 @@ import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
 import { activateAxiosTrace } from './shared/logger'
-import { authProviderSync } from './shared/auth/setup'
+import { authProviderSync } from './shared/auth/sync'
 
 export default function createBackendApp(): express.Express {
   const app = express()

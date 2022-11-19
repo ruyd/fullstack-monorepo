@@ -42,7 +42,9 @@ export async function authProviderSync(): Promise<boolean> {
   await ensureClients()
   await ensureRules()
   if (config.auth.clientId) {
-    log(`Auth0 Check Complete > For clients use AUTH_CLIENT_ID: ${config.auth.clientId} `)
+    log(
+      `Auth0 Check Complete > AUTH_CLIENT_ID: ${config.auth.clientId} > Check out details via GET /config`,
+    )
   }
   return true
 }
@@ -221,6 +223,9 @@ async function ensureRules() {
         '  const assignedRoles = (context.authorization || {}).roles;\n' +
         '  accessTokenClaims[`https://roles`] = assignedRoles;\n' +
         '  user.user_metadata = user.user_metadata || {};\n' +
+        '  if (!user.user_metadata.id && context.request.query.app_user_id) {\n' +
+        '    user.user_metadata.id = context.request.query.app_user_id;\n' +
+        '  }\n' +
         '  accessTokenClaims[`https://userId`] = user.user_metadata.id;\n' +
         '  accessTokenClaims[`https://verified`] = user.email_verified;\n' +
         '  context.accessToken = accessTokenClaims;\n' +
