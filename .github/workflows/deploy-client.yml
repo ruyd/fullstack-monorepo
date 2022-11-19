@@ -23,6 +23,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: package.json set repository path as homepage for gh-pages
+        uses: jaywcjlove/github-action-package@main
+        with:
+          data: |
+            {
+              "homepage": "/fullstack-monorepo"
+            }
 
       - name: Build
         run: |
