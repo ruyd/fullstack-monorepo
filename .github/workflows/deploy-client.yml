@@ -18,17 +18,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: set repository name
+        run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY#*/}" >> $REPOSITORY_NAME
+
       - name: package.json set repository path as homepage for gh-pages
         uses: jaywcjlove/github-action-package@main
         with:
           data: |
             {
-              "homepage": "/fullstack-monorepo"
+              "homepage": ${{ REPOSITORY_NAME }}
             }
 
       - name: Build
