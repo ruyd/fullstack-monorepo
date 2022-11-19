@@ -20,9 +20,6 @@ module.exports = {
       testMatch: ['<rootDir>/tests/**/*.test.ts'],
       modulePaths: [compilerOptions.baseUrl],
       moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
-      // moduleNameMapper: {
-      //   '^@shared/lib': '<rootDir>../lib/src',
-      // },
     },
   ],
 }

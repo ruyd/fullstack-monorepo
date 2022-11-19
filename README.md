@@ -36,7 +36,7 @@
 - `yarn dev` or open in vscode and run debug  
 - For Auth0 Auto Setup, copy sample.env to workspaces/server/.env and populate with:
   Dashboard > Applications > API Explorer Application > Settings
-  - AUTH_TENANT=`tenant` domain without `tenant`.auth0.com
+  - AUTH_TENANT=`tenant` (ie: domain without .auth0.com)
   - AUTH_EXPLORER_ID=`Client ID`
   - AUTH_EXPLORER_SECRET=`Client Secret`
 

@@ -6,5 +6,5 @@
 # yarn build
 # yarn lint
 yarn workspace server test
-#yarn workspace client test
+yarn workspace client test
 
