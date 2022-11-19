@@ -1,10 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# relax or restrict
-# yarn tsc --build
-# yarn build
-# yarn lint
 declare HAS_SHARED_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/lib')
 declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/server')
 declare HAS_CLIENT_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/client')
@@ -19,7 +15,6 @@ if [ -n "$HAS_SERVER_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
   yarn workspace server tsc --build && yarn workspace server test
 fi
 
-# if no changes then run all tests
 if [ -z "$HAS_CLIENT_CHANGE" ] && [ -z "$HAS_SERVER_CHANGE" ]; then
   echo "No client or server changes, building and testing all"
   yarn workspace client tsc --build && yarn workspace client test && yarn workspace server tsc --build && yarn workspace server test
