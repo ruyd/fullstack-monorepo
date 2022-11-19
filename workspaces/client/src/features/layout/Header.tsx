@@ -16,10 +16,10 @@ import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from '../app/slice'
 import { Link as RouterLink } from 'react-router-dom'
-import routes from '../../shared/routes'
+import routes, { Paths } from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Link } from '@mui/material'
-import { prompt } from '../profile/GoogleOneTap'
+//import { prompt } from '../profile/GoogleOneTap'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
@@ -29,7 +29,7 @@ export default function HeaderNavBar() {
   const authenticated = useAppSelector(state => state.app.token)
   const user = useAppSelector(state => state.app.user)
   const darkTheme = useAppSelector(state => state.app.darkTheme)
-  // const drawerRightOpen = useAppSelector(state => state.app.drawerRightOpen)
+  const drawerRightOpen = useAppSelector(state => state.app.drawerRightOpen)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 
@@ -53,8 +53,7 @@ export default function HeaderNavBar() {
   }
 
   const handleMenuToggle = () => {
-    prompt()
-    //dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
+    dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
   }
 
   const handleLogout = () => {
@@ -178,7 +177,13 @@ export default function HeaderNavBar() {
               onClose={handleCloseUserMenu}
             >
               {profileLinks
-                .filter(r => (r.secure ? authenticated : true))
+                .filter(r =>
+                  r.secure
+                    ? authenticated
+                    : [Paths.Login, Paths.Register].includes(r.path) && authenticated
+                    ? false
+                    : true,
+                )
                 .map(setting => (
                   <MenuItem
                     key={setting.path}
