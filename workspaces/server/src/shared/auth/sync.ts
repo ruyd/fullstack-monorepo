@@ -43,7 +43,7 @@ export async function authProviderSync(): Promise<boolean> {
   await ensureRules()
   if (config.auth.clientId) {
     log(
-      `Auth0 Check Complete > AUTH_CLIENT_ID: ${config.auth.clientId} > Check out details via GET /config`,
+      `Auth0 Check Complete > AUTH_CLIENT_ID: ${config.auth.clientId} > For clients use GET /config`,
     )
   }
   return true
