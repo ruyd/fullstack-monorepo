@@ -42,9 +42,7 @@ module.exports = {
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
     new webpack.DefinePlugin({
-      'process.env': {
-        ...JSON.stringify(process.env),
-      },
+      'process.env': JSON.stringify(process.env),
     }),
     isDevelopment && new Dotenv(),
   ].filter(Boolean),
