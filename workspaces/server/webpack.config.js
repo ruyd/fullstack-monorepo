@@ -5,12 +5,12 @@ const nodeExternals = require('webpack-node-externals')
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getClientEnvironment = require('../../tools/env')
 const paths = require('../../tools/paths')
-const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
 const packageJson = require('./package.json')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = process.env.NODE_ENV || 'production'
