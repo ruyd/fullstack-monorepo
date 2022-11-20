@@ -118,6 +118,7 @@ export async function checkDatabase(): Promise<boolean> {
     return true
   } catch (e: unknown) {
     const msg = (e as Error)?.message
+    logger.error('Unable to connect to the database:', e)
     if (msg?.includes('does not exist')) {
       const result = await createDatabase()
       return result
@@ -126,7 +127,6 @@ export async function checkDatabase(): Promise<boolean> {
       const result = await checkMigrations()
       return result
     }
-    logger.error('Unable to connect to the database:', e)
   }
   return false
 }
