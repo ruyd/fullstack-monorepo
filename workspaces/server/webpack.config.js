@@ -44,7 +44,7 @@ module.exports = {
     }),
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
-    new GeneratePackageJsonPlugin(packageJson),
+    new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
   ],
   module: {
     rules: [
