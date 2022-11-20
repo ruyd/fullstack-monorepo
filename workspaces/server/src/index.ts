@@ -1,11 +1,8 @@
 import express from 'express'
 import config from './shared/config'
 import logger from './shared/logger'
-import { checkDatabase } from './shared/db'
 import createBackendApp from './app'
 ;(async () => {
-  await checkDatabase()
-
   const app = createBackendApp()
   const url = config.backendBaseUrl + config.swaggerSetup.basePath
 

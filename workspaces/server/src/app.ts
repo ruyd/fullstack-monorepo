@@ -11,6 +11,7 @@ import cors from 'cors'
 import api from './routes'
 import { activateAxiosTrace } from './shared/logger'
 import { authProviderSync } from './shared/auth/sync'
+import { checkDatabase } from './shared/db'
 
 export default function createBackendApp(): express.Express {
   const app = express()
@@ -22,6 +23,8 @@ export default function createBackendApp(): express.Express {
   if (process.env.NODE_ENV !== 'test') {
     authProviderSync()
   }
+
+  checkDatabase()
 
   // Basics
   app.use(cors())
