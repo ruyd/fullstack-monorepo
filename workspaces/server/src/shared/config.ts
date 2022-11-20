@@ -46,9 +46,11 @@ export interface Config {
   swaggerSetup: Partial<OAS3Definition>
 }
 
-//rework with a secrets vault
+//TODO: add a secrets vault fetch then add to process.env
+
 const { database, host, username, password, ssl, schema } = sequelizeConfig.development
-const DB_URL = env.DB_URL || `postgres://${username}:${password}@${host}/${database}`
+const devConnection = `postgres://${username}:${password}@${host}/${database}`
+const DB_URL = env.DB_URL || env.DATABASE_URL || devConnection
 const osHost = os.hostname()
 const isLocalhost = osHost.includes('local')
 const port = Number(env.PORT || isLocalhost ? 3001 : 80)
@@ -71,7 +73,7 @@ const config: Config = {
     name: database,
     url: DB_URL,
     schema,
-    ssl,
+    ssl: env.DB_SSL === 'true' || ssl,
   },
   auth: {
     tokenSecret: env.TOKEN_SECRET || 'blank',
