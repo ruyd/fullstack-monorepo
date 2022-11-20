@@ -18,6 +18,8 @@ const mode = env.mode
 const isDevelopment = env.isDevelopment
 
 function getLimitedEnv() {
+  console.log('*** WPPORT', process.env.PORT)
+
   return appConfig.envConcerns.reduce((acc, key) => {
     if (process.env[key]) acc[key] = process.env[key]
     return acc
@@ -25,8 +27,8 @@ function getLimitedEnv() {
 }
 const limitedEnv = getLimitedEnv()
 const defineEnv = {
+  ...dotenv.config({ override: false }).parsed,
   ...limitedEnv,
-  ...dotenv.config().parsed,
 }
 
 module.exports = {

@@ -2,15 +2,22 @@ import axios from 'axios'
 import winston from 'winston'
 import config from './config'
 
+const format = winston.format.combine(winston.format.timestamp(), winston.format.simple())
 const logger = winston.createLogger({
   level: 'info',
-  format: winston.format.combine(winston.format.simple(), winston.format.timestamp()),
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
     }),
-    new winston.transports.File({ filename: '_error.log', level: 'error' }),
-    new winston.transports.File({ filename: '_trace.log' }),
+    new winston.transports.File({
+      filename: '_error.log',
+      level: 'error',
+      format,
+    }),
+    new winston.transports.File({
+      filename: '_trace.log',
+      format,
+    }),
   ],
 })
 
