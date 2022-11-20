@@ -2,13 +2,13 @@ import express from 'express'
 import config, { canStart } from './shared/config'
 import logger from './shared/logger'
 import createBackendApp from './app'
-;(async () => {
+;(() => {
   if (!canStart()) {
     logger.error(
       'No PORT and/or DB_URL specified: Shutting down - Environment variables are not set: ' +
         JSON.stringify(process.env),
     )
-    process.exit(1)
+    return process.exit(1)
   }
 
   const app = createBackendApp()
