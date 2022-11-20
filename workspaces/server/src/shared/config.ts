@@ -126,12 +126,13 @@ export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
   // eslint-disable-next-line no-console
   console.log(getLimitedEnv())
-  const portOkay = config.production ? process.env.PORT : config.port
-  const dbOkay = config.production ? process.env.DB_URL || process.env.DATABASE_URL : config.db.url
-  logger.info(`${portOkay ? `✅ PORT: ${portOkay}` : '❌ PORT: ERROR - Missing'}`)
-  logger.info(`${dbOkay ? `✅ DB: ${/[^/]*$/.exec(config.db.url)}` : '❌ DB: ERROR - Missing'}`)
-  const result = portOkay && dbOkay
-  logger.info('** ' + result ? 'READY!' : 'HALT')
+  const p = config.production ? process.env.PORT : config.port
+  const d = config.production ? process.env.DB_URL || process.env.DATABASE_URL : config.db.url
+  const result = !!p && !!d
+  logger.info(`PRODUCTION: ${config.production}`)
+  logger.info(`${p ? '✅' : '❌'} PORT: ${p ? p : 'ERROR - Missing'}`)
+  logger.info(`${d ? '✅' : '❌'} DB: ${d ? /[^/]*$/.exec(config.db.url) : 'ERROR - Missing'}`)
+  logger.info(`**: ${result ? 'READY!' : 'HALT'}`)
   return result
 }
 
