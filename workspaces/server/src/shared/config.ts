@@ -3,6 +3,9 @@ import { OAS3Definition } from 'swagger-jsdoc'
 import packageJson from '../../package.json'
 import appConfig from '../../config/app.json'
 import logger from './logger'
+import dotenv from 'dotenv'
+
+dotenv.config({})
 
 export interface Config {
   isLocalhost: boolean
@@ -49,8 +52,8 @@ const devConnection = `postgres://${username}:${password}@${host}/${database}`
 const DB_URL = process.env.DB_URL || process.env.DATABASE_URL || devConnection
 const osHost = os.hostname()
 const isLocalhost = osHost.includes('local')
-logger.info(`⚡️env.PORT: ${process.env.PORT}`)
-const port = Number(process.env.PORT || isLocalhost ? 3001 : 80)
+logger.info(`process.env.PORT: ${process.env.PORT} ⚡️`)
+const port = Number(process.env.PORT as string) || (isLocalhost ? 3001 : 80)
 const protocol = process.env.HTTPS || 'http'
 const hostName = process.env.HOST || 'localhost'
 const config: Config = {
@@ -125,11 +128,13 @@ export function getLimitedEnv() {
 export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
   // eslint-disable-next-line no-console
+  console.log('RUY', process.env.RUY)
   console.log(getLimitedEnv())
   const p = config.production ? process.env.PORT : config.port
   const d = config.production ? process.env.DB_URL || process.env.DATABASE_URL : config.db.url
   const result = !!p && !!d
   logger.info(`PRODUCTION: ${config.production}`)
+  logger.info(`URL: ${config.backendBaseUrl}`)
   logger.info(`${p ? '✅' : '❌'} PORT: ${p ? p : 'ERROR - Missing'}`)
   logger.info(`${d ? '✅' : '❌'} DB: ${d ? /[^/]*$/.exec(config.db.url) : 'ERROR - Missing'}`)
   logger.info(`**: ${result ? 'READY!' : 'HALT'}`)

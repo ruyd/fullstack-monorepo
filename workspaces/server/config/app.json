@@ -27,5 +27,9 @@
     "HOST",
     "HTTPS",
     "PORT"
-  ]
+  ],
+  "ports": {
+    "development": 3001,
+    "production": 3000
+  }
 }

@@ -7,26 +7,41 @@ const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
-const dotenv = require('dotenv')
 const appConfig = require('./config/app.json')
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getClientEnvironment = require('../../tools/env')
 const paths = require('../../tools/paths')
 const packageJson = require('./package.json')
 const webpack = require('webpack')
+const dotenv = require('dotenv')
+const DotenvWebpack = require('dotenv-webpack')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = env.mode
 const isDevelopment = env.isDevelopment
 
 function getDefinedEnv() {
   const concerns = appConfig.envConcerns.reduce((acc, key) => {
-    acc[`process.env.${key}`] = process.env[key]
+    if (process.env[key]) {
+      acc[`process.env.${key}`] = JSON.stringify(process.env[key])
+      //acc[`${key}`] = JSON.stringify(process.env[key])
+    }
     return acc
   }, {})
-  return {
-    ...concerns,
-    ...dotenv.config().parsed,
-  }
+  console.log('concerns', concerns, env)
+  // const envFile = isDevelopment ? dotenv.config({}).parsed : {}
+  // const overrides = Object.keys(envFile).reduce((acc, key) => {
+  //   if (envFile[key]) {
+  //     acc[key] = envFile[key]
+  //   }
+  //   return acc
+  // }, {})
+  // console.log('overrides', overrides)
+  // const merged = JSON.stringify({
+  //   ...concerns,
+  //   ...overrides,
+  // })
+  // console.log(merged)
+  return concerns
 }
 
 module.exports = {
@@ -49,10 +64,15 @@ module.exports = {
     }),
   ],
   plugins: [
+    // new webpack.DefinePlugin({
+    //   'process.env': JSON.stringify({ ...dotenv?.parsed, NODE_ENV: mode, RUY: 'hello' }),
+    // }),
+    new DotenvWebpack({
+      systemvars: true,
+    }),
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
-    new webpack.DefinePlugin(getDefinedEnv()),
   ],
   module: {
     rules: [
