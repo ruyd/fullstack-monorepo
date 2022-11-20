@@ -4,7 +4,8 @@ import packageJson from '../../package.json'
 import sequelizeConfig from '../../setup/db.json'
 import logger from './logger'
 
-logger.info('processs.env' + JSON.stringify(process.env))
+logger.info('processs.env:::' + JSON.stringify(process.env))
+logger.info(`⚡️env.PORT: ${process.env.PORT}`)
 
 export interface Config {
   isLocalhost: boolean
@@ -51,7 +52,6 @@ const devConnection = `postgres://${username}:${password}@${host}/${database}`
 const DB_URL = process.env.DB_URL || process.env.DATABASE_URL || devConnection
 const osHost = os.hostname()
 const isLocalhost = osHost.includes('local')
-logger.info(`⚡️env.PORT: ${process.env.PORT}`)
 const port = Number(process.env.PORT || isLocalhost ? 3001 : 80)
 const protocol = process.env.HTTPS || 'http'
 const hostName = process.env.HOST || 'localhost'

@@ -9,13 +9,13 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'no-console': 'warn',
   },
-  "overrides": [
+  overrides: [
     {
-      "files": ["*.js"],
-      "rules": {
-        "no-undef": "off",
-        "@typescript-eslint/no-var-requires": "off"
-      }
-    }
-  ]
+      files: ['*.js'],
+      rules: {
+        'no-undef': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+  ],
 }

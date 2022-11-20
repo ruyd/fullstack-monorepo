@@ -48,7 +48,7 @@ module.exports = {
         POST: process.env.PORT,
       }),
     }),
-    isDevelopmnent && new Dotenv({ systemvars: true }),
+    isDevelopment && new Dotenv({ systemvars: true }),
   ].filter(Boolean),
   module: {
     rules: [
