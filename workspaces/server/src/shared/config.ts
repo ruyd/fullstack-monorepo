@@ -124,10 +124,11 @@ export function getLimitedEnv() {
 
 export function canStart() {
   logger.info(`⚡️Readyness Check...`)
-  logger.info(`⚡️PORT: ${process.env.PORT || 'ERROR - PORT not set'}`)
-  logger.info(`⚡️DB: ${DB_URL || 'ERROR - DB_URL not set'}`)
-  const dbOkay = process.env.DB_URL || process.env.DATABASE_URL
-  return process.env.PORT && dbOkay
+  const portOkay = config.production ? process.env.PORT : config.port
+  const dbOkay = config.production ? process.env.DB_URL || process.env.DATABASE_URL : config.db.url
+  logger.info(`⚡️PORT: ${portOkay || 'ERROR - PORT not set'}`)
+  logger.info(`⚡️DB: ${dbOkay || 'ERROR - DB_URL not set'}`)
+  return portOkay && dbOkay
 }
 
 export default config
