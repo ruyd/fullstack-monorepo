@@ -45,11 +45,11 @@ module.exports = {
       'process.env': JSON.stringify({
         ...process.env,
         NODE_ENV: mode,
-        RUY: 'hello',
+        POST: process.env.PORT,
       }),
     }),
-    new Dotenv({ systemvars: true }),
-  ],
+    isDevelopmnent && new Dotenv({ systemvars: true }),
+  ].filter(Boolean),
   module: {
     rules: [
       {
