@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 console.log(`SERVER WEBPACK (${process.env.NODE_ENV})`)
 const fs = require('fs')
 const path = require('path')
@@ -7,7 +6,8 @@ const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
-const Dotenv = require('dotenv-webpack')
+//const Dotenv = require('dotenv-webpack')
+const dotenv = require('dotenv')
 const appConfig = require('./config/app.json')
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getClientEnvironment = require('../../tools/env')
@@ -15,17 +15,21 @@ const paths = require('../../tools/paths')
 const packageJson = require('./package.json')
 const webpack = require('webpack')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
-const mode = process.env.NODE_ENV || 'production'
-const isDevelopment = mode === 'development'
+const mode = env.mode
+const isDevelopment = env.isDevelopment
 
 function getLimitedEnv() {
   return appConfig.envConcerns.reduce((acc, key) => {
-    acc[key] = JSON.stringify(process.env[key])
+    if (process.env[key]) acc[key] = process.env[key]
     return acc
   }, {})
 }
 const limitedEnv = getLimitedEnv()
-console.log('webpack:limitedEnv', limitedEnv)
+const defineEnv = {
+  ...limitedEnv,
+  ...dotenv.config().parsed,
+}
+console.log('webpack:limitedEnv', defineEnv)
 
 module.exports = {
   mode,
@@ -50,10 +54,9 @@ module.exports = {
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
     new webpack.DefinePlugin({
-      'process.env': limitedEnv,
+      'process.env': JSON.stringify(defineEnv),
     }),
-    isDevelopment && new Dotenv(),
-  ].filter(Boolean),
+  ],
   module: {
     rules: [
       {

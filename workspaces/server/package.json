@@ -7,7 +7,7 @@
   "scripts": {
     "build": "NODE_ENV=production yarn webpack",
     "start": "node dist/index.js",
-    "mon": "yarn nodemon -r tsconfig-paths/register -q src/index.ts",
+    "mon": "NODE_ENV=development yarn nodemon -r tsconfig-paths/register -q src/index.ts",
     "watch": "NODE_ENV=development yarn webpack watch",
     "dev": "docker compose up --wait && yarn tsc --build && yarn concurrently \"yarn watch\" \"yarn mon\"",
     "test": "NODE_ENV=test yarn jest",
