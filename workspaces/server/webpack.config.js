@@ -16,9 +16,7 @@ const webpack = require('webpack')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = process.env.NODE_ENV || 'production'
 const isDevelopment = mode === 'development'
-const outputPath = isDevelopment
-  ? path.resolve(__dirname, 'dist')
-  : path.resolve(__dirname, '../../dist/server')
+const outputPath = isDevelopment ? path.resolve(__dirname, 'dist') : path.resolve(__dirname, 'dist')
 
 module.exports = {
   mode,
