@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import os from 'os'
 import { OAS3Definition } from 'swagger-jsdoc'
 import packageJson from '../../package.json'
 import sequelizeConfig from '../../setup/db.json'
@@ -8,6 +9,7 @@ dotenv.config({})
 const env = process.env || {}
 
 export interface Config {
+  isLocalhost: boolean
   trace: boolean
   production: boolean
   host: string
@@ -44,15 +46,18 @@ export interface Config {
   swaggerSetup: Partial<OAS3Definition>
 }
 
-//rework with secrets
+//rework with a secrets vault
 const { database, host, username, password, ssl, schema } = sequelizeConfig.development
 const DB_URL = env.DB_URL || `postgres://${username}:${password}@${host}/${database}`
-const port = Number(env.PORT || 3001)
+const osHost = os.hostname()
+const isLocalhost = osHost.includes('local')
+const port = Number(env.PORT || isLocalhost ? 3001 : 80)
 const protocol = env.HTTPS || 'http'
 const hostName = env.HOST || 'localhost'
 const config: Config = {
   trace: false,
   production: env.NODE_ENV === 'production',
+  isLocalhost,
   host,
   protocol,
   backendBaseUrl: `${protocol}://${hostName}:${port}`,
