@@ -15,7 +15,7 @@
 ### Developer Experience 💕😎✨
 - VSCode split window debugging client, server and tests
 - Super Fast Webpack Hot Reloading with Cache
-- Git Pre-Commit Hook that run tests and blocks bad commits
+- Git Pre-Push Hook that run tests and blocks bad commits
 - Repositoryless shared code packages (bundled by webpack)
 - Deploy Ready Actions for AWS, GCP, Azure (Bucket + Functions|Container)
 
