@@ -41,14 +41,14 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
+    isDevelopment && new Dotenv({ systemvars: true }),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify({
         ...process.env,
         NODE_ENV: mode,
-        POST: process.env.PORT,
+        PORT: process.env.PORT,
       }),
     }),
-    isDevelopment && new Dotenv({ systemvars: true }),
   ].filter(Boolean),
   module: {
     rules: [
