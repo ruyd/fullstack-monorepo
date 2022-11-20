@@ -18,16 +18,15 @@ const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = env.mode
 const isDevelopment = env.isDevelopment
 
-function getLimitedEnv() {
-  return appConfig.envConcerns.reduce((acc, key) => {
-    if (process.env[key]) acc[key] = process.env[key]
+function getDefinedEnv() {
+  const concerns = appConfig.envConcerns.reduce((acc, key) => {
+    acc[`process.env.${key}`] = process.env[key]
     return acc
   }, {})
-}
-const limitedEnv = getLimitedEnv()
-const defineEnv = {
-  ...limitedEnv,
-  ...dotenv.config().parsed,
+  return {
+    ...concerns,
+    ...dotenv.config().parsed,
+  }
 }
 
 module.exports = {
@@ -53,12 +52,7 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
-    new webpack.DefinePlugin(
-      JSON.stringify({
-        'process.env': defineEnv,
-        WEBPACKED: true,
-      }),
-    ),
+    new webpack.DefinePlugin(getDefinedEnv()),
   ],
   module: {
     rules: [
