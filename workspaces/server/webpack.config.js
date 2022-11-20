@@ -1,7 +1,6 @@
 console.log(`SERVER WEBPACK (${process.env.NODE_ENV})`)
 const fs = require('fs')
 const path = require('path')
-//const webpack = require('webpack')
 const nodeExternals = require('webpack-node-externals')
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')

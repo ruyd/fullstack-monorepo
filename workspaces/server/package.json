@@ -5,7 +5,7 @@
   "description": "Automated Express Backend",
   "main": "dist/index.js",
   "scripts": {
-    "build": "yarn webpack",
+    "build": "NODE_ENV=production yarn webpack",
     "start": "node dist/index.js",
     "mon": "yarn nodemon -r tsconfig-paths/register -q src/index.ts",
     "watch": "NODE_ENV=development yarn webpack watch",
