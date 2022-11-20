@@ -1,7 +1,7 @@
 import React from 'react'
 export interface AppRoute {
   path: string
-  component: React.LazyExoticComponent<() => JSX.Element>
+  component: React.LazyExoticComponent<(props?: any) => JSX.Element>
   title?: string
   description?: string
   secure?: boolean

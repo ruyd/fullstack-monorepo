@@ -5,6 +5,7 @@ import { getAsync, saveAsync } from './thunks'
 import { Box, Container, Fab, Stack } from '@mui/material'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
+import { patch as patchApp } from '../app'
 import Items from './Items'
 import { generateThumbnail, getDraft } from './helpers'
 import { Canvas } from './Canvas'
@@ -16,6 +17,7 @@ import LineSize from './LineSize'
 
 export default function CanvasControl() {
   const dispatch = useAppDispatch()
+  const authenticated = useAppSelector(state => state.app.token)
   const history = useAppSelector(state => state.canvas?.active?.history)
   const id = useAppSelector(state => state.canvas?.active?.id)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
@@ -59,12 +61,17 @@ export default function CanvasControl() {
       return
     }
 
+    if (!authenticated) {
+      dispatch(patchApp({ dialog: 'onboard' }))
+      return
+    }
+
     const payload = {
       history: buffer.current,
       thumbnail: await generateThumbnail(canvas),
     }
     await dispatch(saveAsync(payload))
-  }, [dispatch])
+  }, [authenticated, dispatch])
 
   const renderHistory = React.useCallback(() => {
     if (!canvasRef.current || !contextRef.current) {

@@ -73,14 +73,15 @@ function setLogin(
   token: string,
   user: AppUser,
 ) {
+  onLogin({ token, user })
   dispatch(
     patch({
       token,
       user,
       loaded: !!token,
+      dialog: undefined,
     }),
   )
-  onLogin({ token, user })
 }
 
 export const loginAsync = createAsyncThunk(

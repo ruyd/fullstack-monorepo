@@ -14,9 +14,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch } from '../../shared/store'
+import { GoogleOneTapButton } from './GoogleOneTap'
 //import config from '../../shared/config'
 
-export default function Login(): JSX.Element {
+export default function Login({ modal }: { modal?: boolean }): JSX.Element {
+  // eslint-disable-next-line no-console
+  console.log(modal)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   // const currentRoute = window.location.href
@@ -60,6 +63,13 @@ export default function Login(): JSX.Element {
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in
+        </Typography>
+        <Typography textAlign="center">To save your drawings, a user ID is needed</Typography>
+        <Grid alignContent="center" margin={2}>
+          <GoogleOneTapButton />
+        </Grid>
+        <Typography component="h1" variant="h5">
+          or
         </Typography>
         <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler}>
           <Grid container spacing={2}>

@@ -1,13 +1,15 @@
-import { Dialog } from '@mui/material'
+import { DialogContent } from '@mui/material'
+import Dialog from '@mui/material/Dialog'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
+import Login from './Login'
 
 export default function OnboardingDialog() {
   const dispatch = useAppDispatch()
   const requested = useAppSelector(state => state.app.dialog)
-  const open = requested === 'onboarding'
-  const closeMe = React.useCallback(() => {
+  const open = requested === 'onboard'
+  const handleClose = React.useCallback(() => {
     dispatch(patch({ dialog: undefined }))
   }, [dispatch])
 
@@ -16,9 +18,10 @@ export default function OnboardingDialog() {
   }
 
   return (
-    <Dialog open={open}>
-      <div>Profile</div>
-      <button onClick={closeMe}>Close</button>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogContent>
+        <Login />
+      </DialogContent>
     </Dialog>
   )
 }

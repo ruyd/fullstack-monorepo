@@ -61,12 +61,29 @@ export interface OneTapParams extends OneTapBase {
   auto_select?: boolean
   cancel_on_tap_outside?: boolean
 }
+/**
+ * https://developers.google.com/identity/gsi/web/reference/js-reference#GsiButtonConfiguration
+ */
 export type OneTapAPI = {
   accounts: {
     id: {
       initialize: (options: OneTapParams) => void
-      prompt: () => void
+      prompt: (
+        callback?: (notification: {
+          isNotDisplayed: () => void
+          isSkippedMoment: () => void
+        }) => void,
+      ) => void
       setLogLevel: (l: 'info' | 'none') => void
+      renderButton: (
+        e: HTMLElement,
+        options?: {
+          text?: 'signin' | 'signin_with' | 'continue_with' | 'signup_with'
+          type?: 'standard' | 'icon'
+          theme?: 'outline' | 'filled_blue' | 'filled_black'
+          size?: 'small' | 'medium' | 'large'
+        },
+      ) => void
     }
   }
 }
@@ -107,7 +124,7 @@ export function loadScriptAndInit({
           context: contextValue,
           ...otherOptions,
         })
-        google.accounts.id.prompt()
+        google.accounts.id.prompt(notification => console.log('prompt', notification))
         if (ref) {
           ref.current = google
         }
@@ -122,6 +139,19 @@ export const prompt = () => {
   tap.prompt()
 }
 
+export const GoogleOneTapButton = () => {
+  const tap = (window as WindowWithGoogle).google?.accounts?.id
+  React.useEffect(() => {
+    tap.initialize(initOptions)
+    tap.renderButton(document.getElementById('one-tap-button')!, {
+      text: 'continue_with',
+      theme: 'outline',
+      size: 'large',
+    })
+  }, [tap])
+
+  return <div id="one-tap-button"></div>
+}
 export function GoogleOneTap(): JSX.Element {
   const dispatch = useAppDispatch()
   const loaded = React.useRef(false)
