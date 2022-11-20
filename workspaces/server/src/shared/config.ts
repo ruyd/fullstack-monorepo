@@ -52,8 +52,8 @@ const devConnection = `postgres://${username}:${password}@${host}/${database}`
 const DB_URL = env.DB_URL || env.DATABASE_URL || devConnection
 const osHost = os.hostname()
 const isLocalhost = osHost.includes('local')
-logger.info(`⚡️env.PORT: ${env.PORT}`)
-const port = Number(env.PORT || isLocalhost ? 3001 : 80)
+logger.info(`⚡️env.PORT: ${process.env.PORT}`)
+const port = Number(process.env.PORT || isLocalhost ? 3001 : 80)
 const protocol = env.HTTPS || 'http'
 const hostName = env.HOST || 'localhost'
 const config: Config = {
