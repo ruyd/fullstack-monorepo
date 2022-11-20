@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Drawing } from '@shared/lib'
+import { Drawing, PagedResult } from '@shared/lib'
 import { RootState } from '../../shared/store'
 import { notify, notifyError } from '../app'
 import { get, Method, request } from '../app/thunks'
@@ -7,9 +7,9 @@ import { getCopy, getDraft } from './helpers'
 import { actions } from './slice'
 
 export const itemsAsync = createAsyncThunk('canvas/list', async (_, { dispatch }) => {
-  const resp = await get<Drawing[]>(`/drawing`)
+  const resp = await get<PagedResult<Drawing>>(`/drawing`)
   if (resp.status === 200) {
-    dispatch(actions.patch({ items: resp.data, loaded: true }))
+    dispatch(actions.patch({ items: resp.data.items, loaded: true }))
   }
   return resp.data
 })

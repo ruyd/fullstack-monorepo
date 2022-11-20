@@ -13,12 +13,12 @@
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/workspaces/client/src/features/home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
 
 ### Developer Experience 💕😎✨
-- VSCode split window debugging client, server and tests
+- VSCode concurrent separate terminals debugging client, server and tests
 - Super Fast Webpack Hot Reloading with Cache
 - Git Pre-Push Hook that run tests and blocks bad commits
 - Repositoryless shared code packages (bundled by webpack)
 - Deploy Ready Actions for AWS, GCP, Azure (Bucket + Functions|Container)
-
+- [Automated Backend](https://github.com/ruyd/automated-express-backend)
 ### Made with
 
 - TypeScript
@@ -28,7 +28,6 @@
 - Sequelize
 - Webpack
 - Jest and Docker
-- [Automated NodeJS/Express](https://github.com/ruyd/automated-express-backend)
 
 ### Quick Start
 
