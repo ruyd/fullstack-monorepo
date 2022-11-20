@@ -5,9 +5,11 @@ import packageJson from '../../package.json'
 import sequelizeConfig from '../../setup/db.json'
 import logger from './logger'
 
-dotenv.config({})
-
 const env = process.env || {}
+
+dotenv.config({
+  override: false,
+})
 
 export interface Config {
   isLocalhost: boolean
