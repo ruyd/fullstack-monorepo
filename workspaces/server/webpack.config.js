@@ -27,7 +27,7 @@ function getLimitedEnv() {
 const limitedEnv = getLimitedEnv()
 const defineEnv = {
   ...limitedEnv,
-  ...dotenv.config({ override: false }).parsed,
+  ...dotenv.config().parsed,
 }
 
 module.exports = {
@@ -53,9 +53,12 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
-    // new webpack.DefinePlugin({
-    //   'process.env': JSON.stringify(defineEnv),
-    // }),
+    new webpack.DefinePlugin(
+      JSON.stringify({
+        'process.env': defineEnv,
+        WEBPACKED: true,
+      }),
+    ),
   ],
   module: {
     rules: [
