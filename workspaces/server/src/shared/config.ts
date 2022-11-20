@@ -4,8 +4,6 @@ import packageJson from '../../package.json'
 import sequelizeConfig from '../../setup/db.json'
 import logger from './logger'
 
-logger.info('processs.env:::' + JSON.stringify(process.env))
-
 export interface Config {
   isLocalhost: boolean
   trace: boolean
@@ -115,6 +113,34 @@ export function getClientConfig() {
       redirectUrl: config.auth.redirectUrl,
     },
   }
+}
+
+export const allowedEnv = [
+  'NODE_ENV',
+  'AUTH_TENANT',
+  'AUTH_CLIENT_ID',
+  'AUTH_CLIENT_SECRET',
+  'AUTH_EXPLORER_ID',
+  'AUTH_EXPLORER_SECRET',
+  'AUTH_REDIRECT_URL',
+  'AUTH_AUDIENCE',
+  'TOKEN_SECRET',
+  'DATABASE_URL', // heroku baked
+  'DB_URL',
+  'DB_SSL',
+  'SSL_CRT_FILE',
+  'SSL_KEY_FILE',
+  'JSON_LIMIT',
+  'HOST',
+  'HTTPS',
+  'PORT',
+]
+
+export function getLimitedEnv() {
+  return allowedEnv.reduce((acc: { [key: string]: unknown }, key: string) => {
+    acc[key] = process.env[key]
+    return acc
+  }, {})
 }
 
 export function canStart() {

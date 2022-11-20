@@ -16,7 +16,6 @@ const webpack = require('webpack')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = process.env.NODE_ENV || 'production'
 const isDevelopment = mode === 'development'
-const outputPath = isDevelopment ? path.resolve(__dirname, 'dist') : path.resolve(__dirname, 'dist')
 
 module.exports = {
   mode,
@@ -26,7 +25,7 @@ module.exports = {
   target: 'node',
   devtool: isDevelopment ? 'source-map' : false,
   output: {
-    path: outputPath,
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     chunkFilename: '[name].[contenthash].js',
   },
@@ -42,7 +41,9 @@ module.exports = {
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
     new webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env),
+      'process.env': {
+        ...env.stringified,
+      },
     }),
     isDevelopment && new Dotenv(),
   ].filter(Boolean),
