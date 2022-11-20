@@ -1,12 +1,13 @@
 console.log(`SERVER WEBPACK (${process.env.NODE_ENV})`)
 const fs = require('fs')
 const path = require('path')
-const webpack = require('webpack')
+//const webpack = require('webpack')
 const nodeExternals = require('webpack-node-externals')
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
-const dotenv = require('dotenv').config()
+//const dotenv = require('dotenv').config()
+const Dotenv = require('dotenv-webpack')
 
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getClientEnvironment = require('../../tools/env')
@@ -40,9 +41,7 @@ module.exports = {
     }),
   ],
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify({ ...dotenv?.parsed, NODE_ENV: mode }),
-    }),
+    new Dotenv({ systemvars: true }),
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),

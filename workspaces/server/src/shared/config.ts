@@ -9,6 +9,7 @@ logger.info('processs.env' + JSON.stringify(process.env))
 const env = process.env || {}
 dotenv.config({
   override: false,
+  debug: true,
 })
 logger.info('dotenv' + JSON.stringify(process.env))
 

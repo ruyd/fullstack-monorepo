@@ -1,1 +1,1 @@
-web: node dist/server/index.js
+web: PORT=$PORT node dist/server/index.js
