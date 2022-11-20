@@ -6,7 +6,6 @@ const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
-//const Dotenv = require('dotenv-webpack')
 const dotenv = require('dotenv')
 const appConfig = require('./config/app.json')
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
@@ -29,7 +28,6 @@ const defineEnv = {
   ...limitedEnv,
   ...dotenv.config().parsed,
 }
-console.log('webpack:limitedEnv', defineEnv)
 
 module.exports = {
   mode,

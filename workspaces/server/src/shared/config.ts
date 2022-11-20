@@ -117,13 +117,15 @@ export function getClientConfig() {
 
 export function getLimitedEnv() {
   return appConfig.envConcerns.reduce((acc: { [key: string]: unknown }, key: string) => {
-    acc[key] = JSON.stringify(process.env[key])
+    acc[key] = process.env[key]
     return acc
   }, {})
 }
 
 export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
+  // eslint-disable-next-line no-console
+  console.log(getLimitedEnv())
   const portOkay = config.production ? process.env.PORT : config.port
   const dbOkay = config.production ? process.env.DB_URL || process.env.DATABASE_URL : config.db.url
   logger.info(`${portOkay ? `✅ PORT: ${portOkay}` : '❌ PORT: ERROR - Missing'}`)
