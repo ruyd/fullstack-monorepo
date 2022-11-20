@@ -23,11 +23,9 @@ function getDefinedEnv() {
   const concerns = appConfig.envConcerns.reduce((acc, key) => {
     if (process.env[key]) {
       acc[`process.env.${key}`] = JSON.stringify(process.env[key])
-      //acc[`${key}`] = JSON.stringify(process.env[key])
     }
     return acc
   }, {})
-  console.log('concerns', concerns, env)
   // const envFile = isDevelopment ? dotenv.config({}).parsed : {}
   // const overrides = Object.keys(envFile).reduce((acc, key) => {
   //   if (envFile[key]) {
@@ -40,7 +38,7 @@ function getDefinedEnv() {
   //   ...concerns,
   //   ...overrides,
   // })
-  // console.log(merged)
+  console.log('concerns', concerns)
   return concerns
 }
 
@@ -64,12 +62,7 @@ module.exports = {
     }),
   ],
   plugins: [
-    // new webpack.DefinePlugin({
-    //   'process.env': JSON.stringify({ ...dotenv?.parsed, NODE_ENV: mode, RUY: 'hello' }),
-    // }),
-    new DotenvWebpack({
-      systemvars: true,
-    }),
+    new webpack.DefinePlugin(getDefinedEnv()),
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),

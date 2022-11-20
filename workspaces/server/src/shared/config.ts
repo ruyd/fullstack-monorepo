@@ -11,8 +11,8 @@ export interface Config {
   isLocalhost: boolean
   trace: boolean
   production: boolean
-  host: string
-  port: number
+  hostname?: string
+  port?: number
   protocol: string
   backendBaseUrl: Readonly<string>
   jsonLimit: string
@@ -45,24 +45,28 @@ export interface Config {
   swaggerSetup: Partial<OAS3Definition>
 }
 
-//TODO: add a secrets vault fetch then add to process.env
-
-const { database, host, username, password, ssl, schema } = appConfig.development
-const devConnection = `postgres://${username}:${password}@${host}/${database}`
-const DB_URL = process.env.DB_URL || process.env.DATABASE_URL || devConnection
+//TODO: add secrets vault inject to process.env
+const production = process.env.NODE_ENV === 'production'
+const serviceConfig = production ? appConfig.production : appConfig.development
+const { database, host, username, password, ssl, schema, dialect } = serviceConfig.db as Record<
+  string,
+  unknown
+>
+const devConnection = `${dialect}://${username}:${password}@${host}/${database}`
+const DB_URL = production ? process.env.DB_URL || process.env.DATABASE_URL : devConnection // covers ENV=test
 const osHost = os.hostname()
 const isLocalhost = osHost.includes('local')
 logger.info(`process.env.PORT: ${process.env.PORT} ⚡️`)
-const port = Number(process.env.PORT as string) || (isLocalhost ? 3001 : 80)
-const protocol = process.env.HTTPS || 'http'
-const hostName = process.env.HOST || 'localhost'
+const port = Number(process.env.PORT) || Number(envi(serviceConfig.service.port))
+const hostname = envi(serviceConfig.service.host) as string
+const protocol = envi(serviceConfig.service.protocol) as string
 const config: Config = {
   trace: false,
-  production: process.env.NODE_ENV === 'production',
+  production,
   isLocalhost,
-  host,
+  hostname,
   protocol,
-  backendBaseUrl: `${protocol}://${hostName}:${port}`,
+  backendBaseUrl: `${protocol}://${hostname}:${port}`,
   certFile: process.env.SSL_CRT_FILE,
   certKeyFile: process.env.SSL_KEY_FILE,
   port,
@@ -70,10 +74,10 @@ const config: Config = {
   db: {
     force: false,
     alter: false,
-    name: database,
-    url: DB_URL,
-    schema,
-    ssl: process.env.DB_SSL === 'true' || ssl,
+    name: database as string,
+    url: DB_URL as string,
+    schema: schema as string,
+    ssl: process.env.DB_SSL === 'true' || (ssl as boolean),
   },
   auth: {
     tokenSecret: process.env.TOKEN_SECRET || 'blank',
@@ -123,6 +127,10 @@ export function getLimitedEnv() {
     acc[key] = process.env[key]
     return acc
   }, {})
+}
+
+export function envi(val: unknown): unknown {
+  return typeof val === 'string' && val.startsWith('$') ? process.env[val.slice(1)] : val
 }
 
 export function canStart() {
