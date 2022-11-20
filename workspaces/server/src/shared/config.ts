@@ -3,6 +3,7 @@ import os from 'os'
 import { OAS3Definition } from 'swagger-jsdoc'
 import packageJson from '../../package.json'
 import sequelizeConfig from '../../setup/db.json'
+import logger from './logger'
 
 dotenv.config({})
 
@@ -53,6 +54,7 @@ const devConnection = `postgres://${username}:${password}@${host}/${database}`
 const DB_URL = env.DB_URL || env.DATABASE_URL || devConnection
 const osHost = os.hostname()
 const isLocalhost = osHost.includes('local')
+logger.info(`⚡️env.PORT: ${env.PORT}`)
 const port = Number(env.PORT || isLocalhost ? 3001 : 80)
 const protocol = env.HTTPS || 'http'
 const hostName = env.HOST || 'localhost'
