@@ -4,7 +4,7 @@ import config from './config'
 
 const logger = winston.createLogger({
   level: 'info',
-  format: winston.format.combine(winston.format.simple(), winston.format.metadata()),
+  format: winston.format.combine(winston.format.simple(), winston.format.timestamp()),
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
