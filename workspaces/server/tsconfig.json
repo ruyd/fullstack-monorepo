@@ -12,7 +12,7 @@
       "@shared/lib": ["../lib/src"]
     }
   },
-  "include": ["src", ".eslintrc.js", "package.json", "setup/db.json"],
+  "include": ["src", ".eslintrc.js", "package.json", "config/app.json"],
   "exclude": ["dist", "node_modules", "../../node_modules"],
   "references": [
     {

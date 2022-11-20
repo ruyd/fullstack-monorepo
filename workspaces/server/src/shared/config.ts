@@ -1,7 +1,7 @@
 import os from 'os'
 import { OAS3Definition } from 'swagger-jsdoc'
 import packageJson from '../../package.json'
-import sequelizeConfig from '../../setup/db.json'
+import appConfig from '../../config/app.json'
 import logger from './logger'
 
 export interface Config {
@@ -44,7 +44,7 @@ export interface Config {
 
 //TODO: add a secrets vault fetch then add to process.env
 
-const { database, host, username, password, ssl, schema } = sequelizeConfig.development
+const { database, host, username, password, ssl, schema } = appConfig.development
 const devConnection = `postgres://${username}:${password}@${host}/${database}`
 const DB_URL = process.env.DB_URL || process.env.DATABASE_URL || devConnection
 const osHost = os.hostname()
@@ -115,30 +115,9 @@ export function getClientConfig() {
   }
 }
 
-export const allowedEnv = [
-  'NODE_ENV',
-  'AUTH_TENANT',
-  'AUTH_CLIENT_ID',
-  'AUTH_CLIENT_SECRET',
-  'AUTH_EXPLORER_ID',
-  'AUTH_EXPLORER_SECRET',
-  'AUTH_REDIRECT_URL',
-  'AUTH_AUDIENCE',
-  'TOKEN_SECRET',
-  'DATABASE_URL', // heroku baked
-  'DB_URL',
-  'DB_SSL',
-  'SSL_CRT_FILE',
-  'SSL_KEY_FILE',
-  'JSON_LIMIT',
-  'HOST',
-  'HTTPS',
-  'PORT',
-]
-
 export function getLimitedEnv() {
-  return allowedEnv.reduce((acc: { [key: string]: unknown }, key: string) => {
-    acc[key] = process.env[key]
+  return appConfig.envConcerns.reduce((acc: { [key: string]: unknown }, key: string) => {
+    acc[key] = JSON.stringify(process.env[key])
     return acc
   }, {})
 }

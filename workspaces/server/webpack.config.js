@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 console.log(`SERVER WEBPACK (${process.env.NODE_ENV})`)
 const fs = require('fs')
 const path = require('path')
@@ -7,7 +8,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
-
+const appConfig = require('./config/app.json')
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getClientEnvironment = require('../../tools/env')
 const paths = require('../../tools/paths')
@@ -17,7 +18,14 @@ const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = process.env.NODE_ENV || 'production'
 const isDevelopment = mode === 'development'
 
-console.log('env', env)
+function getLimitedEnv() {
+  return appConfig.envConcerns.reduce((acc, key) => {
+    acc[key] = JSON.stringify(process.env[key])
+    return acc
+  }, {})
+}
+const limitedEnv = getLimitedEnv()
+console.log('webpack:limitedEnv', limitedEnv)
 
 module.exports = {
   mode,
@@ -31,7 +39,6 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].[contenthash].js',
   },
-  externalsPresets: { node: true },
   externals: [
     nodeExternals({
       additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')],
@@ -43,7 +50,7 @@ module.exports = {
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
     new webpack.DefinePlugin({
-      'process.env': JSON.stringify(process.env),
+      'process.env': limitedEnv,
     }),
     isDevelopment && new Dotenv(),
   ].filter(Boolean),
@@ -58,6 +65,10 @@ module.exports = {
           },
         },
         exclude: /node_modules/,
+      },
+      {
+        test: /\.json/,
+        include: [path.resolve(__dirname, 'config')],
       },
     ],
   },
