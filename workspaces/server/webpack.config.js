@@ -39,11 +39,11 @@ module.exports = {
     }),
   ],
   plugins: [
-    new Dotenv({ systemvars: true }),
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
-  ],
+    isDevelopment && new Dotenv({ systemvars: true }),
+  ].filter(Boolean),
   module: {
     rules: [
       {
