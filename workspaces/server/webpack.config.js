@@ -6,7 +6,6 @@ const nodeExternals = require('webpack-node-externals')
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
-//const dotenv = require('dotenv').config()
 const Dotenv = require('dotenv-webpack')
 
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
@@ -37,7 +36,6 @@ module.exports = {
     nodeExternals({
       additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')],
       allowlist: ['ieee754'],
-      //allowlist: ['ieee754', 'isarray', 'buffer', 'base64-js'],
     }),
   ],
   plugins: [
