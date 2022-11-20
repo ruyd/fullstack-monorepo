@@ -35,7 +35,7 @@ module.exports = {
   externals: [
     nodeExternals({
       additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')],
-      allowlist: ['ieee754', 'isarray', 'buffer', 'base64-js'],
+      //allowlist: ['ieee754', 'isarray', 'buffer', 'base64-js'],
     }),
   ],
   plugins: [
