@@ -24,6 +24,7 @@ module.exports = {
   entry: {
     index: './src/index.ts',
   },
+  target: 'node',
   devtool: isDevelopment ? 'source-map' : false,
   output: {
     path: outputPath,
