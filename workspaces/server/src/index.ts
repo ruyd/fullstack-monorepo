@@ -7,9 +7,7 @@ import createBackendApp from './app'
   await checkDatabase()
 
   const app = createBackendApp()
-
-  const url =
-    (process.env.BASEURL || `http://localhost:${config.port}`) + config.swaggerSetup.basePath
+  const url = config.backendBaseUrl + config.swaggerSetup.basePath
 
   //Start server
   app.get('/', (req: express.Request, res: express.Response) => {

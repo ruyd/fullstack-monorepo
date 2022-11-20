@@ -10,8 +10,13 @@ const env = process.env || {}
 export interface Config {
   trace: boolean
   production: boolean
+  host: string
   port: number
+  protocol: string
+  backendBaseUrl: Readonly<string>
   jsonLimit: string
+  certFile?: string
+  certKeyFile?: string
   db: {
     name: string
     url: string
@@ -43,9 +48,16 @@ export interface Config {
 const { database, host, username, password, ssl, schema } = sequelizeConfig.development
 const DB_URL = env.DB_URL || `postgres://${username}:${password}@${host}/${database}`
 const port = Number(env.PORT || 3001)
+const protocol = env.HTTPS || 'http'
+const hostName = env.HOST || 'localhost'
 const config: Config = {
   trace: false,
   production: env.NODE_ENV === 'production',
+  host,
+  protocol,
+  backendBaseUrl: `${protocol}://${hostName}:${port}`,
+  certFile: env.SSL_CRT_FILE,
+  certKeyFile: env.SSL_KEY_FILE,
   port,
   jsonLimit: env.JSON_LIMIT || '1mb',
   db: {
