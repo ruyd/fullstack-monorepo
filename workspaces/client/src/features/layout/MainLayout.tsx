@@ -10,6 +10,7 @@ import Footer from './Footer'
 import LoadingLine from './LoadingLine'
 import AuthProviders from '../profile/AuthProviders'
 import { currentRoute } from 'src/shared/routes'
+import Dialogs from './Dialogs'
 
 export function MainLayout() {
   const route = currentRoute()
@@ -27,6 +28,7 @@ export function MainLayout() {
         <Notifications />
         <DrawerRight />
         <Footer />
+        <Dialogs />
         <AuthProviders />
       </ThemeSwitch>
     </React.Fragment>
