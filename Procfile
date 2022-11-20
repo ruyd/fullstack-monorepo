@@ -1,1 +1,1 @@
-web: PORT=$PORT node workspaces/server/dist/index.js
+web: node workspaces/server/dist/index.js

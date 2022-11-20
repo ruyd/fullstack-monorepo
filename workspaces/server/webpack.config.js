@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 console.log(`SERVER WEBPACK (${process.env.NODE_ENV})`)
 const fs = require('fs')
 const path = require('path')
@@ -54,9 +55,9 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify(defineEnv),
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env': JSON.stringify(defineEnv),
+    // }),
   ],
   module: {
     rules: [
