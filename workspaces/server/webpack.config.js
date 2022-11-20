@@ -43,12 +43,11 @@ module.exports = {
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
     new webpack.DefinePlugin({
       'process.env': {
-        ...JSON.stringify(process.env),
-        NODE_ENV: mode,
+        ...JSON.stringify({ ...process.env, NODE_ENV: mode }),
         PORT: process.env.PORT,
       },
     }),
-    isDevelopment && new Dotenv({ systemvars: true }),
+    isDevelopment && new Dotenv(),
   ].filter(Boolean),
   module: {
     rules: [
