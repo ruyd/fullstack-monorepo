@@ -41,7 +41,7 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
-    isDevelopment && new Dotenv({ systemvars: true }),
+    new Dotenv({ systemvars: true }),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify({
         ...process.env,
