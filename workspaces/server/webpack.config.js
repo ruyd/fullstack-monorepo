@@ -17,6 +17,8 @@ const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = process.env.NODE_ENV || 'production'
 const isDevelopment = mode === 'development'
 
+console.log('env', env)
+
 module.exports = {
   mode,
   entry: {
@@ -41,9 +43,7 @@ module.exports = {
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
     new webpack.DefinePlugin({
-      'process.env': {
-        ...env.stringified,
-      },
+      'process.env': JSON.stringify(process.env),
     }),
     isDevelopment && new Dotenv(),
   ].filter(Boolean),
