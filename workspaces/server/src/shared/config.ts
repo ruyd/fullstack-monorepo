@@ -118,4 +118,9 @@ export function getClientConfig() {
   }
 }
 
+export function canStart() {
+  const dbOkay = process.env.DB_URL || process.env.DATABASE_URL
+  return process.env.PORT && dbOkay
+}
+
 export default config
