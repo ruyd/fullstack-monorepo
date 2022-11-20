@@ -43,6 +43,7 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].[contenthash].js',
   },
+  externalsPresets: { node: true },
   externals: [
     nodeExternals({
       additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')],
