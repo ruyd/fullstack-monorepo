@@ -4,7 +4,6 @@ import packageJson from '../../package.json'
 import sequelizeConfig from '../../setup/db.json'
 import logger from './logger'
 
-logger.info(`⚡️env.PORT: ${process.env.PORT}`)
 logger.info('processs.env:::' + JSON.stringify(process.env))
 
 export interface Config {
@@ -119,6 +118,9 @@ export function getClientConfig() {
 }
 
 export function canStart() {
+  logger.info(`⚡️Readyness Check...`)
+  logger.info(`⚡️PORT: ${process.env.PORT || 'ERROR - PORT not set'}`)
+  logger.info(`⚡️DB: ${DB_URL || 'ERROR - DB_URL not set'}`)
   const dbOkay = process.env.DB_URL || process.env.DATABASE_URL
   return process.env.PORT && dbOkay
 }

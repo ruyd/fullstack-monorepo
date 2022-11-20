@@ -4,11 +4,8 @@ import logger from './shared/logger'
 import createBackendApp from './app'
 ;(() => {
   if (!canStart()) {
-    logger.error(
-      'No PORT and/or DB_URL specified: Shutting down - Environment variables are not set: ' +
-        JSON.stringify(process.env),
-    )
-    return process.exit(1)
+    logger.error('No PORT and/or DB_URL specified: Shutting down - Environment variables undefined')
+    return process.exit(0)
   }
 
   const app = createBackendApp()
