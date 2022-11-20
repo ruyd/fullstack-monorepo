@@ -5,7 +5,6 @@ import sequelizeConfig from '../../setup/db.json'
 import logger from './logger'
 
 logger.info('processs.env' + JSON.stringify(process.env))
-const env = process.env || {}
 
 export interface Config {
   isLocalhost: boolean
@@ -49,44 +48,44 @@ export interface Config {
 
 const { database, host, username, password, ssl, schema } = sequelizeConfig.development
 const devConnection = `postgres://${username}:${password}@${host}/${database}`
-const DB_URL = env.DB_URL || env.DATABASE_URL || devConnection
+const DB_URL = process.env.DB_URL || process.env.DATABASE_URL || devConnection
 const osHost = os.hostname()
 const isLocalhost = osHost.includes('local')
 logger.info(`⚡️env.PORT: ${process.env.PORT}`)
 const port = Number(process.env.PORT || isLocalhost ? 3001 : 80)
-const protocol = env.HTTPS || 'http'
-const hostName = env.HOST || 'localhost'
+const protocol = process.env.HTTPS || 'http'
+const hostName = process.env.HOST || 'localhost'
 const config: Config = {
   trace: false,
-  production: env.NODE_ENV === 'production',
+  production: process.env.NODE_ENV === 'production',
   isLocalhost,
   host,
   protocol,
   backendBaseUrl: `${protocol}://${hostName}:${port}`,
-  certFile: env.SSL_CRT_FILE,
-  certKeyFile: env.SSL_KEY_FILE,
+  certFile: process.env.SSL_CRT_FILE,
+  certKeyFile: process.env.SSL_KEY_FILE,
   port,
-  jsonLimit: env.JSON_LIMIT || '1mb',
+  jsonLimit: process.env.JSON_LIMIT || '1mb',
   db: {
     force: false,
     alter: false,
     name: database,
     url: DB_URL,
     schema,
-    ssl: env.DB_SSL === 'true' || ssl,
+    ssl: process.env.DB_SSL === 'true' || ssl,
   },
   auth: {
-    tokenSecret: env.TOKEN_SECRET || 'blank',
-    tenant: env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
-    domain: `${env.AUTH_TENANT}.auth0.com`,
-    baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
-    redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
-    explorerAudience: `https://${env.AUTH_TENANT}.auth0.com/api/v2/`,
-    explorerId: env.AUTH_EXPLORER_ID || '',
-    explorerSecret: env.AUTH_EXPLORER_SECRET || '',
-    clientAudience: env.AUTH_AUDIENCE || 'https://backend',
-    clientId: env.AUTH_CLIENT_ID || '',
-    clientSecret: env.AUTH_CLIENT_SECRET || '',
+    tokenSecret: process.env.TOKEN_SECRET || 'blank',
+    tenant: process.env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
+    domain: `${process.env.AUTH_TENANT}.auth0.com`,
+    baseUrl: `https://${process.env.AUTH_TENANT}.auth0.com`,
+    redirectUrl: process.env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
+    explorerAudience: `https://${process.env.AUTH_TENANT}.auth0.com/api/v2/`,
+    explorerId: process.env.AUTH_EXPLORER_ID || '',
+    explorerSecret: process.env.AUTH_EXPLORER_SECRET || '',
+    clientAudience: process.env.AUTH_AUDIENCE || 'https://backend',
+    clientId: process.env.AUTH_CLIENT_ID || '',
+    clientSecret: process.env.AUTH_CLIENT_SECRET || '',
     ruleNamespace: 'https://',
     algorithm: 'RS256',
   },

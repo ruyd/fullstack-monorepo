@@ -48,8 +48,8 @@ module.exports = {
         RUY: 'hello',
       }),
     }),
-    isDevelopment && new Dotenv({ systemvars: true }),
-  ].filter(Boolean),
+    new Dotenv({ systemvars: true }),
+  ],
   module: {
     rules: [
       {
