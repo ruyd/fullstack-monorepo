@@ -125,7 +125,7 @@ export default function Register(props?: ContainerProps) {
             variant="outlined"
             color="secondary"
           >
-            Continue with Google for Sign up
+            Sign up with Google
           </Button>
         </Box>
       </Box>
