@@ -2,7 +2,7 @@ import React from 'react'
 export interface AppRoute {
   path: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: React.LazyExoticComponent<(props: any) => JSX.Element>
+  component: React.LazyExoticComponent<(props?: any) => JSX.Element>
   title?: string
   description?: string
   secure?: boolean

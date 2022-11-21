@@ -6,10 +6,12 @@ import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
 import Login from './Login'
 import Register from './Register'
+import Fade from '@mui/material/Fade'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
-    children: JSX.Element
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    children: React.ReactElement<any, any>
   },
   ref: React.Ref<unknown>,
 ) {
@@ -36,7 +38,9 @@ export default function OnboardingDialog() {
   return (
     <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
       <DialogContent>
-        <Login sx={show === 'login' ? {} : { display: 'none' }} />
+        <Fade in={show === 'login'}>
+          <Login sx={show === 'login' ? {} : { display: 'none' }} />
+        </Fade>
         <Register sx={show === 'register' ? {} : { display: 'none' }} />
         <DialogActions>
           <Button onClick={() => setShow('login')}>Login</Button>
