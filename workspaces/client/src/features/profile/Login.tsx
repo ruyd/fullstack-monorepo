@@ -17,7 +17,7 @@ import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { GoogleOneTapButton } from './GoogleOneTap'
 
-export default function Login(props?: ContainerProps): JSX.Element {
+export default function Login(props?: ContainerProps & Partial<React.Component>): JSX.Element {
   const token = useAppSelector(state => state.app.token)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()

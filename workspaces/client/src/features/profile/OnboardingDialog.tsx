@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
-import { Button, DialogActions, DialogContent, Slide } from '@mui/material'
+import { Button, DialogActions, DialogContent, Fade, Grow, Slide } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
 import Login from './Login'
 import Register from './Register'
-//import Fade from '@mui/material/Fade'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -39,7 +39,11 @@ export default function OnboardingDialog() {
     <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
       <DialogContent>
         <Login sx={show === 'login' ? {} : { display: 'none' }} />
-        <Register sx={show === 'register' ? {} : { display: 'none' }} />
+        <Grow in={show === 'register'}>
+          <div>
+            <Register sx={show === 'register' ? {} : { display: 'none' }} />
+          </div>
+        </Grow>
         <DialogActions>
           <Button onClick={() => setShow('login')}>Login</Button>
           <Button onClick={() => setShow('register')}>Register</Button>
