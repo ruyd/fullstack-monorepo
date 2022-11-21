@@ -20,34 +20,6 @@ export const initOptions: OneTapParams = {
     using Callback.tsx for auth0 */
   },
 }
-
-export async function googleCredentialsLogin(credential: string) {
-  const email = (decode(credential) as IdentityToken)?.email
-  const userId = await checkSocialToken(credential)
-  googlePopupLogin(email, userId)
-}
-
-export async function googlePopupLogin(email?: string, userId?: string): Promise<void> {
-  const session = generateNonce(userId)
-  const options = {
-    ...authOptions(),
-    connection: 'google-oauth2',
-    loginHint: email,
-    state: session.state,
-    nonce: session.nonce,
-    appUserId: userId,
-  }
-  const auth = new authProvider.WebAuth(options)
-  auth.popup.authorize(options, (err, result) => {
-    if (err) {
-      store.dispatch(notifyError(err.description as string))
-      return
-    }
-    const { accessToken, idToken } = result
-    store.dispatch(socialLoginAsync({ accessToken, idToken }))
-  })
-}
-
 export interface OneTapParams extends OneTapBase {
   client_id?: string
   auto_select?: boolean
@@ -88,6 +60,33 @@ export interface OneTapHookOptions extends OneTapBase {
   ref?: React.MutableRefObject<OneTapAPI | null>
 }
 
+export async function googleCredentialsLogin(credential: string) {
+  const email = (decode(credential) as IdentityToken)?.email
+  const userId = await checkSocialToken(credential)
+  googlePopupLogin(email, userId)
+}
+
+export async function googlePopupLogin(email?: string, userId?: string): Promise<void> {
+  const session = generateNonce(userId)
+  const options = {
+    ...authOptions(),
+    connection: 'google-oauth2',
+    loginHint: email,
+    state: session.state,
+    nonce: session.nonce,
+    appUserId: userId,
+  }
+  const auth = new authProvider.WebAuth(options)
+  auth.popup.authorize(options, (err, result) => {
+    if (err) {
+      store.dispatch(notifyError(err.description as string))
+      return
+    }
+    const { accessToken, idToken } = result
+    store.dispatch(socialLoginAsync({ accessToken, idToken }))
+  })
+}
+
 export function loadScriptAndInit({
   clientId,
   autoSelect = false,
@@ -105,9 +104,10 @@ export function loadScriptAndInit({
     document.head.appendChild(googleScript)
 
     window.onload = function () {
-      const tap = (window as WindowWithGoogle).google?.accounts?.id
-      if (tap) {
-        tap.initialize({
+      const google = (window as WindowWithGoogle).google
+      if (google) {
+        google.accounts.id.setLogLevel('info')
+        google.accounts.id.initialize({
           client_id: clientId,
           callback: callback,
           auto_select: autoSelect,
@@ -116,9 +116,9 @@ export function loadScriptAndInit({
           ...otherOptions,
         })
         // eslint-disable-next-line no-console
-        tap.prompt(notification => console.log('prompt', notification))
+        google.accounts.id.prompt(notification => console.log('prompt', notification))
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        tap.renderButton(document.getElementById('one-tap-button')!, {
+        google.accounts.id.renderButton(document.getElementById('one-tap-button')!, {
           text: 'continue_with',
           theme: 'outline',
           size: 'large',
