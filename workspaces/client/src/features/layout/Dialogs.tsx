@@ -12,3 +12,7 @@ export default function Dialogs() {
     </>
   )
 }
+
+export const GlobalDialogs = {
+  Omboard: `onboard`,
+}

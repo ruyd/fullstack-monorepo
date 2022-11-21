@@ -9,17 +9,16 @@ import {
   TextField,
   Typography,
   Link as MuiLink,
+  ContainerProps,
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
-import { useAppDispatch } from '../../shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { GoogleOneTapButton } from './GoogleOneTap'
-//import config from '../../shared/config'
 
-export default function Login({ modal }: { modal?: boolean }): JSX.Element {
-  // eslint-disable-next-line no-console
-  console.log(modal)
+export default function Login(props?: ContainerProps): JSX.Element {
+  const token = useAppSelector(state => state.app.token)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   // const currentRoute = window.location.href
@@ -49,8 +48,14 @@ export default function Login({ modal }: { modal?: boolean }): JSX.Element {
     }
   }
 
+  React.useEffect(() => {
+    if (token) {
+      navigate(returnTo || '/')
+    }
+  }, [dispatch, navigate, returnTo, token])
+
   return (
-    <Container maxWidth="xs" className="centered">
+    <Container {...props} maxWidth="xs" className="centered">
       <Box
         sx={{
           display: 'flex',

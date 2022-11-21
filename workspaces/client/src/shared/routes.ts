@@ -59,6 +59,11 @@ export const routes: AppRoute[] = [
     popup: true,
     component: React.lazy(() => import('../features/profile/Callback')),
   },
+  {
+    title: 'Not Found',
+    path: '*',
+    component: React.lazy(() => import('../features/pages/404')),
+  },
 ]
 
 export const currentRoute = () => routes.find(r => r.path === window.location.pathname)

@@ -81,7 +81,7 @@ export async function social(req: express.Request, res: express.Response) {
   //validate tocket instead of just decode?
   const access = decodeToken(accessToken)
   const decoded = decode(idToken) as IdentityToken
-  const { email } = decoded
+  const { email, given_name, family_name, picture } = decoded
 
   let user = (
     await UserModel.findOne({
@@ -90,7 +90,13 @@ export async function social(req: express.Request, res: express.Response) {
   )?.get()
 
   if (!user) {
-    user = await createOrUpdate(UserModel, { email, userId: uuid() })
+    user = await createOrUpdate(UserModel, {
+      email,
+      userId: uuid(),
+      firstName: given_name,
+      lastName: family_name,
+      picture,
+    })
   }
 
   if (!user) {

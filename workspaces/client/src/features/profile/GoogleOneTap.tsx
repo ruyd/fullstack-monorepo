@@ -114,9 +114,9 @@ export function loadScriptAndInit({
     document.head.appendChild(googleScript)
 
     window.onload = function () {
-      const google = (window as WindowWithGoogle).google
-      if (google) {
-        google.accounts.id.initialize({
+      const tap = (window as WindowWithGoogle).google?.accounts?.id
+      if (tap) {
+        tap.initialize({
           client_id: clientId,
           callback: callback,
           auto_select: autoSelect,
@@ -124,10 +124,13 @@ export function loadScriptAndInit({
           context: contextValue,
           ...otherOptions,
         })
-        google.accounts.id.prompt(notification => console.log('prompt', notification))
-        if (ref) {
-          ref.current = google
-        }
+        tap.prompt(notification => console.log('prompt', notification))
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        tap.renderButton(document.getElementById('one-tap-button')!, {
+          text: 'continue_with',
+          theme: 'outline',
+          size: 'large',
+        })
       }
     }
   }
@@ -142,8 +145,8 @@ export const prompt = () => {
 export const GoogleOneTapButton = () => {
   const tap = (window as WindowWithGoogle).google?.accounts?.id
   React.useEffect(() => {
-    tap.initialize(initOptions)
-    tap.renderButton(document.getElementById('one-tap-button')!, {
+    tap?.initialize(initOptions)
+    tap?.renderButton(document.getElementById('one-tap-button')!, {
       text: 'continue_with',
       theme: 'outline',
       size: 'large',

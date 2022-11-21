@@ -1,5 +1,4 @@
 import React from 'react'
-import CssBaseline from '@mui/material/CssBaseline'
 import Header from './Header'
 import ThemeSwitch from './ThemeSwitch'
 import '../../styles/index.css'
@@ -19,7 +18,6 @@ export function MainLayout() {
   return (
     <React.Fragment>
       <ThemeSwitch>
-        <CssBaseline enableColorScheme />
         <LoadingLine />
         <Header />
         <main>

@@ -9,6 +9,7 @@ import {
   Typography,
   Link as MuiLink,
   Container,
+  ContainerProps,
 } from '@mui/material'
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
@@ -17,7 +18,7 @@ import { useAppDispatch } from '../../shared/store'
 import { registerAsync } from '../app/thunks'
 import { Paths } from 'src/shared/routes'
 
-export default function Register() {
+export default function Register(props?: ContainerProps) {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const returnPath = new URLSearchParams(window.location.search).get('returnTo')
@@ -35,7 +36,7 @@ export default function Register() {
     })
   }
   return (
-    <Container maxWidth="xs" className="centered">
+    <Container {...props} maxWidth="xs" className="centered">
       <Box
         sx={{
           display: 'flex',
