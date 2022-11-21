@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
@@ -19,6 +20,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import routes, { AppRoute } from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Link } from '@mui/material'
+import { prompt } from '../profile/GoogleOneTap'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
@@ -55,7 +57,8 @@ export default function HeaderNavBar() {
   }
 
   const handleMenuToggle = () => {
-    dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
+    prompt()
+    //dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
   }
 
   const handleLogout = () => {

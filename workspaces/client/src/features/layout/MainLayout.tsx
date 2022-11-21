@@ -10,14 +10,22 @@ import LoadingLine from './LoadingLine'
 import AuthProviders from '../profile/AuthProviders'
 import { currentRoute } from 'src/shared/routes'
 import Dialogs from './Dialogs'
+import CssBaseline from '@mui/material/CssBaseline'
+// import { CssBaseline } from '@mui/material'
 
 export function MainLayout() {
   const route = currentRoute()
-  if (route?.popup) return <RouteElement route={route} />
+  if (route?.popup)
+    return (
+      <ThemeSwitch>
+        <RouteElement route={route} />
+      </ThemeSwitch>
+    )
 
   return (
     <React.Fragment>
       <ThemeSwitch>
+        <CssBaseline />
         <LoadingLine />
         <Header />
         <main>

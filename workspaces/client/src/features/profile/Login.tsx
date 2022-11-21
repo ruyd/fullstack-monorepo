@@ -21,9 +21,6 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
   const token = useAppSelector(state => state.app.token)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  // const currentRoute = window.location.href
-  //   .replace(window.location.origin, '')
-  //   .replace(config.baseName, '')
   const returnPath = new URLSearchParams(window.location.search).get('returnTo')
   const returnTo = returnPath ? `?returnTo=${returnPath}` : ''
   const isRoutedPage = window.location.pathname.toLowerCase().includes('login')
@@ -61,6 +58,7 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          minHeight: '49.5vh',
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>

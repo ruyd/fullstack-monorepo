@@ -1,7 +1,4 @@
-* {
-  box-sizing: border-box;
-  /* outline: 1px dotted red; */
-}
+
 
 /* <Layout */
 
@@ -53,6 +50,6 @@ code {
   min-height: 48px;
 }
 
-.MuiDialogContent-root .MuiContainer-root {
-  transition: 2s all ease-in-out;
+.MuiDialog-root .MuiPaper-root { 
+  border-radius: 8px;
 }

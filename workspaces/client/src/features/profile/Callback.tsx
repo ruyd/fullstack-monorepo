@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import Alert from '@mui/material/Alert'
-import { AlertTitle, Container } from '@mui/material'
+import { AlertTitle, Box, Container, Grid, LinearProgress, Paper, Typography } from '@mui/material'
 import authProvider from 'auth0-js'
 import { authOptions, getNonce } from 'src/shared/auth'
+import loginImage from './images/login.svg'
 
 export default function Callback(): JSX.Element {
   const access_token = new URLSearchParams(window.location.hash).get('#access_token')
@@ -28,19 +30,22 @@ export default function Callback(): JSX.Element {
     parseCallback()
   }, [access_token, id_token, state])
 
-  if (error) {
-    return (
-      <Container className="centered">
-        <Alert severity="error">
-          <AlertTitle>{errorDescription}</AlertTitle>
-        </Alert>
-      </Container>
-    )
-  }
-
   return (
-    <Container>
-      <h1 className="centered">Authenticating...</h1>
-    </Container>
+    <Paper sx={{ height: '100vh' }}>
+      <Grid container justifyContent="center" alignContent="center" sx={{ height: '100vh' }}>
+        {error && (
+          <Alert severity="error">
+            <AlertTitle>{errorDescription}</AlertTitle>
+          </Alert>
+        )}
+        <Typography variant="h3" component="h1">
+          Sigining in...
+        </Typography>
+        <img src={loginImage} height={370} width={450} />
+        <Box sx={{ width: '100%' }}>
+          <LinearProgress />
+        </Box>
+      </Grid>
+    </Paper>
   )
 }

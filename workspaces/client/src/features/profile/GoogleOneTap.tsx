@@ -130,12 +130,22 @@ export function loadScriptAndInit({
 
 export const prompt = () => {
   const tap = (window as WindowWithGoogle).google?.accounts?.id
+  // eslint-disable-next-line no-console
+  console.log('tap', tap)
+  if (!tap) {
+    // eslint-disable-next-line no-console
+    console.error('Google One Tap not initialized')
+  }
   tap.initialize(initOptions)
   tap.prompt()
 }
 
 export const renderButton = (id: string) => {
   const tap = (window as WindowWithGoogle).google?.accounts?.id
+  if (!tap) {
+    // eslint-disable-next-line no-console
+    console.error('Google One Tap not initialized')
+  }
   tap.initialize(initOptions)
   const el = document.getElementById(id)
   if (!el) return
@@ -147,10 +157,10 @@ export const renderButton = (id: string) => {
 }
 
 export const GoogleOneTapButton = ({ id = 'one-tap-button' }: { id?: string }) => {
-  const tap = (window as WindowWithGoogle).google?.accounts?.id
+  const google = (window as WindowWithGoogle).google
   React.useEffect(() => {
     renderButton(id)
-  }, [tap, id])
+  }, [google, id])
 
   return <div id={id}></div>
 }
