@@ -7,6 +7,7 @@ export interface AppRoute {
   secure?: boolean
   animate?: string
   popup?: boolean
+  dialog?: string
   link?: boolean
   profile?: boolean
   anon?: boolean
@@ -32,6 +33,7 @@ export const routes: AppRoute[] = [
     component: React.lazy(() => import('../features/profile/Login')),
     profile: true,
     anon: true,
+    dialog: 'onboard',
   },
   {
     title: 'Register',
@@ -39,6 +41,7 @@ export const routes: AppRoute[] = [
     component: React.lazy(() => import('../features/profile/Register')),
     profile: true,
     anon: true,
+    dialog: 'onboard.register',
   },
   {
     title: 'Profile',

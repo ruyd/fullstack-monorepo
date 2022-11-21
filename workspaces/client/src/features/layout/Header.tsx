@@ -16,10 +16,9 @@ import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from '../app/slice'
 import { Link as RouterLink } from 'react-router-dom'
-import routes from '../../shared/routes'
+import routes, { AppRoute } from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Link } from '@mui/material'
-//import { prompt } from '../profile/GoogleOneTap'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
@@ -44,7 +43,10 @@ export default function HeaderNavBar() {
     setAnchorElNav(null)
   }
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (r?: AppRoute) => {
+    if (r?.dialog) {
+      dispatch(patch({ dialog: r.dialog }))
+    }
     setAnchorElUser(null)
   }
 
@@ -174,16 +176,16 @@ export default function HeaderNavBar() {
                 horizontal: 'right',
               }}
               open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+              onClose={() => handleCloseUserMenu()}
             >
               {profileLinks
                 .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
                 .map(setting => (
                   <MenuItem
                     key={setting.path}
-                    onClick={handleCloseUserMenu}
+                    onClick={() => handleCloseUserMenu(setting)}
                     component={RouterLink}
-                    to={setting.path}
+                    to={setting.dialog ? '' : setting.path}
                   >
                     <Typography textAlign="center">{setting.title}</Typography>
                   </MenuItem>

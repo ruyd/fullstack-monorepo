@@ -46,11 +46,13 @@ code {
 }
 
 .invisible {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 
-.centered {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+#one-tap-button { 
+  min-height: 48px;
+}
+
+.MuiDialogContent-root .MuiContainer-root {
+  transition: 2s all ease-in-out;
 }

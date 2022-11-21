@@ -55,7 +55,7 @@ export default function Login(props?: ContainerProps): JSX.Element {
   }, [dispatch, navigate, returnTo, token])
 
   return (
-    <Container {...props} maxWidth="xs" className="centered">
+    <Container maxWidth="xs" {...props}>
       <Box
         sx={{
           display: 'flex',
@@ -70,12 +70,6 @@ export default function Login(props?: ContainerProps): JSX.Element {
           Sign in
         </Typography>
         <Typography textAlign="center">To save your drawings, a user ID is needed</Typography>
-        <Grid alignContent="center" margin={2}>
-          <GoogleOneTapButton />
-        </Grid>
-        <Typography component="h1" variant="h5">
-          or
-        </Typography>
         <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -105,19 +99,28 @@ export default function Login(props?: ContainerProps): JSX.Element {
           <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
+
           <Grid container justifyContent="flex-end" spacing={1}>
             <Grid item>
               <MuiLink variant="body2" component={Link} to={''} onClick={forgotHandler}>
                 Forgot Password?
               </MuiLink>
             </Grid>
-            <Grid item>
-              <MuiLink variant="body2" component={Link} to={`${Paths.Register}${returnTo}`}>
-                or Register if new
-              </MuiLink>
-            </Grid>
+            {isRoutedPage && (
+              <Grid item>
+                <MuiLink variant="body2" component={Link} to={`${Paths.Register}${returnTo}`}>
+                  or Register if new
+                </MuiLink>
+              </Grid>
+            )}
           </Grid>
         </Box>
+        <Typography component="h1" variant="h5">
+          or
+        </Typography>
+        <Grid alignContent="center" margin={2}>
+          <GoogleOneTapButton />
+        </Grid>
       </Box>
     </Container>
   )

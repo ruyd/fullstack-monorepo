@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import React from 'react'
 import store, { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
@@ -7,7 +5,6 @@ import config from '../../shared/config'
 import decode from 'jwt-decode'
 import authProvider from 'auth0-js'
 import { authOptions, checkSocialToken, generateNonce } from 'src/shared/auth'
-import { v4 as uuid } from 'uuid'
 import { notifyError, socialLoginAsync } from '../app'
 
 type OneTapBase = {
@@ -15,28 +12,22 @@ type OneTapBase = {
   callback?: (response: { credential?: string }) => void
 }
 
-const initOptions: OneTapParams = {
+export const initOptions: OneTapParams = {
   client_id: config.auth?.google?.clientId,
   callback: async ok => {
-    popupSocialLogin(ok.credential as string)
+    googleCredentialsLogin(ok.credential as string)
     /* response.credential should be enough for google cloud backends,
     using Callback.tsx for auth0 */
   },
 }
 
-export async function popupMessageHandler(
-  e: MessageEvent<{ type: string; access_token: string; id_token: string; hash: string }>,
-) {
-  console.log('popup', e.data.type, e.data)
-  if (e.data.type === 'social') {
-    const { access_token, id_token, hash } = e.data
-    //await store.dispatch(socialLoginAsync({ access_token, id_token }))
-  }
-}
-
-export async function popupSocialLogin(credential: string): Promise<void> {
+export async function googleCredentialsLogin(credential: string) {
   const email = (decode(credential) as IdentityToken)?.email
   const userId = await checkSocialToken(credential)
+  googlePopupLogin(email, userId)
+}
+
+export async function googlePopupLogin(email?: string, userId?: string): Promise<void> {
   const session = generateNonce(userId)
   const options = {
     ...authOptions(),
@@ -56,6 +47,7 @@ export async function popupSocialLogin(credential: string): Promise<void> {
     store.dispatch(socialLoginAsync({ accessToken, idToken }))
   })
 }
+
 export interface OneTapParams extends OneTapBase {
   client_id?: string
   auto_select?: boolean
@@ -102,7 +94,6 @@ export function loadScriptAndInit({
   cancelOnTapOutside = true,
   context = 'signin',
   callback,
-  ref,
   ...otherOptions
 }: OneTapHookOptions): void {
   if (typeof window !== 'undefined' && window.document) {
@@ -124,6 +115,7 @@ export function loadScriptAndInit({
           context: contextValue,
           ...otherOptions,
         })
+        // eslint-disable-next-line no-console
         tap.prompt(notification => console.log('prompt', notification))
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         tap.renderButton(document.getElementById('one-tap-button')!, {
@@ -142,32 +134,38 @@ export const prompt = () => {
   tap.prompt()
 }
 
-export const GoogleOneTapButton = () => {
+export const renderButton = (id: string) => {
+  const tap = (window as WindowWithGoogle).google?.accounts?.id
+  tap.initialize(initOptions)
+  tap.renderButton(document.getElementById(id)!, {
+    text: 'continue_with',
+    theme: 'outline',
+    size: 'large',
+  })
+}
+
+export const GoogleOneTapButton = ({ id = 'one-tap-button' }: { id?: string }) => {
   const tap = (window as WindowWithGoogle).google?.accounts?.id
   React.useEffect(() => {
     tap?.initialize(initOptions)
-    tap?.renderButton(document.getElementById('one-tap-button')!, {
+    tap?.renderButton(document.getElementById(id)!, {
       text: 'continue_with',
       theme: 'outline',
       size: 'large',
     })
-  }, [tap])
+  }, [tap, id])
 
-  return <div id="one-tap-button"></div>
+  return <div id={id}></div>
 }
 export function GoogleOneTap(): JSX.Element {
   const dispatch = useAppDispatch()
   const loaded = React.useRef(false)
-  const ref = React.useRef<OneTapAPI | null>(null)
   const token = useAppSelector(state => state.app.token)
-
   React.useEffect(() => {
     if (!loaded.current && !token) {
       loadScriptAndInit({
         ...initOptions,
-        ref,
       })
-      window.onmessage = popupMessageHandler
       loaded.current = true
     }
   }, [dispatch, loaded, token])

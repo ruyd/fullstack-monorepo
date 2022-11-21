@@ -7,22 +7,23 @@ import {
   Grid,
   TextField,
   Typography,
-  Link as MuiLink,
   Container,
   ContainerProps,
 } from '@mui/material'
-import { LockOutlined } from '@mui/icons-material'
+import { Google, LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../shared/store'
 import { registerAsync } from '../app/thunks'
 import { Paths } from 'src/shared/routes'
+import { googlePopupLogin } from './GoogleOneTap'
 
 export default function Register(props?: ContainerProps) {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const returnPath = new URLSearchParams(window.location.search).get('returnTo')
   const returnTo = returnPath ? `?returnTo=${returnPath}` : ''
+  const isRoutedPage = window.location.pathname.toLowerCase().includes('register')
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -35,8 +36,9 @@ export default function Register(props?: ContainerProps) {
       }
     })
   }
+
   return (
-    <Container {...props} maxWidth="xs" className="centered">
+    <Container maxWidth="xs" {...props}>
       <Box
         sx={{
           display: 'flex',
@@ -50,6 +52,7 @@ export default function Register(props?: ContainerProps) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
+
         <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler} autoComplete="on">
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -77,7 +80,7 @@ export default function Register(props?: ContainerProps) {
               <TextField
                 required
                 fullWidth
-                id="email"
+                id="registerEmail"
                 name="email"
                 label="Email"
                 type="email"
@@ -105,13 +108,25 @@ export default function Register(props?: ContainerProps) {
           <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <MuiLink component={Link} to={`${Paths.Login}${returnTo}`} variant="body2">
-                Already have an account? Sign in
-              </MuiLink>
-            </Grid>
-          </Grid>
+          {isRoutedPage && (
+            <Button
+              component={Link}
+              to={`${Paths.Login}${returnTo}`}
+              onClick={() => googlePopupLogin()}
+              fullWidth
+            >
+              Already have an account? Sign in
+            </Button>
+          )}
+          <Button
+            onClick={() => googlePopupLogin()}
+            endIcon={<Google />}
+            fullWidth
+            variant="outlined"
+            color="secondary"
+          >
+            Continue with Google for Sign up
+          </Button>
         </Box>
       </Box>
     </Container>
