@@ -9,7 +9,7 @@ import Register from './Register'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
-    children: React.ReactElement<any, any>
+    children: JSX.Element
   },
   ref: React.Ref<unknown>,
 ) {

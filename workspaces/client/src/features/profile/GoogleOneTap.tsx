@@ -137,7 +137,9 @@ export const prompt = () => {
 export const renderButton = (id: string) => {
   const tap = (window as WindowWithGoogle).google?.accounts?.id
   tap.initialize(initOptions)
-  tap.renderButton(document.getElementById(id)!, {
+  const el = document.getElementById(id)
+  if (!el) return
+  tap.renderButton(el, {
     text: 'continue_with',
     theme: 'outline',
     size: 'large',
@@ -147,12 +149,7 @@ export const renderButton = (id: string) => {
 export const GoogleOneTapButton = ({ id = 'one-tap-button' }: { id?: string }) => {
   const tap = (window as WindowWithGoogle).google?.accounts?.id
   React.useEffect(() => {
-    tap?.initialize(initOptions)
-    tap?.renderButton(document.getElementById(id)!, {
-      text: 'continue_with',
-      theme: 'outline',
-      size: 'large',
-    })
+    renderButton(id)
   }, [tap, id])
 
   return <div id={id}></div>
