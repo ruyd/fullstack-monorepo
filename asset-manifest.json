@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/fullstack-monorepo/static/css/main.a50beeed.css",
-    "main.js": "/fullstack-monorepo/static/js/main.b873608b.js",
+    "main.css": "/fullstack-monorepo/static/css/main.5900c7c7.css",
+    "main.js": "/fullstack-monorepo/static/js/main.ed7c2d5d.js",
     "static/js/612.1a4203fa.chunk.js": "/fullstack-monorepo/static/js/612.1a4203fa.chunk.js",
-    "static/js/82.681a9053.chunk.js": "/fullstack-monorepo/static/js/82.681a9053.chunk.js",
-    "static/js/197.af8884f3.chunk.js": "/fullstack-monorepo/static/js/197.af8884f3.chunk.js",
-    "static/js/540.4badd47f.chunk.js": "/fullstack-monorepo/static/js/540.4badd47f.chunk.js",
+    "static/js/197.3f7c00f4.chunk.js": "/fullstack-monorepo/static/js/197.3f7c00f4.chunk.js",
+    "static/js/540.3ea8f4a0.chunk.js": "/fullstack-monorepo/static/js/540.3ea8f4a0.chunk.js",
     "static/js/114.b813e271.chunk.js": "/fullstack-monorepo/static/js/114.b813e271.chunk.js",
-    "static/js/997.8995726f.chunk.js": "/fullstack-monorepo/static/js/997.8995726f.chunk.js",
+    "static/js/174.6d27aa13.chunk.js": "/fullstack-monorepo/static/js/174.6d27aa13.chunk.js",
+    "static/js/997.68329005.chunk.js": "/fullstack-monorepo/static/js/997.68329005.chunk.js",
     "static/js/549.f87f354d.chunk.js": "/fullstack-monorepo/static/js/549.f87f354d.chunk.js",
     "static/js/833.d90e10a4.chunk.js": "/fullstack-monorepo/static/js/833.d90e10a4.chunk.js",
     "static/js/212.258a723c.chunk.js": "/fullstack-monorepo/static/js/212.258a723c.chunk.js",
+    "static/media/404.svg": "/fullstack-monorepo/static/media/404.fe09b1b5f0fc41fd107098f80386766a.svg",
     "static/media/looking.svg": "/fullstack-monorepo/static/media/looking.9ff38e2534783deaaa300d479b86f070.svg",
     "static/media/query.svg": "/fullstack-monorepo/static/media/query.30df1fcdd8e7dab0fdea2d151c745b26.svg",
     "static/media/sequelize.svg": "/fullstack-monorepo/static/media/sequelize.49ad3c7d6edea99417163e71b0721e5c.svg",
@@ -20,20 +21,20 @@
     "static/media/redux.svg": "/fullstack-monorepo/static/media/redux.b2e5a01e505f739f1484b881277d5186.svg",
     "index.html": "/fullstack-monorepo/index.html",
     "static/media/github.svg": "/fullstack-monorepo/static/media/github.bbdbbc917029a9a247c6ae368136ccd8.svg",
-    "main.a50beeed.css.map": "/fullstack-monorepo/static/css/main.a50beeed.css.map",
-    "main.b873608b.js.map": "/fullstack-monorepo/static/js/main.b873608b.js.map",
+    "main.5900c7c7.css.map": "/fullstack-monorepo/static/css/main.5900c7c7.css.map",
+    "main.ed7c2d5d.js.map": "/fullstack-monorepo/static/js/main.ed7c2d5d.js.map",
     "612.1a4203fa.chunk.js.map": "/fullstack-monorepo/static/js/612.1a4203fa.chunk.js.map",
-    "82.681a9053.chunk.js.map": "/fullstack-monorepo/static/js/82.681a9053.chunk.js.map",
-    "197.af8884f3.chunk.js.map": "/fullstack-monorepo/static/js/197.af8884f3.chunk.js.map",
-    "540.4badd47f.chunk.js.map": "/fullstack-monorepo/static/js/540.4badd47f.chunk.js.map",
+    "197.3f7c00f4.chunk.js.map": "/fullstack-monorepo/static/js/197.3f7c00f4.chunk.js.map",
+    "540.3ea8f4a0.chunk.js.map": "/fullstack-monorepo/static/js/540.3ea8f4a0.chunk.js.map",
     "114.b813e271.chunk.js.map": "/fullstack-monorepo/static/js/114.b813e271.chunk.js.map",
-    "997.8995726f.chunk.js.map": "/fullstack-monorepo/static/js/997.8995726f.chunk.js.map",
+    "174.6d27aa13.chunk.js.map": "/fullstack-monorepo/static/js/174.6d27aa13.chunk.js.map",
+    "997.68329005.chunk.js.map": "/fullstack-monorepo/static/js/997.68329005.chunk.js.map",
     "549.f87f354d.chunk.js.map": "/fullstack-monorepo/static/js/549.f87f354d.chunk.js.map",
     "833.d90e10a4.chunk.js.map": "/fullstack-monorepo/static/js/833.d90e10a4.chunk.js.map",
     "212.258a723c.chunk.js.map": "/fullstack-monorepo/static/js/212.258a723c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a50beeed.css",
-    "static/js/main.b873608b.js"
+    "static/css/main.5900c7c7.css",
+    "static/js/main.ed7c2d5d.js"
   ]
 }
