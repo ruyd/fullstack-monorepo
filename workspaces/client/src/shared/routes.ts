@@ -9,6 +9,7 @@ export interface AppRoute {
   popup?: boolean
   link?: boolean
   profile?: boolean
+  anon?: boolean
   hideFooter?: boolean
   params?: string[]
 }
@@ -30,12 +31,14 @@ export const routes: AppRoute[] = [
     path: Paths.Login,
     component: React.lazy(() => import('../features/profile/Login')),
     profile: true,
+    anon: true,
   },
   {
     title: 'Register',
     path: '/register',
     component: React.lazy(() => import('../features/profile/Register')),
     profile: true,
+    anon: true,
   },
   {
     title: 'Profile',

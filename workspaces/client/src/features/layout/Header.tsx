@@ -16,7 +16,7 @@ import config from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from '../app/slice'
 import { Link as RouterLink } from 'react-router-dom'
-import routes, { Paths } from '../../shared/routes'
+import routes from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Link } from '@mui/material'
 //import { prompt } from '../profile/GoogleOneTap'
@@ -177,13 +177,7 @@ export default function HeaderNavBar() {
               onClose={handleCloseUserMenu}
             >
               {profileLinks
-                .filter(r =>
-                  r.secure
-                    ? authenticated
-                    : [Paths.Login, Paths.Register].includes(r.path) && authenticated
-                    ? false
-                    : true,
-                )
+                .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
                 .map(setting => (
                   <MenuItem
                     key={setting.path}
