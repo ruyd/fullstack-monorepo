@@ -15,7 +15,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { GoogleOneTapButton } from './GoogleOneTap'
 
 export default function Login(props?: ContainerProps & Partial<React.Component>): JSX.Element {
   const token = useAppSelector(state => state.app.token)
@@ -55,10 +54,10 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
     <Container maxWidth="xs" {...props}>
       <Box
         sx={{
+          minHeight: '45.8vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          minHeight: '49.5vh',
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -113,12 +112,6 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
             )}
           </Grid>
         </Box>
-        <Typography component="h1" variant="h5">
-          or
-        </Typography>
-        <Grid alignContent="center" margin={2}>
-          <GoogleOneTapButton />
-        </Grid>
       </Box>
     </Container>
   )

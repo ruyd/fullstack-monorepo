@@ -46,6 +46,7 @@ export type OneTapAPI = {
           type?: 'standard' | 'icon'
           theme?: 'outline' | 'filled_blue' | 'filled_black'
           size?: 'small' | 'medium' | 'large'
+          shape?: 'rectangular' | 'pill'
         },
       ) => void
     }
@@ -150,19 +151,24 @@ export const renderButton = (id: string) => {
   const el = document.getElementById(id)
   if (!el) return
   tap.renderButton(el, {
+    type: 'standard',
+    shape: 'pill',
     text: 'continue_with',
     theme: 'outline',
     size: 'large',
   })
 }
 
-export const GoogleOneTapButton = ({ id = 'one-tap-button' }: { id?: string }) => {
+export function GoogleOneTapButton({
+  id = 'one-tap-button',
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { id?: string }) {
   const google = (window as WindowWithGoogle).google
   React.useEffect(() => {
     renderButton(id)
   }, [google, id])
 
-  return <div id={id}></div>
+  return <div id={id} {...props}></div>
 }
 export function GoogleOneTap(): JSX.Element {
   const dispatch = useAppDispatch()

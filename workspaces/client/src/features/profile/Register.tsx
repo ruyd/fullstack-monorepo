@@ -10,7 +10,7 @@ import {
   Container,
   ContainerProps,
 } from '@mui/material'
-import { Google, LockOutlined } from '@mui/icons-material'
+import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../shared/store'
@@ -118,15 +118,6 @@ export default function Register(props?: ContainerProps) {
               Already have an account? Sign in
             </Button>
           )}
-          <Button
-            onClick={() => googlePopupLogin()}
-            endIcon={<Google />}
-            fullWidth
-            variant="outlined"
-            color="secondary"
-          >
-            Sign up with Google
-          </Button>
         </Box>
       </Box>
     </Container>

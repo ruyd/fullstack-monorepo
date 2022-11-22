@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
 import Login from './Login'
 import Register from './Register'
+import { GoogleOneTapButton } from './GoogleOneTap'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -44,7 +45,8 @@ export default function OnboardingDialog() {
             <Register sx={show === 'register' ? {} : { display: 'none' }} />
           </div>
         </Grow>
-        <DialogActions>
+        <DialogActions sx={{ justifyContent: 'space-between' }}>
+          <GoogleOneTapButton style={{ marginBottom: '-5px' }} />
           <Button onClick={() => setShow('login')}>Login</Button>
           <Button onClick={() => setShow('register')}>Register</Button>
         </DialogActions>

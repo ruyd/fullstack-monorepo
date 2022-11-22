@@ -16,7 +16,6 @@ export default function Callback(): JSX.Element {
     const parseCallback = async () => {
       const { state, nonce } = getNonce()
       const options = { ...authOptions(), state, nonce }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const webAuth = new authProvider.WebAuth(options)
       webAuth.popup.callback({
         hash: window.location.hash,
