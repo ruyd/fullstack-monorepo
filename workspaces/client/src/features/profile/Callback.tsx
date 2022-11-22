@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import Alert from '@mui/material/Alert'
-import { AlertTitle, Box, Container, Grid, LinearProgress, Paper, Typography } from '@mui/material'
+import { AlertTitle, Box, Grid, LinearProgress, Paper, Typography } from '@mui/material'
 import authProvider from 'auth0-js'
 import { authOptions, getNonce } from 'src/shared/auth'
 import loginImage from './images/login.svg'
@@ -38,7 +37,7 @@ export default function Callback(): JSX.Element {
           </Alert>
         )}
         <Typography variant="h3" component="h1">
-          Sigining in...
+          Signing in...
         </Typography>
         <img src={loginImage} height={370} width={450} />
         <Box sx={{ width: '100%' }}>

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react'
-import store, { useAppDispatch, useAppSelector } from 'src/shared/store'
+import store, { useAppDispatch } from 'src/shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
 import config from '../../shared/config'
 import decode from 'jwt-decode'
@@ -104,11 +104,11 @@ export function loadScriptAndInit({
     googleScript.async = true
     googleScript.defer = true
     document.head.appendChild(googleScript)
+
     window.onload = function () {
-      console.log('window.onload')
       const google = (window as WindowWithGoogle).google
-      console.log('google', google)
       if (google) {
+        google.accounts.id.setLogLevel('info')
         google.accounts.id.initialize({
           client_id: clientId,
           callback: callback,
@@ -117,11 +117,27 @@ export function loadScriptAndInit({
           context: contextValue,
           ...otherOptions,
         })
-        //google.accounts.id.setLogLevel('info')
         google.accounts.id.prompt()
       }
     }
   }
+}
+
+export const renderButton = (el: HTMLElement) => {
+  const tap = (window as WindowWithGoogle).google?.accounts?.id
+  if (!tap) {
+    throw new Error('Google One Tap not initialized')
+  }
+  if (!el) {
+    throw new Error(`Google button el not found`)
+  }
+  tap.renderButton(el, {
+    type: 'standard',
+    shape: 'pill',
+    text: 'continue_with',
+    theme: store.getState().app.darkTheme ? 'filled_black' : 'outline',
+    size: 'large',
+  })
 }
 
 export const prompt = () => {
@@ -134,47 +150,34 @@ export const prompt = () => {
   tap.initialize(initOptions)
   tap.prompt()
 }
-
-export const renderButton = (id: string) => {
-  const tap = (window as WindowWithGoogle).google?.accounts?.id
-  if (!tap || !id) {
-    throw new Error('Google One Tap not initialized')
-  }
-  tap.initialize(initOptions)
-  const el = document.getElementById(id)
-  if (!el) {
-    throw new Error(`Element with id ${id} not found`)
-  }
-  tap.renderButton(el, {
-    type: 'standard',
-    shape: 'pill',
-    text: 'continue_with',
-    theme: store.getState().app.darkTheme ? 'filled_black' : 'outline',
-    size: 'large',
-  })
-}
-
 export function GoogleOneTapButton({
   id = 'one-tap-button',
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & { id?: string }) {
-  const google = (window as WindowWithGoogle).google
+  const ref = React.createRef<HTMLDivElement>()
+  const loaded = React.useRef(false)
+  const tap = (window as WindowWithGoogle).google?.accounts?.id
   React.useEffect(() => {
-    renderButton(id)
-  }, [google, id])
-
-  return <div id={id} {...props}></div>
+    if (!loaded.current) {
+      loaded.current = true
+      tap?.initialize(initOptions)
+      const button = document.getElementById(id)
+      if (button) renderButton(button)
+    }
+  }, [tap, id, ref])
+  return <div id={id} ref={ref} {...props} />
 }
 export function GoogleOneTap(): JSX.Element {
   const dispatch = useAppDispatch()
-  const token = useAppSelector(state => state.app.token)
+  const loaded = React.useRef(false)
   React.useEffect(() => {
-    if (!token) {
+    if (!loaded.current) {
       loadScriptAndInit({
         ...initOptions,
       })
+      loaded.current = true
     }
-  }, [dispatch, token])
+  }, [dispatch])
 
   return <></>
 }
