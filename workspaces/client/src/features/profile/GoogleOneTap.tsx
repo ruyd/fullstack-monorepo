@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react'
-import store, { useAppDispatch } from 'src/shared/store'
+import store, { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
 import config from '../../shared/config'
 import decode from 'jwt-decode'
@@ -180,16 +180,17 @@ export function GoogleOneTapButton({
   return <div id={id} ref={ref} {...props} />
 }
 export function GoogleOneTap(): JSX.Element {
+  const token = useAppSelector(state => state.app.token)
   const dispatch = useAppDispatch()
   const loaded = React.useRef(false)
   React.useEffect(() => {
-    if (!loaded.current) {
+    if (!loaded.current && !token) {
       loadScriptAndInit({
         ...initOptions,
       })
       loaded.current = true
     }
-  }, [dispatch])
+  }, [dispatch, token])
 
   return <></>
 }
