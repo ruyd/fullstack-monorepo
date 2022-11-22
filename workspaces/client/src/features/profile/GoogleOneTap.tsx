@@ -16,6 +16,7 @@ type OneTapBase = {
 export const initOptions: OneTapParams = {
   client_id: config.auth?.google?.clientId,
   callback: async ok => {
+    console.log('Google One Tap callback', ok)
     googleCredentialsLogin(ok.credential as string)
     /* response.credential should be enough for google cloud backends,
     using Callback.tsx for auth0 */
@@ -97,17 +98,23 @@ export function loadScriptAndInit({
   callback,
   ...otherOptions
 }: OneTapHookOptions): void {
-  if (typeof window !== 'undefined' && window.document) {
+  if (typeof window !== 'undefined') {
     const contextValue = ['signin', 'signup', 'use'].includes(context) ? context : 'signin'
     const googleScript = document.createElement('script')
     googleScript.src = 'https://accounts.google.com/gsi/client'
     googleScript.async = true
     googleScript.defer = true
     document.head.appendChild(googleScript)
-
-    window.onload = function () {
+    let initialized = false
+    const runInit = () => {
+      if (initialized) {
+        console.log('Google One Tap already initialized')
+        return
+      }
+      console.log('runInit')
       const google = (window as WindowWithGoogle).google
       if (google) {
+        initialized = true
         google.accounts.id.setLogLevel('info')
         google.accounts.id.initialize({
           client_id: clientId,
@@ -117,9 +124,14 @@ export function loadScriptAndInit({
           context: contextValue,
           ...otherOptions,
         })
-        google.accounts.id.prompt()
+        google.accounts.id.prompt(notification =>
+          console.log('Google One Tap prompt', notification),
+        )
       }
     }
+    runInit()
+    googleScript.onload = runInit
+    window.onload = runInit
   }
 }
 

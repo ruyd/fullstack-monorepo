@@ -54,7 +54,7 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
     <Container maxWidth="xs" {...props}>
       <Box
         sx={{
-          minHeight: '45.8vh',
+          minHeight: '44vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

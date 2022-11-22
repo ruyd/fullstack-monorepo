@@ -41,6 +41,7 @@ export default function Register(props?: ContainerProps) {
     <Container maxWidth="xs" {...props}>
       <Box
         sx={{
+          minHeight: '44vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -98,16 +99,16 @@ export default function Register(props?: ContainerProps) {
                 autoComplete="new-password"
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="acceptTerms" color="primary" />}
-                label="I accept the terms"
-              />
-            </Grid>
           </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 1.5 }}>
             Sign Up
           </Button>
+          <Grid item xs={12} textAlign="center" sx={{ mb: 2 }}>
+            <FormControlLabel
+              control={<Checkbox value="acceptTerms" color="primary" />}
+              label="I accept the terms"
+            />
+          </Grid>
           {isRoutedPage && (
             <Button
               component={Link}

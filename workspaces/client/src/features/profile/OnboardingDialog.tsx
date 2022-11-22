@@ -50,10 +50,10 @@ export default function OnboardingDialog() {
           <GoogleOneTapButton style={{ marginBottom: '-5px' }} />
           <Spacer />
           <Button variant="outlined" onClick={() => setShow('login')}>
-            Login
+            Sign in
           </Button>
           <Button variant="outlined" onClick={() => setShow('register')}>
-            Register
+            Sign up
           </Button>
         </DialogActions>
       </DialogContent>
