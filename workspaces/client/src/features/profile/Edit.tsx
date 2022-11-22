@@ -34,13 +34,13 @@ export default function Profile() {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
+                autoFocus
                 autoComplete="given-name"
                 required
                 fullWidth
                 id="firstName"
                 name="firstName"
                 label="First name"
-                autoFocus
                 defaultValue={user?.firstName}
               />
             </Grid>

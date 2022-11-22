@@ -2,8 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
   Grid,
   TextField,
   Typography,
@@ -58,13 +56,14 @@ export default function Register(props?: ContainerProps) {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
+                autoFocus
                 required
                 fullWidth
                 id="firstName"
                 name="firstName"
                 label="First name"
-                autoFocus
                 autoComplete="given-name"
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -75,6 +74,7 @@ export default function Register(props?: ContainerProps) {
                 name="lastName"
                 label="Last name"
                 autoComplete="family-name"
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -86,6 +86,7 @@ export default function Register(props?: ContainerProps) {
                 label="Email"
                 type="email"
                 autoComplete="email"
+                variant="filled"
               />
             </Grid>
             <Grid item xs={12}>
@@ -97,17 +98,17 @@ export default function Register(props?: ContainerProps) {
                 label="Password"
                 type="password"
                 autoComplete="new-password"
+                variant="filled"
               />
             </Grid>
           </Grid>
           <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 1.5 }}>
             Sign Up
           </Button>
-          <Grid item xs={12} textAlign="center" sx={{ mb: 2 }}>
-            <FormControlLabel
-              control={<Checkbox value="acceptTerms" color="primary" />}
-              label="I accept the terms"
-            />
+          <Grid item xs={12} textAlign="center" sx={{ m: 1 }}>
+            <Typography variant="body2" color="text.secondary">
+              By using this site you agree to it&apos;s terms
+            </Typography>
           </Grid>
           {isRoutedPage && (
             <Button
