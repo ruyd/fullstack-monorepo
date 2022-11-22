@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
-import { Button, DialogActions, DialogContent, Fade, Grow, Slide } from '@mui/material'
+import {
+  Button,
+  DialogActions,
+  DialogContent,
+  Fade,
+  Grid,
+  Grow,
+  Slide,
+  Typography,
+} from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
@@ -46,6 +55,10 @@ export default function OnboardingDialog() {
             <Register sx={show === 'register' ? {} : { display: 'none' }} />
           </div>
         </Grow>
+        <Grid item xs={12} textAlign="center" sx={{ mb: 2 }} color="text.secondary">
+          <Typography>To save your drawings a profile is needed</Typography>
+          <Typography variant="body2">*By using this site you agree to it&apos;s terms</Typography>
+        </Grid>
         <DialogActions>
           <GoogleOneTapButton style={{ marginBottom: '-5px' }} />
           <Spacer />

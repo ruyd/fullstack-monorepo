@@ -66,7 +66,6 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Typography textAlign="center">To save your drawings, a user ID is needed</Typography>
         <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -95,16 +94,20 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
               />
             </Grid>
           </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3 }}>
             Sign In
           </Button>
-
+          <Button
+            type="submit"
+            fullWidth
+            variant="outlined"
+            color="primary"
+            sx={{ mt: 1, mb: 2 }}
+            onClick={forgotHandler}
+          >
+            Forgot Password?
+          </Button>
           <Grid container justifyContent="flex-end" spacing={1}>
-            <Grid item>
-              <MuiLink variant="body2" component={Link} to={''} onClick={forgotHandler}>
-                Forgot Password?
-              </MuiLink>
-            </Grid>
             {isRoutedPage && (
               <Grid item>
                 <MuiLink variant="body2" component={Link} to={`${Paths.Register}${returnTo}`}>

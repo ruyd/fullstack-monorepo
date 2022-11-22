@@ -30,16 +30,18 @@ export default function Callback(): JSX.Element {
 
   return (
     <Paper sx={{ height: '100vh' }}>
-      <Grid container justifyContent="center" alignContent="center" sx={{ height: '100vh' }}>
-        {error && (
-          <Alert severity="error">
-            <AlertTitle>{errorDescription}</AlertTitle>
-          </Alert>
-        )}
-        <Typography variant="h3" component="h1">
-          Signing in...
-        </Typography>
-        <img src={loginImage} height={370} width={450} />
+      <Grid container justifyContent="center" alignContent="center" height="100vh">
+        <Grid item textAlign="center">
+          {error && (
+            <Alert severity="error">
+              <AlertTitle>{errorDescription}</AlertTitle>
+            </Alert>
+          )}
+          <Typography variant="h3" component="h1">
+            Signing in...
+          </Typography>
+          <img src={loginImage} height={370} width={450} />
+        </Grid>
         <Box sx={{ width: '100%' }}>
           <LinearProgress />
         </Box>

@@ -105,11 +105,6 @@ export default function Register(props?: ContainerProps) {
           <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 1.5 }}>
             Sign Up
           </Button>
-          <Grid item xs={12} textAlign="center" sx={{ m: 1 }}>
-            <Typography variant="body2" color="text.secondary">
-              By using this site you agree to it&apos;s terms
-            </Typography>
-          </Grid>
           {isRoutedPage && (
             <Button
               component={Link}
