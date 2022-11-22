@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react'
 import store, { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
@@ -103,11 +104,11 @@ export function loadScriptAndInit({
     googleScript.async = true
     googleScript.defer = true
     document.head.appendChild(googleScript)
-
     window.onload = function () {
+      console.log('window.onload')
       const google = (window as WindowWithGoogle).google
+      console.log('google', google)
       if (google) {
-        google.accounts.id.setLogLevel('info')
         google.accounts.id.initialize({
           client_id: clientId,
           callback: callback,
@@ -116,14 +117,8 @@ export function loadScriptAndInit({
           context: contextValue,
           ...otherOptions,
         })
-        // eslint-disable-next-line no-console
-        google.accounts.id.prompt(notification => console.log('prompt', notification))
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        google.accounts.id.renderButton(document.getElementById('one-tap-button')!, {
-          text: 'continue_with',
-          theme: 'outline',
-          size: 'large',
-        })
+        //google.accounts.id.setLogLevel('info')
+        google.accounts.id.prompt()
       }
     }
   }
@@ -134,8 +129,7 @@ export const prompt = () => {
   // eslint-disable-next-line no-console
   console.log('tap', tap)
   if (!tap) {
-    // eslint-disable-next-line no-console
-    console.error('Google One Tap not initialized')
+    throw new Error('Google One Tap not initialized')
   }
   tap.initialize(initOptions)
   tap.prompt()
@@ -143,18 +137,19 @@ export const prompt = () => {
 
 export const renderButton = (id: string) => {
   const tap = (window as WindowWithGoogle).google?.accounts?.id
-  if (!tap) {
-    // eslint-disable-next-line no-console
-    console.error('Google One Tap not initialized')
+  if (!tap || !id) {
+    throw new Error('Google One Tap not initialized')
   }
   tap.initialize(initOptions)
   const el = document.getElementById(id)
-  if (!el) return
+  if (!el) {
+    throw new Error(`Element with id ${id} not found`)
+  }
   tap.renderButton(el, {
     type: 'standard',
     shape: 'pill',
     text: 'continue_with',
-    theme: 'outline',
+    theme: store.getState().app.darkTheme ? 'filled_black' : 'outline',
     size: 'large',
   })
 }
@@ -172,16 +167,14 @@ export function GoogleOneTapButton({
 }
 export function GoogleOneTap(): JSX.Element {
   const dispatch = useAppDispatch()
-  const loaded = React.useRef(false)
   const token = useAppSelector(state => state.app.token)
   React.useEffect(() => {
-    if (!loaded.current && !token) {
+    if (!token) {
       loadScriptAndInit({
         ...initOptions,
       })
-      loaded.current = true
     }
-  }, [dispatch, loaded, token])
+  }, [dispatch, token])
 
   return <></>
 }
