@@ -67,19 +67,19 @@ export const routes: AppRoute[] = [
     component: React.lazy(() => import('../features/profile/Callback')),
   },
   {
-    title: 'Not Found',
-    path: '*',
-    component: React.lazy(() => import('../features/pages/404')),
-  },
-  {
     title: 'Terms of Service',
     path: '/terms',
     component: React.lazy(() => import('../features/pages/terms')),
   },
   {
     title: 'Admin',
-    path: '/admin',
+    path: '/admin/*',
     component: React.lazy(() => import('../features/admin')),
+  },
+  {
+    title: 'Not Found',
+    path: '*',
+    component: React.lazy(() => import('../features/pages/404')),
   },
 ]
 
