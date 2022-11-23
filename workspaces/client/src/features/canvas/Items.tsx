@@ -20,6 +20,7 @@ import { actions } from './slice'
 import { deleteAsync, itemsAsync } from './thunks'
 
 export default function Items(props: ContainerProps) {
+  const token = useAppSelector(state => state.app.token)
   const items = useAppSelector(store => store.canvas.items)
   const loaded = useAppSelector(store => store.canvas.loaded)
   const activeId = useAppSelector(store => store.canvas.active?.id)
@@ -39,10 +40,10 @@ export default function Items(props: ContainerProps) {
   }
 
   React.useEffect(() => {
-    if (!loaded) {
+    if (!loaded && token) {
       dispatch(itemsAsync())
     }
-  }, [dispatch, loaded])
+  }, [dispatch, loaded, token])
 
   if (!items.length) {
     return null

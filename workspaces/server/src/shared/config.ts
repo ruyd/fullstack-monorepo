@@ -142,9 +142,7 @@ export function envi(val: unknown): unknown {
 
 export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
-  // eslint-disable-next-line no-console
-  console.log('RUY', process.env.RUY)
-  console.log(getLimitedEnv())
+  logger.info(JSON.stringify(getLimitedEnv()))
   const p = config.production ? process.env.PORT : config.port
   const d = config.production ? process.env.DB_URL || process.env.DATABASE_URL : config.db.url
   const result = !!p && !!d
