@@ -14,6 +14,7 @@ export interface AppRoute {
   anon?: boolean
   hideFooter?: boolean
   params?: string[]
+  roles?: string[]
 }
 
 export const Paths = {
@@ -75,6 +76,7 @@ export const routes: AppRoute[] = [
     title: 'Admin',
     path: '/admin/*',
     component: React.lazy(() => import('../features/admin')),
+    roles: ['admin'],
   },
   {
     title: 'Not Found',

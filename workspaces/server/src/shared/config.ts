@@ -126,7 +126,9 @@ export function getClientConfig() {
       clientId: config.auth.clientId,
       redirectUrl: config.auth.redirectUrl,
     },
-    models: config.db.models,
+    admin: {
+      models: config.db.models,
+    },
   }
 }
 

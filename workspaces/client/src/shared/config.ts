@@ -2,8 +2,7 @@ import axios from 'axios'
 import packageJson from '../../package.json'
 
 export interface Config {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any
+  [key: string]: unknown
   baseName: string
   apiUrl: string
   defaultTitle: string
@@ -25,7 +24,7 @@ export interface Config {
   }
   admin: {
     path: string
-    models: string[]
+    models?: string[]
   }
 }
 const env = process.env
@@ -59,12 +58,17 @@ const config: Config = {
 export async function applyConfig() {
   axios.defaults.baseURL = config.apiUrl
   // Remotish config
-  const serverConfig = (await axios.get<Config>('/config'))?.data
-  if (serverConfig) {
-    Object.keys(serverConfig).forEach(key => {
-      config[key] = { ...config[key], ...serverConfig[key] }
-    })
+  const serverConfig = (await axios.get('/config'))?.data
+  if (!serverConfig) {
+    return
   }
+  Object.keys(serverConfig).forEach((key: string) => {
+    if (typeof serverConfig[key] === 'object') {
+      config[key] = { ...(config[key] as object), ...serverConfig[key] }
+    } else {
+      config[key] = serverConfig[key]
+    }
+  })
 }
 
 export default config

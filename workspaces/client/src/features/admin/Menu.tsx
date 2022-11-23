@@ -6,8 +6,8 @@ export default function Menu({ ...props }) {
   return (
     <Box {...props}>
       <Link to={home}>Dashboard</Link>
-      {config.admin.models.map(name => (
-        <Link key={name} to={`${home}/${name}`}>
+      {config.admin.models?.map(name => (
+        <Link key={name} to={`data/${name}`}>
           {name}
         </Link>
       ))}
