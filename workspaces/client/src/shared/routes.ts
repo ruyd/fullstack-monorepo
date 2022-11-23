@@ -71,6 +71,16 @@ export const routes: AppRoute[] = [
     path: '*',
     component: React.lazy(() => import('../features/pages/404')),
   },
+  {
+    title: 'Terms of Service',
+    path: '/terms',
+    component: React.lazy(() => import('../features/pages/terms')),
+  },
+  {
+    title: 'Admin',
+    path: '/admin',
+    component: React.lazy(() => import('../features/admin')),
+  },
 ]
 
 export const currentRoute = () => routes.find(r => r.path === window.location.pathname)

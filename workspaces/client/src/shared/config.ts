@@ -23,6 +23,10 @@ export interface Config {
       clientId: string
     }
   }
+  admin: {
+    path: string
+    models: string[]
+  }
 }
 const env = process.env
 const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : packageJson.homepage || '/'
@@ -45,6 +49,10 @@ const config: Config = {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || '',
     },
+  },
+  admin: {
+    path: '/admin',
+    models: [],
   },
 }
 

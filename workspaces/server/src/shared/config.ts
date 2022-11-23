@@ -4,6 +4,7 @@ import packageJson from '../../package.json'
 import appConfig from '../../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
+import { Connection } from './db'
 
 dotenv.config({})
 
@@ -110,6 +111,7 @@ const config: Config = {
   },
 }
 
+// What's the risk of this?
 export function getClientConfig() {
   return {
     auth: {
@@ -119,6 +121,7 @@ export function getClientConfig() {
       clientId: config.auth.clientId,
       redirectUrl: config.auth.redirectUrl,
     },
+    models: Connection.models.map(m => m.name),
   }
 }
 

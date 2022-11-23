@@ -56,7 +56,7 @@ export default function OnboardingDialog() {
           </div>
         </Grow>
         <Grid item xs={12} textAlign="center" sx={{ mb: 2 }} color="text.secondary">
-          <Typography>To save your drawings a profile is needed</Typography>
+          <Typography>To save drawings you need an account</Typography>
           <Typography variant="body2">*By using this site you agree to it&apos;s terms</Typography>
         </Grid>
         <DialogActions>

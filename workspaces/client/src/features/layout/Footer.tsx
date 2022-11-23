@@ -17,21 +17,9 @@ export default function Footer() {
   return (
     <footer>
       <Container>
-        <Box>
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
-              <a href="https://github.com/ruyd/fullstack-monorepo">
-                <img
-                  src="https://img.shields.io/badge/License-ISC-blue.svg"
-                  style={{ margin: '0 .5rem -.2rem 0', width: 80, height: 20 }}
-                  width={80}
-                  height={20}
-                  alt="ISC"
-                />
-              </a>
-              <Text>on {new Date().getFullYear()}</Text>
-            </Grid>
-            <Grid item textAlign="right" xs={6}>
+        <Box margin={1}>
+          <Grid container>
+            <Grid item textAlign="center" xs={12}>
               <Link href="https://github.com/ruyd/fullstack-monorepo">
                 <img
                   src={github}
@@ -40,7 +28,7 @@ export default function Footer() {
                   height={20}
                   alt="GitHub"
                 />
-                <Text>Template Source by Ruy</Text>
+                <Text>Template by Ruy - git clone here</Text>
               </Link>
             </Grid>
           </Grid>
