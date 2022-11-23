@@ -21,6 +21,12 @@ export class Connection {
   public static entities: ModelConfig[]
   public static db: Sequelize
   constructor() {
+    const checkRuntime = config
+    if (!checkRuntime) {
+      throw new Error(
+        'DB Class and dependency order problem: Config undefined, called before being loaded',
+      )
+    }
     Connection.models = []
     Connection.entities = []
     Connection.db = new Sequelize(config.db.url, {
@@ -111,8 +117,9 @@ export async function checkDatabase(): Promise<boolean> {
   try {
     logger.info(
       `Checking database models: 
-        ${Connection.models.map(a => a.name).join(', ')}`,
+      ${Connection.models.map(a => a.name).join(', ')}`,
     )
+    config.db.models = Connection.models.map(m => m.name)
     await Connection.db.authenticate()
     await Connection.db.sync({ alter: config.db.alter, force: config.db.force })
     return true

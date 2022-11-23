@@ -4,7 +4,6 @@ import packageJson from '../../package.json'
 import appConfig from '../../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
-import { Connection } from './db'
 
 dotenv.config({})
 
@@ -26,6 +25,7 @@ export interface Config {
     ssl: boolean
     force: boolean
     alter: boolean
+    models: string[]
   }
   auth: {
     tokenSecret?: string
@@ -79,6 +79,7 @@ const config: Config = {
     url: DB_URL as string,
     schema: schema as string,
     ssl: process.env.DB_SSL === 'true' || (ssl as boolean),
+    models: [],
   },
   auth: {
     tokenSecret: process.env.TOKEN_SECRET || 'blank',
@@ -111,7 +112,10 @@ const config: Config = {
   },
 }
 
-// What's the risk of this?
+/**
+ * @returns Public config object for clients
+ * Dev Notes: Don't use Connection here, it's still undefined, usaing causes circular dependency
+ */
 export function getClientConfig() {
   return {
     auth: {
@@ -121,7 +125,7 @@ export function getClientConfig() {
       clientId: config.auth.clientId,
       redirectUrl: config.auth.redirectUrl,
     },
-    models: Connection.models.map(m => m.name),
+    models: config.db.models,
   }
 }
 
