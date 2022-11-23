@@ -113,8 +113,9 @@ const config: Config = {
 }
 
 /**
- * @returns Public config object for clients
- * Dev Notes: Don't use Connection here, it's still undefined, usaing causes circular dependency
+ * Public config object for clients
+ * @DevNotes Don't use Connection here since
+ * it's a dependency of this file, circular error
  */
 export function getClientConfig() {
   return {

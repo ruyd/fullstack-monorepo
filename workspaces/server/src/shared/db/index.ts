@@ -24,7 +24,7 @@ export class Connection {
     const checkRuntime = config
     if (!checkRuntime) {
       throw new Error(
-        'DB Class and dependency order problem: Config undefined, called before being loaded',
+        'Connection Class dependency error, Config undefined, referenced from config.ts',
       )
     }
     Connection.models = []
