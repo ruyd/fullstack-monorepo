@@ -4,10 +4,10 @@ import Grid from '@mui/material/Unstable_Grid2'
 
 export default function Dashboard() {
   return (
-    <Box>
+    <Box sx={{ m: '1rem 2.3rem' }}>
       <Grid container rowSpacing={2} columnSpacing={1}>
         <Grid xs={12}>
-          <Typography component="h1" variant="h4">
+          <Typography component="h1" variant="h5">
             Dashboard
           </Typography>
         </Grid>

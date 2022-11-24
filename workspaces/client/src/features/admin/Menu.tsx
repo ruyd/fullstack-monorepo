@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
+import AdbIcon from '@mui/icons-material/Adb'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ListItem from '@mui/material/ListItem'
@@ -20,8 +21,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MailIcon from '@mui/icons-material/Mail'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from './slice'
+import config from 'src/shared/config'
 
-const drawerWidth = 240
+const drawerWidth = 250
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -34,7 +36,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
-    easing: theme.transitions.easing.sharp,
+    easing: theme.transitions.easing.easeOut,
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
@@ -96,16 +98,34 @@ export default function Menu(): JSX.Element {
   const theme = useTheme()
   const open = useAppSelector(state => state.admin.menuOpen)
   const dispatch = useAppDispatch()
-  const handleDrawerClose = () => {
-    dispatch(patch({ menuOpen: false }))
+  const handleOpenClose = () => {
+    dispatch(patch({ menuOpen: !open }))
   }
 
+  const OpenIcon = () => (theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />)
+  const CloseIcon = () => (theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />)
+
   return (
-    <Drawer variant="permanent" open={open} sx={{ marginTop: '2cm' }}>
+    <Drawer variant="permanent" open={open}>
       <DrawerHeader>
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </IconButton>
+        {open && (
+          <Typography
+            variant="h6"
+            noWrap
+            sx={{
+              display: { xs: 'none', md: 'flex', flexGrow: 1 },
+              fontFamily: 'monospace',
+              color: 'inherit',
+              textDecoration: 'none',
+              justifyContent: 'center',
+              marginRight: '-1.5rem',
+            }}
+          >
+            ADMIN
+          </Typography>
+        )}
+
+        <IconButton onClick={handleOpenClose}>{open ? <OpenIcon /> : <CloseIcon />}</IconButton>
       </DrawerHeader>
       <Divider />
       <List>
