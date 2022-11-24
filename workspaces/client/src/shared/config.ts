@@ -64,16 +64,12 @@ export async function applyConfig() {
   }
   Object.keys(serverConfig).forEach((key: string) => {
     const indexed = config as unknown as { [key: string]: unknown }
-    console.log('index', indexed, key)
-    //indexed['ruy'] = 'ruy'
-    //indexed.key = serverConfig[key]
     if (typeof serverConfig[key] === 'object') {
       indexed[key] = { ...(indexed[key] as { [key: string]: unknown }), ...serverConfig[key] }
     } else {
       indexed[key] = serverConfig[key]
     }
   })
-  console.log('config', config)
 }
 
 export default config

@@ -22,7 +22,7 @@ export async function request<
   try {
     dispatch(patch({ loading: true }))
     response = await axios({
-      url: config.backendUrl + url,
+      url,
       data,
       method,
     })
@@ -66,7 +66,7 @@ export const useGet = <T>(cacheKey: string, url: string, options?: UseQueryOptio
 export const loadDataAsync = createAsyncThunk(
   'admin/data/read',
   async (name: string, { dispatch, getState }) => {
-    const response = await request<PagedResult>(`${name}`)
-    dispatch(patch({ data: { [name]: response.data } }))
+    const response = await get<PagedResult>(`${name}`)
+    dispatch(patch({ data: { [name]: { ...response.data } } }))
   },
 )

@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import '@inovua/reactdatagrid-community/index.css'
+// import '@inovua/reactdatagrid-community/index.css'
+// import '@inovua/reactdatagrid-community/theme/default-dark.css'
+
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
@@ -17,7 +19,7 @@ export default function Admin(): JSX.Element {
       <Grid item xs={10}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="data/*" element={<Data />} />
+          <Route path="data" element={<Data />} />
         </Routes>
       </Grid>
     </Grid>

@@ -6,8 +6,10 @@ import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import { Chip, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import React from 'react'
+import { useAppSelector } from 'src/shared/store'
 
 export default function Menu({ ...props }) {
+  const data = useAppSelector(state => state.admin.data)
   const [active, setActive] = React.useState<string>()
   const home = config.admin.path
   return (
@@ -17,10 +19,10 @@ export default function Menu({ ...props }) {
           <ListItemText primary="Dashboard" />
         </ListItemButton>
         {config.admin.models?.map(name => (
-          <ListItemButton key={name} component={Link} to={`${home}/data/${name}`}>
+          <ListItemButton key={name} component={Link} to={`${home}/data?model=${name}`}>
             <ListItemText primary={name} />
             <ListItemIcon />
-            <Chip label="0" />
+            <Chip label={data[name]?.total || 0} />
           </ListItemButton>
         ))}
       </List>

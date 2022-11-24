@@ -39,7 +39,7 @@ export async function request<
       }
     ).response
     if (resp?.status === 401) {
-      dispatch(patch({ dialog: 'onboard' }))
+      dispatch(patch({ dialog: 'onboard', token: undefined }))
     }
     dispatch(notifyError(resp?.data?.message || error.message))
     throw error

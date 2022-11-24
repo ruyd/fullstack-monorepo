@@ -1,31 +1,27 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import Box from '@mui/material/Box'
 import config from 'src/shared/config'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
-import { loadDataAsync } from './thunks'
+import { loadDataAsync, useGet } from './thunks'
 import React from 'react'
 import CircularProgressWithLabel from '../layout/CircularProgressWithLabel'
+import _ from 'lodash'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import { Alert, ListItemText } from '@mui/material'
+import { useSearchParams } from 'react-router-dom'
+import { PagedResult } from '../../../../lib/src/types'
+import DataTable from './DataTable'
+
+const excluded = ['history']
 
 export default function Data() {
-  const path = config.admin.path + '/data'
-  const current = window.location.pathname.replace(path, '')
-  const data = useAppSelector(state => state.admin.data[current])
-  const loading = useAppSelector(state => state.admin.loading)
-  console.log('data', current)
-  // const { data } = useGet<PagedResult>(current, `${current}`, {
-  //   cacheTime: 10000,
-  //   staleTime: 12000,
-  // })
-
-  const dispatch = useAppDispatch()
+  const [searchParams] = useSearchParams()
+  const model = searchParams.get('model') || 'error'
   const darkMode = useAppSelector(state => state.app.darkTheme)
-
-  React.useEffect(() => {
-    if (current) {
-      dispatch(loadDataAsync(current))
-    }
-  }, [current, dispatch])
+  const { data, isLoading, error } = useGet<PagedResult>(model, `${model}`, {})
 
   const first = data?.items?.[0] || ({} as Record<string, unknown>)
   const columns = Object.keys(first)
@@ -38,12 +34,12 @@ export default function Data() {
 
   return (
     <Box>
-      {loading && <CircularProgressWithLabel value={100} title="dddd" />}
-      <ReactDataGrid
-        dataSource={data?.items || []}
-        columns={columns}
-        theme={darkMode ? 'dark' : 'light'}
-      />
+      <>
+        {model}
+        {isLoading && <CircularProgressWithLabel value={100} />}
+        {error && <Alert>{JSON.stringify(error)}</Alert>}
+        <DataTable data={data} />
+      </>
     </Box>
   )
 }

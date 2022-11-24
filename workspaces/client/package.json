@@ -50,6 +50,7 @@
     "jest-watch-typeahead": "^2.2.1",
     "jsdom": "^20.0.2",
     "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.4.5",
     "moment": "^2.29.4",
     "postcss": "^8.4.4",
