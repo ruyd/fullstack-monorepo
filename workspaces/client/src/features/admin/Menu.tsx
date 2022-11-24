@@ -19,9 +19,12 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import InboxIcon from '@mui/icons-material/MoveToInbox'
 import MailIcon from '@mui/icons-material/Mail'
+import StorageIcon from '@mui/icons-material/Storage'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from './slice'
 import config from 'src/shared/config'
+import Collapse from '@mui/material/Collapse'
+import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
 
 const drawerWidth = 250
 
@@ -93,7 +96,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
     }),
   }),
 )
-
+/**
+ * - 1 level deep
+ * - collapse
+ * @returns
+ */
 export default function Menu(): JSX.Element {
   const theme = useTheme()
   const open = useAppSelector(state => state.admin.menuOpen)
@@ -104,6 +111,17 @@ export default function Menu(): JSX.Element {
 
   const OpenIcon = () => (theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />)
   const CloseIcon = () => (theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />)
+
+  const items = [
+    { text: 'Dashboard', icon: <AdbIcon />, path: '/' },
+    { text: 'Users', icon: <AdbIcon />, path: '/' },
+    {
+      text: 'Storage',
+      icon: <StorageIcon />,
+      path: '/data',
+      children: config.admin.models?.map(model => ({ text: model, path: `/data/${model}` })),
+    },
+  ]
 
   return (
     <Drawer variant="permanent" open={open}>
@@ -129,7 +147,7 @@ export default function Menu(): JSX.Element {
       </DrawerHeader>
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        {items.map(({ text, icon, children }, index) => (
           <ListItem key={text} disablePadding sx={{ display: 'block' }}>
             <ListItemButton
               sx={{
@@ -145,7 +163,7 @@ export default function Menu(): JSX.Element {
                   justifyContent: 'center',
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <StorageIcon />
               </ListItemIcon>
               <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
