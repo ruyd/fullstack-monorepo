@@ -9,22 +9,24 @@ import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
+import ListIcon from '@mui/icons-material/List'
 import AdbIcon from '@mui/icons-material/Adb'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
+
 import StorageIcon from '@mui/icons-material/Storage'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from './slice'
 import config from 'src/shared/config'
 import Collapse from '@mui/material/Collapse'
-import { ExpandLess, ExpandMore, StarBorder } from '@mui/icons-material'
+import {
+  ExpandLess,
+  ExpandMore,
+  PersonSearch,
+  StarBorder,
+  VerifiedUserSharp,
+} from '@mui/icons-material'
+import MenuItem, { MenuModel } from './MenuItem'
 
 const drawerWidth = 250
 
@@ -112,14 +114,25 @@ export default function Menu(): JSX.Element {
   const OpenIcon = () => (theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />)
   const CloseIcon = () => (theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />)
 
-  const items = [
+  const getIcon = (name: string) => {
+    const dict: Record<string, React.ReactNode> = {
+      user: <PersonSearch />,
+    }
+    return dict[name] || <ListIcon />
+  }
+
+  const items: MenuModel[] = [
     { text: 'Dashboard', icon: <AdbIcon />, path: '/' },
-    { text: 'Users', icon: <AdbIcon />, path: '/' },
+    { text: 'Users', icon: <PersonSearch />, path: '/' },
     {
       text: 'Storage',
       icon: <StorageIcon />,
       path: '/data',
-      children: config.admin.models?.map(model => ({ text: model, path: `/data/${model}` })),
+      children: config.admin.models?.map(model => ({
+        text: model,
+        path: `/data?model=${model}`,
+        icon: getIcon(model),
+      })),
     },
   ]
 
@@ -147,54 +160,11 @@ export default function Menu(): JSX.Element {
       </DrawerHeader>
       <Divider />
       <List>
-        {items.map(({ text, icon, children }, index) => (
-          <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                <StorageIcon />
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
+        {items.map((item, index) => (
+          <MenuItem key={index} item={item} />
         ))}
       </List>
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                }}
-              >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
     </Drawer>
   )
 }
