@@ -1,16 +1,29 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Box from '@mui/material/Box'
 import { Link } from 'react-router-dom'
 import config from '../../shared/config'
+import List from '@mui/material/List'
+import Typography from '@mui/material/Typography'
+import { Chip, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import React from 'react'
+
 export default function Menu({ ...props }) {
+  const [active, setActive] = React.useState<string>()
   const home = config.admin.path
   return (
     <Box {...props}>
-      <Link to={home}>Dashboard</Link>
-      {config.admin.models?.map(name => (
-        <Link key={name} to={`data/${name}`}>
-          {name}
-        </Link>
-      ))}
+      <List>
+        <ListItemButton component={Link} to={`${home}`}>
+          <ListItemText primary="Dashboard" />
+        </ListItemButton>
+        {config.admin.models?.map(name => (
+          <ListItemButton key={name} component={Link} to={`${home}/data/${name}`}>
+            <ListItemText primary={name} />
+            <ListItemIcon />
+            <Chip label="0" />
+          </ListItemButton>
+        ))}
+      </List>
     </Box>
   )
 }

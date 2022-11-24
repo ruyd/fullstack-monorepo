@@ -18,6 +18,7 @@ export default function Admin(): JSX.Element {
           <Route path="/" element={<Dashboard />} />
           <Route path="data/*" element={<Data />} />
         </Routes>
+        {/* <Data /> */}
       </Grid>
     </Grid>
   )

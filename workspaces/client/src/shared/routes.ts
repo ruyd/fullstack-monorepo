@@ -77,6 +77,7 @@ export const routes: AppRoute[] = [
     path: '/admin/*',
     component: React.lazy(() => import('../features/admin')),
     roles: ['admin'],
+    profile: true,
   },
   {
     title: 'Not Found',

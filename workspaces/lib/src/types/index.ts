@@ -42,7 +42,7 @@ export interface User extends Entity {
   picture?: string
 }
 
-export interface PagedResult<T> {
+export interface PagedResult<T = Record<string, string | number>> {
   items: T[]
   offset: number
   limit: number
