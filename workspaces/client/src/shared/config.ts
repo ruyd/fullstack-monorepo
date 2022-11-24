@@ -1,10 +1,10 @@
+/* eslint-disable no-console */
 import axios from 'axios'
 import packageJson from '../../package.json'
 
 export interface Config {
-  [key: string]: unknown
   baseName: string
-  apiUrl: string
+  backendUrl: string
   defaultTitle: string
   defaultLineSize: number
   defaultColor: string
@@ -29,9 +29,9 @@ export interface Config {
 }
 const env = process.env
 const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : packageJson.homepage || '/'
-const config: Config = {
+export const config: Config = {
   baseName: env.BASE_NAME || defaultBaseName,
-  apiUrl: env.BACKEND || 'https://drawspace-api.herokuapp.com',
+  backendUrl: env.BACKEND || 'https://drawspace-api.herokuapp.com',
   defaultTitle: 'Drawspace',
   defaultColor: 'yellow',
   defaultLineSize: 20,
@@ -56,19 +56,24 @@ const config: Config = {
 }
 
 export async function applyConfig() {
-  axios.defaults.baseURL = config.apiUrl
+  axios.defaults.baseURL = config.backendUrl
   // Remotish config
   const serverConfig = (await axios.get('/config'))?.data
   if (!serverConfig) {
     return
   }
   Object.keys(serverConfig).forEach((key: string) => {
+    const indexed = config as unknown as { [key: string]: unknown }
+    console.log('index', indexed, key)
+    //indexed['ruy'] = 'ruy'
+    //indexed.key = serverConfig[key]
     if (typeof serverConfig[key] === 'object') {
-      config[key] = { ...(config[key] as object), ...serverConfig[key] }
+      indexed[key] = { ...(indexed[key] as { [key: string]: unknown }), ...serverConfig[key] }
     } else {
-      config[key] = serverConfig[key]
+      indexed[key] = serverConfig[key]
     }
   })
+  console.log('config', config)
 }
 
 export default config

@@ -9,6 +9,7 @@
     "@babel/plugin-transform-react-jsx": "^7.19.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@inovua/reactdatagrid-community": "^5.7.0",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.13",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",

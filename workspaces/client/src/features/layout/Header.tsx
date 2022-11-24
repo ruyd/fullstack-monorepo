@@ -188,7 +188,7 @@ export default function HeaderNavBar() {
                     key={setting.path}
                     onClick={() => handleCloseUserMenu(setting)}
                     component={RouterLink}
-                    to={setting.dialog ? '' : setting.path}
+                    to={setting.dialog ? '#' : setting.path.replace('/*', '')}
                   >
                     <Typography textAlign="center">{setting.title}</Typography>
                   </MenuItem>

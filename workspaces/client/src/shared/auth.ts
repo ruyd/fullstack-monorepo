@@ -5,7 +5,6 @@ import { Paths } from './routes'
 import config from './config'
 import authProvider from 'auth0-js'
 import { v4 } from 'uuid'
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppUser extends User {
   // client props
@@ -82,7 +81,7 @@ export function onLogin(payload?: { token: string; user: AppUser }) {
   clearNonce()
 }
 
-export function loginRedirect() {
+export function loginPrompt() {
   const returnTo = window.location.href
     .replace(window.location.origin, '')
     .replace(config.baseName, '')

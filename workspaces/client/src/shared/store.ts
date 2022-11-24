@@ -2,6 +2,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { configureStore, ThunkAction, Action, Middleware } from '@reduxjs/toolkit'
 import appReducer from '../features/app/slice'
 import canvasReducer from '../features/canvas/slice'
+import adminReducer from '../features/admin/slice'
 
 export const customMiddleware: Middleware = () => next => action => {
   const result = next(action)
@@ -12,6 +13,7 @@ export const store = configureStore({
   reducer: {
     app: appReducer,
     canvas: canvasReducer,
+    admin: adminReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(customMiddleware),
 })

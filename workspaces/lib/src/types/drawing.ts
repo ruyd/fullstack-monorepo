@@ -36,7 +36,7 @@ export interface Drawing extends Entity {
 
 // might be better to add up all open closes hmm
 export function getTimeSpent(d: Drawing): number {
-  if (d.history.length < 2) {
+  if (!d?.history || d.history?.length < 2) {
     return 0
   }
   const first = d.history[0].ts as number

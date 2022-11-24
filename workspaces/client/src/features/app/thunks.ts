@@ -4,7 +4,7 @@ import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import { Auth0Error } from 'auth0-js'
 import axios, { AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
-import { AppUser, loginRedirect, onLogin, getAuthProvider } from '../../shared/auth'
+import { AppUser, onLogin, getAuthProvider, loginPrompt } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
 
@@ -38,8 +38,8 @@ export async function request<
         response: AxiosResponse<{ message: string }>
       }
     ).response
-    if (resp?.status && resp?.data?.message?.toLowerCase().includes('jwt')) {
-      loginRedirect()
+    if (resp?.status === 401) {
+      dispatch(patch({ dialog: 'onboard' }))
     }
     dispatch(notifyError(resp?.data?.message || error.message))
     throw error
