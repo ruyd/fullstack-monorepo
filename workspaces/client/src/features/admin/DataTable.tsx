@@ -44,7 +44,16 @@ export default function DataTable({ data }: { data?: PagedResult }) {
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer
+        sx={{
+          width: '100%',
+          overflowX: 'auto',
+          position: 'relative',
+          display: 'block',
+          maxWidth: '100%',
+          '& td, & th': { whiteSpace: 'nowrap' },
+        }}
+      >
         <Table stickyHeader aria-label="sticky table">
           <caption></caption>
           <TableHead>
@@ -68,7 +77,11 @@ export default function DataTable({ data }: { data?: PagedResult }) {
                     const value = row[column.id as number]
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                        {column.format && typeof value === 'number'
+                          ? column.format(value)
+                          : typeof value === 'object'
+                          ? JSON.stringify(value)
+                          : value}
                       </TableCell>
                     )
                   })}
