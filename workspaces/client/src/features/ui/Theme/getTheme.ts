@@ -1,4 +1,6 @@
-import { createTheme, Theme, ThemeOptions } from '@mui/material/styles'
+import { createTheme, Palette, Theme, ThemeOptions } from '@mui/material/styles'
+import { Typography } from '@mui/material/styles/createTypography'
+import { CSSProperties } from '@mui/styled-engine'
 import colors from 'assets/scss/_themes-vars.module.scss'
 import componentStyleOverrides from './componentStyleOverrides'
 import themePalette from './palette'
@@ -11,6 +13,13 @@ export interface ThemeState {
 declare module '@mui/material/styles' {
   interface Theme {
     state?: ThemeState
+    palette: Palette & { orange?: Palette['primary'] }
+    typography: Typography & {
+      commonAvatar?: CSSProperties
+      largeAvatar?: CSSProperties
+      mediumAvatar?: CSSProperties
+      smallAvatar?: CSSProperties
+    }
   }
   interface ThemeOptions {
     state?: ThemeState

@@ -3,21 +3,12 @@ import { useEffect } from 'react'
 // material-ui
 import { useTheme } from '@mui/material/styles'
 import { Card, Grid, Typography } from '@mui/material'
-
-// third-party
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
-
-// project imports
 import chartData from './chart-data/bajaj-area-chart'
-import { useAppSelector } from 'src/shared/store'
-
-// ===========================|| DASHBOARD DEFAULT - BAJAJ AREA CHART CARD ||=========================== //
 
 const BajajAreaChartCard = () => {
   const theme = useTheme()
-
-  const navType = useAppSelector(state => state.admin.navType)
 
   const orangeDark = theme.palette.secondary.main[800]
 
@@ -26,11 +17,11 @@ const BajajAreaChartCard = () => {
       ...chartData.options,
       colors: [orangeDark],
       tooltip: {
-        theme: 'light',
+        theme: theme.palette.mode,
       },
     }
     ApexCharts.exec(`support-chart`, 'updateOptions', newSupportChart)
-  }, [navType, orangeDark])
+  }, [orangeDark, theme.palette.mode])
 
   return (
     <Card sx={{ bgcolor: 'secondary.light' }}>

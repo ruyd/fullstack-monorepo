@@ -154,7 +154,6 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                         backgroundColor: theme.palette.secondary.main[200],
                         color: theme.palette.secondary.dark,
                       }}
-                      onClick={}
                     >
                       <ArrowUpwardIcon
                         fontSize="inherit"

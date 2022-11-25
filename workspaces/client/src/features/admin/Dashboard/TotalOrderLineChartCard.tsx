@@ -1,21 +1,11 @@
-import PropTypes from 'prop-types'
 import { useState } from 'react'
-
-// material-ui
 import { useTheme, styled } from '@mui/material/styles'
 import { Avatar, Box, Button, Grid, Typography } from '@mui/material'
-
-// third-party
 import Chart from 'react-apexcharts'
-
-// project imports
-import MainCard from 'ui-component/cards/MainCard'
-import SkeletonTotalOrderCard from 'ui-component/cards/Skeleton/EarningCard'
-
+import MainCard from '../../ui/Card'
+import SkeletonTotalOrderCard from '../../ui/Card/Skeleton/EarningCard'
 import ChartDataMonth from './chart-data/total-order-month-line-chart'
 import ChartDataYear from './chart-data/total-order-year-line-chart'
-
-// assets
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 
@@ -33,7 +23,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     position: 'absolute',
     width: 210,
     height: 210,
-    background: theme.palette.primary[800],
+    background: theme.palette.primary.main[800],
     borderRadius: '50%',
     zIndex: 1,
     top: -85,
@@ -49,7 +39,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     zIndex: 1,
     width: 210,
     height: 210,
-    background: theme.palette.primary[800],
+    background: theme.palette.primary.main[800],
     borderRadius: '50%',
     top: -125,
     right: -15,
@@ -61,13 +51,11 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   },
 }))
 
-// ==============================|| DASHBOARD - TOTAL ORDER LINE CHART CARD ||============================== //
-
-const TotalOrderLineChartCard = ({ isLoading }) => {
+const TotalOrderLineChartCard = ({ isLoading }: { isLoading: boolean }) => {
   const theme = useTheme()
 
-  const [timeValue, setTimeValue] = useState(false)
-  const handleChangeTime = (event, newValue) => {
+  const [timeValue, setTimeValue] = useState<boolean>(false)
+  const handleChangeTime = (event: React.MouseEvent<HTMLButtonElement>, newValue: boolean) => {
     setTimeValue(newValue)
   }
 
@@ -87,7 +75,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                       sx={{
                         ...theme.typography.commonAvatar,
                         ...theme.typography.largeAvatar,
-                        backgroundColor: theme.palette.primary[800],
+                        backgroundColor: theme.palette.primary.main[800],
                         color: '#fff',
                         mt: 1,
                       }}
@@ -153,7 +141,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                           sx={{
                             ...theme.typography.smallAvatar,
                             cursor: 'pointer',
-                            backgroundColor: theme.palette.primary[200],
+                            backgroundColor: theme.palette.primary.main[200],
                             color: theme.palette.primary.dark,
                           }}
                         >
@@ -168,7 +156,7 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                           sx={{
                             fontSize: '1rem',
                             fontWeight: 500,
-                            color: theme.palette.primary[200],
+                            color: theme.palette.primary.main[200],
                           }}
                         >
                           Total Order
@@ -177,7 +165,11 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
                     </Grid>
                   </Grid>
                   <Grid item xs={6}>
-                    {timeValue ? <Chart {...ChartDataMonth} /> : <Chart {...ChartDataYear} />}
+                    {timeValue ? (
+                      <Chart {...(ChartDataMonth as any)} />
+                    ) : (
+                      <Chart {...(ChartDataYear as any)} />
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
@@ -187,10 +179,6 @@ const TotalOrderLineChartCard = ({ isLoading }) => {
       )}
     </>
   )
-}
-
-TotalOrderLineChartCard.propTypes = {
-  isLoading: PropTypes.bool,
 }
 
 export default TotalOrderLineChartCard
