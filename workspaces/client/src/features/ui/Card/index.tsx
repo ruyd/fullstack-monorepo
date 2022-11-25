@@ -21,6 +21,7 @@ export interface CardProps {
   shadow?: string
   sx?: object
   title?: React.ReactNode
+  ref?: React.Ref<HTMLDivElement>
 }
 
 // ==============================|| CUSTOM MAIN CARD ||============================== //
