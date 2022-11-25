@@ -1,7 +1,7 @@
 import { createTheme, Palette, Theme, ThemeOptions } from '@mui/material/styles'
 import { Typography } from '@mui/material/styles/createTypography'
 import { CSSProperties } from '@mui/styled-engine'
-import colors from 'assets/scss/_themes-vars.module.scss'
+import colors from './scss/_themes-vars.module.scss'
 import componentStyleOverrides from './componentStyleOverrides'
 import themePalette from './palette'
 import themeTypography from './typography'

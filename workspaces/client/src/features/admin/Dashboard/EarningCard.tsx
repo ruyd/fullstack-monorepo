@@ -1,13 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { useState } from 'react'
-
-// material-ui
 import { styled, useTheme } from '@mui/material/styles'
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material'
-
-// assets
-import EarningIcon from 'assets/images/icons/earning.svg'
+import EarningIcon from './images/earning.svg'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import GetAppTwoToneIcon from '@mui/icons-material/GetAppOutlined'
@@ -180,10 +175,6 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
       )}
     </>
   )
-}
-
-EarningCard.propTypes = {
-  isLoading: PropTypes.bool,
 }
 
 export default EarningCard
