@@ -1,7 +1,7 @@
 import os from 'os'
 import { OAS3Definition } from 'swagger-jsdoc'
 import packageJson from '../../package.json'
-import appConfig from '../../tools/app.json'
+import appConfig from '../../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
 
