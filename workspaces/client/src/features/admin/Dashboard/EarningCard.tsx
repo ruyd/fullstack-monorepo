@@ -4,10 +4,7 @@ import { useState } from 'react'
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles'
-import { Avatar, Box, Card, Grid, Menu, MenuItem, Typography } from '@mui/material'
-
-// project imports
-import { Card as MainCard, Skeleton as SkeletonEarningCard } from '@mui/material'
+import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material'
 
 // assets
 import EarningIcon from 'assets/images/icons/earning.svg'
@@ -17,8 +14,10 @@ import GetAppTwoToneIcon from '@mui/icons-material/GetAppOutlined'
 import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined'
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined'
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined'
+import Card from 'src/features/ui/Card'
+import Skeleton from 'src/features/ui/Card/Skeleton/EarningCard'
 
-const CardWrapper = styled(MainCard)(({ theme }) => ({
+const CardWrapper = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.dark,
   color: '#fff',
   overflow: 'hidden',
@@ -54,14 +53,12 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   },
 }))
 
-// ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
-
 export function EarningCard({ isLoading }: { isLoading: boolean }) {
   const theme = useTheme()
 
   const [anchorEl, setAnchorEl] = useState<EventTarget | null>(null)
 
-  const handleClick = (event: Event) => {
+  const handleClick = (event: React.MouseEvent) => {
     setAnchorEl(event.currentTarget)
   }
 
@@ -72,9 +69,9 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
   return (
     <>
       {isLoading ? (
-        <SkeletonEarningCard />
+        <Skeleton />
       ) : (
-        <CardWrapper content={false}>
+        <CardWrapper border={false} content={false}>
           <Box sx={{ p: 2.25 }}>
             <Grid container direction="column">
               <Grid item>
@@ -99,7 +96,7 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                         ...theme.typography.commonAvatar,
                         ...theme.typography.mediumAvatar,
                         backgroundColor: theme.palette.secondary.dark,
-                        color: theme.palette.secondary[200],
+                        color: theme.palette.secondary.main[200],
                         zIndex: 1,
                       }}
                       aria-controls="menu-earning-card"
@@ -110,7 +107,7 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                     </Avatar>
                     <Menu
                       id="menu-earning-card"
-                      anchorEl={anchorEl}
+                      anchorEl={anchorEl as Element}
                       keepMounted
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
@@ -157,6 +154,7 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                         backgroundColor: theme.palette.secondary.main[200],
                         color: theme.palette.secondary.dark,
                       }}
+                      onClick={}
                     >
                       <ArrowUpwardIcon
                         fontSize="inherit"

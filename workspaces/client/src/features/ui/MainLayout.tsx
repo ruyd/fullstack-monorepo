@@ -1,6 +1,6 @@
 import React from 'react'
 import Header from './Header'
-import ThemeSwitch from './ThemeSwitch'
+import ThemeSwitch from './Theme'
 import '../../styles/index.css'
 import DrawerRight from './Drawer'
 import Routing, { RouteElement } from './Routing'

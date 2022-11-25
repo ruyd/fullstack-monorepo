@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppUser, getPersistedAuthFromStorage } from '../../shared/auth'
+import { ThemeState } from '../ui/Theme/getTheme'
 import { AppNotification, NotificationSeverity } from './types'
 
 export interface AppState {
   user?: AppUser
   token?: string
   darkTheme: boolean
+  theme?: ThemeState
   notifications: AppNotification[]
   drawerLeftOpen?: boolean
   drawerRightOpen?: boolean
