@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createTheme, Palette, Theme, ThemeOptions } from '@mui/material/styles'
 import { Typography } from '@mui/material/styles/createTypography'
 import { CSSProperties } from '@mui/styled-engine'
 import colors from './scss/_themes-vars.module.scss'
 import componentStyleOverrides from './componentStyleOverrides'
-import themePalette from './palette'
-import themeTypography from './typography'
+// import themePalette from './palette'
+// import themeTypography from './typography'
 
 export interface ThemeState {
   gridSpacing?: number
@@ -41,27 +42,26 @@ const colorOptions = {
 }
 
 export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
-  const options: ThemeOptions = {
-    ...colorOptions,
-    palette: {
-      mode: darkMode ? 'dark' : 'light',
-    },
-    state,
-  }
+  // const options: ThemeOptions = {
+  //   ...colorOptions,
+
+  //   state,
+  // }
 
   const themeOptions: ThemeOptions = {
     direction: 'ltr',
-    palette: themePalette(options),
+    palette: {
+      mode: darkMode ? 'dark' : 'light',
+    },
     mixins: {
       toolbar: {
-        minHeight: '48px',
-        padding: '16px',
-        '@media (min-width: 600px)': {
-          minHeight: '48px',
-        },
+        //   minHeight: '48px',
+        //   padding: '16px',
+        //   '@media (min-width: 600px)': {
+        //     minHeight: '48px',
+        //   },
       },
     },
-    typography: themeTypography(options),
   }
 
   const themes = createTheme(themeOptions)

@@ -29,7 +29,7 @@ export default function HeaderNavBar() {
   const dispatch = useAppDispatch()
   const authenticated = useAppSelector(state => state.app.token)
   const user = useAppSelector(state => state.app.user)
-  const darkTheme = useAppSelector(state => state.app.darkTheme)
+  const darkTheme = useAppSelector(state => state.app.darkMode)
   const drawerRightOpen = useAppSelector(state => state.app.drawerRightOpen)
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
@@ -53,7 +53,7 @@ export default function HeaderNavBar() {
   }
 
   const handleThemeToggle = () => {
-    dispatch(patch({ darkTheme: !darkTheme }))
+    dispatch(patch({ darkMode: !darkTheme }))
   }
 
   const handleMenuToggle = () => {

@@ -6,15 +6,15 @@ export interface AnimateButtonProps {
   type?: 'slide' | 'scale' | 'rotate'
   direction?: 'up' | 'down' | 'left' | 'right'
   scale?: number | { hover?: number; tap?: number }
-  ref?: React.RefObject<HTMLDivElement>
 }
 export function AnimateButton(
-  { children, type, direction, offset, scale, ref }: AnimateButtonProps = {
+  { children, type, direction, offset, scale }: AnimateButtonProps = {
     type: 'scale',
     direction: 'right',
     offset: 10,
     scale: { hover: 1, tap: 0.9 },
   },
+  ref?: React.MutableRefObject<HTMLDivElement>,
 ) {
   let offset1
   let offset2

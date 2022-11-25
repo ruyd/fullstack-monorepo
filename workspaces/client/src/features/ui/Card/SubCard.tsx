@@ -2,18 +2,20 @@ import { useTheme } from '@mui/material/styles'
 import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material'
 import { CardProps } from './'
 
-export function SubCard({
-  children,
-  content,
-  contentClass,
-  darkTitle,
-  secondary,
-  sx = {},
-  contentSX = {},
-  title,
-  ref,
-  ...others
-}: CardProps) {
+export function SubCard(
+  {
+    children,
+    content,
+    contentClass,
+    darkTitle,
+    secondary,
+    sx = {},
+    contentSX = {},
+    title,
+    ...others
+  }: CardProps,
+  ref?: React.MutableRefObject<HTMLDivElement>,
+) {
   const theme = useTheme()
 
   return (

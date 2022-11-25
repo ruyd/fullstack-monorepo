@@ -20,8 +20,8 @@ const excluded = ['history']
 export default function Data() {
   const [searchParams] = useSearchParams()
   const model = searchParams.get('model') || 'error'
-  const darkMode = useAppSelector(state => state.app.darkTheme)
-  const { data, isLoading, error } = useGet<PagedResult>(model, `${model}`, {})
+  const darkMode = useAppSelector(state => state.app.darkMode)
+  const { data, isLoading, error } = useGet<PagedResult>(model, `${model}`)
 
   const first = data?.items?.[0] || ({} as Record<string, unknown>)
   const columns = Object.keys(first)

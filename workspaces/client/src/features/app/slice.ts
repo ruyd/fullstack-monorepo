@@ -6,7 +6,7 @@ import { AppNotification, NotificationSeverity } from './types'
 export interface AppState {
   user?: AppUser
   token?: string
-  darkTheme: boolean
+  darkMode: boolean
   theme?: ThemeState
   notifications: AppNotification[]
   drawerLeftOpen?: boolean
@@ -18,7 +18,7 @@ export interface AppState {
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
 const defaultState: AppState = {
-  darkTheme: !!prefersDark,
+  darkMode: !!prefersDark,
   notifications: [],
 }
 

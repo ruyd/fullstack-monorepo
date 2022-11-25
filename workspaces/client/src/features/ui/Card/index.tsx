@@ -21,32 +21,27 @@ export interface CardProps {
   shadow?: string
   sx?: object
   title?: React.ReactNode
-  ref?: React.Ref<HTMLDivElement>
 }
 
 // ==============================|| CUSTOM MAIN CARD ||============================== //
 
-export function MainCard(
-  {
-    border = true,
-    boxShadow,
-    children,
-    content = true,
-    contentClass = '',
-    contentSX = {},
-    darkTitle,
-    secondary,
-    shadow,
-    sx = {},
-    title,
-    ...others
-  }: CardProps,
-  ref?: React.MutableRefObject<HTMLDivElement>,
-) {
+export function MainCard({
+  border = true,
+  boxShadow,
+  children,
+  content = true,
+  contentClass = '',
+  contentSX = {},
+  darkTitle,
+  secondary,
+  shadow,
+  sx = {},
+  title,
+  ...others
+}: CardProps) {
   const theme = useTheme()
   return (
     <Card
-      ref={ref}
       {...others}
       sx={{
         border: border ? '1px solid' : 'none',

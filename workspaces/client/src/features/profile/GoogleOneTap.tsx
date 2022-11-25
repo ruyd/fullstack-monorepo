@@ -147,7 +147,7 @@ export const renderButton = (el: HTMLElement) => {
     type: 'standard',
     shape: 'pill',
     text: 'continue_with',
-    theme: store.getState().app.darkTheme ? 'filled_black' : 'outline',
+    theme: store.getState().app.darkMode ? 'filled_black' : 'outline',
     size: 'large',
   })
 }
