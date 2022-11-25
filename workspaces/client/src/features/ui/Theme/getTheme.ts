@@ -3,9 +3,6 @@ import { createTheme, Palette, Theme, ThemeOptions } from '@mui/material/styles'
 import { Typography } from '@mui/material/styles/createTypography'
 import { CSSProperties } from '@mui/styled-engine'
 import colors from './scss/_themes-vars.module.scss'
-import componentStyleOverrides from './componentStyleOverrides'
-// import themePalette from './palette'
-// import themeTypography from './typography'
 
 export interface ThemeState {
   gridSpacing?: number
@@ -65,8 +62,8 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
   }
 
   const themes = createTheme(themeOptions)
-  const components = componentStyleOverrides(themeOptions)
-  return { ...themes, components }
+  //const components = componentStyleOverrides(themeOptions)
+  return { ...themes }
 }
 
 export default getTheme
