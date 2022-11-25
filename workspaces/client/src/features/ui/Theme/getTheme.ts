@@ -2,7 +2,6 @@
 import { createTheme, Palette, Theme, ThemeOptions } from '@mui/material/styles'
 import { Typography } from '@mui/material/styles/createTypography'
 import { CSSProperties } from '@mui/styled-engine'
-import colors from './scss/_themes-vars.module.scss'
 
 export interface ThemeState {
   gridSpacing?: number
@@ -22,20 +21,6 @@ declare module '@mui/material/styles' {
   interface ThemeOptions {
     state?: ThemeState
   }
-}
-
-const colorOptions = {
-  colors,
-  heading: colors.grey900,
-  paper: colors.paper,
-  backgroundDefault: colors.paper,
-  background: colors.primaryLight,
-  darkTextPrimary: colors.grey700,
-  darkTextSecondary: colors.grey500,
-  textDark: colors.grey900,
-  menuSelected: colors.secondaryDark,
-  menuSelectedBack: colors.secondaryLight,
-  divider: colors.grey200,
 }
 
 export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {

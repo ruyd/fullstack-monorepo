@@ -50,7 +50,7 @@ export default function MenuItem({
         <List component="div" disablePadding>
           {children?.map(child => (
             <ListItemButton
-              sx={{ pl: 4 }}
+              sx={{ pl: 2.5 }}
               key={child.text}
               component={Link}
               to={`${config.admin.path}${child.path}`}

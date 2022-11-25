@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow'
 import { PagedResult } from '../../../../lib/src/types'
 import { v4 as uuid } from 'uuid'
 import _ from 'lodash'
+import { useTheme } from '@mui/material'
 
 interface Column {
   id: string | number
@@ -22,7 +23,12 @@ interface Column {
 
 const excluded = ['history']
 
+/**
+ * Search, filtering and disconnected pager
+ * see totals and page numbers, navigation
+ */
 export default function DataTable({ data }: { data?: PagedResult }) {
+  const theme = useTheme()
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
   const cleaned = data?.items.map(o => _.omit(o, excluded))
@@ -43,7 +49,22 @@ export default function DataTable({ data }: { data?: PagedResult }) {
   }
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Paper
+      sx={{
+        height: '100%',
+        overflow: 'hidden',
+        maxWidth: '94.5vw',
+        [theme.breakpoints.down('lg')]: {
+          maxWidth: '90vw',
+        },
+        [theme.breakpoints.down('md')]: {
+          maxWidth: '88vw',
+        },
+        [theme.breakpoints.down('sm')]: {
+          maxWidth: '82vw',
+        },
+      }}
+    >
       <TableContainer
         sx={{
           width: '100%',
@@ -51,7 +72,7 @@ export default function DataTable({ data }: { data?: PagedResult }) {
           position: 'relative',
           display: 'block',
           maxWidth: '100%',
-          '& td, & th': { whiteSpace: 'nowrap' },
+          '& td, & th': { whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
         }}
       >
         <Table stickyHeader aria-label="sticky table">

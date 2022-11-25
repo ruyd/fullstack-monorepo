@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import config from 'src/shared/config'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { loginPrompt } from 'src/shared/auth'
@@ -10,18 +10,25 @@ import { RootState, store } from '../../shared/store'
 import { Method, notifyError } from '../app'
 import { patch as patchApp } from '../app'
 import { patch } from './slice'
+import { response } from 'express'
 /**
  * Axios wrapper for thunks with token from onLogin
  */
 export async function request<
   R = { success: boolean; message: string },
   T = Record<string, unknown>,
->(url: string, data?: T, method: Method = Method.POST): Promise<AxiosResponse<R>> {
+>(
+  url: string,
+  data?: T,
+  method: Method = Method.POST,
+  options?: AxiosRequestConfig<R>,
+): Promise<AxiosResponse<R>> {
   let response: AxiosResponse<R>
   const dispatch = store.dispatch
   try {
     dispatch(patch({ loading: true }))
     response = await axios({
+      ...options,
       url,
       data,
       method,
@@ -44,7 +51,8 @@ export async function request<
   return response
 }
 
-export const get = <T>(url: string) => request<T>(url, {}, Method.GET)
+export const get = <T>(url: string, options?: AxiosRequestConfig<T>) =>
+  request<T>(url, {}, Method.GET, options)
 
 /**
  * Generic API GET Hook for components
@@ -57,6 +65,9 @@ export const useGet = <T>(cacheKey: string, url: string, options?: UseQueryOptio
   useQuery<T>(
     cacheKey,
     async () => {
+      if (!url) {
+        return null as T
+      }
       const resp = await get<T>(url)
       return resp.data
     },

@@ -23,12 +23,12 @@ export default function Admin(): JSX.Element {
   return (
     <Box sx={{ display: 'flex' }}>
       <Menu />
-      <Grid item p="1rem">
+      <Box style={{ flexGrow: 1, padding: '1rem', maxWidth: '96w' }}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="data" element={<Data />} />
         </Routes>
-      </Grid>
+      </Box>
     </Box>
   )
 }
