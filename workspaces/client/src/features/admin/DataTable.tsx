@@ -44,7 +44,7 @@ export default function DataTable({ data }: { data?: PagedResult }) {
   }
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(+event.target.value)
+    setRowsPerPage(parseInt(event.target.value))
     setPage(0)
   }
 
@@ -53,15 +53,18 @@ export default function DataTable({ data }: { data?: PagedResult }) {
       sx={{
         height: '100%',
         overflow: 'hidden',
-        maxWidth: '94.5vw',
-        [theme.breakpoints.down('lg')]: {
-          maxWidth: '90vw',
-        },
-        [theme.breakpoints.down('md')]: {
+        maxWidth: '92.5vw',
+        [theme.breakpoints.down('xl')]: {
           maxWidth: '88vw',
         },
+        [theme.breakpoints.down('lg')]: {
+          maxWidth: '84vw',
+        },
+        [theme.breakpoints.down('md')]: {
+          maxWidth: '80vw',
+        },
         [theme.breakpoints.down('sm')]: {
-          maxWidth: '82vw',
+          maxWidth: '78vw',
         },
       }}
     >
@@ -115,7 +118,7 @@ export default function DataTable({ data }: { data?: PagedResult }) {
       <TablePagination
         component="div"
         count={data?.total || 0}
-        rowsPerPage={data?.limit || 0}
+        rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}

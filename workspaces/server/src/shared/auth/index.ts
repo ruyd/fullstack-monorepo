@@ -7,8 +7,7 @@ import config from '../config'
 import { AppAccessToken } from '../types'
 import { ModelConfig } from '../db'
 import logger from '../logger'
-
-// /import { HttpUnauthorizedError } from './errorHandler'
+import { HttpUnauthorizedError } from '../errorHandler'
 
 export interface oAuthError {
   error?: string
@@ -72,11 +71,17 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
     if (hasAuthProvider && config.auth?.algorithm === 'RS256' && header && token) {
       const result = await jwkClient.getSigningKey(header.kid)
       const key = result.getPublicKey()
-      const auth = jwt.verify(token, key, {
-        algorithms: ['RS256'],
-      }) as AppAccessToken
-      if (self.config?.roles?.length && !self.config?.roles?.every(r => auth.roles.includes(r))) {
-        throw Error('Unauthorized - Needs user access role for request')
+      try {
+        const auth = jwt.verify(token, key, {
+          algorithms: ['RS256'],
+        }) as AppAccessToken
+        if (self.config?.roles?.length && !self.config?.roles?.every(r => auth.roles.includes(r))) {
+          throw Error('Unauthorized - Needs user access role for request')
+        }
+      } catch (err) {
+        logger.error(err)
+        const error = err as Error
+        throw new HttpUnauthorizedError(error.message)
       }
       return next()
     }
