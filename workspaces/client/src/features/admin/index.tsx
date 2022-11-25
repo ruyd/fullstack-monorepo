@@ -23,7 +23,7 @@ export default function Admin(): JSX.Element {
   return (
     <Box sx={{ display: 'flex' }}>
       <Menu />
-      <Box style={{ flexGrow: 1, padding: '1rem' }}>
+      <Box style={{ flexGrow: 1, padding: '1rem', display: 'flex' }}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="data" element={<Data />} />

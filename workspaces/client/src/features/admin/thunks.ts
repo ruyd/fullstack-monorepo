@@ -61,14 +61,27 @@ export const get = <T>(url: string, options?: AxiosRequestConfig<T>) =>
  * @param options react-query useQueryOptions
  * @returns
  */
-export const useGet = <T>(cacheKey: string, url: string, options?: UseQueryOptions<T>) =>
+export const useGet = <T>(
+  cacheKey: string,
+  url: string,
+  options?: UseQueryOptions<T>,
+  queryParams?: unknown,
+) =>
   useQuery<T>(
     cacheKey,
     async () => {
       if (!url) {
         return null as T
       }
-      const resp = await get<T>(url)
+      let params = ''
+      if (queryParams) {
+        params =
+          '?' +
+          Object.entries(queryParams)
+            .map(([key, value]) => `${key}=${value}`)
+            .join('&')
+      }
+      const resp = await get<T>(url + params)
       return resp.data
     },
     options,
