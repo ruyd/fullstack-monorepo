@@ -14,18 +14,34 @@ export interface MenuModel {
   icon?: React.ReactNode
   path: string
   children?: MenuModel[]
+  selected?: boolean
 }
 
-export default function MenuItem({ item: { text, icon, children, path } }: { item: MenuModel }) {
+export default function MenuItem({
+  item,
+  onChange,
+}: {
+  item: MenuModel
+  onChange?: (item: MenuModel) => void
+  active?: boolean
+}) {
   const [open, setOpen] = React.useState(true)
-
+  const { text, icon, children, path, selected } = item
   const handleClick = () => {
     setOpen(!open)
+    if (onChange) {
+      onChange(item)
+    }
   }
 
   return (
     <>
-      <ListItemButton onClick={handleClick} component={Link} to={`${config.admin.path}${path}`}>
+      <ListItemButton
+        onClick={handleClick}
+        component={Link}
+        to={`${config.admin.path}${path}`}
+        selected={selected}
+      >
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={text} />
         {children ? open ? <ExpandLess /> : <ExpandMore /> : null}

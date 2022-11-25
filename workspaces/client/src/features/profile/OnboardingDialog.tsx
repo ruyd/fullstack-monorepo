@@ -17,7 +17,7 @@ import { patch } from '../app'
 import Login from './Login'
 import Register from './Register'
 import { GoogleOneTapButton } from './GoogleOneTap'
-import Spacer from '../layout/Spacer'
+import Spacer from '../ui/Spacer'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

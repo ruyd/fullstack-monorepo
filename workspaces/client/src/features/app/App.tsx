@@ -6,7 +6,7 @@ import { applyConfig } from '../../shared/config'
 import { store } from '../../shared/store'
 import config from '../../shared/config'
 import '../../styles/index.css'
-import { MainLayout } from '../layout/MainLayout'
+import { MainLayout } from '../ui/MainLayout'
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, cacheTime: 3000, staleTime: 3000 } },

@@ -101,10 +101,12 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
 /**
  * - 1 level deep
  * - collapse
+ * - active item
  * @returns
  */
 export default function Menu(): JSX.Element {
   const theme = useTheme()
+  const activeMenuItem = useAppSelector(state => state.admin.activeMenuItem)
   const open = useAppSelector(state => state.admin.menuOpen)
   const dispatch = useAppDispatch()
   const handleOpenClose = () => {
@@ -119,6 +121,10 @@ export default function Menu(): JSX.Element {
       user: <PersonSearch />,
     }
     return dict[name] || <ListIcon />
+  }
+
+  const onChange = (item: MenuModel) => {
+    dispatch(patch({ activeMenuItem: item.text }))
   }
 
   const items: MenuModel[] = [
@@ -161,7 +167,12 @@ export default function Menu(): JSX.Element {
       <Divider />
       <List>
         {items.map((item, index) => (
-          <MenuItem key={index} item={item} />
+          <MenuItem
+            key={index}
+            item={item}
+            active={item.text === activeMenuItem}
+            onChange={() => dispatch(patch({ activeMenuItem: item.text }))}
+          />
         ))}
       </List>
       <Divider />

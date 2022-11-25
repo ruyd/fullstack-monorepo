@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { DrawAction } from '@shared/lib'
 // import { useAppSelector } from '../../shared/store'
-import StyledSlider from '../layout/StyledSlider'
+import StyledSlider from '../ui/StyledSlider'
 import Box from '@mui/material/Box'
 
 export default function Player({ buffer }: { buffer: React.RefObject<DrawAction[]> }) {

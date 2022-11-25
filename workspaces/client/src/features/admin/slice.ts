@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PagedResult } from '../../../../lib/src/types'
 
 export interface AdminState {
+  navType?: any
+  activeMenuItem?: string
   menuOpen?: boolean
   loading?: boolean
   loaded?: boolean

@@ -1,7 +1,12 @@
+import { List, ListItemText } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Unstable_Grid2'
 
+/**
+ * Top URLs, Recent Activity, Recent Errors, Active Users
+ * @returns
+ */
 export default function Dashboard() {
   return (
     <Box sx={{ m: '1rem 2.3rem' }}>
@@ -11,7 +16,13 @@ export default function Dashboard() {
             Dashboard
           </Typography>
         </Grid>
-        <Grid xs={12}></Grid>
+        <Grid>
+          <Grid>
+            <List>
+              <ListItemText primary="Active Users" />
+            </List>
+          </Grid>
+        </Grid>
       </Grid>
     </Box>
   )
