@@ -22,9 +22,9 @@ module.exports = {
       setupFiles: ['jest-environment-jsdom'],
       setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
       transform: {
-        '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': '<rootDir>/config/jest/babelTransform.js',
-        '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',
-        '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)': '<rootDir>/config/jest/fileTransform.js',
+        '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': '<rootDir>/tools/jest/babelTransform.js',
+        '^.+\\.css$': '<rootDir>/tools/jest/cssTransform.js',
+        '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)': '<rootDir>/tools/jest/fileTransform.js',
       },
       transformIgnorePatterns: [
         '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$',
