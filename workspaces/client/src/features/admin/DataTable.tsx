@@ -53,10 +53,16 @@ export default function DataTable(
   }
 
   const handleEdit: GridEventListener<'cellEditCommit'> = (params, event) => {
-    console.log('handleEdit', params, event)
+    const value = (event as { target: { value: unknown } }).target.value
+    const { id, field } = params
+    console.log('handleEdit', id, field, value)
     if (onEdit) {
-      onEdit(params)
+      onEdit({ id, field, value })
     }
+  }
+
+  const handleOther: GridEventListener<'cellEditCommit'> = (params, event) => {
+    console.log('handleOther', params, event)
   }
 
   return (
@@ -81,7 +87,7 @@ export default function DataTable(
         loading={loading}
         experimentalFeatures={{ newEditingApi: true }}
         getRowId={row => row[Object.keys(row)[0]]}
-        onCellEditCommit={handleEdit}
+        onCellEditStop={handleEdit}
         // hideFooterPagination
         // hideFooter
         onPageChange={handleChangePage}

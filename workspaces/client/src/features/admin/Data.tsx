@@ -3,8 +3,8 @@
 import Box from '@mui/material/Box'
 import config from 'src/shared/config'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
-import { loadDataAsync, useGet } from './thunks'
-import React from 'react'
+import { loadDataAsync, request, useGet } from './thunks'
+import React, { ChangeEvent } from 'react'
 import _ from 'lodash'
 import {
   Alert,
@@ -13,11 +13,14 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  debounce,
 } from '@mui/material'
 import { useSearchParams } from 'react-router-dom'
 import { PagedResult, GridPatchProps } from '@shared/lib'
 import DataTable from './DataTable'
 import SearchIcon from '@mui/icons-material/Search'
+import { Method } from '../app/thunks'
+import { notify } from '../app'
 
 const excluded = ['history']
 
@@ -27,6 +30,7 @@ export interface PagingProps {
 }
 
 export default function Data() {
+  const dispatch = useAppDispatch()
   const [searchParams] = useSearchParams()
   const [searchText, setSearchText] = React.useState('')
   const model = searchParams.get('model') || ''
@@ -41,9 +45,17 @@ export default function Data() {
   )
   const modelPlural = !model ? '' : _.capitalize(model) + (model?.endsWith('s') ? '' : 's')
 
-  const onEdit = (params: GridPatchProps) => {
-    console.log('onEdit patch to server field props, like lean op to end', params)
+  const onEdit = async (params: GridPatchProps) => {
+    const response = await request(`${model}`, params, Method.PATCH)
+    if (response) {
+      dispatch(notify('Updated'))
+    }
   }
+
+  const handleSearch: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> =
+    React.useCallback(e => {
+      setSearchText(e.target.value)
+    }, [])
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
@@ -59,6 +71,7 @@ export default function Data() {
             variant="filled"
             fullWidth
             value={searchText}
+            onChange={handleSearch}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

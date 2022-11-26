@@ -2,7 +2,7 @@ import express from 'express'
 import { Model, ModelStatic, Order } from 'sequelize/types'
 import { Connection, ModelConfig } from '../db'
 import { getAuthWare, ReqWithAuth } from '../auth'
-import { createOrUpdate, getIfExists, list } from './controller'
+import { createOrUpdate, getIfExists, gridPatch, list } from './controller'
 import logger from '../logger'
 
 export interface modelApiConfig {
@@ -38,6 +38,30 @@ export async function saveHandler(this: typeof Model, req: express.Request, res:
     req.body[modelApiConfig.userIdColumn] = authId
   }
   const result = await createOrUpdate(model, req.body)
+  res.json(result)
+}
+
+export async function gridPatchHandler(
+  this: typeof Model,
+  req: express.Request,
+  res: express.Response,
+) {
+  if (!this) {
+    throw new Error('this is not defined')
+  }
+  if (!req.body) {
+    res.status(400).send('Request body is missing')
+  }
+  const model = this as ModelStatic<Model>
+  const authId = modelApiConfig.getAuthUserId(req)
+  if (
+    authId &&
+    Object.keys(model.getAttributes()).includes(modelApiConfig.userIdColumn) &&
+    !req.body[modelApiConfig.userIdColumn]
+  ) {
+    req.body[modelApiConfig.userIdColumn] = authId
+  }
+  const result = await gridPatch(model, req.body)
   res.json(result)
 }
 
@@ -148,5 +172,6 @@ export function registerModelApiRoutes(models: ModelStatic<Model>[], router: exp
     router.get(`/${prefix}/:id`, readCheck, getHandler.bind(model))
     router.post(`/${prefix}`, writeCheck, saveHandler.bind(model))
     router.delete(`/${prefix}/:id`, writeCheck, deleteHandler.bind(model))
+    router.patch(`/${prefix}`, writeCheck, gridPatchHandler.bind(model))
   }
 }

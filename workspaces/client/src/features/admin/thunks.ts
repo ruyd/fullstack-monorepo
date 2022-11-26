@@ -5,7 +5,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import config from 'src/shared/config'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { loginPrompt } from 'src/shared/auth'
-import { PagedResult } from '../../../../lib/src/types'
+import { GridPatchProps, PagedResult } from '@shared/lib'
 import { RootState, store } from '../../shared/store'
 import { Method, notifyError } from '../app'
 import { patch as patchApp } from '../app'
@@ -73,19 +73,21 @@ export const useGet = <T>(
       if (!url) {
         return null as T
       }
-      let params = ''
-      if (queryParams) {
-        params =
-          '?' +
-          Object.entries(queryParams)
-            .map(([key, value]) => `${key}=${value}`)
-            .join('&')
-      }
+      const params = convertToQueryParams(queryParams)
       const resp = await get<T>(url + params)
       return resp.data
     },
     options,
   )
+
+export function convertToQueryParams(obj: unknown | undefined) {
+  return obj
+    ? '?' +
+        Object.entries(obj)
+          .map(([key, value]) => `${key}=${value}`)
+          .join('&')
+    : ''
+}
 
 export const loadDataAsync = createAsyncThunk(
   'admin/data/read',

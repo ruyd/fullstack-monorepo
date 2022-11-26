@@ -131,7 +131,7 @@ export default function Menu(): JSX.Element {
     { text: 'Dashboard', icon: <AdbIcon />, path: '/' },
     { text: 'Users', icon: <PersonSearch />, path: '/' },
     {
-      text: 'Storage',
+      text: 'Data',
       icon: <StorageIcon />,
       path: '/data',
       children: config.admin.models?.map(model => ({

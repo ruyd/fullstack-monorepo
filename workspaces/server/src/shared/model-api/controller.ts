@@ -80,7 +80,7 @@ export async function gridPatch<T extends object>(
     return item.get()
   } catch (e: unknown) {
     const err = e as Error
-    logger.error(`${model.name}.createOrUpdate(): ${err.message}`, err)
+    logger.error(`${model.name}.gridPatch(): ${err.message}`, err)
     throw new Error(err.message)
   }
 }
