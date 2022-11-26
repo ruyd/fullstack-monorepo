@@ -90,6 +90,8 @@ export async function social(req: express.Request, res: express.Response) {
 
   if (user && user.picture !== picture) {
     user.picture = picture
+    user.firstName = given_name
+    user.lastName = family_name
     instance?.update(user)
   }
 
