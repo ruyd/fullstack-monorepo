@@ -18,6 +18,8 @@ module.exports = {
       moduleNameMapper: {
         uuid: require.resolve('uuid'), // ???
         ...pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
+        '^react-native$': 'react-native-web',
+        '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
       },
       setupFiles: ['jest-environment-jsdom'],
       setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],

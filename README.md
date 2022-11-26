@@ -1,6 +1,6 @@
 # Drawspace - Fullstack Canvas Drawing App
 
-## TypeScript Sample Monorepo
+## TypeScript Starter
 
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml)
 [![Demo](https://img.shields.io/badge/Deployment-GITHUB%20PAGES-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
@@ -8,13 +8,13 @@
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
 [![Demo](https://img.shields.io/badge/Deployment-HEROKU-GREEN.svg)](https://drawspace-api.herokuapp.com/docs)
 
-### Best Practices Template 🙌
+### Best Practices with Scalability Template 🙌
 
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/workspaces/client/src/features/home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
 
 ### Developer Experience 💕😎✨
 - VSCode concurrent separate terminals debugging client, server and tests
-- Super Fast Webpack Hot Reloading with Cache
+- Super Fast Webpack Hot Reloading with Cache (except devServer cold start...)
 - Git Pre-Push Hook that run tests and blocks bad commits
 - Repositoryless shared code packages (bundled by webpack)
 - Deploy Ready Actions for AWS, GCP, Azure (Bucket + Functions|Container)
@@ -28,6 +28,9 @@
 - Sequelize
 - Webpack
 - Jest and Docker
+- Auth0
+- socket.io
+- pos
 
 ### Quick Start
 

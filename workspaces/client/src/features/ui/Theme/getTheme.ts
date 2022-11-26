@@ -7,8 +7,7 @@ import {
 } from '@mui/material/styles'
 import { Typography } from '@mui/material/styles/createTypography'
 import { CSSProperties } from '@mui/styled-engine'
-import './scss/index.module.scss'
-import colors from './scss/colors.module.scss'
+import colors from 'colors.module.scss'
 
 declare module '@mui/material/styles' {
   interface PaletteOptions {
