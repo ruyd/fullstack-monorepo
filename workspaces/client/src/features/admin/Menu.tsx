@@ -136,7 +136,6 @@ export default function Menu(): JSX.Element {
     {
       text: 'Data',
       icon: <StorageIcon />,
-      path: '',
       children: config.admin.models?.map(model => ({
         text: model,
         path: `/data?model=${model}`,

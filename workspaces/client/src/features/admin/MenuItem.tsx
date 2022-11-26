@@ -12,7 +12,7 @@ import { config } from 'src/shared/config'
 export interface MenuModel {
   text: string
   icon?: React.ReactNode
-  path: string
+  path?: string
   children?: MenuModel[]
   selected?: boolean
 }
@@ -33,14 +33,17 @@ export default function MenuItem({
       onChange(item)
     }
   }
-  const linkProps = () => ({
-    to: config.admin.path + path,
-    component: Link,
-  })
+  const linkProps = () =>
+    path
+      ? {
+          component: Link,
+          to: config.admin.path + path,
+        }
+      : {}
 
   return (
     <>
-      <ListItemButton onClick={handleClick} {...linkProps} selected={selected}>
+      <ListItemButton onClick={handleClick} {...linkProps()} selected={selected}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={text} />
         {children ? open ? <ExpandLess /> : <ExpandMore /> : null}
