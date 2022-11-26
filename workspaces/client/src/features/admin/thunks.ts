@@ -70,6 +70,7 @@ export const useGet = <T>(
   useQuery<T>(
     cacheKey,
     async () => {
+      console.log('useGet', url, queryParams)
       if (!url) {
         return null as T
       }

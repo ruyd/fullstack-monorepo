@@ -138,10 +138,12 @@ export function loadScriptAndInit({
 export const renderButton = (el: HTMLElement) => {
   const tap = (window as WindowWithGoogle).google?.accounts?.id
   if (!tap) {
-    throw new Error('Google One Tap not initialized')
+    console.error('Google One Tap not initialized')
+    return
   }
   if (!el) {
-    throw new Error(`Google button el not found`)
+    console.error(`Google button el not found`)
+    return
   }
   tap.renderButton(el, {
     type: 'standard',
@@ -157,7 +159,8 @@ export const prompt = () => {
   // eslint-disable-next-line no-console
   console.log('tap', tap)
   if (!tap) {
-    throw new Error('Google One Tap not initialized')
+    console.error('Google One Tap not initialized')
+    return
   }
   tap.initialize(initOptions)
   tap.prompt()

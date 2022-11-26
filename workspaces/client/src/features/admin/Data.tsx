@@ -14,6 +14,10 @@ import {
   TextField,
   Typography,
   debounce,
+  ButtonGroup,
+  Button,
+  IconButton,
+  Grid,
 } from '@mui/material'
 import { useSearchParams } from 'react-router-dom'
 import { PagedResult, GridPatchProps } from '@shared/lib'
@@ -21,6 +25,9 @@ import DataTable from './DataTable'
 import SearchIcon from '@mui/icons-material/Search'
 import { Method } from '../app/thunks'
 import { notify } from '../app'
+import { DeleteForever } from '@mui/icons-material'
+import Spacer from '../ui/Spacer'
+import AlertDialog, { AlertDialogProps } from './AlertDialog'
 
 const excluded = ['history']
 
@@ -33,16 +40,24 @@ export default function Data() {
   const dispatch = useAppDispatch()
   const [searchParams] = useSearchParams()
   const [searchText, setSearchText] = React.useState('')
+  const [selectedItems, setSelectedItems] = React.useState<(string | number)[]>([])
   const model = searchParams.get('model') || ''
   const [paging, setPaging] = React.useState<PagingProps>({ limit: 100, page: 0 })
-  const { data, isLoading, error } = useGet<PagedResult>(
+  const [alert, setAlert] = React.useState<AlertDialogProps>({
+    open: false,
+  })
+  const { data, isLoading, error, refetch } = useGet<PagedResult>(
     model,
     `${model}`,
     {
       enabled: !!model,
     },
-    paging,
+    {
+      ...paging,
+      search: searchText,
+    },
   )
+  const refresh = React.useMemo(() => debounce(refetch, 500), [refetch])
   const modelPlural = !model ? '' : _.capitalize(model) + (model?.endsWith('s') ? '' : 's')
 
   const onEdit = async (params: GridPatchProps) => {
@@ -52,18 +67,49 @@ export default function Data() {
     }
   }
 
-  const handleSearch: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> =
-    React.useCallback(e => {
-      setSearchText(e.target.value)
-    }, [])
+  const handleSearch: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = e => {
+    setSearchText(e.target.value)
+    refresh()
+  }
+
+  const handleDelete = () => {
+    setAlert({
+      open: true,
+      message: `Are you sure you want to delete ${selectedItems.length} ${modelPlural}?`,
+      title: 'Confirm',
+      onConfirm: () => handleDeleteConfirm(),
+      onCancel: () => setAlert({ open: false }),
+    })
+  }
+
+  const handleDeleteConfirm = async () => {
+    const response = await request<{ success: boolean }>(
+      `${model}`,
+      { ids: selectedItems },
+      Method.DELETE,
+    )
+    if (response.data?.success) {
+      dispatch(notify('Deleted ' + selectedItems.length + ' item(s)'))
+      setAlert({ open: false })
+      refresh()
+    }
+  }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
       <>
-        <Typography variant="h5" component="h1" align="center" gutterBottom>
-          {modelPlural} ({data?.total || 0})
-        </Typography>
-        {isLoading && <CircularProgress />}
+        <Box sx={{ display: 'flex' }}>
+          <Typography variant="h5" component="h1" align="center" gutterBottom marginLeft={1}>
+            {modelPlural} ({data?.total || 0})
+          </Typography>
+          <Spacer />
+          <ButtonGroup sx={{ mb: 1 }}>
+            <Button onClick={handleDelete}>
+              Delete
+              <DeleteForever />
+            </Button>
+          </ButtonGroup>
+        </Box>
         {error && <Alert>{JSON.stringify(error)}</Alert>}
         <Box>
           <TextField
@@ -87,6 +133,7 @@ export default function Data() {
           paging={paging}
           onPaging={newValues => setPaging(newValues as PagingProps)}
           onEdit={onEdit}
+          onSelectionChange={(selection: (string | number)[]) => setSelectedItems(selection)}
         />
         {/* <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         - enable editing?
@@ -95,6 +142,13 @@ export default function Data() {
         - too cool to not use 
       </AppBar> */}
       </>
+      <AlertDialog
+        open={alert.open}
+        message={alert.message}
+        title={alert.title}
+        onConfirm={alert.onConfirm}
+        onCancel={alert.onCancel}
+      />
     </Box>
   )
 }

@@ -4,6 +4,7 @@ import { PagedResult } from '../types'
 import { GridPatchProps } from '@shared/lib'
 import { HttpNotFoundError } from '../errorHandler'
 import logger from '../logger'
+import sequelize from 'sequelize'
 
 export async function list<T extends {}>(
   model: ModelStatic<Model<T>>,
@@ -78,6 +79,26 @@ export async function gridPatch<T extends object>(
     } as T)
     item.save()
     return item.get()
+  } catch (e: unknown) {
+    const err = e as Error
+    logger.error(`${model.name}.gridPatch(): ${err.message}`, err)
+    throw new Error(err.message)
+  }
+}
+
+export async function gridDelete<T extends object>(
+  model: ModelStatic<Model<T>>,
+  payload: { ids: string[] },
+): Promise<{ success: boolean }> {
+  try {
+    model.destroy({
+      where: {
+        [model.primaryKeyAttribute]: {
+          [sequelize.Op.in]: payload.ids,
+        },
+      } as sequelize.WhereOptions<T>,
+    })
+    return { success: true }
   } catch (e: unknown) {
     const err = e as Error
     logger.error(`${model.name}.gridPatch(): ${err.message}`, err)

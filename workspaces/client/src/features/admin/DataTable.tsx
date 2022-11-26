@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper'
 import _ from 'lodash'
 import { Box, useTheme } from '@mui/material'
 import { GridPatchProps, PagedResult } from '@shared/lib'
-import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid'
+import { DataGrid, GridColDef, GridEventListener, GridSelectionModel } from '@mui/x-data-grid'
 import { PagingProps } from './Data'
 
 const excluded = ['history']
@@ -17,12 +17,14 @@ export default function DataTable(
     paging,
     onPaging,
     onEdit,
+    onSelectionChange,
   }: {
     loading?: boolean
     data?: PagedResult
     paging: PagingProps
     onPaging?: (newValues: Partial<PagingProps>) => void
     onEdit?: (params: GridPatchProps) => void
+    onSelectionChange?: (selectedItems: (string | number)[]) => void
   } = { paging: { limit: 100, page: 1 } },
 ) {
   const theme = useTheme()
@@ -88,8 +90,11 @@ export default function DataTable(
         experimentalFeatures={{ newEditingApi: true }}
         getRowId={row => row[Object.keys(row)[0]]}
         onCellEditStop={handleEdit}
-        // hideFooterPagination
-        // hideFooter
+        onSelectionModelChange={newSelectionModel => {
+          if (onSelectionChange) {
+            onSelectionChange(newSelectionModel || [])
+          }
+        }}
         onPageChange={handleChangePage}
         onPageSizeChange={handleChangeRowsPerPage}
       />

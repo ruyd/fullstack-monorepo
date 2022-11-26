@@ -2,7 +2,7 @@ import express from 'express'
 import { Model, ModelStatic, Order } from 'sequelize/types'
 import { Connection, ModelConfig } from '../db'
 import { getAuthWare, ReqWithAuth } from '../auth'
-import { createOrUpdate, getIfExists, gridPatch, list } from './controller'
+import { createOrUpdate, getIfExists, gridPatch, gridDelete, list } from './controller'
 import logger from '../logger'
 
 export interface modelApiConfig {
@@ -62,6 +62,19 @@ export async function gridPatchHandler(
     req.body[modelApiConfig.userIdColumn] = authId
   }
   const result = await gridPatch(model, req.body)
+  res.json(result)
+}
+
+export async function gridDeleteHandler(
+  this: ModelStatic<Model>,
+  req: express.Request,
+  res: express.Response,
+) {
+  if (!this) {
+    throw new Error('this is not defined')
+  }
+  const model = this as ModelStatic<Model>
+  const result = await gridDelete(model, req.body)
   res.json(result)
 }
 
@@ -173,5 +186,6 @@ export function registerModelApiRoutes(models: ModelStatic<Model>[], router: exp
     router.post(`/${prefix}`, writeCheck, saveHandler.bind(model))
     router.delete(`/${prefix}/:id`, writeCheck, deleteHandler.bind(model))
     router.patch(`/${prefix}`, writeCheck, gridPatchHandler.bind(model))
+    router.delete(`/${prefix}`, writeCheck, gridDeleteHandler.bind(model))
   }
 }
