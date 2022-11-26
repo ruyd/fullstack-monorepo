@@ -24,31 +24,34 @@ declare module '@mui/material/styles' {
 }
 
 export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
-  // const options: ThemeOptions = {
-  //   ...colorOptions,
-
-  //   state,
-  // }
-
   const themeOptions: ThemeOptions = {
     direction: 'ltr',
     palette: {
       mode: darkMode ? 'dark' : 'light',
     },
     mixins: {
-      toolbar: {
-        //   minHeight: '48px',
-        //   padding: '16px',
-        //   '@media (min-width: 600px)': {
-        //     minHeight: '48px',
-        //   },
+      toolbar: {},
+    },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          '*::-webkit-scrollbar': {
+            width: '12px',
+          },
+          '*::-webkit-scrollbar-track': {
+            background: darkMode ? '#646464' : '#e0e0e0',
+          },
+          '*::-webkit-scrollbar-thumb': {
+            background: darkMode ? '#242424' : '#b0b0b0',
+            borderRadius: '2px',
+          },
+        },
       },
     },
   }
 
-  const themes = createTheme(themeOptions)
-  //const components = componentStyleOverrides(themeOptions)
-  return { ...themes }
+  const theme = createTheme(themeOptions)
+  return { ...theme }
 }
 
 export default getTheme

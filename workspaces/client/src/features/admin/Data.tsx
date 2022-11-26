@@ -28,6 +28,7 @@ export interface PagingProps {
 
 export default function Data() {
   const [searchParams] = useSearchParams()
+  const [searchText, setSearchText] = React.useState('')
   const model = searchParams.get('model') || ''
   const [paging, setPaging] = React.useState<PagingProps>({ limit: 100, page: 0 })
   const { data, isLoading, error } = useGet<PagedResult>(
@@ -57,6 +58,7 @@ export default function Data() {
             placeholder="Search..."
             variant="filled"
             fullWidth
+            value={searchText}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
