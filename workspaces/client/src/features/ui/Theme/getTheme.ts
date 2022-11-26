@@ -112,6 +112,11 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
     state,
   }
 
+  // jest doesn't like customized createTheme
+  if (process.env.NODE_ENV === 'test') {
+    return createTheme()
+  }
+
   const theme = createTheme(themeOptions)
   return { ...theme }
 }
