@@ -76,6 +76,7 @@ export function onLogin(payload?: { token: string; user: AppUser }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   } else {
     localStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem('redux_localstorage_simple')
   }
   setHeader(payload?.token)
   clearNonce()

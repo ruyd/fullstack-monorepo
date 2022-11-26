@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import Box from '@mui/material/Box'
-import config from 'src/shared/config'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
-import { loadDataAsync, request, useGet } from './thunks'
-import React, { ChangeEvent } from 'react'
+import { useAppDispatch } from 'src/shared/store'
+import React from 'react'
+import { request, useGet } from '../app'
 import _ from 'lodash'
 import {
   Alert,
@@ -27,7 +26,7 @@ import { Method } from '../app/thunks'
 import { notify } from '../app'
 import { DeleteForever } from '@mui/icons-material'
 import Spacer from '../ui/Spacer'
-import AlertDialog, { AlertDialogProps } from './AlertDialog'
+import AlertDialog, { AlertDialogProps } from '../ui/AlertDialog'
 
 const excluded = ['history']
 
@@ -97,6 +96,11 @@ export default function Data() {
     dispatch(notify('Failed to delete: ' + response.statusText))
   }
 
+  const handlePaging = (newValues: Partial<PagingProps>) => {
+    setPaging(newValues as PagingProps)
+    refresh()
+  }
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
       <>
@@ -106,7 +110,7 @@ export default function Data() {
           </Typography>
           <Spacer />
           <ButtonGroup sx={{ mb: 1 }}>
-            <Button onClick={handleDelete}>
+            <Button onClick={handleDelete} disabled={!selectedItems.length}>
               Delete
               <DeleteForever />
             </Button>
@@ -133,7 +137,7 @@ export default function Data() {
           loading={isLoading}
           data={data}
           paging={paging}
-          onPaging={newValues => setPaging(newValues as PagingProps)}
+          onPaging={handlePaging}
           onEdit={onEdit}
           onSelectionChange={(selection: (string | number)[]) => setSelectedItems(selection)}
         />

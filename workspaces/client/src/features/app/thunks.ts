@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import { Auth0Error } from 'auth0-js'
-import axios, { AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, onLogin, getAuthProvider, loginPrompt } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
@@ -21,12 +21,18 @@ export enum Method {
 export async function request<
   R = { success: boolean; message: string },
   T = Record<string, unknown>,
->(url: string, data?: T, method: Method = Method.POST): Promise<AxiosResponse<R>> {
+>(
+  url: string,
+  data?: T,
+  method: Method = Method.POST,
+  options?: AxiosRequestConfig<R>,
+): Promise<AxiosResponse<R>> {
   let response: AxiosResponse<R>
   const dispatch = store.dispatch
   try {
     dispatch(patch({ loading: true }))
     response = await axios({
+      ...options,
       url,
       data,
       method,
@@ -49,7 +55,16 @@ export async function request<
   return response
 }
 
-export const get = <T>(url: string) => request<T>(url, {}, Method.GET)
+/**
+ * Generic API GET Hook for components
+ * @param cacheKey
+ * @param url
+ * @param options react-query useQueryOptions
+ * @returns
+ */
+
+export const get = <T>(url: string, options?: AxiosRequestConfig<T>) =>
+  request<T>(url, {}, Method.GET, options)
 
 /**
  * Generic API GET Hook for components
@@ -58,15 +73,34 @@ export const get = <T>(url: string) => request<T>(url, {}, Method.GET)
  * @param options react-query useQueryOptions
  * @returns
  */
-export const useGet = <T>(cacheKey: string, url: string, options?: UseQueryOptions<T>) =>
+export const useGet = <T>(
+  cacheKey: string,
+  url: string,
+  options?: UseQueryOptions<T>,
+  queryParams?: unknown,
+) =>
   useQuery<T>(
     cacheKey,
     async () => {
-      const resp = await get<T>(url)
+      console.log('useGet', url, queryParams)
+      if (!url) {
+        return null as T
+      }
+      const params = convertToQueryParams(queryParams)
+      const resp = await get<T>(url + params)
       return resp.data
     },
     options,
   )
+
+export function convertToQueryParams(obj: unknown | undefined) {
+  return obj
+    ? '?' +
+        Object.entries(obj)
+          .map(([key, value]) => `${key}=${value}`)
+          .join('&')
+    : ''
+}
 
 function setLogin(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
