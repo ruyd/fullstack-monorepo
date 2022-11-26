@@ -1,11 +1,23 @@
-import { createTheme, Palette, Theme, ThemeOptions } from '@mui/material/styles'
+import {
+  createTheme,
+  Palette,
+  PaletteColorOptions,
+  Theme,
+  ThemeOptions,
+} from '@mui/material/styles'
 import { Typography } from '@mui/material/styles/createTypography'
 import { CSSProperties } from '@mui/styled-engine'
+import './scss/index.module.scss'
+import colors from './scss/colors.module.scss'
 
 declare module '@mui/material/styles' {
+  interface PaletteOptions {
+    orange?: PaletteColorOptions
+    dark?: PaletteColorOptions
+  }
   interface Theme {
     state?: ThemeState
-    palette: Palette & { orange?: Palette['primary'] }
+    palette: Palette & { orange: Palette['primary'] }
     typography: Typography & {
       commonAvatar?: CSSProperties
       largeAvatar?: CSSProperties
@@ -25,6 +37,59 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
     direction: 'ltr',
     palette: {
       mode: darkMode ? 'dark' : 'light',
+      common: {
+        black: colors?.darkPaper,
+      },
+      primary: {
+        light: colors?.primaryLight,
+        main: colors?.primaryMain,
+        dark: colors?.primaryDark,
+        200: colors?.primary200,
+        800: colors?.primary800,
+      },
+      secondary: {
+        light: colors?.secondaryLight,
+        main: colors?.secondaryMain,
+        dark: colors?.secondaryDark,
+        200: colors?.secondary200,
+        800: colors?.secondary800,
+      },
+      error: {
+        light: colors?.errorLight,
+        main: colors?.errorMain,
+        dark: colors?.errorDark,
+      },
+      orange: {
+        light: colors?.orangeLight,
+        main: colors?.orangeMain,
+        dark: colors?.orangeDark,
+      },
+      warning: {
+        light: colors?.warningLight,
+        main: colors?.warningMain,
+        dark: colors?.warningDark,
+      },
+      success: {
+        light: colors?.successLight,
+        200: colors?.success200,
+        main: colors?.successMain,
+        dark: colors?.successDark,
+      },
+      grey: {
+        50: colors?.grey50,
+        100: colors?.grey100,
+        500: colors?.darkTextSecondary,
+        600: colors?.heading,
+        700: colors?.darkTextPrimary,
+        900: colors?.textDark,
+      },
+      dark: {
+        light: colors?.darkTextPrimary,
+        main: colors?.darkLevel1,
+        dark: colors?.darkLevel2,
+        800: colors?.darkBackground,
+        900: colors?.darkPaper,
+      },
     },
     mixins: {
       toolbar: {},

@@ -28,6 +28,7 @@ import {
   VerifiedUserSharp,
 } from '@mui/icons-material'
 import MenuItem, { MenuModel } from './MenuItem'
+import { Button } from '@mui/material'
 
 const drawerWidth = 250
 
@@ -135,7 +136,7 @@ export default function Menu(): JSX.Element {
     {
       text: 'Data',
       icon: <StorageIcon />,
-      path: '/data',
+      path: '',
       children: config.admin.models?.map(model => ({
         text: model,
         path: `/data?model=${model}`,
@@ -160,7 +161,9 @@ export default function Menu(): JSX.Element {
               marginRight: '-1.5rem',
             }}
           >
-            ADMIN
+            <Button fullWidth onClick={handleOpenClose}>
+              ADMIN
+            </Button>
           </Typography>
         )}
 

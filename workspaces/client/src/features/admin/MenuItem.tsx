@@ -33,15 +33,14 @@ export default function MenuItem({
       onChange(item)
     }
   }
+  const linkProps = () => ({
+    to: config.admin.path + path,
+    component: Link,
+  })
 
   return (
     <>
-      <ListItemButton
-        onClick={handleClick}
-        component={Link}
-        to={`${config.admin.path}${path}`}
-        selected={selected}
-      >
+      <ListItemButton onClick={handleClick} {...linkProps} selected={selected}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={text} />
         {children ? open ? <ExpandLess /> : <ExpandMore /> : null}

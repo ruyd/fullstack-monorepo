@@ -16,8 +16,7 @@
   "exclude": ["dist", "node_modules", "../../node_modules"],
   "references": [
     {
-      "path": "../lib/tsconfig.json",
-      "prepend": true
+      "path": "../lib/tsconfig.json"
     }
   ]
 }
