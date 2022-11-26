@@ -83,11 +83,15 @@ export async function social(req: express.Request, res: express.Response) {
   const decoded = decode(idToken) as IdentityToken
   const { email, given_name, family_name, picture } = decoded
 
-  let user = (
-    await UserModel.findOne({
-      where: { email },
-    })
-  )?.get()
+  const instance = await UserModel.findOne({
+    where: { email },
+  })
+  let user = instance?.get()
+
+  if (user && user.picture !== picture) {
+    user.picture = picture
+    instance?.update(user)
+  }
 
   if (!user) {
     user = await createOrUpdate(UserModel, {
