@@ -87,12 +87,17 @@ export async function social(req: express.Request, res: express.Response) {
     where: { email },
   })
   let user = instance?.get()
-
-  if (user && user.picture !== picture) {
-    user.picture = picture
-    user.firstName = given_name
-    user.lastName = family_name
-    instance?.update(user)
+  if (user) {
+    if (
+      user.picture !== picture ||
+      user.firstName !== given_name ||
+      user.lastName !== family_name
+    ) {
+      user.picture = picture
+      user.firstName = given_name
+      user.lastName = family_name
+      instance?.update(user)
+    }
   }
 
   if (!user) {
