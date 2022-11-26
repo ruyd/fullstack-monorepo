@@ -1,28 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { createTheme, Palette, Theme, ThemeOptions } from '@mui/material/styles'
-import { Typography } from '@mui/material/styles/createTypography'
-import { CSSProperties } from '@mui/styled-engine'
-
-export interface ThemeState {
-  gridSpacing?: number
-}
+import { createTheme, Theme, ThemeOptions } from '@mui/material/styles'
 
 declare module '@mui/material/styles' {
   interface Theme {
     state?: ThemeState
-    palette: Palette & { orange?: Palette['primary'] }
-    typography: Typography & {
-      commonAvatar?: CSSProperties
-      largeAvatar?: CSSProperties
-      mediumAvatar?: CSSProperties
-      smallAvatar?: CSSProperties
-    }
   }
   interface ThemeOptions {
     state?: ThemeState
   }
 }
 
+export interface ThemeState {
+  gridSpacing?: number
+}
 export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
   const themeOptions: ThemeOptions = {
     direction: 'ltr',
@@ -48,6 +37,7 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
         },
       },
     },
+    state,
   }
 
   const theme = createTheme(themeOptions)
