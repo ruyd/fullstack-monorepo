@@ -7,7 +7,7 @@ import {
 } from '@mui/material/styles'
 import { Typography } from '@mui/material/styles/createTypography'
 import { CSSProperties } from '@mui/styled-engine'
-import colors from 'colors.module.scss'
+import colors from './colors.module.scss'
 
 declare module '@mui/material/styles' {
   interface PaletteOptions {
@@ -112,7 +112,7 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
     state,
   }
 
-  // jest doesn't like customized createTheme
+  // jest doesn't like css vars
   if (process.env.NODE_ENV === 'test') {
     return createTheme()
   }
