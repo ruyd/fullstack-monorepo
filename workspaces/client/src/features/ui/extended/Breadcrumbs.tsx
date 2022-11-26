@@ -9,7 +9,7 @@ import { gridSpacing } from 'src/shared/constant'
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
 import HomeIcon from '@mui/icons-material/Home'
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone'
-import config from 'src/shared/config'
+import { config } from 'src/shared/config'
 
 const linkSX = {
   display: 'flex',

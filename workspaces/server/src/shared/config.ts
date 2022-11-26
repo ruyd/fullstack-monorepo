@@ -18,16 +18,23 @@ export interface Config {
   jsonLimit: string
   certFile?: string
   certKeyFile?: string
+  cors: {
+    origin: string
+  }
   db: {
     name: string
     url: string
     schema: string
     ssl: boolean
+    sync: boolean
     force: boolean
     alter: boolean
+    trace: boolean
     models: string[]
   }
   auth: {
+    sync: boolean
+    trace: boolean
     tokenSecret?: string
     tenant: string
     domain: string
@@ -61,7 +68,7 @@ logger.info(`process.env.PORT: ${process.env.PORT} ⚡️`)
 const port = Number(process.env.PORT) || Number(envi(serviceConfig.service.port))
 const hostname = envi(serviceConfig.service.host) as string
 const protocol = envi(serviceConfig.service.protocol) as string
-const config: Config = {
+export const config: Config = {
   trace: false,
   production,
   isLocalhost,
@@ -72,9 +79,14 @@ const config: Config = {
   certKeyFile: process.env.SSL_KEY_FILE,
   port,
   jsonLimit: process.env.JSON_LIMIT || '1mb',
+  cors: {
+    origin: process.env.CORS_ORIGIN || '*',
+  },
   db: {
+    sync: true,
     force: false,
-    alter: false,
+    alter: true,
+    trace: false,
     name: database as string,
     url: DB_URL as string,
     schema: schema as string,
@@ -82,6 +94,8 @@ const config: Config = {
     models: [],
   },
   auth: {
+    sync: true,
+    trace: false,
     tokenSecret: process.env.TOKEN_SECRET || 'blank',
     tenant: process.env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
     domain: `${process.env.AUTH_TENANT}.auth0.com`,

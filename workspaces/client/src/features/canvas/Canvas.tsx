@@ -3,7 +3,7 @@ import React from 'react'
 import { ActionType } from '@shared/lib'
 import { adjustToResolution, setBrushDefaults } from './helpers'
 import { useAppSelector } from '../../shared/store'
-import config from '../../shared/config'
+import { config } from '../../shared/config'
 
 export function Canvas({
   canvasRef,

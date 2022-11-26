@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { applyConfig } from '../../shared/config'
 import { store } from '../../shared/store'
-import config from '../../shared/config'
+import { config } from '../../shared/config'
 import '../../styles/index.css'
 import { MainLayout } from '../ui/MainLayout'
 

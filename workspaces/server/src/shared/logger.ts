@@ -1,6 +1,6 @@
 import axios from 'axios'
 import winston from 'winston'
-import config from './config'
+import { config } from './config'
 
 const format = winston.format.combine(winston.format.timestamp(), winston.format.simple())
 const logger = winston.createLogger({

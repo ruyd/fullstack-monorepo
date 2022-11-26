@@ -1,4 +1,4 @@
-export * from './models'
+export * from './drawing'
 export * from './user'
 import { JwtPayload } from 'jsonwebtoken'
 

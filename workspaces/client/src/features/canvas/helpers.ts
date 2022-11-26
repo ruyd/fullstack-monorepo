@@ -1,5 +1,5 @@
 import { Drawing } from '@shared/lib'
-import config from '../../shared/config'
+import { config } from '../../shared/config'
 
 export function setBrushDefaults(
   context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,

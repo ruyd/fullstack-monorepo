@@ -3,7 +3,7 @@ import express from 'express'
 import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
-import config from '../config'
+import { config } from '../config'
 import { AppAccessToken } from '../types'
 import { ModelConfig } from '../db'
 import logger from '../logger'
@@ -266,7 +266,9 @@ export async function lazyLoadManagementToken(): Promise<boolean> {
     },
   )
 
-  logger.info('response' + JSON.stringify(response.data))
+  if (config.trace) {
+    logger.info('response' + JSON.stringify(response.data))
+  }
 
   if (response.data.access_token) {
     config.auth.manageToken = response.data.access_token

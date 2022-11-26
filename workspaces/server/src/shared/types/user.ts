@@ -25,3 +25,26 @@ export const UserAttributes = {
 }
 
 export const UserModel = register<User>('user', UserAttributes)
+
+export interface UserActive {
+  socketId: string
+  userId: string
+  ip?: string
+  userAgent?: string
+}
+
+export const UserActiveModel = register<UserActive>('user_active', {
+  socketId: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+  },
+  userId: {
+    type: DataTypes.UUID,
+  },
+  ip: {
+    type: DataTypes.STRING,
+  },
+  userAgent: {
+    type: DataTypes.STRING,
+  },
+})

@@ -129,7 +129,11 @@ export async function getHandler(this: typeof Model, req: express.Request, res: 
  * @param req
  * @param res
  */
-export async function listHandler(this: typeof Model, req: express.Request, res: express.Response) {
+export async function listHandler(
+  this: ModelStatic<Model>,
+  req: express.Request,
+  res: express.Response,
+) {
   if (!this) {
     throw new Error('this is not defined')
   }

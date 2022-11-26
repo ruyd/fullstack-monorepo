@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import App from './App'
-import config from '../../shared/config'
+import { config } from '../../shared/config'
 
 describe('App', () => {
   test('Root render', async () => {

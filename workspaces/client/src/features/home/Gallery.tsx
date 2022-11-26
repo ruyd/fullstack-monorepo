@@ -11,7 +11,7 @@ import {
   styled,
   Typography,
 } from '@mui/material'
-import config from '../../shared/config'
+import { config } from '../../shared/config'
 import { Drawing, getDuration, PagedResult } from '@shared/lib'
 import { useGet } from '../app/thunks'
 import Moment from 'react-moment'

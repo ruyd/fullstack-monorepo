@@ -1,6 +1,6 @@
 import React from 'react'
 // import { useNavigate } from 'react-router-dom'
-// import config from 'src/shared/config'
+// import { config } from  'src/shared/config'
 // import { Paths } from 'src/shared/routes'
 import { useAppSelector } from '../../shared/store'
 import Login from './Login'

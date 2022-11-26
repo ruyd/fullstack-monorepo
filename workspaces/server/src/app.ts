@@ -1,4 +1,4 @@
-import config from './shared/config'
+import { config } from './shared/config'
 import express from 'express'
 import bodyParser from 'body-parser'
 import swaggerUi from 'swagger-ui-express'
@@ -16,7 +16,7 @@ import { checkDatabase } from './shared/db'
 export default function createBackendApp(): express.Express {
   const app = express()
 
-  if (!config.production) {
+  if (!config.production && config.trace) {
     activateAxiosTrace()
   }
 

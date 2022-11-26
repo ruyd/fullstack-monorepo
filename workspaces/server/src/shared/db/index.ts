@@ -1,6 +1,6 @@
 import { Attributes, Model, ModelAttributes, ModelOptions, ModelStatic, Sequelize } from 'sequelize'
 import migrator from './migrator'
-import config from '../config'
+import { config } from '../config'
 import logger from '../logger'
 
 export const commonOptions: ModelOptions = {
@@ -30,7 +30,7 @@ export class Connection {
     Connection.models = []
     Connection.entities = []
     Connection.db = new Sequelize(config.db.url, {
-      logging: sql => logger.info(`${sql}\n`),
+      logging: sql => (config.db.trace ? logger.info(`${sql}\n`) : undefined),
       ssl: !!config.db.ssl,
       dialectOptions: config.db.ssl
         ? {
@@ -121,7 +121,11 @@ export async function checkDatabase(): Promise<boolean> {
     )
     config.db.models = Connection.models.map(m => m.name)
     await Connection.db.authenticate()
-    await Connection.db.sync({ alter: config.db.alter, force: config.db.force })
+
+    if (config.db.sync) {
+      await Connection.db.sync({ alter: config.db.alter, force: config.db.force })
+    }
+
     return true
   } catch (e: unknown) {
     const msg = (e as Error)?.message

@@ -2,7 +2,7 @@ import decode from 'jwt-decode'
 import axios from 'axios'
 import { Jwt, User } from '@shared/lib'
 import { Paths } from './routes'
-import config from './config'
+import { config } from './config'
 import authProvider from 'auth0-js'
 import { v4 } from 'uuid'
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

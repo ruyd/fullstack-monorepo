@@ -17,7 +17,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import StorageIcon from '@mui/icons-material/Storage'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from './slice'
-import config from 'src/shared/config'
+import { config } from 'src/shared/config'
 import Collapse from '@mui/material/Collapse'
 import {
   ExpandLess,

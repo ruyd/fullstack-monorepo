@@ -2,7 +2,7 @@
 import React from 'react'
 import store, { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
-import config from '../../shared/config'
+import { config } from '../../shared/config'
 import decode from 'jwt-decode'
 import authProvider from 'auth0-js'
 import { authOptions, checkSocialToken, generateNonce } from 'src/shared/auth'

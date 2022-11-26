@@ -1,5 +1,5 @@
 import { Container, Slider, styled } from '@mui/material'
-import config from '../../shared/config'
+import { config } from '../../shared/config'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { actions } from './slice'
 
