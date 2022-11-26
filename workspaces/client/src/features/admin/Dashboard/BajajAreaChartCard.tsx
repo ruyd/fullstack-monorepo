@@ -10,18 +10,15 @@ import chartData from './chart-data/bajaj-area-chart'
 const BajajAreaChartCard = () => {
   const theme = useTheme()
 
-  const orangeDark = theme.palette.secondary.main[800]
-
   useEffect(() => {
     const newSupportChart = {
       ...chartData.options,
-      colors: [orangeDark],
       tooltip: {
         theme: theme.palette.mode,
       },
     }
     ApexCharts.exec(`support-chart`, 'updateOptions', newSupportChart)
-  }, [orangeDark, theme.palette.mode])
+  }, [theme.palette.mode])
 
   return (
     <Card sx={{ bgcolor: 'secondary.light' }}>

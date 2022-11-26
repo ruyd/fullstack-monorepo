@@ -169,7 +169,7 @@ export default function Menu(): JSX.Element {
         <IconButton onClick={handleOpenClose}>{open ? <OpenIcon /> : <CloseIcon />}</IconButton>
       </DrawerHeader>
       <Divider />
-      <List>
+      <List sx={{ ml: 0.5 }}>
         {items.map((item, index) => (
           <MenuItem
             key={index}

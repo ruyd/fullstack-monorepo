@@ -44,7 +44,7 @@ export default function MenuItem({
   return (
     <>
       <ListItemButton onClick={handleClick} {...linkProps()} selected={selected}>
-        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemIcon sx={{}}>{icon}</ListItemIcon>
         <ListItemText primary={text} />
         {children ? open ? <ExpandLess /> : <ExpandMore /> : null}
       </ListItemButton>
@@ -52,7 +52,6 @@ export default function MenuItem({
         <List component="div" disablePadding>
           {children?.map(child => (
             <ListItemButton
-              sx={{ pl: 2.5 }}
               key={child.text}
               component={Link}
               to={`${config.admin.path}${child.path}`}

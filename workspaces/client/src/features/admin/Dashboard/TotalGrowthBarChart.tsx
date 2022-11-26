@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useTheme } from '@mui/material/styles'
+// import { useTheme } from '@mui/material/styles'
 import { Grid, MenuItem, TextField, Typography } from '@mui/material'
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
@@ -23,81 +23,20 @@ const status = [
   },
 ]
 
-// ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
-
 const TotalGrowthBarChart = ({ isLoading }: { isLoading: boolean }) => {
   const [value, setValue] = useState('today')
-  const theme = useTheme()
-
-  const { primary } = theme.palette.text
-  const darkLight = theme.palette.mode
-  const grey200 = theme.palette.grey[200]
-  const grey500 = theme.palette.grey[500]
-
-  const primary200 = theme.palette.primary.main[200]
-  const primaryDark = theme.palette.primary.dark
-  const secondaryMain = theme.palette.secondary.main
-  const secondaryLight = theme.palette.secondary.light
+  // const theme = useTheme()
 
   useEffect(() => {
     const newChartData = {
-      ...chartData.options,
-      colors: [primary200, primaryDark, secondaryMain, secondaryLight],
-      xaxis: {
-        labels: {
-          style: {
-            colors: [
-              primary,
-              primary,
-              primary,
-              primary,
-              primary,
-              primary,
-              primary,
-              primary,
-              primary,
-              primary,
-              primary,
-              primary,
-            ],
-          },
-        },
-      },
-      yaxis: {
-        labels: {
-          style: {
-            colors: [primary],
-          },
-        },
-      },
-      grid: {
-        borderColor: grey200,
-      },
-      tooltip: {
-        theme: 'light',
-      },
-      legend: {
-        labels: {
-          colors: grey500,
-        },
-      },
+      ...chartData?.options,
     }
 
     // do not load chart when loading
     if (!isLoading) {
       ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData)
     }
-  }, [
-    primary200,
-    primaryDark,
-    secondaryMain,
-    secondaryLight,
-    primary,
-    darkLight,
-    grey200,
-    isLoading,
-    grey500,
-  ])
+  }, [isLoading])
 
   return (
     <>
