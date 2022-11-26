@@ -83,16 +83,18 @@ export default function Data() {
   }
 
   const handleDeleteConfirm = async () => {
-    const response = await request<{ success: boolean }>(
+    const response = await request<{ deleted: number }>(
       `${model}`,
       { ids: selectedItems },
       Method.DELETE,
     )
-    if (response.data?.success) {
-      dispatch(notify('Deleted ' + selectedItems.length + ' item(s)'))
+    if (response.data?.deleted > 0) {
+      dispatch(notify('Deleted ' + response.data.deleted + ' item(s)'))
       setAlert({ open: false })
       refresh()
+      return
     }
+    dispatch(notify('Failed to delete: ' + response.statusText))
   }
 
   return (

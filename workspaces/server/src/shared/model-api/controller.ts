@@ -89,16 +89,16 @@ export async function gridPatch<T extends object>(
 export async function gridDelete<T extends object>(
   model: ModelStatic<Model<T>>,
   payload: { ids: string[] },
-): Promise<{ success: boolean }> {
+): Promise<{ deleted: number }> {
   try {
-    model.destroy({
+    const deleted = await model.destroy({
       where: {
         [model.primaryKeyAttribute]: {
           [sequelize.Op.in]: payload.ids,
         },
       } as sequelize.WhereOptions<T>,
     })
-    return { success: true }
+    return { deleted }
   } catch (e: unknown) {
     const err = e as Error
     logger.error(`${model.name}.gridPatch(): ${err.message}`, err)
