@@ -1,14 +1,22 @@
-import { createTheme, Theme, ThemeOptions } from '@mui/material/styles'
+import { createTheme, Palette, Theme, ThemeOptions } from '@mui/material/styles'
+import { Typography } from '@mui/material/styles/createTypography'
+import { CSSProperties } from '@mui/styled-engine'
 
 declare module '@mui/material/styles' {
   interface Theme {
     state?: ThemeState
+    palette: Palette & { orange?: Palette['primary'] }
+    typography: Typography & {
+      commonAvatar?: CSSProperties
+      largeAvatar?: CSSProperties
+      mediumAvatar?: CSSProperties
+      smallAvatar?: CSSProperties
+    }
   }
   interface ThemeOptions {
     state?: ThemeState
   }
 }
-
 export interface ThemeState {
   gridSpacing?: number
 }
