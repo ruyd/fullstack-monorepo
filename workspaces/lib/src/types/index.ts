@@ -49,3 +49,9 @@ export interface PagedResult<T = { [key: string]: string | number }> {
   hasMore: boolean
   total: number
 }
+
+export interface GridPatchProps {
+  id: string | number
+  field: string
+  value: unknown
+}

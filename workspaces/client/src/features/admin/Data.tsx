@@ -6,11 +6,18 @@ import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { loadDataAsync, useGet } from './thunks'
 import React from 'react'
 import _ from 'lodash'
-import { Alert, AppBar, CircularProgress, InputAdornment, TextField } from '@mui/material'
+import {
+  Alert,
+  AppBar,
+  CircularProgress,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { useSearchParams } from 'react-router-dom'
-import { PagedResult } from '../../../../lib/src/types'
+import { PagedResult, GridPatchProps } from '@shared/lib'
 import DataTable from './DataTable'
-import { Preview, Search } from '@mui/icons-material'
+import SearchIcon from '@mui/icons-material/Search'
 
 const excluded = ['history']
 
@@ -19,10 +26,6 @@ export interface PagingProps {
   limit: number
 }
 
-/**
- *
- * Use DataGrid for generic editirng and tables for special Users/Orders to compare them
- */
 export default function Data() {
   const [searchParams] = useSearchParams()
   const model = searchParams.get('model') || ''
@@ -35,11 +38,18 @@ export default function Data() {
     },
     paging,
   )
+  const modelPlural = !model ? '' : _.capitalize(model) + (model?.endsWith('s') ? '' : 's')
+
+  const onEdit = (params: GridPatchProps) => {
+    console.log('onEdit patch to server field props, like lean op to end', params)
+  }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
       <>
-        {model}
+        <Typography variant="h5" component="h1" align="center" gutterBottom>
+          {modelPlural} ({data?.total || 0})
+        </Typography>
         {isLoading && <CircularProgress />}
         {error && <Alert>{JSON.stringify(error)}</Alert>}
         <Box>
@@ -50,30 +60,24 @@ export default function Data() {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <Search />
+                  <SearchIcon />
                 </InputAdornment>
               ),
             }}
           />
         </Box>
         <DataTable
+          loading={isLoading}
           data={data}
           paging={paging}
           onPaging={newValues => setPaging(newValues as PagingProps)}
+          onEdit={onEdit}
         />
         {/* <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-        <TablePagination
-          component="div"
-          count={data?.total || 0}
-          rowsPerPage={paging.limit || 0}
-          page={paging.page || 0}
-          onPageChange={(event, newPage) => {
-            setPaging(prev => ({ ...prev, page: newPage }))
-          }}
-          onRowsPerPageChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setPaging(prev => ({ ...prev, limit: Number(event.target.value) }))
-          }}
-        />
+        - enable editing?
+        - export?
+        - search on bottom?
+        - too cool to not use 
       </AppBar> */}
       </>
     </Box>

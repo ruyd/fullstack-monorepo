@@ -2,6 +2,7 @@
  *
  * Users needs special view, we want to see oneline status as well as certain actions
  * maybe we can enrich generic editor via props, think
+ * - Auth0 Roles, Password stuff
  */
 export default function Users() {
   return (
