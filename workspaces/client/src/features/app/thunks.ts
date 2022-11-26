@@ -1,10 +1,7 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
-import { Auth0Error } from 'auth0-js'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
-import { AppUser, onLogin, getAuthProvider, loginPrompt } from '../../shared/auth'
+import { AppUser, onLogin, getAuthProvider } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
 
@@ -82,7 +79,6 @@ export const useGet = <T>(
   useQuery<T>(
     cacheKey,
     async () => {
-      console.log('useGet', url, queryParams)
       if (!url) {
         return null as T
       }

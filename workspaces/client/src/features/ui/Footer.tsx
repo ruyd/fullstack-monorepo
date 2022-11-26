@@ -28,7 +28,7 @@ export default function Footer() {
                   height={20}
                   alt="GitHub"
                 />
-                <Text>Template by Ruy</Text>
+                <Text>Project Template by Ruy</Text>
               </Link>
             </Grid>
           </Grid>
