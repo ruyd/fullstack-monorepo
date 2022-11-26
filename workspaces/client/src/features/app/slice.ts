@@ -7,7 +7,7 @@ export interface AppState {
   user?: AppUser
   token?: string
   darkMode: boolean
-  theme?: ThemeState
+  ui?: ThemeState
   notifications: AppNotification[]
   drawerLeftOpen?: boolean
   drawerRightOpen?: boolean

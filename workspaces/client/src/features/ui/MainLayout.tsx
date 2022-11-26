@@ -11,6 +11,7 @@ import AuthProviders from '../profile/AuthProviders'
 import { currentRoute } from 'src/shared/routes'
 import Dialogs from './Dialogs'
 import CssBaseline from '@mui/material/CssBaseline'
+import SocketListener from './SocketListener'
 // import { CssBaseline } from '@mui/material'
 
 export function MainLayout() {
@@ -36,6 +37,7 @@ export function MainLayout() {
         <Footer />
         <Dialogs />
         <AuthProviders />
+        <SocketListener />
       </ThemeSwitch>
     </React.Fragment>
   )

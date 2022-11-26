@@ -59,6 +59,8 @@ module.exports = {
     nodeExternals({
       additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')],
       allowlist: ['ieee754'],
+      bufferutil: 'bufferutil', //allowList?
+      'utf-8-validate': 'utf-8-validate',
     }),
   ],
   plugins: [

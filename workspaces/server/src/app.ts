@@ -38,7 +38,7 @@ export default function createBackendApp(): express.Express {
 
   app.use(errorHandler)
 
-  // Swagger Endpoint
+  // Swagger Portal
   const swaggerDoc = swaggerJsdoc({
     swaggerDefinition: config.swaggerSetup as OAS3Definition,
     apis: ['**/*/swagger.yaml', '**/routes/**/index.*s'],
@@ -57,7 +57,7 @@ export default function createBackendApp(): express.Express {
     }),
   )
 
-  //Endpoints
+  // Endpoints
   registerModelApiRoutes(Connection.models, api)
 
   app.use(api)

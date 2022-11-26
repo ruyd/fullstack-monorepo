@@ -23,6 +23,7 @@ import {
   ExpandLess,
   ExpandMore,
   PersonSearch,
+  Settings,
   StarBorder,
   VerifiedUserSharp,
 } from '@mui/icons-material'
@@ -129,7 +130,8 @@ export default function Menu(): JSX.Element {
 
   const items: MenuModel[] = [
     { text: 'Dashboard', icon: <AdbIcon />, path: '/' },
-    { text: 'Users', icon: <PersonSearch />, path: '/' },
+    { text: 'Settings', icon: <Settings />, path: '/settings' },
+    { text: 'Users', icon: <PersonSearch />, path: '/users' },
     {
       text: 'Data',
       icon: <StorageIcon />,
