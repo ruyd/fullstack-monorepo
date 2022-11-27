@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import { Grid, Paper, PaperProps, Typography } from '@mui/material'
 import { Drawing } from '@shared/lib'
@@ -43,8 +44,9 @@ export function GalleryCard({
       <BlurBackdrop />
       <Paper
         sx={{
-          opacity: 0.5,
-          height: '40%',
+          borderRadius: '0 0 16px 16px',
+          opacity: 0.4,
+          height: '30%',
           bottom: 0,
           left: 0,
           right: 0,

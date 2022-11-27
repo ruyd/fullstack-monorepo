@@ -33,8 +33,8 @@ export const config: Config = {
   baseName: env.BASE_NAME || defaultBaseName,
   backendUrl: env.BACKEND || 'https://drawspace-api.herokuapp.com',
   defaultTitle: 'Drawspace',
-  defaultColor: 'yellow',
-  defaultLineSize: 20,
+  defaultColor: 'green',
+  defaultLineSize: 5,
   thumbnails: {
     width: 250,
     height: 250,

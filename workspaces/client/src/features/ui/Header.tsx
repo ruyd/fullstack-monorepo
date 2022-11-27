@@ -66,7 +66,7 @@ export default function HeaderNavBar() {
   }
 
   return (
-    <AppBar position="static" enableColorOnDark color="primary">
+    <AppBar position="static" enableColorOnDark color="primary" sx={{ maxHeight: '4rem' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />

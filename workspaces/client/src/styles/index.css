@@ -131,12 +131,3 @@ code {
     transform: translateX(10px);
   }
 }
-
-.backdrop {
-  backdrop-filter: blur(6px);
-  width: 100%;
-  left: 0px;
-  bottom: 5%;
-  position: absolute;
-  height: 40%;
-}
