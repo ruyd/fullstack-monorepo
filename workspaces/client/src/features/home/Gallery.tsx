@@ -21,7 +21,7 @@ import { notify } from '../app'
 import { useAppDispatch } from '../../shared/store'
 import ShareIcon from '@mui/icons-material/Share'
 import waiting from './images/looking.svg'
-import GalleryCard from '../canvas/Item'
+import { GalleryCard } from '../canvas/Card'
 
 const StyledImage = styled('img')({
   height: '45vh',
@@ -33,10 +33,12 @@ export default function Gallery() {
   const navigate = useNavigate()
   const { data } = useGet<PagedResult<Drawing>>('gallery', '/gallery')
   const items = data?.items || []
+  const origin =
+    window.location.origin[window.location.origin.length - 1] === '/'
+      ? window.location.origin.slice(0, -1)
+      : window.location.origin
   const copyLink = (item: Drawing) => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}${config.baseName}${Paths.Draw}/${item.id}`,
-    )
+    navigator.clipboard.writeText(`${origin}${Paths.Draw}/${item.id}`)
     dispatch(notify('Link copied to clipboard!'))
   }
 
@@ -50,7 +52,15 @@ export default function Gallery() {
         )}
         {items?.map((item: Drawing) => (
           <Grid item key={item.id}>
-            <GalleryCard item={item} />
+            <GalleryCard
+              item={item}
+              onClick={() => navigate(`${Paths.Draw}/${item.id}`)}
+              actionPane={
+                <IconButton onClick={() => copyLink(item)} aria-label="sharing link">
+                  <ShareIcon />
+                </IconButton>
+              }
+            />
           </Grid>
         ))}
       </Grid>
