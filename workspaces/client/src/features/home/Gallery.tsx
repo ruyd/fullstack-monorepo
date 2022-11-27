@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Avatar,
   Card,
@@ -12,15 +13,15 @@ import {
   Typography,
 } from '@mui/material'
 import { config } from '../../shared/config'
-import { Drawing, getDuration, PagedResult } from '@shared/lib'
+import { Drawing, PagedResult } from '@shared/lib'
 import { useGet } from '../app/thunks'
-import Moment from 'react-moment'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
 import { notify } from '../app'
 import { useAppDispatch } from '../../shared/store'
 import ShareIcon from '@mui/icons-material/Share'
 import waiting from './images/looking.svg'
+import GalleryCard from '../canvas/Item'
 
 const StyledImage = styled('img')({
   height: '45vh',
@@ -49,36 +50,7 @@ export default function Gallery() {
         )}
         {items?.map((item: Drawing) => (
           <Grid item key={item.id}>
-            <Card variant="outlined">
-              <CardHeader
-                title={item.name}
-                subheader={<Moment fromNow>{item.createdAt}</Moment>}
-                avatar={<Avatar src={item?.user?.picture} alt={item?.user?.firstName} />}
-                action={
-                  <IconButton onClick={() => copyLink(item)} aria-label="sharing link">
-                    <ShareIcon />
-                  </IconButton>
-                }
-              />
-              <CardActionArea onClick={() => navigate(`${Paths.Draw}/${item.id}`)}>
-                <CardMedia
-                  component="img"
-                  src={item.thumbnail}
-                  alt={item.name}
-                  style={{
-                    height: config.thumbnails.height,
-                    width: config.thumbnails.width,
-                  }}
-                  width={config.thumbnails.width}
-                  height={config.thumbnails.height}
-                />
-                <CardContent sx={{ textAlign: 'right' }}>
-                  <Typography color="primary" variant="subtitle2">
-                    {getDuration(item)}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
+            <GalleryCard item={item} />
           </Grid>
         ))}
       </Grid>

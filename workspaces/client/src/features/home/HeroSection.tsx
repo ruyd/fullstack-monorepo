@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
 
 export default function HeroSection({
-  title = 'Fullstack TypeScript Starter',
-  subtitle = 'Best practices and monorepo template',
+  title = 'Drawings Marketplace',
+  subtitle = 'Foundation template for your next project',
   caption = 'Take it for a spin',
   children,
 }: {

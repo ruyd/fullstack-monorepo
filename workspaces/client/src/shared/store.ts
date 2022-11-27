@@ -17,7 +17,13 @@ export const store = configureStore({
     admin: adminReducer,
   },
   preloadedState: load(),
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([customMiddleware, save()]),
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware().concat([
+      customMiddleware,
+      save({
+        ignoreStates: ['canvas'],
+      }),
+    ]),
 })
 
 export type AppDispatch = typeof store.dispatch
