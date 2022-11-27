@@ -207,10 +207,16 @@ export default function Users() {
           onClose={() => setShowDetails({ open: false })}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
+          sx={{
+            '& .MuiDialog-paper': {
+              width: '100%',
+              maxWidth: '100%',
+              minHeight: '50%',
+              borderRadius: '16px',
+            },
+          }}
         >
-          <DialogContent>
-            <UserDetail user={showDetails.payload as unknown as User} />
-          </DialogContent>
+          <UserDetail user={showDetails.payload as unknown as User} />
         </Dialog>
       </>
     </Box>

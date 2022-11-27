@@ -93,6 +93,20 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
     mixins: {
       toolbar: {},
     },
+    typography: {
+      fontFamily: [
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
     components: {
       MuiCssBaseline: {
         styleOverrides: {
@@ -108,6 +122,17 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
           },
           '& .MuiDataGrid-footerContainer': {
             backgroundColor: 'background.paper',
+          },
+        },
+      },
+      MuiTab: {
+        styleOverrides: {
+          root: {
+            minHeight: 'auto',
+            maxHeight: 'auto',
+            '& .MuiTab-flexContainer': {
+              padding: 0,
+            },
           },
         },
       },

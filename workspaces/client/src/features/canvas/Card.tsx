@@ -65,7 +65,6 @@ export function GalleryCard({
           <Grid item>
             <Typography
               sx={{
-                fontFamily: '"Public Sans", sans-serif',
                 lineHeight: 1.5,
                 fontWeight: 600,
               }}
@@ -74,7 +73,6 @@ export function GalleryCard({
             </Typography>
             <Typography
               sx={{
-                fontFamily: '"Public Sans", sans-serif',
                 lineHeight: 1.5,
                 fontWeight: 400,
                 fontSize: '0.75rem',
