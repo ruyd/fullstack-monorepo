@@ -3,6 +3,7 @@ import { Grid, Paper, PaperProps, Typography } from '@mui/material'
 import { Drawing } from '@shared/lib'
 import { config } from '../../shared/config'
 import Moment from 'react-moment'
+import { BlurBackdrop } from '../ui/BlurBackdrop'
 
 export function GalleryCard({
   item,
@@ -39,6 +40,7 @@ export function GalleryCard({
         width={config.thumbnails.width}
         height={config.thumbnails.height}
       />
+      <BlurBackdrop />
       <Paper
         sx={{
           opacity: 0.5,
@@ -59,8 +61,23 @@ export function GalleryCard({
           }}
         >
           <Grid item>
-            <Typography variant="body1">{item?.name}</Typography>
-            <Typography variant="body2">
+            <Typography
+              sx={{
+                fontFamily: '"Public Sans", sans-serif',
+                lineHeight: 1.5,
+                fontWeight: 600,
+              }}
+            >
+              {item?.name}
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: '"Public Sans", sans-serif',
+                lineHeight: 1.5,
+                fontWeight: 400,
+                fontSize: '0.75rem',
+              }}
+            >
               <Moment fromNow>{item.createdAt}</Moment>
             </Typography>
           </Grid>
