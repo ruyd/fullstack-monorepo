@@ -5,7 +5,7 @@ import { Paths } from 'src/shared/routes'
 
 export default function HeroSection({
   title = 'Drawings Marketplace',
-  subtitle = 'Foundation template for your next project',
+  subtitle = 'Foundation template for your projects and startups',
   caption = 'Take it for a spin',
   children,
 }: {

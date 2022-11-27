@@ -77,22 +77,28 @@ export default function Users() {
     },
     {
       field: 'email',
+      headerName: 'Email',
       editable: true,
     },
     {
       field: 'firstName',
+      headerName: 'First Name',
     },
     {
       field: 'lastName',
+      headerName: 'Last Name',
     },
     {
-      field: 'roles',
+      field: 'banned',
+      headerName: 'Banned',
     },
     {
       field: 'logins',
+      headerName: 'Logins',
     },
     {
       field: 'lastLogin',
+      headerName: 'Last Login',
     },
   ]
 
