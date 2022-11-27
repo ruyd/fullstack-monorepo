@@ -20,18 +20,28 @@ import { Paths } from '../../shared/routes'
 import { notify } from '../app'
 import { useAppDispatch } from '../../shared/store'
 import ShareIcon from '@mui/icons-material/Share'
-import waiting from './images/looking.svg'
+import waiting from '../home/images/looking.svg'
 import { GalleryCard } from '../canvas/Card'
+import React from 'react'
 
 const StyledImage = styled('img')({
   height: '45vh',
   maxWidth: '90%',
 })
 
-export default function Gallery() {
+export default function Gallery({
+  userId,
+  onData,
+}: {
+  userId?: string
+  onData?: (items: Drawing[]) => void
+}): JSX.Element {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { data } = useGet<PagedResult<Drawing>>('gallery', '/gallery')
+  const { data } = useGet<PagedResult<Drawing>>(
+    'gallery',
+    '/gallery' + (userId ? '/' + userId : ''),
+  )
   const items = data?.items || []
   const origin =
     window.location.origin[window.location.origin.length - 1] === '/'
@@ -41,6 +51,11 @@ export default function Gallery() {
     navigator.clipboard.writeText(`${origin}${Paths.Draw}/${item.id}`)
     dispatch(notify('Link copied to clipboard!'))
   }
+  React.useEffect(() => {
+    if (onData && data?.items) {
+      onData(data?.items)
+    }
+  }, [onData, data?.items])
 
   return (
     <Container>

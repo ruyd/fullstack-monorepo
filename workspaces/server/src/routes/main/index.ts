@@ -11,9 +11,11 @@ const router = express.Router()
  * /gallery:
  *  get:
  */
-router.get('/gallery', async (req, res) => {
+router.get(['/gallery', '/gallery/:userId'], async (req, res) => {
+  const conditional = req.params.userId ? { userId: req.params.userId } : {}
   const items = await list(DrawingModel, {
     where: {
+      ...conditional,
       private: {
         [sequelize.Op.not]: true,
       },

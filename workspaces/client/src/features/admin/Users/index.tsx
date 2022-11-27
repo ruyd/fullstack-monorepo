@@ -211,7 +211,7 @@ export default function Users() {
             '& .MuiDialog-paper': {
               width: '100%',
               maxWidth: '100%',
-              minHeight: '50%',
+              minHeight: '70%',
               borderRadius: '16px',
             },
           }}

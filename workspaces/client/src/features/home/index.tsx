@@ -1,5 +1,5 @@
 import { Container } from '@mui/material'
-import Gallery from './Gallery'
+import Gallery from '../ui/Gallery'
 import HeroSection from './HeroSection'
 import Logos from './Logos'
 export default function HomePage() {

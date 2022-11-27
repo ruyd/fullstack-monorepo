@@ -44,7 +44,6 @@ export function GalleryCard({
       <BlurBackdrop />
       <Paper
         sx={{
-          borderRadius: '0 0 16px 16px',
           opacity: 0.4,
           height: '30%',
           bottom: 0,

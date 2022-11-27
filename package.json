@@ -13,7 +13,7 @@
     "start": "HEROKU=true NODE_ENV=production yarn workspace server start",
     "build": "HEROKU=true yarn workspace lib build && NODE_ENV=production yarn workspace server build",
     "prod": "NODE_ENV=production concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
-    "dev": "yarn install && docker compose up --wait && concurrently \"yarn workspace server dev\" \"yarn workspace client dev\"",
+    "dev": "yarn install && docker compose up --wait && concurrently \"yarn workspace server dev\" \"yarn workspace client dev\" \"yarn workspace lib dev\"",
     "client": "yarn workspace client dev",
     "server": "yarn workspace server dev",
     "lint": "eslint .",

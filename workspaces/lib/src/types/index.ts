@@ -40,6 +40,11 @@ export interface User extends Entity {
   firstName?: string
   lastName?: string
   picture?: string
+  banned?: boolean
+  status?: number
+  loginCount?: number
+  lastLogin?: Date
+  roles?: string[]
 }
 
 export interface PagedResult<T = { [key: string]: string | number }> {

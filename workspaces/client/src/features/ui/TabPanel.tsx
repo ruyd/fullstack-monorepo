@@ -6,10 +6,11 @@ interface TabPanelProps {
   index?: number
   value?: number
   tabs?: string
+  keepMounted?: boolean
 }
 
 export function TabPanel(props: TabPanelProps = { tabs: 'tabs' }) {
-  const { children, value, index, tabs, ...other } = props
+  const { children, value, index, tabs, keepMounted, ...other } = props
   const id = tabs?.toLowerCase().replace(/ /g, '-')
 
   return (
@@ -20,7 +21,7 @@ export function TabPanel(props: TabPanelProps = { tabs: 'tabs' }) {
       aria-labelledby={`${id}-tab-${index}`}
       {...other}
     >
-      {value === index && (
+      {(value === index || keepMounted) && (
         <Box sx={{ p: 3 }}>
           <Typography>{children}</Typography>
         </Box>
