@@ -106,6 +106,9 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
             background: darkMode ? '#242424' : '#b0b0b0',
             borderRadius: '2px',
           },
+          '& .MuiDataGrid-footerContainer': {
+            backgroundColor: 'background.paper',
+          },
         },
       },
     },

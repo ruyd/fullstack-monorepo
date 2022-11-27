@@ -119,9 +119,7 @@ export default function Menu(): JSX.Element {
   const CloseIcon = () => (theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />)
 
   const getIcon = (name: string) => {
-    const dict: Record<string, React.ReactNode> = {
-      user: <PersonSearch />,
-    }
+    const dict: Record<string, React.ReactNode> = {}
     return dict[name] || <ListIcon />
   }
 

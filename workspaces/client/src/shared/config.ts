@@ -36,8 +36,8 @@ export const config: Config = {
   defaultColor: 'yellow',
   defaultLineSize: 20,
   thumbnails: {
-    width: 300,
-    height: 200,
+    width: 250,
+    height: 250,
   },
   auth: {
     domain: `${env.AUTH_TENANT}.auth0.com`,

@@ -11,6 +11,7 @@ export interface AlertDialogProps {
   open: boolean
   title?: string
   message?: string
+  payload?: string | number | object
   onConfirm?: () => void
   onCancel?: () => void
   alert?: boolean

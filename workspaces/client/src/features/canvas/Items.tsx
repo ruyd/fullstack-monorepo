@@ -1,13 +1,16 @@
-import { Delete } from '@mui/icons-material'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Delete, Edit, Settings as SettingsIcon } from '@mui/icons-material'
 import {
+  Box,
   Button,
+  ButtonGroup,
   Container,
   ContainerProps,
+  Grid,
   IconButton,
   ImageList,
-  ImageListItem,
-  ImageListItemBar,
   Paper,
+  Typography,
 } from '@mui/material'
 import { Drawing } from '@shared/lib'
 import React from 'react'
@@ -51,44 +54,79 @@ export default function Items(props: ContainerProps) {
 
   return (
     <Container maxWidth="xl" {...props}>
-      <Paper variant="elevation" sx={{ padding: '1rem' }}>
-        <ImageList>
-          {items.map(item => (
-            <ImageListItem
-              key={item.id}
+      <ImageList>
+        {items.map(item => (
+          <Paper
+            title={item.name}
+            key={item.id}
+            sx={{
+              backgroundColor: 'primary.main',
+              borderRadius: '16px',
+              transition: 'all 200ms ease-in',
+              marginRight: '0.5rem',
+              display: 'flex',
+              position: 'relative',
+              maxWidth: '47vw',
+            }}
+          >
+            <img
+              src={item.thumbnail}
+              alt={item.name}
+              loading="lazy"
+              style={{
+                height: config.thumbnails.height,
+                width: config.thumbnails.width,
+                borderRadius: '16px',
+              }}
+              width={config.thumbnails.width}
+              height={config.thumbnails.height}
+            />
+            <Paper
               sx={{
-                border: `solid 1px ${isActive(item) ? '#ab47bc' : 'transparent'}`,
-                borderWidth: '0 0 1px 0',
-                transition: 'all 200ms ease-in',
+                opacity: 0.5,
+                height: '40%',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
               }}
             >
-              <img
-                src={item.thumbnail}
-                alt={item.name}
-                loading="lazy"
-                style={{
-                  backgroundColor: 'rgba(200, 163, 255, .1)',
-                  height: config.thumbnails.height,
-                  width: config.thumbnails.width,
+              <Grid
+                container
+                sx={{
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  margin: '0 1rem',
                 }}
-                width={config.thumbnails.width}
-                height={config.thumbnails.height}
-              />
-              <ImageListItemBar
-                title={item.name}
-                actionIcon={
-                  <>
-                    <Button onClick={() => setItem(item)}>Edit</Button>
-                    <IconButton onClick={() => deleteItem(item)}>
-                      <Delete />
-                    </IconButton>
-                  </>
-                }
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      </Paper>
+              >
+                <Grid item>
+                  <Typography
+                    sx={
+                      {
+                        // fontFamily: '"Public Sans", sans-serif',
+                      }
+                    }
+                  >
+                    {item.name}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <IconButton onClick={() => setItem(item)}>
+                    <Edit />
+                  </IconButton>
+                  <IconButton onClick={() => setItem(item)}>
+                    <SettingsIcon />
+                  </IconButton>
+                  <IconButton onClick={() => deleteItem(item)}>
+                    <Delete />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Paper>
+        ))}
+      </ImageList>
     </Container>
   )
 }

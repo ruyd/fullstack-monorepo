@@ -31,6 +31,8 @@ export interface Drawing extends Entity {
   history: DrawAction[]
   thumbnail?: string
   private?: boolean
+  price?: number
+  views?: number
   user?: User
 }
 
