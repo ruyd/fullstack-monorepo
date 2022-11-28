@@ -2058,6 +2058,18 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
+"@stripe/react-stripe-js@^1.15.0":
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/@stripe/react-stripe-js/-/react-stripe-js-1.15.0.tgz#a381de453dfac5fc47d2d604dfa1c6a9b6fc881e"
+  integrity sha512-nqIOuAbbAN1p/zj2d2vykMzd097ZiHbu0+EpPRcfiswBRQIQIZaPrUwmj6HGD8BRA6Wp89mZen1UJbqtsfc3ZA==
+  dependencies:
+    prop-types "^15.7.2"
+
+"@stripe/stripe-js@^1.44.1":
+  version "1.44.1"
+  resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.44.1.tgz#376fdbed2b394c84deaa2041b8029b97e7eab3a7"
+  integrity sha512-DKj3U6tS+sCNsSXsoZbOl5gDrAVD3cAZ9QCiVSykLC3iJo085kkmw/3BAACRH54Bq2bN34yySuH6G1SLh2xHXA==
+
 "@surma/rollup-plugin-off-main-thread@^2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@surma/rollup-plugin-off-main-thread/-/rollup-plugin-off-main-thread-2.2.3.tgz#ee34985952ca21558ab0d952f00298ad2190c053"
@@ -2692,11 +2704,6 @@
   dependencies:
     "@types/express" "*"
     "@types/serve-static" "*"
-
-"@types/tapable@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.0.tgz#b76254453021be05681f6213416766bac9afb99c"
-  integrity sha512-DrV8VQDeDAJwWqiV+QceN4EHKd3scPPYiwrXr476y7T+2hMoOaH43NVGoaDM3siCz69h/1vMabKaMgMF539qFQ==
 
 "@types/testing-library__jest-dom@^5.9.1":
   version "5.14.5"

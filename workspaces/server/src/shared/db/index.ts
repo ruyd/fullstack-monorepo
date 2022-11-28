@@ -48,7 +48,7 @@ export class Connection {
 export const connection = new Connection()
 
 /**
- * Register defines db model and configures CRUD endpoints
+ * Defines db model, creates CRUD endpoints and swagger docs
  *
  * @param name - table name
  * @param attributes - columns definitions
@@ -56,7 +56,7 @@ export const connection = new Connection()
  * @param roles - restrict to roles like Admin
  * @returns
  */
-export function register<T extends object>(
+export function addModel<T extends object>(
   name: string,
   attributes: ModelAttributes<Model<T>, Attributes<Model<T>>>,
   unsecureRead?: boolean,
@@ -115,14 +115,14 @@ export async function checkMigrations(): Promise<boolean> {
 
 export async function checkDatabase(): Promise<boolean> {
   try {
-    logger.info(
-      `Checking database models: 
-      ${Connection.models.map(a => a.name).join(', ')}`,
-    )
     config.db.models = Connection.models.map(m => m.name)
     await Connection.db.authenticate()
 
     if (config.db.sync) {
+      logger.info(
+        `Checking database models: 
+        ${Connection.models.map(a => a.name).join(', ')}`,
+      )
       await Connection.db.sync({ alter: config.db.alter, force: config.db.force })
     }
 

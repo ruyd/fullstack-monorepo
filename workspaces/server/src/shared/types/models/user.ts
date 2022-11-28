@@ -1,6 +1,6 @@
 import { User } from '@shared/lib'
 import { Model, DataTypes } from 'sequelize'
-import { register } from '../db'
+import { addModel } from '../../db'
 
 export type UserInstance = Model<User>
 
@@ -24,7 +24,7 @@ export const UserAttributes = {
   },
 }
 
-export const UserModel = register<User>('user', UserAttributes)
+export const UserModel = addModel<User>('user', UserAttributes)
 
 export interface UserActive {
   socketId: string
@@ -33,7 +33,7 @@ export interface UserActive {
   userAgent?: string
 }
 
-export const UserActiveModel = register<UserActive>('user_active', {
+export const UserActiveModel = addModel<UserActive>('user_active', {
   socketId: {
     type: DataTypes.STRING,
     primaryKey: true,

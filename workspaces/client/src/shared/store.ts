@@ -3,6 +3,7 @@ import { configureStore, ThunkAction, Action, Middleware } from '@reduxjs/toolki
 import appReducer from '../features/app/slice'
 import canvasReducer from '../features/canvas/slice'
 import adminReducer from '../features/admin/slice'
+import shopReducer from '../features/shop/slice'
 import { save, load } from 'redux-localstorage-simple'
 
 export const customMiddleware: Middleware = () => next => action => {
@@ -15,6 +16,7 @@ export const store = configureStore({
     app: appReducer,
     canvas: canvasReducer,
     admin: adminReducer,
+    shop: shopReducer,
   },
   preloadedState: load(),
   middleware: getDefaultMiddleware =>

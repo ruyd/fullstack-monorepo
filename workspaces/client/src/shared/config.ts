@@ -26,6 +26,10 @@ export interface Config {
     path: string
     models?: string[]
   }
+  keys: {
+    stripe?: string
+    paypal?: string
+  }
 }
 const env = process.env
 const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : packageJson.homepage || '/'
@@ -52,6 +56,10 @@ export const config: Config = {
   admin: {
     path: '/admin',
     models: [],
+  },
+  keys: {
+    stripe: env.STRIPE_KEY || '',
+    paypal: env.PAYPAL_KEY || '',
   },
 }
 

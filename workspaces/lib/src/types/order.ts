@@ -10,7 +10,7 @@ export enum OrderStatus {
 }
 
 export interface OrderItem extends Entity {
-  id?: string
+  orderItemId?: string
   orderId?: string
   drawingId?: string
   price?: number
@@ -19,11 +19,44 @@ export interface OrderItem extends Entity {
 }
 
 export interface Order extends Entity {
-  id?: string
+  orderId?: string
   userId?: string
-  drawingId?: string
-  price?: number
+
+  total?: number
   status?: OrderStatus
+  items?: OrderItem[]
+  //
   user?: User
-  drawing?: Drawing
+}
+
+export interface Payment extends Entity {
+  paymentId: string
+  userId: string
+  orderId: string
+  amount: number
+  currency: string
+  status?: string
+}
+
+export enum PaymentSource {
+  Stripe = 'STRIPE',
+  PayPal = 'PAYPAL',
+}
+
+export enum PaymentStatus {
+  Successful = 'COMPLETED',
+  Pending = 'PENDING',
+  Failed = 'FAILED',
+  Created = 'CREATED',
+}
+
+export const StripeToPaymentStatusMap = {
+  canceled: PaymentStatus.Failed,
+  succeeded: PaymentStatus.Successful,
+  processing: PaymentStatus.Pending,
+  requires_action: PaymentStatus.Pending,
+  requires_capture: PaymentStatus.Pending,
+  requires_confirmation: PaymentStatus.Pending,
+  requires_payment_method: PaymentStatus.Pending,
+  unknown: PaymentStatus.Failed,
 }

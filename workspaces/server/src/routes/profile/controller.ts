@@ -10,7 +10,7 @@ import {
   decodeToken,
 } from '../../shared/auth'
 import { createOrUpdate } from '../../shared/model-api/controller'
-import { UserModel } from '../../shared/types/user'
+import { UserModel } from '../../shared/types/models/user'
 import { AppAccessToken, getPictureMock, IdentityToken } from '@shared/lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'

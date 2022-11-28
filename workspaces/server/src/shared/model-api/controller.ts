@@ -1,6 +1,6 @@
 import { FindOptions, Model, ModelStatic } from 'sequelize/types'
 import { MakeNullishOptional } from 'sequelize/types/utils'
-import { PagedResult } from '../types'
+import { PagedResult } from '@shared/lib'
 import { GridPatchProps } from '@shared/lib'
 import { HttpNotFoundError } from '../errorHandler'
 import logger from '../logger'

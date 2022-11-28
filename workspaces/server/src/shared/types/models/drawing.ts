@@ -1,9 +1,9 @@
 import { DataTypes } from 'sequelize'
 import { Drawing } from '@shared/lib'
 import { UserModel } from './user'
-import { register } from '../db'
+import { addModel } from '../../db'
 
-export const DrawingModel = register<Drawing>('drawing', {
+export const DrawingModel = addModel<Drawing>('drawing', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
