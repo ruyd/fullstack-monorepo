@@ -64,6 +64,10 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
     _res: express.Response,
     next: express.NextFunction,
   ) {
+    if (config.auth.offline) {
+      return next()
+    }
+
     const { header, token } = setRequest(req, self.config)
     const hasAuthProvider =
       config.auth?.baseUrl && config.auth?.clientId && config.auth?.clientSecret

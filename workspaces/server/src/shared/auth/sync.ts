@@ -4,9 +4,8 @@ import { config } from '../config'
 import logger from '../logger'
 
 const readOptions = () => ({
-  headers: {
-    Authorization: `Bearer ${config.auth.manageToken || 'error not set'}`,
-  },
+  headers: {},
+  Authorization: `Bearer ${config.auth.manageToken || 'error not set'}`,
   validateStatus: () => true,
 })
 
@@ -29,8 +28,8 @@ const post = <T>(url: string, data: unknown) =>
  * - Check for Rules
  */
 export async function authProviderSync(): Promise<boolean> {
-  if (!config.auth.sync) {
-    log('Skipping sync')
+  if (!config.auth.sync || config.auth.offline) {
+    log('Auth0 Sync Off')
     return false
   }
   if (!config.auth.tenant || !config.auth.explorerId || !config.auth.explorerSecret) {

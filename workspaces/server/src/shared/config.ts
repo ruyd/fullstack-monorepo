@@ -33,6 +33,7 @@ export interface Config {
     models: string[]
   }
   auth: {
+    offline: boolean
     sync: boolean
     trace: boolean
     tokenSecret?: string
@@ -94,6 +95,7 @@ export const config: Config = {
     models: [],
   },
   auth: {
+    offline: true,
     sync: true,
     trace: false,
     tokenSecret: process.env.TOKEN_SECRET || 'blank',

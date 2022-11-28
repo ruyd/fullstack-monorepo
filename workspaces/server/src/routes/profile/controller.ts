@@ -15,6 +15,7 @@ import { AppAccessToken, getPictureMock, IdentityToken } from '@shared/lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 import logger from '../../shared/logger'
+import { config } from '../../shared/config'
 
 export async function register(req: express.Request, res: express.Response) {
   const payload = req.body
@@ -39,19 +40,32 @@ export async function register(req: express.Request, res: express.Response) {
   res.json({ token })
 }
 
+/**
+ * Login count
+ * allow offline mode
+ */
 export async function login(req: express.Request, res: express.Response) {
   const { email, password } = req.body
-
-  const response = await authProviderLogin(email, password)
-  if (response.error) {
-    throw new Error(response.error_description)
-  }
 
   let user = (
     await UserModel.findOne({
       where: { email },
     })
   )?.get()
+
+  if (config.auth.offline && user) {
+    logger.info('Auth in offline dev mode' + user?.email)
+    res.json({
+      token: createToken(user),
+      user,
+    })
+    return
+  }
+
+  const response = await authProviderLogin(email, password)
+  if (response.error) {
+    throw new Error(response.error_description)
+  }
 
   if (!user) {
     const decoded = decode(response.access_token) as AppAccessToken
