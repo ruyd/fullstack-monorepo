@@ -44,6 +44,8 @@ export const canvasSlice = createSlice({
   },
 })
 
+export const { patch } = canvasSlice.actions
+
 export const actions = canvasSlice.actions
 
 export default canvasSlice.reducer

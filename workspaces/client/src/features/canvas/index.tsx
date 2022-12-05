@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useRef, startTransition } from 'react'
 import { DrawAction, ActionType, Drawing } from '@shared/lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { getAsync, saveAsync } from './thunks'
-import { Container } from '@mui/material'
+import { Box, Container, Fab } from '@mui/material'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import { patch as patchApp } from '../app'
@@ -14,6 +15,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Paths } from 'src/shared/routes'
 import { Details } from './Details'
 import Toolbar from './Toolbar'
+import { Settings } from '@mui/icons-material'
 
 export function CanvasContainer() {
   const dispatch = useAppDispatch()
