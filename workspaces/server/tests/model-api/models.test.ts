@@ -26,6 +26,7 @@ export function getMockValue(columnName: string, columnType: string, randomize =
   const type = conversions[columnType] || columnType
   const suffix = randomize ? Math.random() : ''
   const increment = randomize ? Math.random() : 0
+  const [, scale] = type.match(/\d+/g) || [10, 2]
   switch (type) {
     case 'UUID':
       return uuid()
@@ -35,7 +36,7 @@ export function getMockValue(columnName: string, columnType: string, randomize =
     case 'number':
       return 1 + increment
     case type.match(/DECIMAL\(?.*\)?/)?.input:
-      return 1 + increment + ''
+      return (1 + increment).toFixed(scale as number) + ''
     case 'BOOLEAN':
       return true
     case 'date':
