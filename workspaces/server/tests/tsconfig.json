@@ -12,6 +12,6 @@
       "@shared/*": ["../../workspaces/*/src"]
     }
   },
-  "include": ["./**/*.ts"],
+  "include": ["**/*"],
   "exclude": ["node_modules", "../../node_modules"]
 }

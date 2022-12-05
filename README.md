@@ -2,15 +2,15 @@
 
 ## TypeScript Project Starter
 
-[![Workflow](https://github.com/ruyd/fullstack-starter/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-starter/actions/workflows/deploy-client.yml)
+[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml)
 [![Demo](https://img.shields.io/badge/Deployment-GITHUB%20PAGES-GREEN.svg)](https://ruyd.github.io/fullstack-starter)
 
-[![Workflow](https://github.com/ruyd/fullstack-starter/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-starter/actions/workflows/deploy-server.yml)
+[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
 [![Demo](https://img.shields.io/badge/Deployment-HEROKU-GREEN.svg)](https://drawspace-api.herokuapp.com/docs)
 
 ### Best Practices and Scalability Template 🙌
 
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-starter/master/workspaces/client/src/features/home/images/lighthouse.png)](https://ruyd.github.io/fullstack-starter)
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/workspaces/client/src/features/home/images/lighthouse.png)](https://ruyd.github.io/fullstack-starter)
 
 ### Developer Experience 💕😎✨
 - VSCode concurrent separate terminals debugging client, server and tests
@@ -53,7 +53,7 @@ A drawing web and mobile application that allows users to sketch on an empty pie
 
 Backend might be sleeping, takes a bit to wake up
 
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-starter/master/workspaces/client/src/features/home/images/self.PNG)](https://ruyd.github.io/fullstack-starter/draw)
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/workspaces/client/src/features/home/images/self.PNG)](https://ruyd.github.io/fullstack-monorepo/draw)
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
