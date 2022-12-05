@@ -34,6 +34,8 @@ export function getMockValue(columnName: string, columnType: string, randomize =
       return columnName + suffix
     case 'number':
       return 1 + increment
+    case type.match(/DECIMAL\(?.*\)?/)?.input:
+      return 1 + increment + ''
     case 'BOOLEAN':
       return true
     case 'date':

@@ -12,9 +12,9 @@ export const OrderModel = addModel<Order>('order', {
     type: DataTypes.UUID,
   },
   status: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
   },
   total: {
-    type: DataTypes.DECIMAL,
+    type: DataTypes.DECIMAL(10, 2),
   },
 })
