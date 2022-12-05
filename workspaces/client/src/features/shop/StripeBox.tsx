@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import React from 'react'
-import StripeCheckout from './Checkout'
+import StripeCheckout from './StripeCheckout'
 
 export default function StripeBox({
   children,

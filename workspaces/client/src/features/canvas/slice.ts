@@ -10,6 +10,7 @@ export interface CanvasState {
   size?: number
   color?: string
   style?: string
+  showDetails?: boolean
 }
 
 const active = getDraft()

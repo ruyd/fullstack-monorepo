@@ -20,8 +20,10 @@ import { patch } from './slice'
 import { config } from 'src/shared/config'
 import Collapse from '@mui/material/Collapse'
 import {
+  AttachMoney,
   ExpandLess,
   ExpandMore,
+  Money,
   PersonSearch,
   Settings,
   StarBorder,
@@ -131,6 +133,7 @@ export default function Menu(): JSX.Element {
     { text: 'Dashboard', icon: <AdbIcon />, path: '/' },
     { text: 'Settings', icon: <Settings />, path: '/settings' },
     { text: 'Users', icon: <PersonSearch />, path: '/users' },
+    { text: 'Orders', icon: <AttachMoney />, path: '/orders' },
     {
       text: 'Data',
       icon: <StorageIcon />,
