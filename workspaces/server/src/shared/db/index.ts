@@ -20,11 +20,12 @@ export class Connection {
   public static models: ModelStatic<Model>[]
   public static entities: ModelConfig[]
   public static db: Sequelize
+  static initialized = false
   constructor() {
     const checkRuntime = config
     if (!checkRuntime) {
       throw new Error(
-        'Connection Class dependency error, Config undefined, referenced from config.ts',
+        'Connection Class cannot read config, undefined variable, either initConfig() not called or cyclical reference from config.ts',
       )
     }
     Connection.models = []
@@ -42,6 +43,7 @@ export class Connection {
           }
         : {},
     })
+    Connection.initialized = true
   }
 }
 

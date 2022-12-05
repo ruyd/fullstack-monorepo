@@ -5,8 +5,6 @@ import appConfig from '../../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
 
-dotenv.config({})
-
 export interface Config {
   isLocalhost: boolean
   trace: boolean
@@ -54,78 +52,83 @@ export interface Config {
   swaggerSetup: Partial<OAS3Definition>
 }
 
-//TODO: add secrets vault inject to process.env
-const production = process.env.NODE_ENV === 'production'
-const serviceConfig = production ? appConfig.production : appConfig.development
-const { database, host, username, password, ssl, schema, dialect } = serviceConfig.db as Record<
-  string,
-  unknown
->
-const devConnection = `${dialect}://${username}:${password}@${host}/${database}`
-const DB_URL = production ? process.env.DB_URL || process.env.DATABASE_URL : devConnection // covers ENV=test
-const osHost = os.hostname()
-const isLocalhost = osHost.includes('local')
-logger.info(`process.env.PORT: ${process.env.PORT} ⚡️`)
-const port = Number(process.env.PORT) || Number(envi(serviceConfig.service.port))
-const hostname = envi(serviceConfig.service.host) as string
-const protocol = envi(serviceConfig.service.protocol) as string
-export const config: Config = {
-  trace: false,
-  production,
-  isLocalhost,
-  hostname,
-  protocol,
-  backendBaseUrl: `${protocol}://${hostname}:${port}`,
-  certFile: process.env.SSL_CRT_FILE,
-  certKeyFile: process.env.SSL_KEY_FILE,
-  port,
-  jsonLimit: process.env.JSON_LIMIT || '1mb',
-  cors: {
-    origin: process.env.CORS_ORIGIN || '*',
-  },
-  db: {
-    sync: true,
-    force: false,
-    alter: true,
+export function getConfig(): Config {
+  dotenv.config({})
+
+  //TODO: add secrets vault inject to process.env
+  const production = process.env.NODE_ENV === 'production'
+  const serviceConfig = production ? appConfig.production : appConfig.development
+  const { database, host, username, password, ssl, schema, dialect } = serviceConfig.db as Record<
+    string,
+    unknown
+  >
+  const devConnection = `${dialect}://${username}:${password}@${host}/${database}`
+  const DB_URL = production ? process.env.DB_URL || process.env.DATABASE_URL : devConnection // covers ENV=test
+  const osHost = os.hostname()
+  const isLocalhost = osHost.includes('local')
+  logger.info(`process.env.PORT: ${process.env.PORT} ⚡️`)
+  const port = Number(process.env.PORT) || Number(envi(serviceConfig.service.port))
+  const hostname = envi(serviceConfig.service.host) as string
+  const protocol = envi(serviceConfig.service.protocol) as string
+
+  return {
     trace: false,
-    name: database as string,
-    url: DB_URL as string,
-    schema: schema as string,
-    ssl: process.env.DB_SSL === 'true' || (ssl as boolean),
-    models: [],
-  },
-  auth: {
-    offline: true,
-    sync: true,
-    trace: false,
-    tokenSecret: process.env.TOKEN_SECRET || 'blank',
-    tenant: process.env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
-    domain: `${process.env.AUTH_TENANT}.auth0.com`,
-    baseUrl: `https://${process.env.AUTH_TENANT}.auth0.com`,
-    redirectUrl: process.env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
-    explorerAudience: `https://${process.env.AUTH_TENANT}.auth0.com/api/v2/`,
-    explorerId: process.env.AUTH_EXPLORER_ID || '',
-    explorerSecret: process.env.AUTH_EXPLORER_SECRET || '',
-    clientAudience: process.env.AUTH_AUDIENCE || 'https://backend',
-    clientId: process.env.AUTH_CLIENT_ID || '',
-    clientSecret: process.env.AUTH_CLIENT_SECRET || '',
-    ruleNamespace: 'https://',
-    algorithm: 'RS256',
-  },
-  swaggerSetup: {
-    openapi: '3.0.0',
-    info: {
-      title: packageJson.name,
-      description: packageJson.description,
-      version: packageJson.version,
+    production,
+    isLocalhost,
+    hostname,
+    protocol,
+    backendBaseUrl: `${protocol}://${hostname}:${port}`,
+    certFile: process.env.SSL_CRT_FILE,
+    certKeyFile: process.env.SSL_KEY_FILE,
+    port,
+    jsonLimit: process.env.JSON_LIMIT || '1mb',
+    cors: {
+      origin: process.env.CORS_ORIGIN || '*',
     },
-    servers: [
-      {
-        url: `/`,
+    db: {
+      sync: true,
+      force: false,
+      alter: true,
+      trace: false,
+      name: database as string,
+      url: DB_URL as string,
+      schema: schema as string,
+      ssl: process.env.DB_SSL === 'true' || (ssl as boolean),
+      models: [],
+    },
+    auth: {
+      offline: true,
+      sync: true,
+      trace: false,
+      tokenSecret: process.env.TOKEN_SECRET || 'blank',
+      tenant: process.env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
+      domain: `${process.env.AUTH_TENANT}.auth0.com`,
+      baseUrl: `https://${process.env.AUTH_TENANT}.auth0.com`,
+      redirectUrl: process.env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
+      explorerAudience: `https://${process.env.AUTH_TENANT}.auth0.com/api/v2/`,
+      explorerId: process.env.AUTH_EXPLORER_ID || '',
+      explorerSecret: process.env.AUTH_EXPLORER_SECRET || '',
+      clientAudience: process.env.AUTH_AUDIENCE || 'https://backend',
+      clientId: process.env.AUTH_CLIENT_ID || '',
+      clientSecret: process.env.AUTH_CLIENT_SECRET || '',
+      ruleNamespace: 'https://',
+      algorithm: 'RS256',
+    },
+    swaggerSetup: {
+      openapi: '3.0.0',
+      info: {
+        title: packageJson.name,
+        description: packageJson.description,
+        version: packageJson.version,
       },
-    ],
-    basePath: '/docs',
-  },
+      servers: [
+        {
+          url: `/`,
+        },
+      ],
+      basePath: '/docs',
+    },
+  }
 }
 
 /**
@@ -172,5 +175,13 @@ export function canStart() {
   logger.info(`**: ${result ? 'READY!' : 'HALT'}`)
   return result
 }
-
+export const config: Config = getConfig()
 export default config
+export class Backend {
+  static config: Config = {} as Config
+  static canStart = false
+  static init() {
+    Backend.config = getConfig()
+    Backend.canStart = canStart()
+  }
+}

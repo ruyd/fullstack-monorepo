@@ -13,7 +13,7 @@ import { activateAxiosTrace } from './shared/logger'
 import { authProviderSync } from './shared/auth/sync'
 import { checkDatabase } from './shared/db'
 
-export default function createBackendApp(): express.Express {
+export function createBackendApp(): express.Express {
   const app = express()
 
   if (!config.production && config.trace) {
@@ -64,3 +64,5 @@ export default function createBackendApp(): express.Express {
 
   return app
 }
+
+export default createBackendApp

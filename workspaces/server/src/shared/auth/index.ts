@@ -36,16 +36,28 @@ export type ReqWithAuth = express.Request & {
   config?: ModelConfig
 }
 
-const jwkClient = jwksRsa({
-  jwksUri: `${config.auth?.baseUrl}/.well-known/jwks.json`,
-  cache: true,
-  rateLimit: true,
-})
+let jwkClient: jwksRsa.JwksClient
+export function getJwkClient() {
+  if (!jwkClient) {
+    jwkClient = jwksRsa({
+      jwksUri: `${config.auth?.baseUrl}/.well-known/jwks.json`,
+      cache: true,
+      rateLimit: true,
+    })
+  }
+  return jwkClient
+}
 
-const jwtVerify = expressjwt({
-  secret: config.auth.tokenSecret || 'off',
-  algorithms: ['HS256'],
-})
+let jwtVerify: (req: express.Request, res: express.Response, next: express.NextFunction) => void
+export function getJwtVerify() {
+  if (!jwtVerify) {
+    jwtVerify = expressjwt({
+      secret: config.auth.tokenSecret || 'off',
+      algorithms: ['HS256'],
+    })
+  }
+  return jwtVerify
+}
 
 export type ModelWare = {
   config: ModelConfig
@@ -73,7 +85,7 @@ export function getAuthWare(cfg?: ModelConfig): ModelWare {
       config.auth?.baseUrl && config.auth?.clientId && config.auth?.clientSecret
 
     if (hasAuthProvider && config.auth?.algorithm === 'RS256' && header && token) {
-      const result = await jwkClient.getSigningKey(header.kid)
+      const result = await getJwkClient().getSigningKey(header.kid)
       const key = result.getPublicKey()
       try {
         const auth = jwt.verify(token, key, {

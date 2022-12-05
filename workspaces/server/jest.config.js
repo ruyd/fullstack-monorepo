@@ -18,6 +18,7 @@ module.exports = {
       displayName: 'server',
       preset: 'ts-jest',
       testMatch: ['<rootDir>/tests/**/*.test.ts'],
+      // setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
       modulePaths: [compilerOptions.baseUrl],
       moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
     },
