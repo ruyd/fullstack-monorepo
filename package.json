@@ -56,5 +56,6 @@
   "dependencies": {
     "@types/uuid": "^8.3.4",
     "jsonwebtoken": "^8.5.1"
-  }
+  },
+  "packageManager": "yarn@3.3.0"
 }
