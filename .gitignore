@@ -50,4 +50,11 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 
-.yarn/
+# yarn2 - NOT using Zero-Installs
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
