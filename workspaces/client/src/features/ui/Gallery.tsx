@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Avatar,
+  Badge,
   Card,
   CardActionArea,
   CardContent,
@@ -20,6 +21,7 @@ import { Paths } from '../../shared/routes'
 import { notify } from '../app'
 import { useAppDispatch } from '../../shared/store'
 import ShareIcon from '@mui/icons-material/Share'
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import waiting from '../home/images/looking.svg'
 import { GalleryCard } from '../canvas/Card'
 import React from 'react'
@@ -51,6 +53,9 @@ export default function Gallery({
     navigator.clipboard.writeText(`${origin}${Paths.Draw}/${item.id}`)
     dispatch(notify('Link copied to clipboard!'))
   }
+  const buy = (item: Drawing) => {
+    dispatch(notify(`${item.price} added to Cart`))
+  }
   React.useEffect(() => {
     if (onData && data?.items) {
       onData(data?.items)
@@ -71,9 +76,18 @@ export default function Gallery({
               item={item}
               onClick={() => navigate(`${Paths.Draw}/${item.id}`)}
               actionPane={
-                <IconButton onClick={() => copyLink(item)} aria-label="sharing link">
-                  <ShareIcon />
-                </IconButton>
+                <>
+                  {item.sell && (
+                    <Badge badgeContent={item.price}>
+                      <IconButton onClick={() => buy(item)} aria-label="sharing link">
+                        <AddShoppingCartIcon />
+                      </IconButton>
+                    </Badge>
+                  )}
+                  <IconButton onClick={() => copyLink(item)} aria-label="sharing link">
+                    <ShareIcon />
+                  </IconButton>
+                </>
               }
             />
           </Grid>

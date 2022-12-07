@@ -1,25 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { AttachMoney, MonetizationOn, RemoveRedEye, VisibilityOff } from '@mui/icons-material'
+import { AttachMoney, MonetizationOn, VisibilityOff } from '@mui/icons-material'
 import {
   Box,
   Dialog,
   FormControlLabel,
   FormGroup,
-  Grid,
   InputAdornment,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Switch,
   TextField,
   Typography,
 } from '@mui/material'
 import Moment from 'react-moment'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
-import Spacer from '../ui/Spacer'
+import { Drawing } from '../../../../lib/src/types'
+import { Method, notify, request } from '../app'
 import { actions } from './slice'
 
 export function Details() {
@@ -27,6 +20,12 @@ export function Details() {
   const show = useAppSelector(state => state.canvas.showDetails)
   const item = useAppSelector(state => state.canvas.active)
   const close = () => dispatch(actions.patch({ showDetails: false }))
+  const update = async (id?: string, field?: string, value?: unknown) => {
+    const response = await request<Drawing>('/drawing', { id, field, value }, Method.PATCH)
+    dispatch(actions.onSave(response.data))
+    dispatch(notify(response.status === 200 ? 'Properties updated' : 'Error updating properties'))
+  }
+
   return (
     <Dialog open={!!show} onClose={close}>
       <Box
@@ -44,6 +43,8 @@ export function Details() {
             type="number"
             variant="filled"
             sx={{ my: 2 }}
+            value={item?.price || 0}
+            onChange={e => update(item.id, 'price', Number(e.target.value))}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -53,11 +54,24 @@ export function Details() {
             }}
           />
           <FormControlLabel
-            control={<Switch value={item?.sell} checkedIcon={<AttachMoney />} />}
+            control={
+              <Switch
+                onChange={e => update(item.id, 'sell', e.target.checked)}
+                checked={!!item?.sell}
+                checkedIcon={<AttachMoney />}
+              />
+            }
             label="Monetize"
           />
           <FormControlLabel
-            control={<Switch value={item?.private} checkedIcon={<VisibilityOff />} />}
+            control={
+              <Switch
+                name="private"
+                onChange={e => update(item.id, 'private', e.target.checked)}
+                checked={!!item?.private}
+                checkedIcon={<VisibilityOff />}
+              />
+            }
             label="Don't show in gallery"
           />
 

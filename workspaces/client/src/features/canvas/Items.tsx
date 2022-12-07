@@ -42,6 +42,11 @@ export default function Items(props: ContainerProps) {
     }
   }
 
+  const showDetails = (item: Drawing) => {
+    setItem(item)
+    dispatch(actions.patch({ showDetails: true }))
+  }
+
   React.useEffect(() => {
     if (!loaded && token) {
       dispatch(itemsAsync())
@@ -115,7 +120,7 @@ export default function Items(props: ContainerProps) {
                   <IconButton onClick={() => setItem(item)}>
                     <Edit />
                   </IconButton>
-                  <IconButton onClick={() => setItem(item)}>
+                  <IconButton onClick={() => showDetails(item)}>
                     <SettingsIcon />
                   </IconButton>
                   <IconButton onClick={() => deleteItem(item)}>

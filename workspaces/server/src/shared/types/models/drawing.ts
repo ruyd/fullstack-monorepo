@@ -24,6 +24,12 @@ export const DrawingModel = addModel<Drawing>('drawing', {
   private: {
     type: DataTypes.BOOLEAN,
   },
+  sell: {
+    type: DataTypes.BOOLEAN,
+  },
+  price: {
+    type: DataTypes.DECIMAL(10, 2),
+  },
 })
 
 DrawingModel.belongsTo(UserModel, {
