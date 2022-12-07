@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, expect, test } from '@jest/globals'
 import { Connection } from '../../src/shared/db'
 import createBackend from '../../src/app'
@@ -87,10 +88,17 @@ describe('model-api', () => {
     createBackend()
   })
 
+  if (!Connection.initialized) {
+    Connection.init()
+  }
+
   const mocks = []
   const keys = {} as Record<string, string>
   for (const entity of Connection.entities) {
-    const model = entity.model as ModelStatic<Model>
+    const model = entity.model
+    if (!model) {
+      throw new Error('No model found for ' + entity.name)
+    }
     const mock = getPopulatedModel(model, keys)
     console.info('Generated Data: ', model.name, mock)
     mocks.push(mock)
