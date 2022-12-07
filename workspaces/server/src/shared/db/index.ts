@@ -8,6 +8,12 @@ export const commonOptions: ModelOptions = {
   timestamps: true,
   underscored: true,
 }
+export interface Join {
+  relation: 'belongsTo' | 'hasOne' | 'hasMany' | 'belongsToMany'
+  model: ModelStatic<Model>
+  as: string
+  foreignKey: string
+}
 
 export interface ModelConfig<M extends Model = Model> {
   name: string
@@ -16,13 +22,7 @@ export interface ModelConfig<M extends Model = Model> {
   unsecureRead?: boolean
   unsecure?: boolean
   model?: ModelStatic<M>
-}
-
-export interface Join {
-  relation: 'belongsTo' | 'hasOne' | 'hasMany' | 'belongsToMany'
-  model: ModelStatic<Model>
-  as: string
-  foreignKey: string
+  joins?: Join[]
 }
 
 export class Connection {
@@ -33,7 +33,7 @@ export class Connection {
     const checkRuntime = config
     if (!checkRuntime) {
       throw new Error(
-        'Connection Class cannot read config, undefined variable, either initConfig() not called or cyclical reference from config.ts',
+        'Connection Class cannot read config, undefined variable - check for cyclic dependency',
       )
     }
     Connection.db = new Sequelize(config.db.url, {
@@ -49,13 +49,26 @@ export class Connection {
           }
         : {},
     })
+    Connection.initModels()
+    Connection.initialized = true
+  }
+  static initModels() {
     for (const entity of Connection.entities) {
       const scopedOptions = { ...commonOptions, sequelize: Connection.db, modelName: entity.name }
-      entity.model?.init(entity.attributes, scopedOptions)
-      // we have references using these models, so we need to init them
-      // model = Connection.db.define(entity.name, entity.attributes, commonOptions)
+      if (!entity.model) {
+        continue
+      }
+
+      entity.model.init(entity.attributes, scopedOptions)
+
+      for (const join of entity.joins || []) {
+        entity.model[join.relation](join.model, {
+          through: join.model,
+          as: join.as as string,
+          foreignKey: join.foreignKey as string,
+        })
+      }
     }
-    Connection.initialized = true
   }
 }
 

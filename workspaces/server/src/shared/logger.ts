@@ -35,8 +35,11 @@ export function traceRoutesMiddleware(
     return next()
   }
   const token = req.headers.authorization?.replace('Bearer ', '') || ''
-  console.log('Token: ', token)
+  if (config.auth.trace) {
+    console.log('Token: ', token)
+  }
   const decoded = decodeToken(token)
+  console.log('\x1b[34m%s\x1b[0m', '******** INBOUND TRACE ** ')
   console.table({
     method: req.method,
     endpoint: req.originalUrl,
@@ -51,7 +54,14 @@ export function traceRoutesMiddleware(
 
 export function activateAxiosTrace() {
   axios.interceptors.request.use(req => {
-    console.log(req.method?.toUpperCase() || 'Request', req.url, config.trace ? req.data : '')
+    // orange console log
+    console.log(
+      '\x1b[33m%s\x1b[0m',
+      '> OUTBOUND TRACE ** ',
+      req.method?.toUpperCase() || 'Request',
+      req.url,
+      config.trace ? req.data : '',
+    )
     return req
   })
 
