@@ -2,6 +2,7 @@ import { checkDatabase, Connection } from '../../src/shared/db'
 
 describe('integrity check', () => {
   test('sync', async () => {
+    Connection.init()
     const seq = await checkDatabase()
     expect(seq).toBeTruthy()
 

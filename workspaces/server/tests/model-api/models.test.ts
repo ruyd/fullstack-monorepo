@@ -89,7 +89,8 @@ describe('model-api', () => {
 
   const mocks = []
   const keys = {} as Record<string, string>
-  for (const model of Connection.models) {
+  for (const entity of Connection.entities) {
+    const model = entity.model as ModelStatic<Model>
     const mock = getPopulatedModel(model, keys)
     console.info('Generated Data: ', model.name, mock)
     mocks.push(mock)
@@ -131,7 +132,8 @@ describe('model-api', () => {
   }
 
   //loop models in reverse order
-  for (const model of Connection.models.reverse()) {
+  for (const entity of Connection.entities.reverse()) {
+    const model = entity.model as ModelStatic<Model>
     const mock = mocks.pop()
     if (!mock) {
       throw new Error('mock not found')
