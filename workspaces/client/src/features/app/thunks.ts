@@ -30,6 +30,7 @@ export async function request<
     dispatch(patch({ loading: true }))
     response = await axios({
       ...options,
+      // headers:{ Authorization: `Bearer ${token}` },
       url,
       data,
       method,

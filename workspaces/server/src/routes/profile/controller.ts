@@ -97,6 +97,10 @@ export async function social(req: express.Request, res: express.Response) {
   const decoded = decode(idToken) as IdentityToken
   const { email, given_name, family_name, picture } = decoded
 
+  if (!access || !email) {
+    throw new Error('Missing access token or email')
+  }
+
   const instance = await UserModel.findOne({
     where: { email },
   })

@@ -1,6 +1,9 @@
+/* eslint-disable no-console */
+import express from 'express'
 import axios from 'axios'
 import winston from 'winston'
 import { config } from './config'
+import { decodeToken } from './auth'
 
 const format = winston.format.combine(winston.format.timestamp(), winston.format.simple())
 const logger = winston.createLogger({
@@ -21,16 +24,38 @@ const logger = winston.createLogger({
   ],
 })
 
+export function traceRoutesMiddleware(
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) {
+  const methods = ['POST', 'PUT', 'PATCH', 'DELETE']
+  const endpoints = ['/cart']
+  if (!config.trace || !endpoints.includes(req.originalUrl) || !methods.includes(req.method)) {
+    return next()
+  }
+  const token = req.headers.authorization?.replace('Bearer ', '') || ''
+  console.log('Token: ', token)
+  const decoded = decodeToken(token)
+  console.table({
+    method: req.method,
+    endpoint: req.originalUrl,
+    tokenOk: !!decoded,
+    userId: decoded?.userId,
+  })
+  if (req.body) {
+    console.table(req.body)
+  }
+  next()
+}
+
 export function activateAxiosTrace() {
   axios.interceptors.request.use(req => {
-    // using console to avoid sensitive data in logs
-    // eslint-disable-next-line no-console
     console.log(req.method?.toUpperCase() || 'Request', req.url, config.trace ? req.data : '')
     return req
   })
 
   axios.interceptors.response.use(req => {
-    // eslint-disable-next-line no-console
     console.log('> Response:', req.status, req.statusText, config.trace ? req.data : '')
     return req
   })

@@ -25,6 +25,8 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import waiting from '../home/images/looking.svg'
 import { GalleryCard } from '../canvas/Card'
 import React from 'react'
+import { actions } from '../shop/slice'
+import { cartAsync } from '../shop/thunks'
 
 const StyledImage = styled('img')({
   height: '45vh',
@@ -54,7 +56,7 @@ export default function Gallery({
     dispatch(notify('Link copied to clipboard!'))
   }
   const buy = (item: Drawing) => {
-    dispatch(notify(`${item.price} added to Cart`))
+    dispatch(cartAsync({ item, quantity: 1 }))
   }
   React.useEffect(() => {
     if (onData && data?.items) {

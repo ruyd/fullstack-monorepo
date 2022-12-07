@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Drawing } from '@shared/lib'
+import { Cart, Drawing } from '@shared/lib'
 
 export interface ShopState {
-  cart: Drawing[]
+  items: Cart[]
   showCart?: boolean
   showCheckout?: boolean
   intent?: string
@@ -10,7 +10,7 @@ export interface ShopState {
 }
 
 export const initialState: ShopState = {
-  cart: [],
+  items: [],
 }
 
 export const shopSlice = createSlice({

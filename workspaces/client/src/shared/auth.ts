@@ -61,6 +61,7 @@ export function getPersistedAuthFromStorage(): {
   const { token, user } = JSON.parse(json)
   const accessToken = decodeToken(token)
   if (!accessToken) {
+    onLogin()
     return null
   }
   setHeader(token)

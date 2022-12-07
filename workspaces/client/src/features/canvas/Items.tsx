@@ -26,12 +26,16 @@ export default function Items(props: ContainerProps) {
   const token = useAppSelector(state => state.app.token)
   const items = useAppSelector(store => store.canvas.items)
   const loaded = useAppSelector(store => store.canvas.loaded)
-  const activeId = useAppSelector(store => store.canvas.active?.id)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const setItem = useCallback((item: Drawing) => dispatch(actions.patchActive(item)), [dispatch])
-  const isActive = (item: Drawing) => activeId === item?.id
   const { id } = useParams()
+  const activeId = useAppSelector(store => store.canvas.active?.id)
+  const isActive = (item: Drawing) => activeId === item?.id
+
+  const setItem = (item: Drawing) => {
+    dispatch(actions.patchActive(item))
+    navigate(`${Paths.Draw}/${item?.id}`, { replace: true })
+  }
 
   const deleteItem = async (item: Drawing) => {
     const result = await dispatch(deleteAsync(item.id as string))

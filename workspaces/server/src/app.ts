@@ -9,7 +9,7 @@ import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
-import { activateAxiosTrace } from './shared/logger'
+import { activateAxiosTrace, traceRoutesMiddleware } from './shared/logger'
 import { authProviderSync } from './shared/auth/sync'
 import { checkDatabase } from './shared/db'
 
@@ -29,14 +29,13 @@ export function createBackendApp(): express.Express {
   // Basics
   app.use(cors())
   app.use(express.json({ limit: config.jsonLimit }))
-
   app.use(
     bodyParser.urlencoded({
       extended: true,
     }),
   )
-
   app.use(errorHandler)
+  app.use(traceRoutesMiddleware)
 
   // Swagger Portal
   const swaggerDoc = swaggerJsdoc({

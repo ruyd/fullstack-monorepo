@@ -148,7 +148,13 @@ export function createToken(obj: object): string {
 }
 
 export function decodeToken(token: string) {
+  if (!token) {
+    return undefined
+  }
   const authInfo = jwt.decode(token) as jwt.JwtPayload
+  if (!authInfo) {
+    return undefined
+  }
   const prefix = config.auth?.ruleNamespace || 'https://'
   const keys = Object.keys(authInfo).filter(key => key.includes(prefix))
   for (const key of keys) {

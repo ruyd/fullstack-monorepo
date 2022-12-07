@@ -122,7 +122,7 @@ export async function checkDatabase(): Promise<boolean> {
 
     if (config.db.sync) {
       logger.info(
-        `Checking database models: 
+        `Database models: 
         ${Connection.models.map(a => a.name).join(', ')}`,
       )
       await Connection.db.sync({ alter: config.db.alter, force: config.db.force })

@@ -20,6 +20,7 @@ export interface Config {
     origin: string
   }
   db: {
+    trace: boolean
     name: string
     url: string
     schema: string
@@ -27,7 +28,6 @@ export interface Config {
     sync: boolean
     force: boolean
     alter: boolean
-    trace: boolean
     models: string[]
   }
   auth: {
@@ -72,7 +72,7 @@ export function getConfig(): Config {
   const protocol = envi(serviceConfig.service.protocol) as string
 
   return {
-    trace: false,
+    trace: true,
     production,
     isLocalhost,
     hostname,
@@ -86,10 +86,10 @@ export function getConfig(): Config {
       origin: process.env.CORS_ORIGIN || '*',
     },
     db: {
+      trace: false,
       sync: true,
       force: false,
       alter: true,
-      trace: false,
       name: database as string,
       url: DB_URL as string,
       schema: schema as string,
