@@ -17,6 +17,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import Moment from 'react-moment'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import Spacer from '../ui/Spacer'
 import { actions } from './slice'
@@ -59,6 +60,20 @@ export function Details() {
             control={<Switch value={item?.private} checkedIcon={<VisibilityOff />} />}
             label="Don't show in gallery"
           />
+
+          <Typography
+            sx={{
+              color: 'text.secondary',
+              marginTop: '1rem',
+              lineHeight: 1.5,
+              fontWeight: 400,
+              fontSize: '0.75rem',
+              textAlign: 'right',
+            }}
+          >
+            Modified:&nbsp;
+            <Moment fromNow>{item.updatedAt}</Moment>
+          </Typography>
         </FormGroup>
       </Box>
     </Dialog>

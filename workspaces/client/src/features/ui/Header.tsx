@@ -57,8 +57,7 @@ export default function HeaderNavBar() {
   }
 
   const handleMenuToggle = () => {
-    prompt()
-    //dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
+    dispatch(patch({ drawerRightOpen: !drawerRightOpen }))
   }
 
   const handleLogout = () => {

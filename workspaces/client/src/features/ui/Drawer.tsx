@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import CloseIcon from '@mui/icons-material/Close'
 import { useAppSelector, useAppDispatch } from '../../shared/store'
 import { patch } from '../app/slice'
-import { Card, Container, IconButton, SwipeableDrawer, Typography } from '@mui/material'
+import { Box, Card, Container, IconButton, SwipeableDrawer, Typography } from '@mui/material'
+import Cart from '../shop/Cart'
 
 export default function DrawerRight() {
   const dispatch = useAppDispatch()
@@ -19,16 +21,14 @@ export default function DrawerRight() {
         keepMounted: true,
       }}
     >
-      <Container className="centered" sx={{ flex: '1', textAlign: 'center' }}>
-        <Card sx={{ padding: '2rem' }} onClick={toggleOpen}>
-          <Typography variant="h4" sx={{ pointerEvents: 'none' }}>
-            Placeholder
-          </Typography>
-          <IconButton aria-label="close">
-            <CloseIcon />
-          </IconButton>
+      <Box
+        className="centered"
+        sx={{ flex: '1', display: 'flex', textAlign: 'center', width: '25rem' }}
+      >
+        <Card sx={{ flex: 1, padding: '2rem' }}>
+          <Cart />
         </Card>
-      </Container>
+      </Box>
     </SwipeableDrawer>
   )
 }

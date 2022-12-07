@@ -1,3 +1,4 @@
+import CheckoutDialog from '../shop/CheckoutDialog'
 import OnboardingDialog from '../profile/OnboardingDialog'
 
 /**
@@ -8,6 +9,7 @@ import OnboardingDialog from '../profile/OnboardingDialog'
 export default function Dialogs() {
   return (
     <>
+      <CheckoutDialog />
       <OnboardingDialog />
     </>
   )
