@@ -24,7 +24,7 @@ const logger = winston.createLogger({
   ],
 })
 
-export function traceRoutesMiddleware(
+export function endpointTracingMiddleware(
   req: express.Request,
   res: express.Response,
   next: express.NextFunction,

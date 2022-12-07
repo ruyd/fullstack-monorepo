@@ -64,87 +64,84 @@ export type ModelWare = {
   authWare: express.Handler
 }
 
-export async function authMiddleware(
-  req: express.Request,
-  _res: express.Response,
-  next: express.NextFunction,
-) {
-  if (config.auth.offline) {
-    return next()
-  }
+const readMethods = ['GET', 'HEAD', 'OPTIONS']
+const writeMethods = ['POST', 'PUT', 'PATCH', 'DELETE']
 
-  const model = Connection.entities.find(e => e.name === req.originalUrl.replace('/', ''))
-  const { header, token } = setRequest(req, model)
+export async function checkToken(header: jwt.JwtHeader | undefined, token: string | undefined) {
+  let accessToken: AppAccessToken | undefined
   const hasAuthProvider = config.auth.baseUrl && config.auth.clientId && config.auth.clientSecret
   if (hasAuthProvider && header?.alg === 'RS256' && header && token) {
     const result = await getJwkClient().getSigningKey(header.kid)
     const key = result.getPublicKey()
-    try {
-      const auth = jwt.verify(token, key, {
-        algorithms: ['RS256'],
-      }) as AppAccessToken
-      if (model?.roles?.length && !model?.roles?.every(r => auth.roles.includes(r))) {
-        throw Error('Unauthorized - Needs user access role for request')
-      }
-    } catch (err) {
-      logger.error(err)
-      const error = err as Error
-      throw new HttpUnauthorizedError(error.message)
-    }
-    return next()
+    accessToken = jwt.verify(token, key, {
+      algorithms: ['RS256'],
+    }) as AppAccessToken
+  } else if (token) {
+    accessToken = jwt.verify(token, config.auth.tokenSecret as string) as AppAccessToken
   }
-
-  return jwtVerify(req, _res, next)
+  return accessToken
 }
 
-/**
- * Returns config instance with middleware for JWT and Roles
- * @param cfg
- * @returns
- */
-export function getAuthWare(cfg?: EntityConfig): ModelWare {
-  const self = {} as ModelWare
-  self.config = cfg as EntityConfig
-  self.authWare = async function (
-    req: express.Request,
-    _res: express.Response,
-    next: express.NextFunction,
-  ) {
+export async function tokenCheckWare(
+  req: express.Request,
+  _res: express.Response,
+  next: express.NextFunction,
+) {
+  try {
+    const { header, token } = setRequest(req)
     if (config.auth.offline) {
       return next()
     }
-
-    const { header, token } = setRequest(req, self.config)
-    const hasAuthProvider =
-      config.auth?.baseUrl && config.auth?.clientId && config.auth?.clientSecret
-
-    if (hasAuthProvider && config.auth?.algorithm === 'RS256' && header && token) {
-      const result = await getJwkClient().getSigningKey(header.kid)
-      const key = result.getPublicKey()
-      try {
-        const auth = jwt.verify(token, key, {
-          algorithms: ['RS256'],
-        }) as AppAccessToken
-        if (self.config?.roles?.length && !self.config?.roles?.every(r => auth.roles.includes(r))) {
-          throw Error('Unauthorized - Needs user access role for request')
-        }
-      } catch (err) {
-        logger.error(err)
-        const error = err as Error
-        throw new HttpUnauthorizedError(error.message)
-      }
+    const accessToken = await checkToken(header, token)
+    if (!accessToken) {
+      throw Error('Not logged in')
+    }
+    return next()
+  } catch (err) {
+    logger.error(err)
+    const error = err as Error
+    throw new HttpUnauthorizedError(error.message)
+  }
+}
+export async function modelAuthMiddleware(
+  req: express.Request,
+  _res: express.Response,
+  next: express.NextFunction,
+) {
+  try {
+    const entity = Connection.entities.find(e => e.name === req.originalUrl.replace('/', ''))
+    const { header, token } = setRequest(req, entity)
+    if (config.auth.offline) {
       return next()
     }
-
-    return jwtVerify(req, _res, next)
+    if (
+      (entity?.publicRead && readMethods.includes(req.method)) ||
+      (entity?.publicWrite && writeMethods.includes(req.method))
+    ) {
+      return next()
+    }
+    // If not public, we need a token
+    const accessToken = await checkToken(header, token)
+    if (entity && !accessToken) {
+      throw Error('Not logged in')
+    }
+    // Valid, but let's heck if user has access role
+    if (
+      entity &&
+      accessToken &&
+      entity.roles?.length &&
+      !entity.roles?.every(r => accessToken?.roles.includes(r))
+    ) {
+      throw Error('Needs user access role for request')
+    }
+    // All good
+    return next()
+  } catch (err) {
+    logger.error(err)
+    const error = err as Error
+    throw new HttpUnauthorizedError(error.message)
   }
-  return self
 }
-
-/**
- * Solo JWT check
- */
-export const tokenCheckWare = getAuthWare().authWare
 
 export function setRequest(
   r: express.Request,

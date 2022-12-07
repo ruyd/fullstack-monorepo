@@ -1,7 +1,7 @@
 import express from 'express'
 import { Model, ModelStatic, Order } from 'sequelize/types'
 import { EntityConfig } from '../db'
-import { getAuthWare, ReqWithAuth } from '../auth'
+import { ReqWithAuth } from '../auth'
 import { createOrUpdate, getIfExists, gridPatch, gridDelete, list } from './controller'
 import logger from '../logger'
 
@@ -173,23 +173,16 @@ export async function listHandler(
  * Might need options for any model to exclude certain methods/auth
  * @param models - array of sequelize models
  * @param router - express router
- * @param authMiddleware - token check middleware
  **/
 export function registerModelApiRoutes(entities: EntityConfig[], router: express.Router): void {
   for (const cfg of entities) {
     const model = cfg.model as ModelStatic<Model>
-    const authCheck = getAuthWare(cfg).authWare
-    //explicitly applying auth to routes, it might be better to have a global middleware
-    const unsecure: express.Handler = (_r, _p, n) => n()
-    const readCheck = cfg.publicWrite || cfg.publicRead ? unsecure : authCheck
-    const writeCheck = cfg.publicWrite ? unsecure : authCheck
-
     const prefix = model.name.toLowerCase()
-    router.get(`/${prefix}`, readCheck, listHandler.bind(model))
-    router.get(`/${prefix}/:id`, readCheck, getHandler.bind(model))
-    router.post(`/${prefix}`, writeCheck, saveHandler.bind(model))
-    router.delete(`/${prefix}/:id`, writeCheck, deleteHandler.bind(model))
-    router.patch(`/${prefix}`, writeCheck, gridPatchHandler.bind(model))
-    router.delete(`/${prefix}`, writeCheck, gridDeleteHandler.bind(model))
+    router.get(`/${prefix}`, listHandler.bind(model))
+    router.get(`/${prefix}/:id`, getHandler.bind(model))
+    router.post(`/${prefix}`, saveHandler.bind(model))
+    router.delete(`/${prefix}/:id`, deleteHandler.bind(model))
+    router.patch(`/${prefix}`, gridPatchHandler.bind(model))
+    router.delete(`/${prefix}`, gridDeleteHandler.bind(model))
   }
 }
