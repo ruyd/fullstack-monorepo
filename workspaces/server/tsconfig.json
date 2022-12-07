@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "ES6",
     "removeComments": false,
     "moduleResolution": "node",
     "esModuleInterop": true,

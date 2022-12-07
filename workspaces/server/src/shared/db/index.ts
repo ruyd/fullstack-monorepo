@@ -75,8 +75,10 @@ export function addModel<T extends object>(
   unsecureRead?: boolean,
   roles?: string[],
 ): ModelStatic<Model<T, T>> {
+  // defered init
   // const model = Connection.db.define<Model<T>>(cfg.name, cfg.attributes, commonOptions)
-  const model = class extends Model<T, T> {}
+
+  const model = class extends Model {}
   const cfg = {
     name,
     attributes,
@@ -86,7 +88,7 @@ export function addModel<T extends object>(
     model,
   }
   Connection.entities.push(cfg)
-  logger.info(`Registered model ${model.name}`, Connection.entities)
+  logger.info(`Registered model ${name}`)
   return model
 }
 
@@ -153,5 +155,5 @@ export async function checkDatabase(): Promise<boolean> {
   }
   return false
 }
-export const connection = new Connection()
-export default connection
+
+export default Connection

@@ -10,14 +10,13 @@ import cors from 'cors'
 import api from './routes'
 import { activateAxiosTrace, traceRoutesMiddleware } from './shared/logger'
 import { authProviderSync } from './shared/auth/sync'
-import { Connection, checkDatabase } from './shared/db'
+import { checkDatabase, Connection } from './shared/db'
 
 export function createBackendApp(): express.Express {
-  Connection.init()
-  const conn = Connection
-  console.log(conn)
-
   const app = express()
+
+  Connection.init()
+  checkDatabase()
 
   if (!config.production && config.trace) {
     activateAxiosTrace()
@@ -26,8 +25,6 @@ export function createBackendApp(): express.Express {
   if (process.env.NODE_ENV !== 'test') {
     authProviderSync()
   }
-
-  checkDatabase()
 
   // Add Middlewares - Order is important
   app.use(errorHandler)
