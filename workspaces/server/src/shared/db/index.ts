@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Attributes, Model, ModelAttributes, ModelOptions, ModelStatic, Sequelize } from 'sequelize'
 import migrator from './migrator'
-import { config } from '../config'
+import config from '../config'
 import logger from '../logger'
 
 export const commonOptions: ModelOptions = {
@@ -14,22 +15,27 @@ export interface ModelConfig<M extends Model = Model> {
   roles?: string[]
   unsecureRead?: boolean
   unsecure?: boolean
+  model?: ModelStatic<M>
+}
+
+export interface Join {
+  relation: 'belongsTo' | 'hasOne' | 'hasMany' | 'belongsToMany'
+  model: ModelStatic<Model>
+  as: string
+  foreignKey: string
 }
 
 export class Connection {
-  public static models: ModelStatic<Model>[]
-  public static entities: ModelConfig[]
+  public static entities: ModelConfig[] = []
   public static db: Sequelize
   static initialized = false
-  constructor() {
+  static init() {
     const checkRuntime = config
     if (!checkRuntime) {
       throw new Error(
         'Connection Class cannot read config, undefined variable, either initConfig() not called or cyclical reference from config.ts',
       )
     }
-    Connection.models = []
-    Connection.entities = []
     Connection.db = new Sequelize(config.db.url, {
       logging: sql => (config.db.trace ? logger.info(`${sql}\n`) : undefined),
       ssl: !!config.db.ssl,
@@ -43,11 +49,15 @@ export class Connection {
           }
         : {},
     })
+    for (const entity of Connection.entities) {
+      const scopedOptions = { ...commonOptions, sequelize: Connection.db, modelName: entity.name }
+      entity.model?.init(entity.attributes, scopedOptions)
+      // we have references using these models, so we need to init them
+      // model = Connection.db.define(entity.name, entity.attributes, commonOptions)
+    }
     Connection.initialized = true
   }
 }
-
-export const connection = new Connection()
 
 /**
  * Defines db model, creates CRUD endpoints and swagger docs
@@ -61,22 +71,22 @@ export const connection = new Connection()
 export function addModel<T extends object>(
   name: string,
   attributes: ModelAttributes<Model<T>, Attributes<Model<T>>>,
+  joins?: Join[],
   unsecureRead?: boolean,
   roles?: string[],
 ): ModelStatic<Model<T, T>> {
+  // const model = Connection.db.define<Model<T>>(cfg.name, cfg.attributes, commonOptions)
+  const model = class extends Model<T, T> {}
   const cfg = {
     name,
     attributes,
+    joins,
     unsecureRead,
     roles,
+    model,
   }
   Connection.entities.push(cfg)
-  const model = Connection.db.define<Model<T>>(cfg.name, cfg.attributes, commonOptions)
-  const existing = Connection.models.find(m => m.name === model.name)
-  if (!existing) {
-    Connection.models.push(model)
-  }
-  logger.info(`Registered model ${model.name}`, Connection.models)
+  logger.info(`Registered model ${model.name}`, Connection.entities)
   return model
 }
 
@@ -117,13 +127,13 @@ export async function checkMigrations(): Promise<boolean> {
 
 export async function checkDatabase(): Promise<boolean> {
   try {
-    config.db.models = Connection.models.map(m => m.name)
+    config.db.models = Connection.entities.map(m => m.name)
     await Connection.db.authenticate()
 
     if (config.db.sync) {
       logger.info(
         `Database models: 
-        ${Connection.models.map(a => a.name).join(', ')}`,
+        ${Connection.entities.map(a => a.name).join(', ')}`,
       )
       await Connection.db.sync({ alter: config.db.alter, force: config.db.force })
     }
@@ -143,5 +153,5 @@ export async function checkDatabase(): Promise<boolean> {
   }
   return false
 }
-
+export const connection = new Connection()
 export default connection

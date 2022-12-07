@@ -5,7 +5,7 @@ import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import { config } from '../config'
 import { AppAccessToken } from '../types'
-import { ModelConfig } from '../db'
+import { Connection, ModelConfig } from '../db'
 import logger from '../logger'
 import { HttpUnauthorizedError } from '../errorHandler'
 
@@ -63,6 +63,40 @@ export type ModelWare = {
   config: ModelConfig
   authWare: express.Handler
 }
+
+export async function authMiddleware(
+  req: express.Request,
+  _res: express.Response,
+  next: express.NextFunction,
+) {
+  if (config.auth.offline) {
+    return next()
+  }
+
+  const model = Connection.entities.find(e => e.name === req.originalUrl.replace('/', ''))
+  const { header, token } = setRequest(req, model)
+  const hasAuthProvider = config.auth.baseUrl && config.auth.clientId && config.auth.clientSecret
+  if (hasAuthProvider && header?.alg === 'RS256' && header && token) {
+    const result = await getJwkClient().getSigningKey(header.kid)
+    const key = result.getPublicKey()
+    try {
+      const auth = jwt.verify(token, key, {
+        algorithms: ['RS256'],
+      }) as AppAccessToken
+      if (model?.roles?.length && !model?.roles?.every(r => auth.roles.includes(r))) {
+        throw Error('Unauthorized - Needs user access role for request')
+      }
+    } catch (err) {
+      logger.error(err)
+      const error = err as Error
+      throw new HttpUnauthorizedError(error.message)
+    }
+    return next()
+  }
+
+  return jwtVerify(req, _res, next)
+}
+
 /**
  * Returns config instance with middleware for JWT and Roles
  * @param cfg
@@ -114,7 +148,7 @@ export const tokenCheckWare = getAuthWare().authWare
 
 export function setRequest(
   r: express.Request,
-  cfg: ModelConfig,
+  cfg?: ModelConfig,
 ): {
   header?: jwt.JwtHeader
   token?: string

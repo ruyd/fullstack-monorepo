@@ -1,6 +1,6 @@
 import express from 'express'
 import { Model, ModelStatic, Order } from 'sequelize/types'
-import { Connection, ModelConfig } from '../db'
+import { ModelConfig } from '../db'
 import { getAuthWare, ReqWithAuth } from '../auth'
 import { createOrUpdate, getIfExists, gridPatch, gridDelete, list } from './controller'
 import logger from '../logger'
@@ -175,9 +175,9 @@ export async function listHandler(
  * @param router - express router
  * @param authMiddleware - token check middleware
  **/
-export function registerModelApiRoutes(models: ModelStatic<Model>[], router: express.Router): void {
-  for (const model of models) {
-    const cfg = Connection.entities.find(m => m.name === model.name) as ModelConfig
+export function registerModelApiRoutes(entities: ModelConfig[], router: express.Router): void {
+  for (const cfg of entities) {
+    const model = cfg.model as ModelStatic<Model>
     const authCheck = getAuthWare(cfg).authWare
     //explicitly applying auth to routes, it might be better to have a global middleware
     const unsecure: express.Handler = (_r, _p, n) => n()
