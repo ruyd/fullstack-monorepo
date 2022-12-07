@@ -5,7 +5,7 @@ import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import { config } from '../config'
 import { AppAccessToken } from '../types'
-import { Connection, ModelConfig } from '../db'
+import { Connection, EntityConfig } from '../db'
 import logger from '../logger'
 import { HttpUnauthorizedError } from '../errorHandler'
 
@@ -33,7 +33,7 @@ export interface oAuthRegistered extends oAuthError {
 
 export type ReqWithAuth = express.Request & {
   auth: AppAccessToken
-  config?: ModelConfig
+  config?: EntityConfig
 }
 
 let jwkClient: jwksRsa.JwksClient
@@ -60,7 +60,7 @@ export function getJwtVerify() {
 }
 
 export type ModelWare = {
-  config: ModelConfig
+  config: EntityConfig
   authWare: express.Handler
 }
 
@@ -102,9 +102,9 @@ export async function authMiddleware(
  * @param cfg
  * @returns
  */
-export function getAuthWare(cfg?: ModelConfig): ModelWare {
+export function getAuthWare(cfg?: EntityConfig): ModelWare {
   const self = {} as ModelWare
-  self.config = cfg as ModelConfig
+  self.config = cfg as EntityConfig
   self.authWare = async function (
     req: express.Request,
     _res: express.Response,
@@ -148,7 +148,7 @@ export const tokenCheckWare = getAuthWare().authWare
 
 export function setRequest(
   r: express.Request,
-  cfg?: ModelConfig,
+  cfg?: EntityConfig,
 ): {
   header?: jwt.JwtHeader
   token?: string

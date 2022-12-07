@@ -15,18 +15,18 @@ export interface Join {
   foreignKey: string
 }
 
-export interface ModelConfig<M extends Model = Model> {
+export interface EntityConfig<M extends Model = Model> {
   name: string
   attributes: ModelAttributes<M, Attributes<M>>
   roles?: string[]
-  unsecureRead?: boolean
-  unsecure?: boolean
+  publicRead?: boolean
+  publicWrite?: boolean
   model?: ModelStatic<M>
   joins?: Join[]
 }
 
 export class Connection {
-  public static entities: ModelConfig[] = []
+  public static entities: EntityConfig[] = []
   public static db: Sequelize
   static initialized = false
   static init() {
@@ -73,7 +73,8 @@ export class Connection {
 }
 
 /**
- * Defines db model, creates CRUD endpoints and swagger docs
+ * Deferred model registration for
+ * sequelize and model-api endpoints
  *
  * @param name - table name
  * @param attributes - columns definitions
@@ -88,15 +89,12 @@ export function addModel<T extends object>(
   unsecureRead?: boolean,
   roles?: string[],
 ): ModelStatic<Model<T, T>> {
-  // defered init
-  // const model = Connection.db.define<Model<T>>(cfg.name, cfg.attributes, commonOptions)
-
   const model = class extends Model {}
-  const cfg = {
+  const cfg: EntityConfig = {
     name,
     attributes,
     joins,
-    unsecureRead,
+    publicRead: unsecureRead,
     roles,
     model,
   }
