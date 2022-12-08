@@ -1,7 +1,7 @@
 import { useAppSelector, useAppDispatch } from '../../shared/store'
 import { patch } from '../app/slice'
 import { Box, Card, SwipeableDrawer } from '@mui/material'
-import Cart from '../shop/Cart'
+import Cart from '../shop/ShopCart'
 
 export default function DrawerRight() {
   const dispatch = useAppDispatch()

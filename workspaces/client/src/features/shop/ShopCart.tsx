@@ -1,10 +1,11 @@
-import { Box, Button, TextField, Typography } from '@mui/material'
+import React from 'react'
+import { Box, BoxProps, Button, TextField, Typography } from '@mui/material'
 import { Cart, Drawing } from '@shared/lib'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
 import { cartAsync } from './thunks'
 
-export function ShopCart() {
+export function ShopCart(props?: BoxProps & Partial<React.Component>) {
   const dispatch = useAppDispatch()
   const checkout = () => dispatch(patch({ dialog: 'checkout' }))
   const deleteHandler = (cart: Cart) =>
@@ -12,7 +13,7 @@ export function ShopCart() {
   const items = useAppSelector(store => store.shop.items)
 
   return (
-    <Box>
+    <Box {...props}>
       <Typography>Cart</Typography>
       {items?.map(item => (
         <Box key={item.drawingId}>

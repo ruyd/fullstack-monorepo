@@ -54,6 +54,10 @@ export default function HeaderNavBar() {
     setAnchorElUser(null)
   }
 
+  const handleCheckout = () => {
+    dispatch(patch({ dialog: 'checkout' }))
+  }
+
   const handleThemeToggle = () => {
     dispatch(patch({ darkMode: !darkTheme }))
   }
@@ -210,13 +214,14 @@ export default function HeaderNavBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Shopping">
               <Badge
+                color="secondary"
                 badgeContent={items
                   .map(i => i.quantity)
                   .reduce((prev, curr) => {
                     return prev + curr
                   }, 0)}
               >
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <IconButton onClick={handleCheckout} sx={{ p: 0 }}>
                   <ShoppingCartCheckout />
                 </IconButton>
               </Badge>
