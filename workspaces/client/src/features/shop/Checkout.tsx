@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography'
 import AddressForm from './AddressForm'
 import PaymentForm from './PaymentForm'
 import Review from './Review'
+import { useAppDispatch } from 'src/shared/store'
+import { checkoutAsync } from './thunks'
 
 const steps = ['Shipping address', 'Payment details', 'Review your order']
 
@@ -28,9 +30,13 @@ function getStepContent(step: number) {
 
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0)
+  const dispatch = useAppDispatch()
 
   const handleNext = () => {
     setActiveStep(activeStep + 1)
+    if (activeStep === steps.length - 1) {
+      dispatch(checkoutAsync())
+    }
   }
 
   const handleBack = () => {

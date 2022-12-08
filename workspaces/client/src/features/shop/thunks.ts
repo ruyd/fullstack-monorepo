@@ -38,3 +38,10 @@ export const cartAsync = createAsyncThunk(
     return response.data
   },
 )
+
+export const checkoutAsync = createAsyncThunk('shop/checkout', async (_, { dispatch }) => {
+  const payload = {}
+  const response = await request('shop/checkout', payload)
+  dispatch(patch({ items: [] }))
+  return response.data
+})

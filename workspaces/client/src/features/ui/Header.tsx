@@ -19,13 +19,15 @@ import { patch } from '../app/slice'
 import { Link as RouterLink } from 'react-router-dom'
 import routes, { AppRoute } from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
-import { Link } from '@mui/material'
+import { Badge, Link } from '@mui/material'
 import { prompt } from '../profile/GoogleOneTap'
+import { ShoppingBag, ShoppingCart, ShoppingCartCheckout } from '@mui/icons-material'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
 
 export default function HeaderNavBar() {
+  const items = useAppSelector(state => state.shop.items)
   const dispatch = useAppDispatch()
   const authenticated = useAppSelector(state => state.app.token)
   const user = useAppSelector(state => state.app.user)
@@ -204,6 +206,21 @@ export default function HeaderNavBar() {
                 </MenuItem>
               )}
             </Menu>
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Shopping">
+              <Badge
+                badgeContent={items
+                  .map(i => i.quantity)
+                  .reduce((prev, curr) => {
+                    return prev + curr
+                  }, 0)}
+              >
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <ShoppingCartCheckout />
+                </IconButton>
+              </Badge>
+            </Tooltip>
           </Box>
         </Toolbar>
       </Container>
