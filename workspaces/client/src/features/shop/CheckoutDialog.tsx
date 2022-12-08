@@ -4,10 +4,14 @@ import {
   Button,
   DialogActions,
   DialogContent,
+  DialogTitle,
   Fade,
   Grid,
   Grow,
   Slide,
+  Step,
+  StepLabel,
+  Stepper,
   Typography,
 } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
@@ -17,6 +21,11 @@ import { patch } from '../app'
 import Checkout from './Checkout'
 import ShopCart from './ShopCart'
 import { checkoutAsync } from './thunks'
+import PaymentForm from './PaymentForm'
+import Review from './Review'
+import AddressForm from './AddressForm'
+import Receipt from './Receipt'
+import StripePay from './StripePay'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -28,15 +37,23 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const steps = [<ShopCart key={0} />, <Checkout key={1} />]
+const steps: { title: string; component: JSX.Element; next: string }[] = [
+  { title: 'Cart', component: <ShopCart />, next: 'Checkout' },
+  { title: 'Billing address', component: <AddressForm />, next: 'Continue' },
+  { title: 'Payment details', component: <PaymentForm />, next: 'Continue' },
+  { title: 'Review your order', component: <Review />, next: 'Place Order' },
+  { title: 'Confirmation', component: <Receipt />, next: 'Close' },
+]
 
 export default function CheckoutDialog() {
   const [activeStep, setActiveStep] = React.useState(0)
   const dispatch = useAppDispatch()
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1)
-    if (activeStep === steps.length - 1) {
+    if (activeStep < steps.length - 1) {
+      setActiveStep(activeStep + 1)
+    }
+    if (activeStep === Object.keys(steps).length - 1) {
       dispatch(checkoutAsync())
     }
   }
@@ -61,26 +78,40 @@ export default function CheckoutDialog() {
   }
 
   return (
-    <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      TransitionComponent={Transition}
+      maxWidth={false}
+      sx={{ m: '5rem' }}
+      fullScreen
+    >
       <DialogContent>
-        <Grid item xs={12} textAlign="center" sx={{ mb: 2 }} color="text.secondary">
+        <Stepper
+          activeStep={activeStep === steps.length - 1 ? activeStep + 1 : activeStep}
+          sx={{ pt: 3, pb: 5 }}
+        >
+          {steps.map((step, index) => (
+            <Step key={index}>
+              <StepLabel>{step.title}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        {/* <Grid item xs={12} textAlign="center" sx={{ mb: 2 }} color="text.secondary">
           <Typography>Shopping</Typography>
-        </Grid>
-        <ShopCart sx={activeStep === 0 ? {} : { display: 'none' }} />
-        <Grow in={activeStep === 1}>
-          <div></div>
-        </Grow>
-        <DialogActions>
-          {activeStep !== 0 && (
-            <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-              Back
-            </Button>
-          )}
-          <Button variant="contained" onClick={handleNext} sx={{ mt: 3, ml: 1 }}>
-            {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
-          </Button>
-        </DialogActions>
+        </Grid> */}
+        {steps[activeStep]?.component}
       </DialogContent>
+      <DialogActions>
+        {activeStep !== 0 && (
+          <Button onClick={handleBack} sx={{ ml: 1 }}>
+            Back
+          </Button>
+        )}
+        <Button variant="contained" onClick={handleNext} sx={{ ml: 1 }}>
+          {steps[activeStep].next}
+        </Button>
+      </DialogActions>
     </Dialog>
   )
 }
