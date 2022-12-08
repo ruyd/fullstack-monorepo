@@ -39,9 +39,9 @@ const Transition = React.forwardRef(function Transition(
 
 const steps: { title: string; component: JSX.Element; next: string }[] = [
   { title: 'Cart', component: <ShopCart />, next: 'Checkout' },
-  { title: 'Billing address', component: <AddressForm />, next: 'Continue' },
-  { title: 'Payment details', component: <PaymentForm />, next: 'Continue' },
-  { title: 'Review your order', component: <Review />, next: 'Place Order' },
+  { title: 'Billing', component: <AddressForm />, next: 'Continue' },
+  { title: 'Payment', component: <PaymentForm />, next: 'Continue' },
+  { title: 'Review', component: <Review />, next: 'Place Order' },
   { title: 'Confirmation', component: <Receipt />, next: 'Close' },
 ]
 
@@ -84,20 +84,27 @@ export default function CheckoutDialog() {
       onClose={handleClose}
       TransitionComponent={Transition}
       maxWidth={false}
-      sx={{ m: '5rem' }}
+      sx={{ m: '5vw' }}
       fullScreen
     >
       <DialogContent>
-        <Stepper
-          activeStep={activeStep === steps.length - 1 ? activeStep + 1 : activeStep}
-          sx={{ pt: 3, pb: 5 }}
-        >
-          {steps.map((step, index) => (
-            <Step key={index}>
-              <StepLabel>{step.title}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        <Grid container>
+          <Stepper
+            activeStep={activeStep === steps.length - 1 ? activeStep + 1 : activeStep}
+            sx={{
+              pb: 5,
+              display: 'flex',
+              flex: 1,
+              flexWrap: 'wrap',
+            }}
+          >
+            {steps.map((step, index) => (
+              <Step key={index} sx={{ m: '.3rem .7rem' }}>
+                <StepLabel>{step.title}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Grid>
         {/* <Grid item xs={12} textAlign="center" sx={{ mb: 2 }} color="text.secondary">
           <Typography>Shopping</Typography>
         </Grid> */}
