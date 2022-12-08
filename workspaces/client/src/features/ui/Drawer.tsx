@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import CloseIcon from '@mui/icons-material/Close'
 import { useAppSelector, useAppDispatch } from '../../shared/store'
 import { patch } from '../app/slice'
-import { Box, Card, Container, IconButton, SwipeableDrawer, Typography } from '@mui/material'
+import { Box, Card, SwipeableDrawer } from '@mui/material'
 import Cart from '../shop/Cart'
 
 export default function DrawerRight() {

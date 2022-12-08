@@ -2,34 +2,34 @@
   "configurations": [
     {
       "command": "yarn workspace server dev",
-      "name": "dev client:server",
+      "name": "client:server",
       "request": "launch",
       "type": "node-terminal",
       "preLaunchTask": "client.watch"
     },
     {
       "command": "yarn workspace client dev",
-      "name": "dev client",
+      "name": "client",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceRoot}/workspaces/client"
     },
     {
       "command": "yarn workspace server dev",
-      "name": "dev server",
+      "name": "server",
       "request": "launch",
       "type": "node-terminal"
     },
     {
       "command": "yarn workspace client test ${fileBasenameNoExtension} --watch",
-      "name": "test client",
+      "name": "test client file",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceRoot}/workspaces/client"
     },
     {
       "command": "yarn workspace server test ${fileBasenameNoExtension} --watch",
-      "name": "test server",
+      "name": "test server file",
       "request": "launch",
       "type": "node-terminal",
       "cwd": "${workspaceRoot}/workspaces/server"

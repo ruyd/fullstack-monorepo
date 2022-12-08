@@ -3,6 +3,7 @@ import { Attributes, Model, ModelAttributes, ModelOptions, ModelStatic, Sequeliz
 import migrator from './migrator'
 import config from '../config'
 import logger from '../logger'
+import { UserModel } from '../types'
 
 export const commonOptions: ModelOptions = {
   timestamps: true,
@@ -58,14 +59,32 @@ export class Connection {
       if (!entity.model) {
         continue
       }
-
       entity.model.init(entity.attributes, scopedOptions)
-
-      for (const join of entity.joins || []) {
-        entity.model[join.relation](join.model, {
-          through: join.model,
-          as: join.as as string,
-          foreignKey: join.foreignKey as string,
+      Connection.initJoins(entity)
+    }
+  }
+  static initJoins(entity: EntityConfig) {
+    if (!entity?.model) {
+      return
+    }
+    // Passed joins
+    for (const join of entity.joins || []) {
+      entity.model[join.relation](join.model, {
+        through: join.model,
+        as: join.as as string,
+        foreignKey: join.foreignKey as string,
+      })
+    }
+    // Detect joins based on column names
+    const aliases: string[] = []
+    const otherModels = Connection.entities.filter(e => e.name !== entity.name)
+    for (const related of otherModels) {
+      if (entity.attributes[related.model?.primaryKeyAttribute as string]) {
+        const propName = related.model?.name as string
+        const as = aliases.includes(propName) ? `${entity?.model?.name}${propName}` : propName
+        aliases.push(propName)
+        entity.model?.belongsTo(related.model as ModelStatic<Model>, {
+          foreignKey: related.model?.primaryKeyAttribute,
         })
       }
     }

@@ -94,7 +94,7 @@ export async function gridDelete<T extends object>(
     const deleted = await model.destroy({
       where: {
         [model.primaryKeyAttribute]: {
-          [sequelize.Op.in]: payload.ids,
+          [sequelize.Op.in]: payload.ids || [],
         },
       } as sequelize.WhereOptions<T>,
     })

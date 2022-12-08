@@ -18,15 +18,23 @@ export const cartAsync = createAsyncThunk(
   async ({ item, quantity }: { item: Drawing; quantity: number }, { dispatch, getState }) => {
     const state = getState() as RootState
     const method = quantity === 0 ? Method.DELETE : Method.POST
-    const response = await request<Cart>('cart', { drawingId: item.id, quantity }, method)
+    const cart = { drawingId: item.id, quantity } as Cart
+    const existing = state.shop.items.find(i => i.drawingId === item.id)
+    if (existing) {
+      cart.cartId = existing.cartId
+      cart.quantity += existing.quantity
+    }
+    const response = await request<Cart>('cart', { ...cart }, method)
+    const others = state.shop.items.filter(i => i.drawingId !== item.id)
     if (method === Method.DELETE) {
-      dispatch(notify(`Removed ${response.data?.drawing?.name}`))
-      dispatch(patch({ items: state.shop.items.filter(i => i.drawingId !== item.id) }))
-
+      dispatch(notify(`Removed ${item?.name}`))
+      dispatch(patch({ items: others }))
       return response.data
     }
-    dispatch(patch({ items: [...state.shop.items, response.data] }))
-    dispatch(notify(`Added ${response.data?.drawing?.name} ${response.data?.drawing?.price}`))
+
+    const fromServer = { ...response.data, drawing: item }
+    dispatch(patch({ items: [...others, fromServer] }))
+    dispatch(notify(`Added ${item.name} ${item.price}`))
     return response.data
   },
 )

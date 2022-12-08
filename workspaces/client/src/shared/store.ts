@@ -23,7 +23,7 @@ export const store = configureStore({
     getDefaultMiddleware().concat([
       customMiddleware,
       save({
-        ignoreStates: ['canvas'],
+        ignoreStates: ['canvas', 'shop'],
       }),
     ]),
 })
