@@ -30,8 +30,7 @@ import { registerSocket } from './shared/socket'
   })
 
   // Start server
-  const create = config.certFile ? createServerHttps : createServer
-  const server = create(app)
+  const server = config.certFile ? createServerHttps(app) : createServer(app)
   registerSocket(server)
 
   server.listen(config.port, () =>

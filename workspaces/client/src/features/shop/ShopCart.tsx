@@ -1,6 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
-import { Box, BoxProps, Button, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  BoxProps,
+  Button,
+  Card,
+  CardHeader,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { Cart, Drawing } from '@shared/lib'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
@@ -14,14 +29,53 @@ export function ShopCart(props?: BoxProps & Partial<React.Component>) {
 
   return (
     <Box {...props}>
-      {items?.map(item => (
-        <Box key={item.drawingId}>
-          <Typography>{item.drawing?.name}</Typography>
-          <Typography>{item.drawing?.price}</Typography>
-          <TextField type="number" value={item.quantity} />
-          <Button onClick={() => deleteHandler(item)}>Delete</Button>
-        </Box>
-      ))}
+      <Grid container>
+        <Grid item xs={9}>
+          <Card>
+            <CardHeader>
+              <Typography variant="h6">Cart</Typography>
+            </CardHeader>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Product</TableCell>
+                    <TableCell>Price</TableCell>
+                    <TableCell>Quantity</TableCell>
+                    <TableCell>Total Price</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {items?.map(item => (
+                    <TableRow key={item.drawingId}>
+                      <TableCell sx={{ display: 'flex' }}>
+                        <Box>
+                          <img
+                            src={item.drawing?.thumbnail}
+                            alt={item.drawing?.name}
+                            loading="lazy"
+                          />
+                        </Box>
+                        <Typography>{item.drawing?.name}</Typography>
+                      </TableCell>
+                      <TableCell>{item.drawing?.price}</TableCell>
+                      <TableCell>
+                        <TextField type="number" value={item.quantity} />
+                      </TableCell>
+                      <TableCell>{item.quantity * (item.drawing?.price || 0)}</TableCell>
+                      <TableCell>
+                        <Button onClick={() => deleteHandler(item)}>Delete</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+        </Grid>
+        <Grid item xs={3}></Grid>
+      </Grid>
     </Box>
   )
 }

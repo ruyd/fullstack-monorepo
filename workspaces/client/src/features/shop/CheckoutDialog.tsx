@@ -54,7 +54,8 @@ export default function CheckoutDialog() {
       setActiveStep(activeStep + 1)
     }
     if (activeStep === Object.keys(steps).length - 1) {
-      dispatch(checkoutAsync())
+      setActiveStep(0)
+      dispatch(patch({ dialog: undefined }))
     }
   }
 
@@ -103,7 +104,7 @@ export default function CheckoutDialog() {
         {steps[activeStep]?.component}
       </DialogContent>
       <DialogActions>
-        {activeStep !== 0 && (
+        {activeStep > 0 && activeStep < steps.length - 1 && (
           <Button onClick={handleBack} sx={{ ml: 1 }}>
             Back
           </Button>
