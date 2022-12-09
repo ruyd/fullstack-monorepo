@@ -5,6 +5,7 @@ import {
   BoxProps,
   Button,
   Card,
+  CardContent,
   CardHeader,
   Grid,
   Table,
@@ -29,8 +30,8 @@ export function ShopCart(props?: BoxProps & Partial<React.Component>) {
 
   return (
     <Box {...props}>
-      <Grid container>
-        <Grid item xs={9}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={9}>
           <Card>
             <CardHeader>
               <Typography variant="h6">Cart</Typography>
@@ -74,7 +75,18 @@ export function ShopCart(props?: BoxProps & Partial<React.Component>) {
             </TableContainer>
           </Card>
         </Grid>
-        <Grid item xs={3}></Grid>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader>
+              <Typography variant="h6">Summary</Typography>
+            </CardHeader>
+            <CardContent>
+              <Typography>Subtotal: $0</Typography>
+              <Typography>Shipping: $0</Typography>
+              <Typography>Total: $0</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
     </Box>
   )

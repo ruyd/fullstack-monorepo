@@ -1,6 +1,6 @@
 # Drawspace - Fullstack Canvas Drawing App
 
-## TypeScript Project Starter
+## TypeScript App Project Template
 
 [![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml)
 [![Demo](https://img.shields.io/badge/Deployment-GITHUB%20PAGES-GREEN.svg)](https://ruyd.github.io/fullstack-starter)

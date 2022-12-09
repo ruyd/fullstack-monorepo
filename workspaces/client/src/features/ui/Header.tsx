@@ -165,8 +165,24 @@ export default function HeaderNavBar() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Shopping">
+              <Badge
+                color="secondary"
+                badgeContent={items
+                  .map(i => i.quantity)
+                  .reduce((prev, curr) => {
+                    return prev + curr
+                  }, 0)}
+              >
+                <IconButton onClick={handleCheckout}>
+                  <ShoppingCartCheckout />
+                </IconButton>
+              </Badge>
+            </Tooltip>
+          </Box>
+          <Box sx={{ flexGrow: 0, ml: 1 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu}>
                 <Avatar src={user?.picture} alt={user?.firstName} />
               </IconButton>
             </Tooltip>
@@ -210,22 +226,6 @@ export default function HeaderNavBar() {
                 </MenuItem>
               )}
             </Menu>
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Shopping">
-              <Badge
-                color="secondary"
-                badgeContent={items
-                  .map(i => i.quantity)
-                  .reduce((prev, curr) => {
-                    return prev + curr
-                  }, 0)}
-              >
-                <IconButton onClick={handleCheckout} sx={{ p: 0 }}>
-                  <ShoppingCartCheckout />
-                </IconButton>
-              </Badge>
-            </Tooltip>
           </Box>
         </Toolbar>
       </Container>

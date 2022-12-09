@@ -13,6 +13,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
+  useTheme,
 } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
@@ -26,6 +27,7 @@ import Review from './Review'
 import AddressForm from './AddressForm'
 import Receipt from './Receipt'
 import StripePay from './StripePay'
+import Items from '../canvas/Items'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -39,15 +41,17 @@ const Transition = React.forwardRef(function Transition(
 
 const steps: { title: string; component: JSX.Element; next: string }[] = [
   { title: 'Cart', component: <ShopCart />, next: 'Checkout' },
-  { title: 'Billing', component: <AddressForm />, next: 'Continue' },
+  { title: 'Address', component: <AddressForm />, next: 'Continue' },
   { title: 'Payment', component: <PaymentForm />, next: 'Continue' },
   { title: 'Review', component: <Review />, next: 'Place Order' },
   { title: 'Confirmation', component: <Receipt />, next: 'Close' },
 ]
 
 export default function CheckoutDialog() {
+  const theme = useTheme()
   const [activeStep, setActiveStep] = React.useState(0)
   const dispatch = useAppDispatch()
+  const items = useAppSelector(store => store.shop.items)
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) {
@@ -84,10 +88,10 @@ export default function CheckoutDialog() {
       onClose={handleClose}
       TransitionComponent={Transition}
       maxWidth={false}
-      sx={{ m: '5vw' }}
+      sx={{ m: '3vw' }}
       fullScreen
     >
-      <DialogContent>
+      <DialogContent sx={{ backgroundColor: 'background.paper' }}>
         <Grid container>
           <Stepper
             activeStep={activeStep === steps.length - 1 ? activeStep + 1 : activeStep}
@@ -99,7 +103,11 @@ export default function CheckoutDialog() {
             }}
           >
             {steps.map((step, index) => (
-              <Step key={index} sx={{ m: '.3rem .7rem' }}>
+              <Step
+                key={index}
+                sx={{ m: '.3rem .7rem', cursor: 'pointer' }}
+                onClick={() => (index < steps.length - 1 ? setActiveStep(index) : null)}
+              >
                 <StepLabel>{step.title}</StepLabel>
               </Step>
             ))}
@@ -110,13 +118,19 @@ export default function CheckoutDialog() {
         </Grid> */}
         {steps[activeStep]?.component}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ backgroundColor: 'background.paper' }}>
         {activeStep > 0 && activeStep < steps.length - 1 && (
           <Button onClick={handleBack} sx={{ ml: 1 }}>
             Back
           </Button>
         )}
-        <Button variant="contained" onClick={handleNext} sx={{ ml: 1 }}>
+        <Button
+          variant="contained"
+          onClick={handleNext}
+          sx={{ ml: 1 }}
+          size="large"
+          disabled={!items.length}
+        >
           {steps[activeStep].next}
         </Button>
       </DialogActions>
