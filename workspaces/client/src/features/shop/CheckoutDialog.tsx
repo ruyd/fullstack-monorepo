@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import {
+  Box,
   Button,
   DialogActions,
   DialogContent,
@@ -64,6 +65,10 @@ export default function CheckoutDialog() {
   }
 
   const handleBack = () => {
+    if (activeStep === 0) {
+      dispatch(patch({ dialog: undefined }))
+      return
+    }
     setActiveStep(activeStep - 1)
   }
 
@@ -115,12 +120,12 @@ export default function CheckoutDialog() {
             ))}
           </Stepper>
         </Grid>
-        <div>{steps[activeStep]?.component}</div>
+        <Box sx={{ mt: 2 }}>{steps[activeStep]?.component}</Box>
       </DialogContent>
       <DialogActions sx={{ backgroundColor: 'background.paper' }}>
-        {activeStep > 0 && activeStep < steps.length - 1 && (
-          <Button onClick={handleBack} sx={{ ml: 1 }}>
-            Back
+        {activeStep < steps.length - 1 && (
+          <Button onClick={handleBack} sx={{ ml: 1 }} size="large">
+            {activeStep === 0 ? 'Close' : 'Back'}
           </Button>
         )}
         <Button

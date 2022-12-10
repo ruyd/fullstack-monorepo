@@ -1,7 +1,8 @@
+export * from './cart'
 export * from './drawing'
 export * from './order'
 export * from './setting'
-export * from './cart'
+export * from './user'
 
 export interface Jwt {
   [key: string]: unknown
@@ -35,19 +36,6 @@ export interface Entity {
   createdAt?: Date
   updatedAt?: Date
   deletedAt?: Date
-}
-
-export interface User extends Entity {
-  userId: string
-  email: string
-  firstName?: string
-  lastName?: string
-  picture?: string
-  banned?: boolean
-  status?: number
-  loginCount?: number
-  lastLogin?: Date
-  roles?: string[]
 }
 
 export interface PagedResult<T = { [key: string]: string | number }> {

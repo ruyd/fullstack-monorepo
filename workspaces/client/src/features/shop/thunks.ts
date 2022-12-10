@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Cart, Drawing } from '@shared/lib'
+import { Cart, Drawing, Order } from '@shared/lib'
 import { RootState } from 'src/shared/store'
 import { Method, notify, request } from '../app'
 import { patch } from './slice'
@@ -39,9 +39,18 @@ export const cartAsync = createAsyncThunk(
   },
 )
 
-export const checkoutAsync = createAsyncThunk('shop/checkout', async (_, { dispatch }) => {
-  const payload = {}
-  const response = await request('shop/checkout', payload)
-  dispatch(patch({ items: [] }))
-  return response.data
-})
+export const checkoutAsync = createAsyncThunk(
+  'shop/checkout',
+  async (_, { dispatch, getState }) => {
+    const state = getState() as RootState
+    const payload = {
+      items: state.shop.items,
+      intent: state.shop.intent,
+      shippingAddressId: state.shop.shippingAddressId,
+      PaymentMethodId: state.shop.paymentMethodId,
+    }
+    const response = await request<Order>('shop/checkout', payload)
+    dispatch(patch({ items: [], intent: undefined }))
+    return response.data
+  },
+)

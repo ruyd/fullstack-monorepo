@@ -1,4 +1,5 @@
-import { Entity, User } from '.'
+import { Entity } from '.'
+import { User } from './user'
 import { Drawing } from './drawing'
 
 export enum OrderStatus {

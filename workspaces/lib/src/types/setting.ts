@@ -7,7 +7,6 @@ export enum SettingType {
 export interface Setting {
   name: string
   type?: SettingType
-  value?: string
-  values?: string
+  data?: { [key: string]: unknown }
   enabled?: boolean
 }
