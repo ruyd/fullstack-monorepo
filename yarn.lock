@@ -3744,10 +3744,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^17.0.34, @types/node@npm:^17.0.45":
+"@types/node@npm:^17.0.34":
   version: 17.0.45
   resolution: "@types/node@npm:17.0.45"
   checksum: aa04366b9103b7d6cfd6b2ef64182e0eaa7d4462c3f817618486ea0422984c51fc69fd0d436eae6c9e696ddfdbec9ccaa27a917f7c2e8c75c5d57827fe3d95e8
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.11.13":
+  version: 18.11.13
+  resolution: "@types/node@npm:18.11.13"
+  checksum: b0c1aa3bd2f5df8240e61096a49d6d4be600109b824d23408ec4ba1ec057dc0c60588e09f73b8a60455ad26d367e9c5562fad8403099f885cbc7b4cace83ec4c
   languageName: node
   linkType: hard
 
@@ -8180,7 +8187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.17.1, express@npm:^4.17.3":
+"express@npm:^4.17.3, express@npm:^4.18.2":
   version: 4.18.2
   resolution: "express@npm:4.18.2"
   dependencies:
@@ -10920,7 +10927,7 @@ __metadata:
     eslint-plugin-n: ^15.2.4
     eslint-plugin-promise: ^6.0.0
     eslint-plugin-react: ^7.30.1
-    typescript: ^4.8.4
+    typescript: ^4.9.4
     uuid: ^8.3.2
   languageName: unknown
   linkType: soft
@@ -14387,7 +14394,7 @@ __metadata:
     ts-jest: ^29.0.3
     ts-node: ^10.9.1
     tsconfig-paths-webpack-plugin: ^3.5.1
-    typescript: ~4.8.4
+    typescript: ^4.9.4
     umzug: ^3.2.1
   languageName: unknown
   linkType: soft
@@ -14734,7 +14741,7 @@ __metadata:
     "@types/express": ^4.17.13
     "@types/express-unless": ^0.5.3
     "@types/jsonwebtoken": ^8.5.8
-    "@types/node": ^17.0.45
+    "@types/node": ^18.11.13
     "@types/sequelize": ^4.28.14
     "@types/swagger-jsdoc": ^6
     "@types/swagger-ui-express": ^4.1.3
@@ -14748,7 +14755,7 @@ __metadata:
     dotenv: ^16.0.1
     dotenv-webpack: ^8.0.1
     eslint: ^8.19.0
-    express: ^4.17.1
+    express: ^4.18.2
     express-async-errors: ^3.1.1
     express-basic-auth: ^1.2.1
     express-jwt: ^7.7.5
@@ -14771,7 +14778,7 @@ __metadata:
     ts-node: ^10.9.1
     tsconfig-paths: ^4.1.0
     tsconfig-paths-webpack-plugin: ^4.0.0
-    typescript: ^4.8.4
+    typescript: ^4.9.4
     umzug: ^3.2.1
     utf-8-validate: ^5.0.10
     uuid: ^8.3.2
@@ -16167,7 +16174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.8.4, typescript@npm:~4.8.4":
+"typescript@npm:^4.8.4":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -16177,13 +16184,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@~4.8.4#~builtin<compat/typescript>":
+"typescript@npm:^4.9.4":
+  version: 4.9.4
+  resolution: "typescript@npm:4.9.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: e782fb9e0031cb258a80000f6c13530288c6d63f1177ed43f770533fdc15740d271554cdae86701c1dd2c83b082cea808b07e97fd68b38a172a83dbf9e0d0ef9
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
   version: 4.8.4
   resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=0102e9"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 301459fc3eb3b1a38fe91bf96d98eb55da88a9cb17b4ef80b4d105d620f4d547ba776cc27b44cc2ef58b66eda23fe0a74142feb5e79a6fb99f54fc018a696afa
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
+  version: 4.9.4
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
   languageName: node
   linkType: hard
 

@@ -10,10 +10,7 @@ export const SettingModel = addModel<Setting>('setting', {
   type: {
     type: DataTypes.STRING,
   },
-  value: {
-    type: DataTypes.STRING,
-  },
-  values: {
+  data: {
     type: DataTypes.JSONB,
   },
   enabled: {
