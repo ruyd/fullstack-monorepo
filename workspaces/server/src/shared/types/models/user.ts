@@ -1,4 +1,4 @@
-import { Address, User, UserActive } from '@shared/lib'
+import { Address, PaymentMethod, User, UserActive } from '@shared/lib'
 import { DataTypes } from 'sequelize'
 import { addModel } from '../../db'
 
@@ -78,7 +78,7 @@ export const AddressModel = addModel<Address>('address', {
   },
 })
 
-export const PaymentMethodModel = addModel('payment_method', {
+export const PaymentMethodModel = addModel<PaymentMethod>('payment_method', {
   paymentMethodId: {
     type: DataTypes.UUID,
     primaryKey: true,
