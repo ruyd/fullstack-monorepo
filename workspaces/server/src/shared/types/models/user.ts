@@ -1,4 +1,4 @@
-import { User } from '@shared/lib'
+import { Address, User, UserActive } from '@shared/lib'
 import { Model, DataTypes } from 'sequelize'
 import { addModel } from '../../db'
 
@@ -26,13 +26,6 @@ export const UserAttributes = {
 
 export const UserModel = addModel<User>('user', UserAttributes)
 
-export interface UserActive {
-  socketId: string
-  userId: string
-  ip?: string
-  userAgent?: string
-}
-
 export const UserActiveModel = addModel<UserActive>('user_active', {
   socketId: {
     type: DataTypes.STRING,
@@ -46,5 +39,72 @@ export const UserActiveModel = addModel<UserActive>('user_active', {
   },
   userAgent: {
     type: DataTypes.STRING,
+  },
+})
+
+export const AddressModel = addModel<Address>('address', {
+  addressId: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    defaultValue: DataTypes.UUIDV4,
+  },
+  userId: {
+    type: DataTypes.UUID,
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  address1: {
+    type: DataTypes.STRING,
+  },
+  address2: {
+    type: DataTypes.STRING,
+  },
+  city: {
+    type: DataTypes.STRING,
+  },
+  state: {
+    type: DataTypes.STRING,
+  },
+  zip: {
+    type: DataTypes.STRING,
+  },
+  country: {
+    type: DataTypes.STRING,
+  },
+  phone: {
+    type: DataTypes.STRING,
+  },
+  default: {
+    type: DataTypes.BOOLEAN,
+  },
+})
+
+export const PaymentMethodModel = addModel('payment_method', {
+  paymentMethodId: {
+    type: DataTypes.UUID,
+    primaryKey: true,
+    defaultValue: DataTypes.UUIDV4,
+  },
+  userId: {
+    type: DataTypes.UUID,
+  },
+  name: {
+    type: DataTypes.STRING,
+  },
+  type: {
+    type: DataTypes.STRING,
+  },
+  last4: {
+    type: DataTypes.STRING,
+  },
+  expMonth: {
+    type: DataTypes.INTEGER,
+  },
+  expYear: {
+    type: DataTypes.INTEGER,
+  },
+  default: {
+    type: DataTypes.BOOLEAN,
   },
 })

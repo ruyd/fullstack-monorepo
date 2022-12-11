@@ -42,3 +42,10 @@ export interface PaymentMethod extends Entity {
   expYear: number
   default?: boolean
 }
+
+export interface UserActive {
+  socketId: string
+  userId: string
+  ip?: string
+  userAgent?: string
+}
