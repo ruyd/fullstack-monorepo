@@ -20,9 +20,8 @@ import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
-import Checkout from './Checkout'
 import ShopCart from './ShopCart'
-import { checkoutAsync } from './thunks'
+import { checkoutAsync, loadAsync } from './thunks'
 import PaymentForm from './PaymentForm'
 import Review from './Review'
 import AddressForm from './AddressForm'
@@ -82,6 +81,9 @@ export default function CheckoutDialog() {
   React.useEffect(() => {
     setShow(requested?.split('.')[1] || 'checkout')
   }, [requested, setShow])
+  React.useEffect(() => {
+    dispatch(loadAsync())
+  }, [dispatch])
 
   if (!open) {
     return null

@@ -48,7 +48,7 @@ export const routes: AppRoute[] = [
   {
     title: 'Profile',
     path: '/profile',
-    component: React.lazy(() => import('../features/profile/Edit')),
+    component: React.lazy(() => import('../features/profile')),
     profile: true,
     secure: true,
   },
@@ -84,6 +84,11 @@ export const routes: AppRoute[] = [
     title: 'Not Found',
     path: '*',
     component: React.lazy(() => import('../features/pages/404')),
+  },
+  {
+    title: 'Offline',
+    path: '/maintenance',
+    component: React.lazy(() => import('../features/pages/maintenance')),
   },
 ]
 

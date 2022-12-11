@@ -23,7 +23,7 @@ import {
 import { Cart, Drawing } from '@shared/lib'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
-import { cartAsync } from './thunks'
+import { cartAsync, loadAsync } from './thunks'
 import {
   Add,
   Delete,

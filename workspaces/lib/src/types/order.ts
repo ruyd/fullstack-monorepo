@@ -22,11 +22,12 @@ export interface OrderItem extends Entity {
 export interface Order extends Entity {
   orderId?: string
   userId?: string
-
+  billingAddressId?: string
+  shippingAddressId?: string
+  paymentMethodId?: string
   total?: number
   status?: OrderStatus
-  items?: OrderItem[]
-  //
+  OrderItems?: OrderItem[]
   user?: User
 }
 
@@ -60,4 +61,13 @@ export const StripeToPaymentStatusMap = {
   requires_confirmation: PaymentStatus.Pending,
   requires_payment_method: PaymentStatus.Pending,
   unknown: PaymentStatus.Failed,
+}
+
+export interface Subscription extends Entity {
+  subscriptionId: string
+  userId: string
+  orderId: string
+  amount: number
+  currency: string
+  status?: string
 }
