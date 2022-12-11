@@ -1,8 +1,6 @@
 import { Address, User, UserActive } from '@shared/lib'
-import { Model, DataTypes } from 'sequelize'
+import { DataTypes } from 'sequelize'
 import { addModel } from '../../db'
-
-export type UserInstance = Model<User>
 
 export const UserAttributes = {
   userId: {

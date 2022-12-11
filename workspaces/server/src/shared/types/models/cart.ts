@@ -2,7 +2,7 @@ import { Cart } from '@shared/lib'
 import { DataTypes } from 'sequelize'
 import { addModel } from 'src/shared/db'
 
-export const CartDefinition = {
+export const CartAttributes = {
   cartId: {
     primaryKey: true,
     type: DataTypes.UUID,
@@ -19,6 +19,6 @@ export const CartDefinition = {
   },
 }
 
-export const CartModel = addModel<Cart>('cart', CartDefinition)
+export const CartModel = addModel<Cart>('cart', CartAttributes)
 
 export default CartModel
