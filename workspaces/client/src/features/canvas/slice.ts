@@ -32,10 +32,10 @@ export const canvasSlice = createSlice({
     },
     onSave: (state, action: PayloadAction<Drawing>) => {
       state.active = action.payload
-      const existing = state.items.find(item => item.id === action.payload.id)
+      const existing = state.items.find(item => item.drawingId === action.payload.drawingId)
       if (existing) {
         state.items = state.items.map(item =>
-          item.id === action.payload.id ? action.payload : item,
+          item.drawingId === action.payload.drawingId ? action.payload : item,
         )
       } else {
         state.items.push(action.payload)

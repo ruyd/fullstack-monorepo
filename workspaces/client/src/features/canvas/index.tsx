@@ -21,7 +21,7 @@ export function CanvasContainer() {
   const dispatch = useAppDispatch()
   const authenticated = useAppSelector(state => state.app.token)
   const history = useAppSelector(state => state.canvas?.active?.history)
-  const id = useAppSelector(state => state.canvas?.active?.id)
+  const id = useAppSelector(state => state.canvas?.active?.drawingId)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const contextRef = useRef<CanvasRenderingContext2D | null>(null)
   const buffer = useRef<DrawAction[]>([])
@@ -136,7 +136,7 @@ export function CanvasContainer() {
     async function run() {
       if (paramId && id !== paramId) {
         const res = await dispatch(getAsync(paramId))
-        if ((res?.payload as Drawing)?.id === 'copy') {
+        if ((res?.payload as Drawing)?.drawingId === 'copy') {
           navigate(`${Paths.Draw}`, { replace: true })
         }
       }

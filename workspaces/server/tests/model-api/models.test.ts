@@ -92,7 +92,7 @@ describe('model-api', () => {
     Connection.init()
   }
 
-  const mocks = []
+  const mocks = {} as Record<string, { [key: string]: unknown }>
   const keys = {} as Record<string, string>
   for (const entity of Connection.entities) {
     const model = entity.model
@@ -100,16 +100,38 @@ describe('model-api', () => {
       throw new Error('No model found for ' + entity.name)
     }
     const mock = getPopulatedModel(model, keys)
-    console.info('Generated Data: ', model.name, mock)
-    mocks.push(mock)
+    console.info('Generated Mock Data for: ', model.name)
+    console.table(mock)
+    mocks[model.name] = mock
     const primaryKeyId = mock[model.primaryKeyAttribute] as string
-
     test(`mock ${model.name}`, async () => {
       expect(primaryKeyId).toBeTruthy()
     })
+  }
+  // sort entities by foreign key dependencies
+  const sorted = Connection.entities.sort((a, b) => {
+    const aModel = a.model as ModelStatic<Model>
+    const bModel = b.model as ModelStatic<Model>
+    const aKeys = Object.keys(aModel.associations).map(key => aModel.associations[key].foreignKey)
+    const bKeys = Object.keys(bModel.associations).map(key => bModel.associations[key].foreignKey)
+    if (aKeys.includes(bModel.primaryKeyAttribute)) {
+      return 1
+    }
+    if (bKeys.includes(aModel.primaryKeyAttribute)) {
+      return -1
+    }
+    return 0
+  })
 
+  for (const entity of sorted) {
+    const model = entity.model as ModelStatic<Model>
+    const mock = mocks[model.name]
+    const primaryKeyId = mock[model.primaryKeyAttribute] as string
+    if (!model) {
+      throw new Error('No model found for ' + entity.name)
+    }
     test(`create ${model.name}`, async () => {
-      const result = await createOrUpdate(model, mock)
+      const result = await createOrUpdate(model, mocks)
       console.log('create result', result)
       toMatchObjectExceptTimestamps(mock, result)
     })
@@ -140,9 +162,10 @@ describe('model-api', () => {
   }
 
   //loop models in reverse order
-  for (const entity of Connection.entities.reverse()) {
+  const reversed = [...Connection.entities].reverse()
+  for (const entity of reversed) {
     const model = entity.model as ModelStatic<Model>
-    const mock = mocks.pop()
+    const mock = mocks[model.name]
     if (!mock) {
       throw new Error('mock not found')
     }

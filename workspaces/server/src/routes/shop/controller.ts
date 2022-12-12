@@ -8,7 +8,7 @@ export async function checkout(_req: express.Request, res: express.Response) {
   const req = _req as EnrichedRequest
   const { items, intent, shippingAddressId, paymentMethodId } = req.body as CheckoutRequest
   const productSelect = await DrawingModel.findAll({
-    where: { id: items.map(i => i.drawingId) },
+    where: { drawingId: items.map(i => i.drawingId) },
   })
   const products = productSelect.map(item => item.get())
   const total = products.reduce((acc, item) => acc + (item.price || 0), 0)

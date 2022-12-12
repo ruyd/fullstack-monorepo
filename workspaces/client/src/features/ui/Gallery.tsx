@@ -52,7 +52,7 @@ export default function Gallery({
       ? window.location.origin.slice(0, -1)
       : window.location.origin
   const copyLink = (item: Drawing) => {
-    navigator.clipboard.writeText(`${origin}${Paths.Draw}/${item.id}`)
+    navigator.clipboard.writeText(`${origin}${Paths.Draw}/${item.drawingId}`)
     dispatch(notify('Link copied to clipboard!'))
   }
   const buy = (item: Drawing) => {
@@ -73,10 +73,10 @@ export default function Gallery({
           </Link>
         )}
         {items?.map((item: Drawing) => (
-          <Grid item key={item.id}>
+          <Grid item key={item.drawingId}>
             <GalleryCard
               item={item}
-              onClick={() => navigate(`${Paths.Draw}/${item.id}`)}
+              onClick={() => navigate(`${Paths.Draw}/${item.drawingId}`)}
               actionPane={
                 <>
                   {item.sell && (

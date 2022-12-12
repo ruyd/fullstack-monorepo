@@ -3,7 +3,7 @@ import { Drawing } from '@shared/lib'
 import { addModel } from '../../db'
 
 export const DrawingModel = addModel<Drawing>('drawing', {
-  id: {
+  drawingId: {
     type: DataTypes.UUID,
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,

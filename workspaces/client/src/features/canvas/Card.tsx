@@ -15,7 +15,7 @@ export function GalleryCard({
   return (
     <Paper
       title={item?.name}
-      key={item?.id}
+      key={item?.drawingId}
       sx={{
         backgroundColor: 'primary.main',
         borderRadius: '16px',

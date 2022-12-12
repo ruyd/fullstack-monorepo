@@ -44,7 +44,7 @@ export function Details() {
             variant="filled"
             sx={{ my: 2 }}
             value={item?.price || 0}
-            onChange={e => update(item.id, 'price', Number(e.target.value))}
+            onChange={e => update(item.drawingId, 'price', Number(e.target.value))}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -56,7 +56,7 @@ export function Details() {
           <FormControlLabel
             control={
               <Switch
-                onChange={e => update(item.id, 'sell', e.target.checked)}
+                onChange={e => update(item.drawingId, 'sell', e.target.checked)}
                 checked={!!item?.sell}
                 checkedIcon={<AttachMoney />}
               />
@@ -67,7 +67,7 @@ export function Details() {
             control={
               <Switch
                 name="private"
-                onChange={e => update(item.id, 'private', e.target.checked)}
+                onChange={e => update(item.drawingId, 'private', e.target.checked)}
                 checked={!!item?.private}
                 checkedIcon={<VisibilityOff />}
               />

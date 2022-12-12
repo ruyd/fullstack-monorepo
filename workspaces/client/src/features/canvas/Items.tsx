@@ -29,18 +29,18 @@ export default function Items(props: ContainerProps) {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { id } = useParams()
-  const activeId = useAppSelector(store => store.canvas.active?.id)
-  const isActive = (item: Drawing) => activeId === item?.id
+  const activeId = useAppSelector(store => store.canvas.active?.drawingId)
+  const isActive = (item: Drawing) => activeId === item?.drawingId
 
   const setItem = (item: Drawing) => {
     dispatch(actions.patchActive(item))
-    navigate(`${Paths.Draw}/${item?.id}`, { replace: true })
+    navigate(`${Paths.Draw}/${item?.drawingId}`, { replace: true })
   }
 
   const deleteItem = async (item: Drawing) => {
-    const result = await dispatch(deleteAsync(item.id as string))
+    const result = await dispatch(deleteAsync(item.drawingId as string))
     if (result.meta.requestStatus === 'fulfilled') {
-      if (id === item.id) {
+      if (id === item.drawingId) {
         navigate(Paths.Draw, { replace: true })
       }
     }
@@ -67,7 +67,7 @@ export default function Items(props: ContainerProps) {
         {items.map(item => (
           <Paper
             title={item.name}
-            key={item.id}
+            key={item.drawingId}
             sx={{
               backgroundColor: 'primary.main',
               borderRadius: '16px',

@@ -26,7 +26,7 @@ export interface DrawAction {
 }
 
 export interface Drawing extends Entity {
-  id?: string
+  drawingId?: string
   userId?: string
   name: string
   history: DrawAction[]

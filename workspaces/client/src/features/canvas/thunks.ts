@@ -20,7 +20,7 @@ export const getAsync = createAsyncThunk(
     let active: Drawing | undefined
     const state = getState() as RootState
     const userId = state.app.user?.userId
-    active = state.canvas.items.find(i => i.id === id)
+    active = state.canvas.items.find(i => i.drawingId === id)
     if (!active) {
       const resp = await get<Drawing>(`/drawing/${id}`)
       if (resp.status === 404) {
@@ -45,8 +45,8 @@ export const saveAsync = createAsyncThunk(
       thumbnail,
     }
 
-    if (['draft', 'copy'].includes(payload.id as string)) {
-      payload.id = undefined
+    if (['draft', 'copy'].includes(payload.drawingId as string)) {
+      payload.drawingId = undefined
     }
 
     const response = await request<Drawing>('/drawing', payload)
@@ -66,8 +66,8 @@ export const deleteAsync = createAsyncThunk(
       return
     }
     const state = (getState() as RootState).canvas.items
-    const items = state.filter(item => item.id !== id)
-    const active = items.find(item => item.id === id) || getDraft()
+    const items = state.filter(item => item.drawingId !== id)
+    const active = items.find(item => item.drawingId === id) || getDraft()
     dispatch(actions.patch({ items, active }))
   },
 )

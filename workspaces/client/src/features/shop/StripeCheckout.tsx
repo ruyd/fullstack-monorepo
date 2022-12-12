@@ -48,7 +48,7 @@ export default function StripeCheckout({
       amount,
       currency,
       metadata: {
-        drawingId: activeItem?.id || '',
+        drawingId: activeItem?.drawingId || '',
       },
       receipt_email: userEmail || '',
     }

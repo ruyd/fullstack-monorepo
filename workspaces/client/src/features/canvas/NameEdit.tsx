@@ -32,12 +32,12 @@ export default function NameEdit({
   return (
     <FieldStyled
       variant="standard"
-      autoFocus={active.id === 'draft'}
+      autoFocus={active.drawingId === 'draft'}
       accessKey="N"
       inputRef={inputRef}
       value={active?.name || ''}
       onChange={onNameChange}
-      key={`${active.id}-${active.createdAt}`}
+      key={`${active.drawingId}-${active.createdAt}`}
       onKeyUp={onKeyUp}
     />
   )
