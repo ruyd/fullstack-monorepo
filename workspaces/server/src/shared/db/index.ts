@@ -79,7 +79,9 @@ export class Connection {
     const aliases: string[] = []
     const otherModels = Connection.entities.filter(e => e.name !== entity.name)
     for (const related of otherModels) {
-      if (entity.attributes[related.model?.primaryKeyAttribute as string]) {
+      const relatedColumnPk = related.model?.primaryKeyAttribute as string
+      //regex match modelNameId
+      if (`(.*)Id`.match(relatedColumnPk) && entity.attributes[relatedColumnPk]) {
         const propName = related.model?.name as string
         const as = aliases.includes(propName) ? `${entity?.model?.name}${propName}` : propName
         aliases.push(propName)

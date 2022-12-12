@@ -88,7 +88,7 @@ export function getConfig(): Config {
     db: {
       trace: true,
       sync: true,
-      force: false,
+      force: true,
       alter: true,
       name: database as string,
       url: DB_URL as string,

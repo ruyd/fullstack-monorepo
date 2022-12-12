@@ -51,6 +51,7 @@ export default function CheckoutDialog() {
   const theme = useTheme()
   const [activeStep, setActiveStep] = React.useState(0)
   const dispatch = useAppDispatch()
+  const loaded = useAppSelector(store => store.shop.loaded)
   const items = useAppSelector(store => store.shop.items)
 
   const handleNext = () => {
@@ -83,8 +84,10 @@ export default function CheckoutDialog() {
     setShow(requested?.split('.')[1] || 'checkout')
   }, [requested, setShow])
   React.useEffect(() => {
-    dispatch(loadAsync())
-  }, [dispatch])
+    if (!loaded) {
+      dispatch(loadAsync())
+    }
+  }, [dispatch, loaded])
 
   if (!open) {
     return null
