@@ -86,7 +86,7 @@ export function getConfig(): Config {
       origin: process.env.CORS_ORIGIN || '*',
     },
     db: {
-      trace: false,
+      trace: true,
       sync: true,
       force: false,
       alter: true,

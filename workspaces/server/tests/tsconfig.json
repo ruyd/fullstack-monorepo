@@ -1,16 +1,7 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "commonjs",
-    "noEmit": true,
-    "strict": true,
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "paths": {
-      "@shared/*": ["../../workspaces/*/src"]
-    }
+    "noEmit": true
   },
   "include": ["**/*"],
   "exclude": ["node_modules", "../../node_modules"]

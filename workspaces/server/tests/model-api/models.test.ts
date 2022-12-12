@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, expect, test } from '@jest/globals'
-import { Connection } from '../../src/shared/db'
+import { checkDatabase, Connection } from '../../src/shared/db'
 import createBackend from '../../src/app'
 import { ModelStatic, Model } from 'sequelize'
 import { v4 as uuid } from 'uuid'
@@ -23,10 +23,16 @@ const conversions: Record<string, string> = {
 
 const excluded = ['createdAt', 'updatedAt', 'deletedAt']
 
+export function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min) + min)
+}
+
 export function getMockValue(columnName: string, columnType: string, randomize = false) {
   const type = conversions[columnType] || columnType
   const suffix = randomize ? Math.random() : ''
-  const increment = randomize ? Math.random() : 0
+  const increment = randomize ? getRandomInt(1, 1000000) : 0
   const [, scale] = type.match(/\d+/g) || [10, 2]
   switch (type) {
     case 'UUID':
@@ -54,20 +60,19 @@ export function getMockValue(columnName: string, columnType: string, randomize =
   }
 }
 
-export function getPopulatedModel(model: ModelStatic<Model>, keys: Record<string, unknown>) {
-  console.log(keys)
+export function getPopulatedModel(model: ModelStatic<Model>, cachedKeys: Record<string, unknown>) {
+  console.log(cachedKeys)
   const columns = Object.entries(model.getAttributes()).filter(
     ([name]) => !excluded.includes(name),
   ) as [[string, { type: string; allowNull: boolean }]]
   const mock: { [key: string]: unknown } = {}
   for (const [name, attribute] of columns) {
     mock[name] = getMockValue(name, attribute.type.toString())
-    if (model.primaryKeyAttribute === name && !keys[model.name]) {
-      keys[model.name] = mock[name]
+    if (model.primaryKeyAttribute === name && !cachedKeys[name]) {
+      cachedKeys[name] = mock[name]
+    } else if (cachedKeys[name]) {
+      mock[name] = cachedKeys[name]
     }
-  }
-  for (const association in model.associations) {
-    mock[model.associations[association].foreignKey] = keys[association]
   }
   return mock
 }
@@ -84,17 +89,27 @@ export function toMatchObjectExceptTimestamps(
 }
 
 describe('model-api', () => {
-  beforeAll(() => {
-    createBackend()
-  })
+  createBackend()
+  Connection.init()
 
-  if (!Connection.initialized) {
-    Connection.init()
-  }
+  // sort entities by dependencies
+  const sorted = Connection.entities.sort((a, b) => {
+    const aModel = a.model as ModelStatic<Model>
+    const bModel = b.model as ModelStatic<Model>
+    const aKeys = aModel.getAttributes()
+    const bKeys = bModel.getAttributes()
+    if (aKeys[bModel.primaryKeyAttribute]) {
+      return 1
+    }
+    if (bKeys[aModel.primaryKeyAttribute]) {
+      return -1
+    }
+    return 0
+  })
 
   const mocks = {} as Record<string, { [key: string]: unknown }>
   const keys = {} as Record<string, string>
-  for (const entity of Connection.entities) {
+  for (const entity of sorted) {
     const model = entity.model
     if (!model) {
       throw new Error('No model found for ' + entity.name)
@@ -108,20 +123,11 @@ describe('model-api', () => {
       expect(primaryKeyId).toBeTruthy()
     })
   }
-  // sort entities by foreign key dependencies
-  const sorted = Connection.entities.sort((a, b) => {
-    const aModel = a.model as ModelStatic<Model>
-    const bModel = b.model as ModelStatic<Model>
-    const aKeys = Object.keys(aModel.associations).map(key => aModel.associations[key].foreignKey)
-    const bKeys = Object.keys(bModel.associations).map(key => bModel.associations[key].foreignKey)
-    if (aKeys.includes(bModel.primaryKeyAttribute)) {
-      return 1
-    }
-    if (bKeys.includes(aModel.primaryKeyAttribute)) {
-      return -1
-    }
-    return 0
-  })
+
+  console.log(
+    'sort: ',
+    sorted.map(e => e.name),
+  )
 
   for (const entity of sorted) {
     const model = entity.model as ModelStatic<Model>
@@ -130,8 +136,9 @@ describe('model-api', () => {
     if (!model) {
       throw new Error('No model found for ' + entity.name)
     }
+
     test(`create ${model.name}`, async () => {
-      const result = await createOrUpdate(model, mocks)
+      const result = await createOrUpdate(model, mock)
       console.log('create result', result)
       toMatchObjectExceptTimestamps(mock, result)
     })
@@ -162,7 +169,7 @@ describe('model-api', () => {
   }
 
   //loop models in reverse order
-  const reversed = [...Connection.entities].reverse()
+  const reversed = [...sorted].reverse()
   for (const entity of reversed) {
     const model = entity.model as ModelStatic<Model>
     const mock = mocks[model.name]

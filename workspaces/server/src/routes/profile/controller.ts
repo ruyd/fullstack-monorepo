@@ -15,7 +15,7 @@ import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 import logger from '../../shared/logger'
 import { config } from '../../shared/config'
-import { EnrichedRequest } from 'src/shared/types'
+import { EnrichedRequest } from '../../shared/types'
 
 export async function register(req: express.Request, res: express.Response) {
   const payload = req.body
