@@ -100,10 +100,10 @@ export function Profile(): JSX.Element {
             }}
           />
           <Box>
-            <Typography variant="body1">
+            <Typography variant="h4">
               {user?.firstName} {user?.lastName}
             </Typography>
-            <Typography variant="body2">{user?.email}</Typography>
+            <Typography variant="body1">{user?.email}</Typography>
           </Box>
         </CardContent>
         <Box sx={{ height: '50px' }}>
