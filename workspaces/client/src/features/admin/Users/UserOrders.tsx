@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import { PagedResult } from '@shared/lib'
+import { Order, PagedResult } from '@shared/lib'
 import { useGet } from 'src/features/app'
-
-type Order = any
 
 export function UserOrders() {
   const { data, isLoading, error } = useGet<PagedResult<Order>>(

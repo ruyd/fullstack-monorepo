@@ -166,9 +166,9 @@ const TotalOrderLineChartCard = ({ isLoading }: { isLoading: boolean }) => {
                   </Grid>
                   <Grid item xs={6}>
                     {timeValue ? (
-                      <Chart {...(ChartDataMonth as any)} />
+                      <Chart {...(ChartDataMonth as object)} />
                     ) : (
-                      <Chart {...(ChartDataYear as any)} />
+                      <Chart {...(ChartDataYear as object)} />
                     )}
                   </Grid>
                 </Grid>

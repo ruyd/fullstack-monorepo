@@ -26,12 +26,10 @@ import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined'
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
 
-// ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
-
 const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
   const theme = useTheme()
 
-  const [anchorEl, setAnchorEl] = useState<any>(null)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   const handleClick = (event: React.MouseEvent) => {
     setAnchorEl(event.currentTarget)
