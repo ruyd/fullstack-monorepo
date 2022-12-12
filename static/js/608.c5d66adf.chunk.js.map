@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/608.c5d66adf.chunk.js","mappings":"gKAAe,SAASA,IACtB,OACE,0BACE,mCAGN,C","sources":["features/pages/terms.tsx"],"sourcesContent":["export default function Terms() {\n  return (\n    <div>\n      <h1>Terms</h1>\n    </div>\n  )\n}\n"],"names":["Terms"],"sourceRoot":""}
