@@ -16,9 +16,10 @@ export const intentAsync = createAsyncThunk(
 export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch }) => {
   const { data: items } = await get<Cart[]>('cart')
   const { data: orders } = await get<Order[]>('order')
+  // const { data: sales } = await get<Order[]>('order')
   const { data: addresses } = await get<Address[]>('address')
-  const { data: paymentMethods } = await get<PaymentMethod[]>('paymentMethod')
-  dispatch(patch({ items, orders, addresses, paymentMethods, loaded: true }))
+  const { data: paymentMethods } = await get<PaymentMethod[]>('payment_method')
+  // dispatch(patch({ items, orders, addresses, loaded: true }))
 
   // dispatch(patch({ intent: response.data.intent }))
 })

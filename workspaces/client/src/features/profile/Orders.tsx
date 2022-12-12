@@ -4,12 +4,10 @@ import { Order, PagedResult } from '@shared/lib'
 import { useGet } from 'src/features/app'
 
 export function Orders() {
-  const { data, isLoading, error } = useGet<PagedResult<Order>>(
-    'orders',
-    `user/orders`,
-    {},
-    { limit: 100, page: 0 },
-  )
+  const { data, isLoading, error } = useGet<PagedResult<Order>>('ordercache', 'order', undefined, {
+    limit: 100,
+    page: 0,
+  })
   const columns: GridColDef[] = [
     {
       field: 'id',
@@ -38,8 +36,9 @@ export function Orders() {
     },
   ]
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: '30rem' }}>
       <DataGrid
+        getRowId={row => row[Object.keys(row)[0]]}
         rows={data?.items || []}
         columns={columns}
         pageSize={5}

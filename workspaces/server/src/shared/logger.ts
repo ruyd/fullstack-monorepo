@@ -71,4 +71,20 @@ export function activateAxiosTrace() {
   })
 }
 
+export function unhandledTracingMiddleware(
+  req: express.Request,
+  _res: express.Response,
+  next: express.NextFunction,
+) {
+  logger.error('404', req.url)
+  console.table({
+    error: '*********** UNHANDLED REQUEST (404) ***********',
+    method: req.method,
+    url: req.url,
+    query: req.query,
+    body: req.body,
+  })
+  next()
+}
+
 export default logger

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Avatar, Box, Button, Grid, TextField, Typography, Container } from '@mui/material'
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
@@ -24,12 +25,6 @@ export default function Profile() {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlined />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Edit Profile
-        </Typography>
         <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>

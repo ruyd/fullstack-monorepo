@@ -32,7 +32,7 @@ import TabPanel from 'src/features/ui/TabPanel'
 import { useAppSelector } from 'src/shared/store'
 import AddressForm from '../shop/AddressForm'
 import UserEdit from './Edit'
-import UserOrders from './Orders'
+import Orders from './Orders'
 
 export function Profile(): JSX.Element {
   const user = useAppSelector(state => state.app.user)
@@ -45,7 +45,7 @@ export function Profile(): JSX.Element {
   }
 
   return (
-    <Container sx={{ marginTop: 2 }}>
+    <Container sx={{ marginTop: '2.5vw' }}>
       <Card>
         <CardContent
           sx={{
@@ -99,7 +99,7 @@ export function Profile(): JSX.Element {
               },
             }}
           />
-          <Box sx={{}}>
+          <Box>
             <Typography variant="body1">
               {user?.firstName} {user?.lastName}
             </Typography>
@@ -115,29 +115,27 @@ export function Profile(): JSX.Element {
               alignItems: 'end',
             }}
           >
-            <Tab label="Profile" icon={<Person2 />} iconPosition="start" />
-            <Tab label="Details" icon={<Person3 />} iconPosition="start" />
+            <Tab label="Profile" icon={<Person3 />} iconPosition="start" />
             <Tab label="Address" icon={<GifBoxTwoTone />} iconPosition="start" />
             <Tab label="Orders" icon={<Person4 />} iconPosition="start" />
             <Tab label="Gallery" icon={<Image />} iconPosition="start" />
           </Tabs>
         </Box>
       </Card>
-      <TabPanel value={tab} index={0} keepMounted>
-        home
-      </TabPanel>
-      <TabPanel value={tab} index={1} keepMounted>
-        <UserEdit />
-      </TabPanel>
-      <TabPanel value={tab} index={2} keepMounted>
-        <AddressForm />
-      </TabPanel>
-      <TabPanel value={tab} index={3} keepMounted>
-        <UserOrders />
-      </TabPanel>
-      <TabPanel value={tab} index={4} keepMounted>
-        <Gallery userId={user?.userId} onData={onGalleryData} />
-      </TabPanel>
+      <Box>
+        <TabPanel value={tab} index={0} keepMounted>
+          <UserEdit />
+        </TabPanel>
+        <TabPanel value={tab} index={1} keepMounted>
+          <AddressForm />
+        </TabPanel>
+        <TabPanel value={tab} index={2}>
+          <Orders />
+        </TabPanel>
+        <TabPanel value={tab} index={3} keepMounted>
+          <Gallery userId={user?.userId} onData={onGalleryData} />
+        </TabPanel>
+      </Box>
     </Container>
   )
 }

@@ -1,7 +1,6 @@
-import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
-interface TabPanelProps {
+interface TabPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode
   index?: number
   value?: number
@@ -21,11 +20,7 @@ export function TabPanel(props: TabPanelProps = { tabs: 'tabs' }) {
       aria-labelledby={`${id}-tab-${index}`}
       {...other}
     >
-      {(value === index || keepMounted) && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {(value === index || keepMounted) && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   )
 }
