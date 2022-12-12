@@ -8,11 +8,7 @@ import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
-import {
-  activateAxiosTrace,
-  endpointTracingMiddleware,
-  unhandledTracingMiddleware,
-} from './shared/logger'
+import { activateAxiosTrace, endpointTracingMiddleware } from './shared/logger'
 import { authProviderSync } from './shared/auth/sync'
 import { checkDatabase, Connection } from './shared/db'
 import { modelAuthMiddleware } from './shared/auth'
@@ -66,9 +62,6 @@ export function createBackendApp(): express.Express {
   registerModelApiRoutes(Connection.entities, api)
 
   app.use(api)
-
-  // 404 tracing
-  app.get('*', unhandledTracingMiddleware)
 
   return app
 }
