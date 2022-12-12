@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Address, Cart, Drawing, Order, PaymentMethod } from '@shared/lib'
+import { Address, Cart, CheckoutRequest, Drawing, Order, PaymentMethod } from '@shared/lib'
 import { RootState } from 'src/shared/store'
 import { get, Method, notify, request } from '../app'
 import { patch } from './slice'
@@ -53,13 +53,13 @@ export const checkoutAsync = createAsyncThunk(
   'shop/checkout',
   async (_, { dispatch, getState }) => {
     const state = getState() as RootState
-    const payload = {
+    const payload: CheckoutRequest = {
       items: state.shop.items,
       intent: state.shop.intent,
       shippingAddressId: state.shop.shippingAddressId,
-      PaymentMethodId: state.shop.paymentMethodId,
+      paymentMethodId: state.shop.paymentMethodId,
     }
-    const response = await request<Order>('shop/checkout', payload)
+    const response = await request<Order, CheckoutRequest>('shop/checkout', payload)
     dispatch(patch({ items: [], intent: undefined }))
     return response.data
   },

@@ -97,25 +97,28 @@ export class Connection {
  *
  * @param name - table name
  * @param attributes - columns definitions
- * @param unsecureRead - Set GET and LIST public (no token needed)
  * @param roles - restrict to roles like Admin
- * @returns
+ * @param publicRead - Set GET and LIST public (no token needed)
+ * @param publicWrite - POST, PUT, PATCH (no token needed)
+ * @returns Typed model class reference with methods/utilities
  */
 export function addModel<T extends object>(
   name: string,
   attributes: ModelAttributes<Model<T>, Attributes<Model<T>>>,
   joins?: Join[],
-  unsecureRead?: boolean,
   roles?: string[],
+  publicRead?: boolean,
+  publicWrite?: boolean,
 ): ModelStatic<Model<T, T>> {
   const model = class extends Model {}
   const cfg: EntityConfig = {
     name,
     attributes,
     joins,
-    publicRead: unsecureRead,
     roles,
     model,
+    publicRead,
+    publicWrite,
   }
   Connection.entities.push(cfg)
   logger.info(`Registered model ${name}`)

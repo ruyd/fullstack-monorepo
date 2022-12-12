@@ -60,6 +60,7 @@ export default function CheckoutDialog() {
     if (activeStep === Object.keys(steps).length - 1) {
       setActiveStep(0)
       dispatch(patch({ dialog: undefined }))
+      dispatch(checkoutAsync())
     }
   }
 

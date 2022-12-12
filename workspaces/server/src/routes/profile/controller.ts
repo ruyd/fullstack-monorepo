@@ -3,7 +3,6 @@ import {
   createToken,
   authProviderLogin,
   authProviderRegister,
-  ReqWithAuth,
   authProviderChangePassword,
   lazyLoadManagementToken,
   authProviderPatch,
@@ -16,6 +15,7 @@ import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 import logger from '../../shared/logger'
 import { config } from '../../shared/config'
+import { EnrichedRequest } from 'src/shared/types'
 
 export async function register(req: express.Request, res: express.Response) {
   const payload = req.body
@@ -191,7 +191,7 @@ export async function edit(req: express.Request, res: express.Response) {
   if (!payload) {
     throw new Error('Missing payload')
   }
-  const auth = (req as ReqWithAuth).auth as AppAccessToken
+  const auth = (req as EnrichedRequest).auth as AppAccessToken
   payload.userId = auth.userId
   const user = await createOrUpdate(UserModel, payload)
   res.json({ user })

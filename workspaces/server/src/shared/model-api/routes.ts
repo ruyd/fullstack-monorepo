@@ -1,7 +1,7 @@
 import express from 'express'
 import { Model, ModelStatic, Order } from 'sequelize/types'
 import { EntityConfig } from '../db'
-import { ReqWithAuth } from '../auth'
+import { EnrichedRequest } from '../types'
 import { createOrUpdate, getIfExists, gridPatch, gridDelete, list } from './controller'
 import logger from '../logger'
 
@@ -12,7 +12,7 @@ export interface modelApiConfig {
 
 export const modelApiConfig: modelApiConfig = {
   userIdColumn: 'userId',
-  getAuthUserId: req => (req as ReqWithAuth).auth?.userId,
+  getAuthUserId: req => (req as EnrichedRequest).auth?.userId,
 }
 
 /**
@@ -79,7 +79,7 @@ export async function gridDeleteHandler(
 }
 
 export async function getUserRelatedRecord(r: express.Request, model: ModelStatic<Model>) {
-  const req = r as ReqWithAuth
+  const req = r as EnrichedRequest
   const authId = modelApiConfig.getAuthUserId(req)
   const instance = await getIfExists(model, req.params.id)
   if (authId && Object.keys(model.getAttributes()).includes(modelApiConfig.userIdColumn)) {

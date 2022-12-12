@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Person2, SupervisedUserCircle } from '@mui/icons-material'
+import {
+  GifBoxTwoTone,
+  Image,
+  Person2,
+  Person3,
+  Person4,
+  SupervisedUserCircle,
+} from '@mui/icons-material'
 import {
   Avatar,
   Box,
@@ -23,6 +30,7 @@ import { BlurBackdrop } from 'src/features/ui/BlurBackdrop'
 import Gallery from 'src/features/ui/Gallery'
 import TabPanel from 'src/features/ui/TabPanel'
 import { useAppSelector } from 'src/shared/store'
+import AddressForm from '../shop/AddressForm'
 import UserEdit from './Edit'
 import UserOrders from './Orders'
 
@@ -107,19 +115,27 @@ export function Profile(): JSX.Element {
               alignItems: 'end',
             }}
           >
-            <Tab label="Details" icon={<Person2 />} iconPosition="start" />
-            <Tab label="Orders" icon={<Person2 />} iconPosition="start" />
-            <Tab label="Gallery" icon={<Person2 />} iconPosition="start" />
+            <Tab label="Profile" icon={<Person2 />} iconPosition="start" />
+            <Tab label="Details" icon={<Person3 />} iconPosition="start" />
+            <Tab label="Address" icon={<GifBoxTwoTone />} iconPosition="start" />
+            <Tab label="Orders" icon={<Person4 />} iconPosition="start" />
+            <Tab label="Gallery" icon={<Image />} iconPosition="start" />
           </Tabs>
         </Box>
       </Card>
       <TabPanel value={tab} index={0} keepMounted>
-        <UserEdit />
+        home
       </TabPanel>
       <TabPanel value={tab} index={1} keepMounted>
-        <UserOrders />
+        <UserEdit />
       </TabPanel>
       <TabPanel value={tab} index={2} keepMounted>
+        <AddressForm />
+      </TabPanel>
+      <TabPanel value={tab} index={3} keepMounted>
+        <UserOrders />
+      </TabPanel>
+      <TabPanel value={tab} index={4} keepMounted>
         <Gallery userId={user?.userId} onData={onGalleryData} />
       </TabPanel>
     </Container>

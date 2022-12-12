@@ -4,7 +4,7 @@ import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import { config } from '../config'
-import { AppAccessToken } from '../types'
+import { AppAccessToken, EnrichedRequest } from '../types'
 import { Connection, EntityConfig } from '../db'
 import logger from '../logger'
 import { HttpUnauthorizedError } from '../errorHandler'
@@ -29,11 +29,6 @@ export interface oAuthRegistered extends oAuthError {
   family_name: string
   given_name: string
   email_verified: boolean
-}
-
-export type ReqWithAuth = express.Request & {
-  auth: AppAccessToken
-  config?: EntityConfig
 }
 
 let jwkClient: jwksRsa.JwksClient
@@ -150,7 +145,7 @@ export function setRequest(
   header?: jwt.JwtHeader
   token?: string
 } {
-  const req = r as ReqWithAuth
+  const req = r as EnrichedRequest
   req.config = cfg
 
   if (!req.headers.authorization?.includes('Bearer ')) {

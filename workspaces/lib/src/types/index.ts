@@ -1,3 +1,5 @@
+import { Cart } from './cart'
+
 export * from './cart'
 export * from './drawing'
 export * from './order'
@@ -50,4 +52,12 @@ export interface GridPatchProps {
   id: string | number
   field: string
   value: unknown
+}
+
+export interface CheckoutRequest {
+  items: Cart[]
+  intent?: string
+  confirmation?: string
+  shippingAddressId?: string
+  paymentMethodId?: string
 }
