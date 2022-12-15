@@ -1,9 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Attributes, Model, ModelAttributes, ModelOptions, ModelStatic, Sequelize } from 'sequelize'
+import {
+  Attributes,
+  Model,
+  ModelAttributeColumnOptions,
+  ModelAttributes,
+  ModelOptions,
+  ModelStatic,
+  Sequelize,
+} from 'sequelize'
 import migrator from './migrator'
 import config from '../config'
 import logger from '../logger'
-import { UserModel } from '../types'
+import _ from 'lodash'
 
 export const commonOptions: ModelOptions = {
   timestamps: true,
@@ -24,6 +32,28 @@ export interface EntityConfig<M extends Model = Model> {
   publicWrite?: boolean
   model?: ModelStatic<M>
   joins?: Join[]
+}
+
+function sortEntities(a: EntityConfig, b: EntityConfig): number {
+  const columnsA = Object.keys(a.attributes).map(
+    (k: string) => a.attributes[k] as ModelAttributeColumnOptions,
+  )
+  const columnsB = Object.keys(b.attributes).map(
+    (k: string) => b.attributes[k] as ModelAttributeColumnOptions,
+  )
+  const primaryKeysA = Object.keys(a.attributes).filter(
+    key => (a.attributes[key] as ModelAttributeColumnOptions).primaryKey,
+  )
+  const primaryKeysB = Object.keys(b.attributes).filter(
+    key => (b.attributes[key] as ModelAttributeColumnOptions).primaryKey,
+  )
+  if (primaryKeysA.some(key => b.attributes[key])) {
+    return 1
+  }
+  if (primaryKeysB.some(key => a.attributes[key])) {
+    return -1
+  }
+  return 0
 }
 
 export class Connection {
@@ -50,16 +80,24 @@ export class Connection {
           }
         : {},
     })
-    Connection.initModels()
+
+    if (!Connection.initialized) {
+      Connection.initModels()
+    }
+
     Connection.initialized = true
   }
   static initModels() {
-    for (const entity of Connection.entities) {
+    const sorted = Connection.entities.sort(sortEntities)
+    for (const entity of sorted) {
       const scopedOptions = { ...commonOptions, sequelize: Connection.db, modelName: entity.name }
       if (!entity.model) {
+        logger.error(`Model ${entity.name} not found`)
         continue
       }
       entity.model.init(entity.attributes, scopedOptions)
+    }
+    for (const entity of sorted) {
       Connection.initJoins(entity)
     }
   }
@@ -79,15 +117,21 @@ export class Connection {
     const aliases: string[] = []
     const otherModels = Connection.entities.filter(e => e.name !== entity.name)
     for (const related of otherModels) {
-      const relatedColumnPk = related.model?.primaryKeyAttribute as string
-      //regex match modelNameId
-      if (`(.*)Id`.match(relatedColumnPk) && entity.attributes[relatedColumnPk]) {
-        const propName = related.model?.name as string
-        const as = aliases.includes(propName) ? `${entity?.model?.name}${propName}` : propName
-        aliases.push(propName)
-        entity.model?.belongsTo(related.model as ModelStatic<Model>, {
-          foreignKey: related.model?.primaryKeyAttribute,
-        })
+      if (related.model?.name === 'model') {
+        throw new Error('model not initialized for' + related.name)
+      }
+      const relatedColumns = Object.keys(related.attributes).filter(
+        key => (related.attributes[key] as ModelAttributeColumnOptions).primaryKey,
+      )
+      for (const relatedColumnPk of relatedColumns) {
+        if (relatedColumnPk.endsWith('Id') && entity.attributes[relatedColumnPk]) {
+          const propName = _.camelCase(related.name)
+          // const as = aliases.includes(propName) ? `${entity?.model?.name}${propName}` : propName
+          aliases.push(propName)
+          entity.model?.belongsTo(related.model as ModelStatic<Model>, {
+            foreignKey: relatedColumnPk,
+          })
+        }
       }
     }
   }

@@ -1,13 +1,28 @@
-import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from 'react'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import TextField from '@mui/material/TextField'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
+import { Box, Card } from '@mui/material'
+import { useAppSelector } from 'src/shared/store'
+import { Address } from '../../../../lib/src/types'
 
 export default function AddressForm() {
+  const items = useAppSelector(store => store.shop.addresses)
+  const active = useState<Address | null>(null)
+
+  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const payload = {} as Record<string, unknown>
+    data.forEach((value, key) => (payload[key] = value))
+    // dispatch(editProfileAsync(payload))
+  }
+
   return (
-    <React.Fragment>
+    <Box component="form" onSubmit={submitHandler}>
       <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography>
@@ -104,6 +119,16 @@ export default function AddressForm() {
           />
         </Grid>
       </Grid>
-    </React.Fragment>
-  );
+      {items?.map(item => (
+        <Card key={item.addressId}>
+          <div>{item.address1}</div>
+          <div>{item.address2}</div>
+          <div>{item.city}</div>
+          <div>{item.state}</div>
+          <div>{item.zip}</div>
+          <div>{item.country}</div>
+        </Card>
+      ))}
+    </Box>
+  )
 }
