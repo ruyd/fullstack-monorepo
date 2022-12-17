@@ -16,6 +16,7 @@
     "dev": "yarn install && docker compose up --wait && concurrently \"yarn workspace server dev\" \"yarn workspace client dev\" \"yarn workspace lib dev\"",
     "client": "yarn workspace client dev",
     "server": "yarn workspace server dev",
+    "docker": "docker compose up --wait",
     "lint": "eslint .",
     "test": "yarn workspace server test && yarn workspace client test",
     "prettify": "yarn prettier . --write",

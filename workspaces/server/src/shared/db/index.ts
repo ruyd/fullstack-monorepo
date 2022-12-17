@@ -131,6 +131,7 @@ export class Connection {
           })
           const propName = entity.model.tableName.replace(related.model?.name + '_', '')
           related.model?.hasMany(entity.model, {
+            foreignKey: relatedColumnPk,
             as: propName,
           })
         }
@@ -210,6 +211,7 @@ export async function checkMigrations(): Promise<boolean> {
 
 export async function checkDatabase(): Promise<boolean> {
   try {
+    logger.info('Connecting to database...')
     config.db.models = Connection.entities.map(m => m.name)
     await Connection.db.authenticate()
 

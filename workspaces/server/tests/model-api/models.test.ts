@@ -88,12 +88,19 @@ export function toMatchObjectExceptTimestamps(
   }
 }
 
-describe('model-api', () => {
-  beforeAll(() => {
-    createBackend()
-    Connection.init()
+afterAll(() => {
+  Connection.db.close()
+})
+
+describe('Entity CRUD', () => {
+  const app = createBackend()
+  test('init', async () => {
+    await app.onStartupCompletePromise
+    const result = await checkDatabase()
+    expect(result).toBeTruthy()
   })
 
+  // Connection.init()
   const sorted = Connection.entities.sort(sortEntities)
   const mocks = {} as Record<string, { [key: string]: unknown }>
   const keys = {} as Record<string, string>
@@ -102,9 +109,11 @@ describe('model-api', () => {
     if (!model) {
       throw new Error('No model found for ' + entity.name)
     }
+    if (model.name === 'model') {
+      throw new Error('Model init() not yet run' + entity.name)
+    }
     const mock = getPopulatedModel(model, keys)
     console.info('Generated Mock Data for: ', model.name)
-    console.table(mock)
     mocks[model.name] = mock
     const primaryKeyId = mock[model.primaryKeyAttribute] as string
     test(`mock ${model.name}`, async () => {
@@ -113,8 +122,10 @@ describe('model-api', () => {
   }
 
   console.log(
-    'sort: ',
+    'ready: ',
     sorted.map(e => e.name),
+    keys,
+    mocks,
   )
 
   for (const entity of sorted) {

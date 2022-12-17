@@ -24,7 +24,8 @@
       "command": "yarn jest ${fileBasename}",
       "name": "jest $file",
       "request": "launch",
-      "type": "node-terminal"
+      "type": "node-terminal",
+      "preLaunchTask": "docker.start"
     }
   ]
 }

@@ -13,11 +13,15 @@ import { authProviderSync } from './shared/auth/sync'
 import { checkDatabase, Connection } from './shared/db'
 import { modelAuthMiddleware } from './shared/auth'
 
-export function createBackendApp(): express.Express {
-  const app = express()
+export interface BackendApp extends express.Express {
+  onStartupCompletePromise: Promise<unknown>
+}
 
+export function createBackendApp(): BackendApp {
+  const app = express() as BackendApp
   Connection.init()
-  checkDatabase()
+  const promises: Promise<unknown>[] = []
+  promises.push(checkDatabase())
 
   if (!config.production && config.trace) {
     activateAxiosTrace()
@@ -62,6 +66,8 @@ export function createBackendApp(): express.Express {
   registerModelApiRoutes(Connection.entities, api)
 
   app.use(api)
+
+  app.onStartupCompletePromise = Promise.all(promises)
 
   return app
 }
