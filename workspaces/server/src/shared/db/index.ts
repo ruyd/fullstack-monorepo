@@ -32,7 +32,7 @@ export interface EntityConfig<M extends Model = Model> {
   joins?: Join[]
 }
 
-function sortEntities(a: EntityConfig, b: EntityConfig): number {
+export function sortEntities(a: EntityConfig, b: EntityConfig): number {
   const primaryKeysA = Object.keys(a.attributes).filter(
     key => (a.attributes[key] as ModelAttributeColumnOptions).primaryKey,
   )

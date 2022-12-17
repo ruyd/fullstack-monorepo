@@ -21,18 +21,10 @@
       "type": "node-terminal"
     },
     {
-      "command": "yarn workspace client test ${fileBasenameNoExtension} --watch",
-      "name": "test client file",
+      "command": "yarn jest ${fileBasename}",
+      "name": "jest $file",
       "request": "launch",
-      "type": "node-terminal",
-      "cwd": "${workspaceRoot}/workspaces/client"
-    },
-    {
-      "command": "yarn workspace server test ${fileBasenameNoExtension} --watch",
-      "name": "test server file",
-      "request": "launch",
-      "type": "node-terminal",
-      "cwd": "${workspaceRoot}/workspaces/server"
+      "type": "node-terminal"
     }
   ]
 }

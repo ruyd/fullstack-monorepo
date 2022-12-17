@@ -31,6 +31,7 @@
     "@types/offscreencanvas": "^2019.7.0",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
     "concurrently": "^7.5.0",
@@ -52,7 +53,6 @@
     "umzug": "^3.2.1"
   },
   "dependencies": {
-    "@types/uuid": "^8.3.4",
     "jsonwebtoken": "^8.5.1"
   },
   "packageManager": "yarn@3.3.0"

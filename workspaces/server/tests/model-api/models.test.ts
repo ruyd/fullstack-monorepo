@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, expect, test } from '@jest/globals'
-import { checkDatabase, Connection } from '../../src/shared/db'
+import { checkDatabase, Connection, sortEntities } from '../../src/shared/db'
 import createBackend from '../../src/app'
 import { ModelStatic, Model } from 'sequelize'
 import { v4 as uuid } from 'uuid'
@@ -89,24 +89,12 @@ export function toMatchObjectExceptTimestamps(
 }
 
 describe('model-api', () => {
-  createBackend()
-  Connection.init()
-
-  // sort entities by dependencies
-  const sorted = Connection.entities.sort((a, b) => {
-    const aModel = a.model as ModelStatic<Model>
-    const bModel = b.model as ModelStatic<Model>
-    const aKeys = aModel.getAttributes()
-    const bKeys = bModel.getAttributes()
-    if (aKeys[bModel.primaryKeyAttribute]) {
-      return 1
-    }
-    if (bKeys[aModel.primaryKeyAttribute]) {
-      return -1
-    }
-    return 0
+  beforeAll(() => {
+    createBackend()
+    Connection.init()
   })
 
+  const sorted = Connection.entities.sort(sortEntities)
   const mocks = {} as Record<string, { [key: string]: unknown }>
   const keys = {} as Record<string, string>
   for (const entity of sorted) {
