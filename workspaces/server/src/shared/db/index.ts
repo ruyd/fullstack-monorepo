@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Attributes,
   Model,
@@ -11,7 +10,6 @@ import {
 import migrator from './migrator'
 import config from '../config'
 import logger from '../logger'
-import _ from 'lodash'
 
 export const commonOptions: ModelOptions = {
   timestamps: true,
@@ -35,12 +33,6 @@ export interface EntityConfig<M extends Model = Model> {
 }
 
 function sortEntities(a: EntityConfig, b: EntityConfig): number {
-  const columnsA = Object.keys(a.attributes).map(
-    (k: string) => a.attributes[k] as ModelAttributeColumnOptions,
-  )
-  const columnsB = Object.keys(b.attributes).map(
-    (k: string) => b.attributes[k] as ModelAttributeColumnOptions,
-  )
   const primaryKeysA = Object.keys(a.attributes).filter(
     key => (a.attributes[key] as ModelAttributeColumnOptions).primaryKey,
   )
@@ -48,10 +40,10 @@ function sortEntities(a: EntityConfig, b: EntityConfig): number {
     key => (b.attributes[key] as ModelAttributeColumnOptions).primaryKey,
   )
   if (primaryKeysA.some(key => b.attributes[key])) {
-    return 1
+    return -1
   }
   if (primaryKeysB.some(key => a.attributes[key])) {
-    return -1
+    return 1
   }
   return 0
 }
@@ -80,12 +72,21 @@ export class Connection {
           }
         : {},
     })
-
-    if (!Connection.initialized) {
-      Connection.initModels()
-    }
-
+    Connection.initModels()
     Connection.initialized = true
+  }
+
+  static getAssociations(name: string) {
+    const entity = Connection.entities.find(e => e.name == name)
+    if (!entity) {
+      throw new Error(`Entity ${name} not found`)
+    }
+    const primaryKeys = Object.keys(entity.attributes).filter(
+      key => (entity.attributes[key] as ModelAttributeColumnOptions).primaryKey,
+    )
+    const others = Connection.entities.filter(e => e.name !== name)
+    const associations = others.filter(related => primaryKeys.some(key => related.attributes[key]))
+    return associations
   }
   static initModels() {
     const sorted = Connection.entities.sort(sortEntities)
@@ -114,7 +115,6 @@ export class Connection {
       })
     }
     // Detect joins based on column names
-    const aliases: string[] = []
     const otherModels = Connection.entities.filter(e => e.name !== entity.name)
     for (const related of otherModels) {
       if (related.model?.name === 'model') {
@@ -125,11 +125,13 @@ export class Connection {
       )
       for (const relatedColumnPk of relatedColumns) {
         if (relatedColumnPk.endsWith('Id') && entity.attributes[relatedColumnPk]) {
-          const propName = _.camelCase(related.name)
-          // const as = aliases.includes(propName) ? `${entity?.model?.name}${propName}` : propName
-          aliases.push(propName)
-          entity.model?.belongsTo(related.model as ModelStatic<Model>, {
+          entity.model.belongsTo(related.model as ModelStatic<Model>, {
             foreignKey: relatedColumnPk,
+            onDelete: 'CASCADE',
+          })
+          const propName = entity.model.tableName.replace(related.model?.name + '_', '')
+          related.model?.hasMany(entity.model, {
+            as: propName,
           })
         }
       }
