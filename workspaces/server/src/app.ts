@@ -14,13 +14,13 @@ import { checkDatabase, Connection } from './shared/db'
 import { modelAuthMiddleware } from './shared/auth'
 
 export interface BackendApp extends express.Express {
-  onStartupCompletePromise: Promise<unknown>
+  onStartupCompletePromise: Promise<boolean[]>
 }
 
 export function createBackendApp(): BackendApp {
   const app = express() as BackendApp
   Connection.init()
-  const promises: Promise<unknown>[] = []
+  const promises: Promise<boolean>[] = []
   promises.push(checkDatabase())
 
   if (!config.production && config.trace) {

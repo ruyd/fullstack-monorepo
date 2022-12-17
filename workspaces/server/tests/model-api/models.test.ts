@@ -95,12 +95,12 @@ afterAll(() => {
 describe('Entity CRUD', () => {
   const app = createBackend()
   test('init', async () => {
-    await app.onStartupCompletePromise
-    const result = await checkDatabase()
-    expect(result).toBeTruthy()
+    const results = await app.onStartupCompletePromise
+    for (const result of results) {
+      expect(result).toBeTruthy()
+    }
   })
 
-  // Connection.init()
   const sorted = Connection.entities.sort(sortEntities)
   const mocks = {} as Record<string, { [key: string]: unknown }>
   const keys = {} as Record<string, string>
