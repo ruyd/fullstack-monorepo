@@ -24,7 +24,7 @@
     "express-basic-auth": "^1.2.1",
     "express-jwt": "^7.7.5",
     "http-status": "^1.5.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "jwks-rsa": "^2.1.4",
     "openapi-types": "^12.0.2",
     "pg": "^8.7.3",

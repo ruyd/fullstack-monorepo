@@ -2,7 +2,7 @@
   "configurations": [
     {
       "command": "yarn workspace server dev",
-      "name": "client:server",
+      "name": "dev",
       "request": "launch",
       "type": "node-terminal",
       "preLaunchTask": "client.watch"

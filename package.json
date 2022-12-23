@@ -53,8 +53,5 @@
     "typescript": "^4.9.4",
     "umzug": "^3.2.1"
   },
-  "dependencies": {
-    "jsonwebtoken": "^8.5.1"
-  },
   "packageManager": "yarn@3.3.0"
 }
