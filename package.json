@@ -18,7 +18,7 @@
     "server": "yarn workspace server dev",
     "docker": "docker compose up --wait",
     "lint": "eslint .",
-    "test": "yarn workspace server test && yarn workspace client test",
+    "test": "yarn docker && yarn workspace server test && yarn workspace client test",
     "prettify": "yarn prettier . --write",
     "clean": "rm -rf node_modules workspaces/*/node_modules package-lock.json yarn.lock workspaces/*/build workspaces/*/dist",
     "prepare": "husky install"
