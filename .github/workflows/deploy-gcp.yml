@@ -15,17 +15,18 @@ jobs:
     steps:
       - uses: 'actions/checkout@v3'
 
-      - id: 'auth'
+      - name: 'auth'
         uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
 
-      - id: 'build'
-        run: 'yarn install'
-        run: 'yarn workspace gkill build'
+      - name: 'build'
+        run: |
+          yarn install
+          yarn workspace gkill build
 
-      - id: 'deploy'
+      - name: 'deploy'
         uses: 'google-github-actions/deploy-cloud-functions@v1'
         with:
           name: 'function-kill'
@@ -33,6 +34,5 @@ jobs:
           entry_point: 'main'
           source_dir: 'workspaces/function-gkill/dist'
 
-      # Example of using the output
-      - id: 'test'
+      - name: 'test'
         run: 'curl "${{ steps.deploy.outputs.url }}"'
