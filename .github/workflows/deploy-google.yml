@@ -33,6 +33,7 @@ jobs:
           runtime: 'nodejs16'
           entry_point: 'main'
           source_dir: 'workspaces/function-gkill/dist'
+          trigger_topic: 'budget'
 
       # - name: 'test'
       # run: 'curl "${{ steps.deploy.outputs.url }}"'
