@@ -1,6 +1,8 @@
 
 ## Github Actions Setup for Google Cloud
 
+*Automate 
+
 Workload Identity provides keyless federation for external resources like GKE and Github Actions
 https://github.com/google-github-actions/auth#setup
 
@@ -21,6 +23,10 @@ gcloud iam service-accounts create "github" \
   --project="mstream-368503" \
   --description="Github Actions" \
   --display-name="Github Actions"
+
+gcloud projects add-iam-policy-binding mstream-368503 \
+    --member="serviceAccount:github@mstream-368503.iam.gserviceaccount.com" \
+    --role="editor"
 
 gcloud iam service-accounts add-iam-policy-binding "github@mstream-368503.iam.gserviceaccount.com" \
   --project="mstream-368503" \
