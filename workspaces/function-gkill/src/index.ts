@@ -1,4 +1,4 @@
-import * as functions from '@google-cloud/functions-framework'
+// import * as functions from '@google-cloud/functions-framework'
 import { google } from 'googleapis'
 import { GoogleAuth } from 'google-auth-library'
 import { CloudEventFunction } from '@google-cloud/functions-framework/build/src/functions'
@@ -8,14 +8,14 @@ const PROJECT_ID = 'mstream-368503'
 const PROJECT_NAME = `projects/${PROJECT_ID}`
 const billing = google.cloudbilling('v1').projects
 
-export const onBudgetMessage: CloudEventFunction<PubsubMessage> = async message => {
-  console.log(message.data)
-  if (!message?.data) {
+export const onBudgetMessage: CloudEventFunction<PubsubMessage> = async cloudEvent => {
+  console.log('tapion', cloudEvent, cloudEvent.data)
+  if (!cloudEvent?.data) {
     console.log('No message data')
     return 'No message data'
   }
 
-  const pubsubData = JSON.parse(Buffer.from(message.data as string, 'base64').toString())
+  const pubsubData = JSON.parse(Buffer.from(cloudEvent.data as string, 'base64').toString())
 
   console.log(pubsubData)
   console.log(pubsubData.costAmount)
@@ -97,4 +97,5 @@ const _disableBillingForProject = async (projectName: string) => {
   return `Billing disabled: ${JSON.stringify(res.data)}`
 }
 
-functions.cloudEvent('main', onBudgetMessage)
+// functions.cloudEvent('main', onBudgetMessage)
+exports.main = onBudgetMessage

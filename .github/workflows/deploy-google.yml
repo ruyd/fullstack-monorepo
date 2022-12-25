@@ -7,7 +7,7 @@ on:
       - '.github/workflows/deploy-google.yml'
 
 jobs:
-  killswitch:
+  function_killswitch_deploy:
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
@@ -36,7 +36,28 @@ jobs:
           source_dir: 'workspaces/function-gkill/dist'
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/mstream-368503/topics/budget
-          # event_trigger_service: pubsub.googleapis.com
 
-      # - name: 'test'
-      # run: 'curl "${{ steps.deploy.outputs.url }}"'
+  server_container:
+    runs-on: 'ubuntu-latest'
+
+  client_bucket_upload:
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - name: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
+          service_account: 'github@mstream-368503.iam.gserviceaccount.com'
+
+      - name: 'build'
+        run: |
+          yarn install
+          yarn workspace client build
+
+      - name: 'upload-folder'
+        uses: 'google-github-actions/upload-cloud-storage@v1'
+        with:
+          path: 'workspace/client/build'
+          destination: 'mtoon'
+          parent: false
