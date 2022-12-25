@@ -37,9 +37,6 @@ jobs:
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/mstream-368503/topics/budget
 
-  server_container:
-    runs-on: 'ubuntu-latest'
-
   client_bucket_upload:
     steps:
       - uses: 'actions/checkout@v3'
