@@ -8,7 +8,7 @@ const PROJECT_ID = 'mstream-368503'
 const PROJECT_NAME = `projects/${PROJECT_ID}`
 const billing = google.cloudbilling('v1').projects
 
-export const helloPubSub: CloudEventFunction<PubsubMessage> = async message => {
+export const onBudgetMessage: CloudEventFunction<PubsubMessage> = async message => {
   console.log(message.data)
 
   const pubsubData = JSON.parse(Buffer.from(message.data as string, 'base64').toString())
@@ -93,4 +93,4 @@ const _disableBillingForProject = async (projectName: string) => {
   return `Billing disabled: ${JSON.stringify(res.data)}`
 }
 
-functions.cloudEvent('helloPubSub', helloPubSub)
+functions.cloudEvent('main', onBudgetMessage)
