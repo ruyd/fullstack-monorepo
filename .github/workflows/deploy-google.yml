@@ -34,8 +34,8 @@ jobs:
           runtime: 'nodejs16'
           entry_point: 'main'
           source_dir: 'workspaces/function-gkill/dist'
-          event_trigger_type: 'topic'
-          event_trigger_resource: 'budget'
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: projects/mstream-368503/topics/budget
 
       # - name: 'test'
       # run: 'curl "${{ steps.deploy.outputs.url }}"'
