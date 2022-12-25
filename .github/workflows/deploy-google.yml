@@ -36,6 +36,7 @@ jobs:
           source_dir: 'workspaces/function-gkill/dist'
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/mstream-368503/topics/budget
+          # event_trigger_service: pubsub.googleapis.com
 
       # - name: 'test'
       # run: 'curl "${{ steps.deploy.outputs.url }}"'
