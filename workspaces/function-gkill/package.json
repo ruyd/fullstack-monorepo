@@ -16,9 +16,6 @@
   "scripts": {
     "lint": "gts lint",
     "clean": "gts clean",
-    "compile": "tsc",
-    "fix": "gts fix",
-    "pretest": "npm run compile",
-    "posttest": "npm run lint"
+    "build": "yarn tsc --build"
   }
 }

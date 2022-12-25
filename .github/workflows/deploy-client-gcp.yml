@@ -19,7 +19,7 @@ jobs:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
 
-      - id: 'build tsc'
+      - id: 'build'
         run: 'yarn workspace gkill build'
 
       - id: 'deploy'
