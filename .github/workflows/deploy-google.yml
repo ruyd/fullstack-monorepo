@@ -4,9 +4,10 @@ on:
   push:
     paths:
       - 'workspaces/function-gkill/**'
+      - '.github/workflows/deploy-google.yml'
 
 jobs:
-  job_id:
+  killswitch:
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
