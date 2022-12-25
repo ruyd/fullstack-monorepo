@@ -15,15 +15,17 @@ export const onBudgetMessage: CloudEventFunction<PubsubMessage> = async cloudEve
     return 'No message data'
   }
 
-  const pubsubData = JSON.parse(Buffer.from(cloudEvent.data as string, 'base64').toString())
+  const decoded = JSON.parse(
+    Buffer.from(JSON.stringify(cloudEvent.data) as string, 'base64').toString(),
+  )
 
-  console.log(pubsubData)
-  console.log(pubsubData.costAmount)
-  console.log(pubsubData.budgetAmount)
+  console.log(decoded)
+  console.log(decoded.costAmount)
+  console.log(decoded.budgetAmount)
 
-  if (pubsubData.costAmount <= pubsubData.budgetAmount) {
+  if (decoded.costAmount <= decoded.budgetAmount) {
     console.log('No action necessary.')
-    return `No action necessary. (Current cost: ${pubsubData.costAmount})`
+    return `No action necessary. (Current cost: ${decoded.costAmount})`
   }
 
   if (!PROJECT_ID) {
