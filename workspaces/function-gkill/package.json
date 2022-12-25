@@ -1,6 +1,7 @@
 {
   "name": "gkill",
   "main": "src/index.js",
+  "version": "0.0.1",
   "description": "Remove GCP billing to stop charges",
   "dependencies": {
     "@google-cloud/functions-framework": "^3.1.2",
