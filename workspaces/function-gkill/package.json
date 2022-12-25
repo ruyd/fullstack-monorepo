@@ -16,6 +16,6 @@
   "scripts": {
     "lint": "gts lint",
     "clean": "gts clean",
-    "build": "yarn install && yarn tsc --build"
+    "build": "yarn tsc --build"
   }
 }
