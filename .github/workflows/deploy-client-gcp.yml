@@ -1,3 +1,8 @@
+on:
+  push:
+    paths:
+      - 'workspaces/function-gkill/**'
+
 jobs:
   job_id:
     runs-on: 'ubuntu-latest'
@@ -14,13 +19,16 @@ jobs:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
 
+      - id: 'build tsc'
+        run: 'yarn workspace gkill build'
+
       - id: 'deploy'
         uses: 'google-github-actions/deploy-cloud-functions@v1'
         with:
           name: 'function-kill'
           runtime: 'nodejs16'
           entry_point: 'main'
-          source_dir: 'workspaces/function-gkill'
+          source_dir: 'workspaces/function-gkill/dist'
 
       # Example of using the output
       - id: 'test'
