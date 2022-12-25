@@ -34,5 +34,5 @@ jobs:
           entry_point: 'main'
           source_dir: 'workspaces/function-gkill/dist'
 
-      - name: 'test'
-        run: 'curl "${{ steps.deploy.outputs.url }}"'
+      # - name: 'test'
+      # run: 'curl "${{ steps.deploy.outputs.url }}"'
