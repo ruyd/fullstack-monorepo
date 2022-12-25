@@ -10,6 +10,10 @@ const billing = google.cloudbilling('v1').projects
 
 export const onBudgetMessage: CloudEventFunction<PubsubMessage> = async message => {
   console.log(message.data)
+  if (!message?.data) {
+    console.log('No message data')
+    return 'No message data'
+  }
 
   const pubsubData = JSON.parse(Buffer.from(message.data as string, 'base64').toString())
 

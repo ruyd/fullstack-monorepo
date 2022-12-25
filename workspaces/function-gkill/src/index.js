@@ -50,11 +50,18 @@ const _disableBillingForProject = async projectName => {
 
 const onEvent = async cloudEvent => {
   console.log(`tapion`, cloudEvent.data)
-  if (cloudEvent.data.message?.data) {
-    const decoded = Buffer.from(cloudEvent.data.message.data, 'base64').toString()
-    console.log('decoded', decoded)
-    const pubsubData = JSON.parse(decoded)
-    console.log(`hadoken`, pubsubData)
+  if (!cloudEvent.data.message?.data) {
+    console.log('No message data')
+    return 'No message data'
+  }
+  const decoded = Buffer.from(cloudEvent.data.message.data, 'base64').toString()
+  console.log('decoded', decoded)
+  const pubsubData = JSON.parse(decoded)
+  console.log(`hadoken`, pubsubData)
+
+  if (pubsubData.costAmount <= pubsubData.budgetAmount) {
+    console.log('No action necessary.')
+    return `No action necessary. (Current cost: ${pubsubData.costAmount})`
   }
 
   if (!PROJECT_ID) {
