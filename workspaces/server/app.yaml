@@ -1,0 +1,10 @@
+runtime: nodejs18
+
+env_variables:
+  BUCKET_NAME: 'mtoon'
+
+handlers:
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
