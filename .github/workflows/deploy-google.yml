@@ -43,23 +43,11 @@ jobs:
 
   function_killswitch_deploy:
     needs: [prepare]
+    if: ${{ needs.changes.outputs.killswitch == 'true' }}
     runs-on: 'ubuntu-latest'
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
     steps:
-      - uses: 'actions/checkout@v3'
-
-      - name: 'auth'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
-          service_account: 'github@mstream-368503.iam.gserviceaccount.com'
-
       - name: 'build'
         run: |
-          yarn install
           yarn workspace gkill build
 
       - name: 'deploy'
@@ -76,23 +64,8 @@ jobs:
     needs: [prepare]
     if: ${{ needs.changes.outputs.client == 'true' }}
     steps:
-      - uses: 'actions/checkout@v3'
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            client:
-              - 'workspaces/client/**'
-
-      - name: 'auth'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
-          service_account: 'github@mstream-368503.iam.gserviceaccount.com'
-
       - name: 'build'
         run: |
-          yarn install
           yarn workspace client build
 
       - name: 'upload-folder'
