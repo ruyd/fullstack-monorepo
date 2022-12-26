@@ -28,6 +28,7 @@ jobs:
   function_killswitch_deploy:
     needs: [changes]
     if: ${{ needs.changes.outputs.killswitch == 'true' }}
+    if: github.ref == ‘refs/heads/master’
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
@@ -64,7 +65,7 @@ jobs:
 
   client_bucket_deploy:
     needs: [changes]
-    # if: ${{ needs.changes.outputs.client == 'true' }}
+    if: ${{ needs.changes.outputs.client == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'

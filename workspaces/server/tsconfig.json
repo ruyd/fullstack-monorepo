@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "strict": true,
     "sourceMap": true,
+    "skipLibCheck": true,
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
