@@ -23,9 +23,9 @@
       "dialect": "postgres"
     },
     "service": {
-      "port": "$PORT",
-      "protocol": "$PROTOCOL",
-      "host": "$HOST"
+      "port": "8080",
+      "protocol": "http",
+      "host": ""
     }
   },
   "envConcerns": [
