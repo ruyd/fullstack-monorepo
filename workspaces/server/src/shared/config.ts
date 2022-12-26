@@ -67,7 +67,8 @@ export function getConfig(): Config {
   const osHost = os.hostname()
   const isLocalhost = osHost.includes('local')
   logger.info(`process.env.PORT: ${process.env.PORT} ⚡️`)
-  const port = Number(process.env.PORT) || Number(envi(serviceConfig.service.port))
+  logger.info(`process.env.$PORT: ${process.env.$PORT} ⚡️`)
+  const port = Number(process.env.$PORT) || Number(envi(serviceConfig.service.port))
   const hostname = envi(serviceConfig.service.host) as string
   const protocol = envi(serviceConfig.service.protocol) as string
 
