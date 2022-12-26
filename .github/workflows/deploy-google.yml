@@ -33,23 +33,24 @@ jobs:
       id-token: 'write'
 
     steps:
+      - uses: 'actions/checkout@v3'
       - name: 'auth'
         uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
-
       - name: 'install'
         run: |
           yarn install
 
   function_killswitch_deploy:
-    needs: [prepare]
+    needs: [changes, prepare]
     if: ${{ needs.changes.outputs.killswitch == 'true' }}
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'build'
         run: |
+          yarn install
           yarn workspace gkill build
 
       - name: 'deploy'
@@ -63,12 +64,13 @@ jobs:
           event_trigger_resource: projects/mstream-368503/topics/budget
 
   client:
-    needs: [prepare]
+    needs: [changes, prepare]
     if: ${{ needs.changes.outputs.client == 'true' }}
     runs-on: 'ubuntu-latest'
     steps:
       - name: 'build'
         run: |
+          yarn install
           yarn workspace client build
 
       - name: 'upload-folder'
