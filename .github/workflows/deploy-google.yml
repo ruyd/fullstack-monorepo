@@ -1,5 +1,4 @@
 name: 'Deploy: Google Cloud'
-
 on:
   push:
     paths:
@@ -7,7 +6,43 @@ on:
       - '.github/workflows/deploy-google.yml'
 
 jobs:
+  changes:
+    runs-on: 'ubuntu-latest'
+    outputs:
+      client: ${{ steps.filter.outputs.client }}
+    steps:
+      - uses: 'actions/checkout@v3'
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            client:
+              - 'workspaces/client/**'
+            server:
+              - 'workspaces/server/**'
+            killswitch:
+              - 'workspaces/function-gkill/**'
+
+  prepare:
+    needs: [changes]
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
+          service_account: 'github@mstream-368503.iam.gserviceaccount.com'
+
+      - name: 'install'
+        run: |
+          yarn install
+
   function_killswitch_deploy:
+    needs: [prepare]
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
@@ -37,9 +72,17 @@ jobs:
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/mstream-368503/topics/budget
 
-  client_bucket_upload:
+  client:
+    needs: [prepare]
+    if: ${{ needs.changes.outputs.client == 'true' }}
     steps:
       - uses: 'actions/checkout@v3'
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            client:
+              - 'workspaces/client/**'
 
       - name: 'auth'
         uses: 'google-github-actions/auth@v1'
