@@ -65,6 +65,7 @@ jobs:
   client:
     needs: [prepare]
     if: ${{ needs.changes.outputs.client == 'true' }}
+    runs-on: 'ubuntu-latest'
     steps:
       - name: 'build'
         run: |
