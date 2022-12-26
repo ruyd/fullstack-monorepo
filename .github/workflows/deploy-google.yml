@@ -29,6 +29,9 @@ jobs:
     needs: [changes]
     if: ${{ needs.changes.outputs.killswitch == 'true' }}
     runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps:
       - uses: 'actions/checkout@v3'
 
@@ -63,6 +66,9 @@ jobs:
     needs: [changes]
     if: ${{ needs.changes.outputs.client == 'true' }}
     runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps:
       - uses: 'actions/checkout@v3'
 
