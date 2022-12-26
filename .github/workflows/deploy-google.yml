@@ -64,7 +64,7 @@ jobs:
 
   client_bucket_deploy:
     needs: [changes]
-    if: ${{ needs.changes.outputs.client == 'true' }}
+    # if: ${{ needs.changes.outputs.client == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
