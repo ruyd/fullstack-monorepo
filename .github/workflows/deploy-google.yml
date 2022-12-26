@@ -27,8 +27,7 @@ jobs:
 
   function_killswitch_deploy:
     needs: [changes]
-    if: ${{ needs.changes.outputs.killswitch == 'true' }}
-    if: github.ref == 'refs/heads/master'
+    if: ${{ needs.changes.outputs.killswitch == 'true' && github.ref == 'refs/heads/master' }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
