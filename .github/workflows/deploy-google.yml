@@ -2,7 +2,7 @@ name: 'Deploy: Google Cloud'
 on:
   push:
     paths:
-      - 'workspaces/function-gkill/**'
+      - 'workspaces/**'
       - '.github/workflows/deploy-google.yml'
 
 jobs:
