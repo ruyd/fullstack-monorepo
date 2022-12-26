@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "private": true,
   "description": "Automated Express Backend",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "build": "yarn tsc --build && NODE_ENV=production yarn webpack",
     "start": "node dist/index.js",
