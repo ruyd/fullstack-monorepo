@@ -64,7 +64,7 @@ jobs:
 
   client_bucket_deploy:
     needs: [changes]
-    # if: ${{ needs.changes.outputs.client == 'true' }}
+    if: ${{ needs.changes.outputs.client == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
@@ -93,6 +93,6 @@ jobs:
       - name: 'upload-folder'
         uses: 'google-github-actions/upload-cloud-storage@v1'
         with:
-          path: 'workspace/client/build'
+          path: 'workspaces/client/build'
           destination: 'mtoon'
           parent: false
