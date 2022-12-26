@@ -47,6 +47,7 @@ jobs:
     if: ${{ needs.changes.outputs.killswitch == 'true' }}
     runs-on: 'ubuntu-latest'
     steps:
+      - uses: 'actions/checkout@v3'
       - name: 'build'
         run: yarn install && yarn workspace gkill build
 
@@ -65,8 +66,11 @@ jobs:
     if: ${{ needs.changes.outputs.client == 'true' }}
     runs-on: 'ubuntu-latest'
     steps:
+      - uses: 'actions/checkout@v3'
       - name: 'build'
-        run: yarn install && yarn workspace client build
+        run: |
+          yarn install
+          yarn workspace client build
 
       - name: 'upload-folder'
         uses: 'google-github-actions/upload-cloud-storage@v1'
