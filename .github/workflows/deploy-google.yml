@@ -134,5 +134,4 @@ jobs:
         uses: 'google-github-actions/deploy-cloudrun@v1'
         with:
           service: 'hello'
-          image: 'gcr.io/cloudrun/hello'
           source: 'workspaces/server'
