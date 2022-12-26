@@ -10,6 +10,8 @@ jobs:
     runs-on: 'ubuntu-latest'
     outputs:
       client: ${{ steps.filter.outputs.client }}
+      server: ${{ steps.filter.outputs.server }}
+      killswitch: ${{ steps.filter.outputs.killswitch }}
     steps:
       - uses: 'actions/checkout@v3'
       - uses: dorny/paths-filter@v2
