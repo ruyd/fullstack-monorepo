@@ -25,13 +25,10 @@ jobs:
             killswitch:
               - 'workspaces/function-gkill/**'
 
-  prepare:
+  function_killswitch_deploy:
     needs: [changes]
+    if: ${{ needs.changes.outputs.killswitch == 'true' }}
     runs-on: 'ubuntu-latest'
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
     steps:
       - uses: 'actions/checkout@v3'
 
@@ -49,14 +46,8 @@ jobs:
       - name: 'install'
         run: yarn install --immutable
 
-  function_killswitch_deploy:
-    needs: [changes, prepare]
-    if: ${{ needs.changes.outputs.killswitch == 'true' }}
-    runs-on: 'ubuntu-latest'
-    steps:
-      - uses: 'actions/checkout@v3'
       - name: 'build'
-        run: yarn install && yarn workspace gkill build
+        run: yarn workspace gkill build
 
       - name: 'deploy'
         uses: 'google-github-actions/deploy-cloud-functions@v1'
@@ -68,15 +59,29 @@ jobs:
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/mstream-368503/topics/budget
 
-  client:
-    needs: [changes, prepare]
+  client_bucket_deploy:
+    needs: [changes]
     if: ${{ needs.changes.outputs.client == 'true' }}
     runs-on: 'ubuntu-latest'
     steps:
       - uses: 'actions/checkout@v3'
+
+      - name: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
+          service_account: 'github@mstream-368503.iam.gserviceaccount.com'
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+
+      - name: 'install'
+        run: yarn install --immutable
+
       - name: 'build'
         run: |
-          yarn install
           yarn workspace client build
 
       - name: 'upload-folder'
