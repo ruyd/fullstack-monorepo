@@ -96,3 +96,43 @@ jobs:
           path: 'workspaces/client/build'
           destination: 'mtoon'
           parent: false
+
+  server_deploys:
+    needs: [changes]
+    # if: ${{ needs.changes.outputs.client == 'true' }}
+    runs-on: 'ubuntu-latest'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'yarn'
+
+      - name: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
+          service_account: 'github@mstream-368503.iam.gserviceaccount.com'
+
+      - name: 'install'
+        run: yarn install --immutable
+
+      - name: 'build'
+        run: |
+          yarn workspace server build
+
+      - id: 'appengine'
+        uses: 'google-github-actions/deploy-appengine@v1'
+        with:
+          working_directory: 'workspaces/server'
+
+      - id: 'cloudrun'
+        uses: 'google-github-actions/deploy-cloudrun@v1'
+        with:
+          service: 'hello-cloud-run'
+          image: 'gcr.io/cloudrun/hello'
+          source: 'workspaces/server'
