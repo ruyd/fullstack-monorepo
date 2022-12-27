@@ -122,6 +122,8 @@ jobs:
         uses: 'google-github-actions/deploy-appengine@v1'
         with:
           working_directory: 'workspaces/server'
+          secrets: |
+            DB_URL=DB_URL:latest
 
       - name: 'install'
         run: yarn install --immutable
@@ -135,3 +137,5 @@ jobs:
         with:
           service: 'hello'
           source: 'workspaces/server'
+          secrets: |
+            DB_URL=DB_URL:latest
