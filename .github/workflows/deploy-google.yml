@@ -127,6 +127,7 @@ jobs:
       - name: 'build'
         run: |
           yarn workspace server build
+          cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
 
       - id: 'appengine'
         uses: 'google-github-actions/deploy-appengine@v1'
