@@ -8,7 +8,7 @@ import {
   Sequelize,
 } from 'sequelize'
 import migrator from './migrator'
-import config from '../config'
+import config, { getConfig } from '../config'
 import logger from '../logger'
 
 export const commonOptions: ModelOptions = {
@@ -59,10 +59,11 @@ export class Connection {
         'Connection Class cannot read config, undefined variable - check for cyclic dependency',
       )
     }
-    Connection.db = new Sequelize(config.db.url, {
-      logging: sql => (config.db.trace ? logger.info(`${sql}\n`) : undefined),
-      ssl: !!config.db.ssl,
-      dialectOptions: config.db.ssl
+    const current = getConfig()
+    Connection.db = new Sequelize(current.db.url, {
+      logging: sql => (current.db.trace ? logger.info(`${sql}\n`) : undefined),
+      ssl: !!current.db.ssl,
+      dialectOptions: current.db.ssl
         ? {
             dialect: 'postgresql',
             ssl: {
@@ -176,7 +177,10 @@ export function addModel<T extends object>(
 
 export async function createDatabase(): Promise<boolean> {
   logger.info('Database does not exist, creating...')
-  const root = new Sequelize(config.db.url.replace(config.db.name, 'postgres'))
+
+  const rootUrl = config.db.url.replace(config.db.name, 'postgres')
+  console.log('root', rootUrl)
+  const root = new Sequelize(rootUrl)
   const qi = root.getQueryInterface()
   try {
     await qi.createDatabase(config.db.name)
@@ -184,7 +188,7 @@ export async function createDatabase(): Promise<boolean> {
     await Connection.db.sync()
     logger.info('Tables created')
   } catch (e: unknown) {
-    logger.warn('Database creation failed', e)
+    logger.warn('Database creation failed: ' + JSON.stringify(e), e)
     return false
   }
   return true

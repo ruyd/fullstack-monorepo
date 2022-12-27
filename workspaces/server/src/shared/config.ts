@@ -66,11 +66,12 @@ export function parseDatabaseConfig(
   if (!db.url) {
     throw new Error('DB_URL is not set')
   }
-  const database = db.url.slice(db.url.lastIndexOf('/') + 1)
-  const username = db.url.slice(db.url.indexOf('//') + 2, db.url.indexOf(':'))
-  const password = db.url.slice(db.url.indexOf(':') + 1, db.url.indexOf('@'))
-  const host = db.url.slice(db.url.indexOf('@') + 1, db.url.lastIndexOf(':'))
-  const dialect = db.url.slice(0, db.url.indexOf(':'))
+  const url = envi(db.url) as string
+  const database = url.slice(url.lastIndexOf('/') + 1)
+  const username = url.slice(url.indexOf('//') + 2, url.indexOf(':'))
+  const password = url.slice(url.indexOf(':') + 1, url.indexOf('@'))
+  const host = url.slice(url.indexOf('@') + 1, url.lastIndexOf(':'))
+  const dialect = url.slice(0, url.indexOf(':'))
   return {
     database,
     host,
