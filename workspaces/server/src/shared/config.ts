@@ -63,10 +63,10 @@ export function parseDatabaseConfig(
   if (!production) {
     return db
   }
-  if (!db.url) {
+  const url = envi(db.url) as string
+  if (!url) {
     throw new Error('DB_URL is not set')
   }
-  const url = envi(db.url) as string
   const database = url.slice(url.lastIndexOf('/') + 1)
   const username = url.slice(url.indexOf('//') + 2, url.indexOf(':'))
   const password = url.slice(url.indexOf(':') + 1, url.indexOf('@'))
