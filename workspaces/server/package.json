@@ -5,10 +5,10 @@
   "description": "Automated Express Backend",
   "main": "index.js",
   "scripts": {
-    "build": "yarn tsc --build",
+    "build": "NODE_ENV=production yarn webpack",
     "start": "node index.js",
-    "mon": "NODE_ENV=development yarn nodemon -r tsconfig-paths/register -q src/index.ts",
-    "watch": "NODE_ENV=development yarn webpack watch",
+    "mon": "NODE_ENV=production yarn nodemon -r tsconfig-paths/register -q src/index.ts",
+    "watch": "NODE_ENV=production yarn webpack watch",
     "dev": "docker compose up --wait && yarn tsc --build && yarn concurrently \"yarn watch\" \"yarn mon\"",
     "test": "NODE_ENV=test yarn jest",
     "migrator": "yarn ts-node src/shared/db/migrator.ts",
