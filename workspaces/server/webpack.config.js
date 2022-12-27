@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 console.log(`SERVER WEBPACK (${process.env.NODE_ENV})`)
 const fs = require('fs')
 const path = require('path')
@@ -13,8 +12,6 @@ const getClientEnvironment = require('../../tools/env')
 const paths = require('../../tools/paths')
 const packageJson = require('./package.json')
 const webpack = require('webpack')
-const dotenv = require('dotenv')
-const DotenvWebpack = require('dotenv-webpack')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = env.mode
 const isDevelopment = env.isDevelopment
@@ -26,19 +23,7 @@ function getDefinedEnv() {
     }
     return acc
   }, {})
-  // const envFile = isDevelopment ? dotenv.config({}).parsed : {}
-  // const overrides = Object.keys(envFile).reduce((acc, key) => {
-  //   if (envFile[key]) {
-  //     acc[key] = envFile[key]
-  //   }
-  //   return acc
-  // }, {})
-  // console.log('overrides', overrides)
-  // const merged = JSON.stringify({
-  //   ...concerns,
-  //   ...overrides,
-  // })
-  console.log('concerns', concerns)
+  console.log('baked env vars:', concerns)
   return concerns
 }
 
