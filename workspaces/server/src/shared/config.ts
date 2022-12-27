@@ -86,7 +86,7 @@ export function parseDatabaseConfig(
 export function getConfig(): Config {
   dotenv.config({})
 
-  const production = env.NODE_ENV !== 'development'
+  const production = !['development', 'test'].includes(env.NODE_ENV?.toLowerCase() || '')
   const serviceConfig = production ? appConfig.production : appConfig.development
   const { database, host, username, password, ssl, schema, dialect } = parseDatabaseConfig(
     production,
