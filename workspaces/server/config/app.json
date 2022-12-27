@@ -25,7 +25,7 @@
     "service": {
       "port": "8080",
       "protocol": "http",
-      "host": ""
+      "host": "localhost"
     }
   },
   "envConcerns": [

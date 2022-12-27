@@ -166,9 +166,9 @@ export function envi(val: unknown): unknown {
 export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
   logger.info(JSON.stringify(getLimitedEnv()))
-  const p = config.production ? process.env.PORT : config.port
+  const p = config.port
   const d = config.production ? process.env.DB_URL || process.env.DATABASE_URL : config.db.url
-  const result = !!p && !!d
+  const result = !!p
   logger.info(`PRODUCTION: ${config.production}`)
   logger.info(`URL: ${config.backendBaseUrl}`)
   logger.info(`${p ? '✅' : '❌'} PORT: ${p ? p : 'ERROR - Missing'}`)
