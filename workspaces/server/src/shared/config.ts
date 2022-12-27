@@ -63,7 +63,7 @@ export function getConfig(): Config {
     unknown
   >
   const devConnection = `${dialect}://${username}:${password}@${host}/${database}`
-  const DB_URL = production ? process.env.DB_URL || serviceConfig.db.url : devConnection // covers ENV=test
+  const DB_URL = production ? process.env.DB_URL || envi(serviceConfig.db.url) : devConnection // covers ENV=test
   const osHost = os.hostname()
   const isLocalhost = osHost.includes('local')
   logger.info(`process.env.PORT: ${process.env.PORT} ⚡️`)
@@ -166,7 +166,7 @@ export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
   logger.info(JSON.stringify(getLimitedEnv()))
   const p = config.port
-  const d = config.production ? process.env.DB_URL || process.env.DATABASE_URL : config.db.url
+  const d = config.db.url
   const result = !!p
   logger.info(`PRODUCTION: ${config.production}`)
   logger.info(`URL: ${config.backendBaseUrl}`)

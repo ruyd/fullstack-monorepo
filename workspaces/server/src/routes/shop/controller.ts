@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CheckoutRequest, OrderStatus } from '@shared/lib'
 import express from 'express'
-import { DrawingModel, EnrichedRequest } from 'src/shared/types'
-import { OrderModel } from 'src/shared/types/models/order'
+import { DrawingModel, EnrichedRequest } from '../../shared/types'
+import { OrderModel } from '../../shared/types/models/order'
 
 export async function checkout(_req: express.Request, res: express.Response) {
   const req = _req as EnrichedRequest
