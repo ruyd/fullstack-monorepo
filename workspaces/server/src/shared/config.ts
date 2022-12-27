@@ -63,11 +63,10 @@ export function getConfig(): Config {
     unknown
   >
   const devConnection = `${dialect}://${username}:${password}@${host}/${database}`
-  const DB_URL = production ? process.env.DB_URL || process.env.DATABASE_URL : devConnection // covers ENV=test
+  const DB_URL = production ? process.env.DB_URL || serviceConfig.db.url : devConnection // covers ENV=test
   const osHost = os.hostname()
   const isLocalhost = osHost.includes('local')
   logger.info(`process.env.PORT: ${process.env.PORT} ⚡️`)
-  logger.info(`process.env.$PORT: ${process.env.$PORT} ⚡️`)
   const port = Number(process.env.PORT) || Number(envi(serviceConfig.service.port))
   const hostname = envi(serviceConfig.service.host) as string
   const protocol = envi(serviceConfig.service.protocol) as string

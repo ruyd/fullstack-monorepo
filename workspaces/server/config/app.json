@@ -17,7 +17,7 @@
   },
   "production": {
     "db": {
-      "url": "$DB_URL",
+      "url": "1234",
       "schema": "public",
       "ssl": "$DB_SSL",
       "dialect": "postgres"
