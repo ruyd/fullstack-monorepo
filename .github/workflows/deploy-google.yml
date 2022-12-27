@@ -99,7 +99,7 @@ jobs:
 
   server_deploys:
     needs: [changes]
-    # if: ${{ needs.changes.outputs.server == 'true' }}
+    ## if: ${{ needs.changes.outputs.server == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
