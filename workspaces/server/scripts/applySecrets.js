@@ -1,6 +1,6 @@
 const fs = require('fs')
 console.log('Applying secrets to config file')
-const configFile = process.argv[2] || 'workspaces/server/config/app.json'
+const configFile = process.argv[2]
 if (!configFile) {
   console.log('No config file specified')
   process.exit(1)

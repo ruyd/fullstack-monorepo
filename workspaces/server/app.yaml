@@ -1,15 +1,12 @@
 runtime: nodejs18
-metadata:
-  name: SERVER
 spec:
   template:
-      run.googleapis.com/secrets: DB_URL:projects/364055912546/secrets/DB_URL
-    spec:
-      containers:
+    run.googleapis.com/secrets: DB_URL:projects/364055912546/secrets/DB_URL
+  spec:
+    containers:
       - env:
-        - name: DB_URL
-          valueFrom:
-            secretKeyRef:
-              key: latest
-              name: DB_URL
- 
+          - name: DB_URL
+            valueFrom:
+              secretKeyRef:
+                key: latest
+                name: DB_URL
