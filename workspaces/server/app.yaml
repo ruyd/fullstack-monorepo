@@ -3,11 +3,12 @@ metadata:
   name: SERVER
 spec:
   template:
+      run.googleapis.com/secrets: DB_PASSWORD:projects/PROJECT_NUMBER/secrets/DB_PASSWORD
     spec:
       containers:
-        - env:
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: latest
-                  name: DB_PASSWORD
+      - env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: latest
+              name: DB_PASSWORD
