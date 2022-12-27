@@ -8,7 +8,7 @@ import {
   Sequelize,
 } from 'sequelize'
 import migrator from './migrator'
-import config, { getConfig } from '../config'
+import config from '../config'
 import logger from '../logger'
 
 export const commonOptions: ModelOptions = {
@@ -59,11 +59,10 @@ export class Connection {
         'Connection Class cannot read config, undefined variable - check for cyclic dependency',
       )
     }
-    const current = getConfig()
-    Connection.db = new Sequelize(current.db.url, {
-      logging: sql => (current.db.trace ? logger.info(`${sql}\n`) : undefined),
-      ssl: !!current.db.ssl,
-      dialectOptions: current.db.ssl
+    Connection.db = new Sequelize(config.db.url, {
+      logging: sql => (config.db.trace ? logger.info(`${sql}\n`) : undefined),
+      ssl: !!config.db.ssl,
+      dialectOptions: config.db.ssl
         ? {
             dialect: 'postgresql',
             ssl: {
