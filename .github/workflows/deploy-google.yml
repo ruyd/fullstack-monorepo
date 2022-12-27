@@ -19,9 +19,12 @@ jobs:
         with:
           filters: |
             client:
+              - 'workspaces/lib/**'
               - 'workspaces/client/**'
             server:
+              - 'workspaces/lib/**'
               - 'workspaces/server/**'
+              - '.github/workflows/deploy-google.yml'
             killswitch:
               - 'workspaces/function-gkill/**'
 
@@ -118,19 +121,19 @@ jobs:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
 
-      - id: 'appengine'
-        uses: 'google-github-actions/deploy-appengine@v1'
-        with:
-          working_directory: 'workspaces/server'
-          secrets: |
-            DB_URL=DB_URL:latest
-
       - name: 'install'
         run: yarn install --immutable
 
       - name: 'build'
         run: |
           yarn workspace server build
+
+      - id: 'appengine'
+        uses: 'google-github-actions/deploy-appengine@v1'
+        with:
+          working_directory: 'workspaces/server/dist'
+          secrets: |
+            DB_URL=DB_URL:latest
 
       - id: 'cloudrun'
         uses: 'google-github-actions/deploy-cloudrun@v1'
