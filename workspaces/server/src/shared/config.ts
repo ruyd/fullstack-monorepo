@@ -194,20 +194,17 @@ export function envi(val: unknown): unknown {
 
 export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
-  const p = config.port
-  const d = config.db.url
+  const live = getConfig()
+  const p = live.port
+  const d = live.db.url
   const result = !!p
-  logger.info(`PRODUCTION: ${config.production}`)
-  logger.info(`URL: ${config.backendBaseUrl}`)
+  logger.info(`PRODUCTION: ${live.production}`)
+  logger.info(`URL: ${live.backendBaseUrl}`)
   logger.info(`${p ? '✅' : '❌'} PORT: ${p ? p : 'ERROR - Missing'}`)
-  logger.info(
-    `${d ? '✅' : '❌'} DB: ${d ? `${config.db.name}@${config.db.host}` : 'ERROR - Missing'}`,
-  )
+  logger.info(`${d ? '✅' : '❌'} DB: ${d ? `${live.db.name}@${live.db.host}` : 'ERROR - Missing'}`)
   logger.info(`**: ${result ? 'READY!' : 'HALT'}`)
   return result
 }
-export const config: Config = getConfig()
-export default config
 export class Backend {
   static config: Config = {} as Config
   static canStart = false
@@ -216,3 +213,5 @@ export class Backend {
     Backend.canStart = canStart()
   }
 }
+export const config: Config = getConfig()
+export default config

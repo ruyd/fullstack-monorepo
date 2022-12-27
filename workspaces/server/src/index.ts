@@ -7,7 +7,7 @@ import createBackendApp from './app'
 import { registerSocket } from './shared/socket'
 ;(() => {
   if (!canStart()) {
-    const m = 'No PORT and/or DB_URL specified: Shutting down - Environment variables undefined'
+    const m = 'No PORT specified: Shutting down - Environment variables undefined'
     logger.error(m)
     throw new Error(m)
   }
