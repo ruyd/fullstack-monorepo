@@ -3,7 +3,7 @@ metadata:
   name: SERVER
 spec:
   template:
-      run.googleapis.com/secrets: DB_PASSWORD:projects/PROJECT_NUMBER/secrets/DB_PASSWORD
+      run.googleapis.com/secrets: DB_PASSWORD:projects/364055912546/secrets/DB_PASSWORD
     spec:
       containers:
       - env:
