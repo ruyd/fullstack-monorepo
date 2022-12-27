@@ -96,7 +96,6 @@ export function getConfig(): Config {
   const DB_URL = env.DB_URL || databaseUrl
   const osHost = os.hostname()
   const isLocalhost = osHost.includes('local')
-  logger.info(`env.PORT: ${env.PORT} ⚡️`)
   const port = Number(env.PORT) || Number(envi(serviceConfig.service.port))
   const hostname = envi(serviceConfig.service.host) as string
   const protocol = envi(serviceConfig.service.protocol) as string
@@ -195,14 +194,16 @@ export function envi(val: unknown): unknown {
 
 export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
-  const live = getConfig()
-  const p = live.port
-  const d = live.db.url
+  // logger.info(`env.PORT: ${env.PORT} ⚡️`)
+  const p = config.port
+  const d = config.db.url
   const result = !!p
-  logger.info(`PRODUCTION: ${live.production}`)
-  logger.info(`URL: ${live.backendBaseUrl}`)
+  logger.info(`PRODUCTION: ${config.production}`)
+  logger.info(`URL: ${config.backendBaseUrl}`)
   logger.info(`${p ? '✅' : '❌'} PORT: ${p ? p : 'ERROR - Missing'}`)
-  logger.info(`${d ? '✅' : '❌'} DB: ${d ? `${live.db.name}@${live.db.host}` : 'ERROR - Missing'}`)
+  logger.info(
+    `${d ? '✅' : '❌'} DB: ${d ? `${config.db.name}@${config.db.host}` : 'ERROR - Missing'}`,
+  )
   logger.info(`**: ${result ? 'READY!' : 'HALT'}`)
   return result
 }
