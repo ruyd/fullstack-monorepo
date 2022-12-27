@@ -118,17 +118,17 @@ jobs:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
 
-      # - name: 'install'
-      #   run: yarn install --immutable
-
-      # - name: 'build'
-      #   run: |
-      #     yarn workspace server build
-
       - id: 'appengine'
         uses: 'google-github-actions/deploy-appengine@v1'
         with:
           working_directory: 'workspaces/server'
+
+      - name: 'install'
+        run: yarn install --immutable
+
+      - name: 'build'
+        run: |
+          yarn workspace server build
 
       - id: 'cloudrun'
         uses: 'google-github-actions/deploy-cloudrun@v1'
