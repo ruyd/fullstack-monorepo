@@ -39,11 +39,11 @@ jobs:
         run: yarn install --immutable
 
       - name: Server Tests
-        if: ${{ needs.changes.outputs.server == 'true' }}
+        if: ${{ needs.changes.outputs.server == 'truex' }}
         run: yarn workspace server test
 
       - name: Client Tests
-        if: ${{ needs.changes.outputs.client == 'true' }}
+        if: ${{ needs.changes.outputs.client == 'truex' }}
         run: yarn workspace client test
 
   function_killswitch_deploy:
@@ -139,7 +139,7 @@ jobs:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
 
-      - name: 'secrets'
+      - id: 'secrets'
         uses: 'google-github-actions/get-secretmanager-secrets@v1'
         with:
           secrets: |-
@@ -154,7 +154,7 @@ jobs:
           cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
 
       - name: 'env vars'
-        run: 'echo "env_variables:\n  DB_URL:$DB_URL" >> workspaces/server/dist/.env'
+        run: 'echo "env_variables:\n  DB_URL:$DB_URL" >> workspaces/server/dist/app.yaml'
         shell: bash
         env:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
