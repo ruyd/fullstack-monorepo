@@ -1,7 +1,4 @@
-runtime: nodejs18
-entrypoint: node index.js
-env_variables:
-  NODE_ENV: 'production'
+runtime: nodejs
 # spec:
 #   template:
 #     run.googleapis.com/secrets: DB_URL:projects/364055912546/secrets/DB_URL
