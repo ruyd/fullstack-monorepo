@@ -1,0 +1,19 @@
+name: Client Tests
+
+on:
+  push:
+    branches: ['master']
+    paths:
+      - 'workspaces/lib/**'
+      - 'workspaces/client/**'
+      - '.github/workflows/**'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install
+        run: yarn install --immutable
+      - name: Client Tests
+        run: yarn workspace client test
