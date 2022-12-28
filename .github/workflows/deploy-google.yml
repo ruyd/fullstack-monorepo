@@ -28,6 +28,23 @@ jobs:
             killswitch:
               - 'workspaces/function-gkill/**'
 
+  tests:
+    needs: [changes]
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install
+        run: yarn install --immutable
+
+      - name: Server Tests
+        if: ${{ needs.changes.outputs.server == 'true' }}
+        run: yarn workspace server test
+
+      - name: Client Tests
+        if: ${{ needs.changes.outputs.client == 'true' }}
+        run: yarn workspace client test
+
   function_killswitch_deploy:
     needs: [changes]
     if: ${{ needs.changes.outputs.killswitch == 'true' && github.ref == 'refs/heads/master' }}
@@ -66,7 +83,7 @@ jobs:
           event_trigger_resource: projects/mstream-368503/topics/budget
 
   client_bucket_deploy:
-    needs: [changes]
+    needs: [changes, tests]
     if: ${{ needs.changes.outputs.client == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
@@ -101,7 +118,7 @@ jobs:
           parent: false
 
   server_deploys:
-    needs: [changes]
+    needs: [changes, tests]
     if: ${{ needs.changes.outputs.server == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
