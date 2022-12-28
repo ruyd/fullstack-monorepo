@@ -10,7 +10,7 @@
     "mon": "NODE_ENV=development yarn nodemon -r tsconfig-paths/register -q src/index.ts",
     "watch": "NODE_ENV=development yarn webpack watch",
     "dev": "docker compose up --wait && yarn tsc --build && yarn concurrently \"yarn watch\" \"yarn mon\"",
-    "test": "NODE_ENV=test yarn jest",
+    "test": "docker compose up --wait && NODE_ENV=test yarn jest",
     "migrator": "yarn ts-node src/shared/db/migrator.ts",
     "clean": "rm -rf node_modules dist"
   },
