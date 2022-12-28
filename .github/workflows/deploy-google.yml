@@ -138,7 +138,7 @@ jobs:
       - id: 'cloudrun'
         uses: 'google-github-actions/deploy-cloudrun@v1'
         with:
-          service: 'hello'
+          service: 'server'
           source: 'workspaces/server'
           secrets: |
             DB_URL=DB_URL:latest

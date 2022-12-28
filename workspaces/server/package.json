@@ -67,5 +67,9 @@
     "webpack-cli": "^4.10.0",
     "webpack-node-externals": "^3.0.0"
   },
+  "engines": {
+    "node": ">=16",
+    "yarn": ">=3"
+  },
   "packageManager": "yarn@3.3.0"
 }
