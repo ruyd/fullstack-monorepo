@@ -95,10 +95,9 @@ afterAll(() => {
 describe('Entity CRUD', () => {
   const app = createBackend()
   test('init', async () => {
-    const results = await app.onStartupCompletePromise
-    for (const result of results) {
-      expect(result).toBeTruthy()
-    }
+    Connection.init()
+    const seq = await checkDatabase()
+    expect(seq).toBeTruthy()
   })
 
   const sorted = Connection.entities.sort(sortEntities)
