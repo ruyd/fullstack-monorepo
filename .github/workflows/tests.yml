@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - 'workspaces/**'
-      - '.github/workflows/**'
 
 jobs:
   tests:
