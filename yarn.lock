@@ -16198,8 +16198,6 @@ __metadata:
     webpack-cli: ^4.10.0
     webpack-node-externals: ^3.0.0
     winston: ^3.8.2
-  peerDependencies:
-    ts-node-dev: "*"
   languageName: unknown
   linkType: soft
 
