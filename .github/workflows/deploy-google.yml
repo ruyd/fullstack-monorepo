@@ -139,7 +139,7 @@ jobs:
         uses: 'google-github-actions/deploy-appengine@v1'
         with:
           working_directory: 'workspaces/server/dist'
-          env_vars: |
+          env: |
             DB_URL=${{ steps.secrets.outputs.DB_URL }}
 
       - id: 'cloudrun'
