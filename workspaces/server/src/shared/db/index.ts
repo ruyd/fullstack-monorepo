@@ -59,12 +59,15 @@ export class Connection {
         'Connection Class cannot read config, undefined variable - check for cyclic dependency',
       )
     }
+    if (!config.db.url || !config.db.name) {
+      logger.error('DB URL not found, skipping DB init')
+      return
+    }
     Connection.db = new Sequelize(config.db.url, {
       logging: sql => (config.db.trace ? logger.info(`${sql}\n`) : undefined),
       ssl: !!config.db.ssl,
       dialectOptions: config.db.ssl
         ? {
-            dialect: 'postgresql',
             ssl: {
               require: true,
               rejectUnauthorized: false,
@@ -214,6 +217,11 @@ export async function checkMigrations(): Promise<boolean> {
 
 export async function checkDatabase(): Promise<boolean> {
   try {
+    if (!Connection.initialized) {
+      logger.error('DB Connection not initialized')
+      return false
+    }
+
     logger.info('Connecting to database...')
     config.db.models = Connection.entities.map(m => m.name)
     await Connection.db.authenticate()

@@ -65,7 +65,8 @@ export function parseDatabaseConfig(
   }
   const url = envi(db.url) as string
   if (!url) {
-    throw new Error('DB_URL is not set')
+    logger.error('DB_URL is not set')
+    return db
   }
   const database = url.slice(url.lastIndexOf('/') + 1)
   const username = url.slice(url.indexOf('//') + 2, url.indexOf(':'))
@@ -196,7 +197,7 @@ export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
   // logger.info(`env.PORT: ${env.PORT} ⚡️`)
   const p = config.port
-  const d = config.db.url
+  const d = config.db.name
   const result = !!p
   logger.info(`PRODUCTION: ${config.production}`)
   logger.info(`URL: ${config.backendBaseUrl}`)

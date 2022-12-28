@@ -28,6 +28,11 @@ jobs:
             killswitch:
               - 'workspaces/function-gkill/**'
 
+    - id: 'secrets'
+      uses: 'google-github-actions/get-secretmanager-secrets@v1'
+      with:
+        secrets: |-
+          token:my-project/docker-registry-token
   function_killswitch_deploy:
     needs: [changes]
     if: ${{ needs.changes.outputs.killswitch == 'true' && github.ref == 'refs/heads/master' }}
@@ -121,6 +126,12 @@ jobs:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
 
+      - name: 'secrets'
+        uses: 'google-github-actions/get-secretmanager-secrets@v1'
+        with:
+          secrets: |
+            DB_URL=DB_URL:latest
+
       - name: 'install'
         run: yarn install --immutable
 
@@ -133,6 +144,8 @@ jobs:
         uses: 'google-github-actions/deploy-appengine@v1'
         with:
           working_directory: 'workspaces/server/dist'
+          env_vars: |
+            DB_URL=${{ steps.secrets.outputs.DB_URL }}
 
       - id: 'cloudrun'
         uses: 'google-github-actions/deploy-cloudrun@v1'

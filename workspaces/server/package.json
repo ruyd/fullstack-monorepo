@@ -7,14 +7,15 @@
   "scripts": {
     "build": "yarn tsc --build && NODE_ENV=production yarn webpack",
     "start": "node index.js",
-    "mon": "NODE_ENV=development yarn nodemon -r tsconfig-paths/register -q src/index.ts",
-    "watch": "NODE_ENV=development yarn webpack watch",
+    "mon": "NODE_ENV=production yarn nodemon -r tsconfig-paths/register -q src/index.ts",
+    "watch": "NODE_ENV=production yarn webpack watch",
     "dev": "docker compose up --wait && yarn tsc --build && yarn concurrently \"yarn watch\" \"yarn mon\"",
     "test": "NODE_ENV=test yarn jest",
     "migrator": "yarn ts-node src/shared/db/migrator.ts",
     "clean": "rm -rf node_modules dist"
   },
   "dependencies": {
+    "@google-cloud/secret-manager": "^4.2.0",
     "auth0": "^2.44.0",
     "axios": "^0.27.2",
     "bufferutil": "^4.0.7",
