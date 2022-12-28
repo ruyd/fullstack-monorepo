@@ -35,16 +35,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install
-        run: yarn install --immutable
+      # - name: Install
+      #   run: yarn install --immutable
 
-      - name: Server Tests
-        if: ${{ needs.changes.outputs.server == 'truex' }}
-        run: yarn workspace server test
+      # - name: Server Tests
+      #   if: ${{ needs.changes.outputs.server == 'true' }}
+      #   run: yarn workspace server test
 
-      - name: Client Tests
-        if: ${{ needs.changes.outputs.client == 'truex' }}
-        run: yarn workspace client test
+      # - name: Client Tests
+      #   if: ${{ needs.changes.outputs.client == 'true' }}
+      #   run: yarn workspace client test
 
   function_killswitch_deploy:
     needs: [changes]
