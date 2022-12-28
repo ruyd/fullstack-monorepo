@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - 'workspaces/**'
-      - '.github/workflows/deploy-google.yml'
+      - '.github/workflows/**'
 
 jobs:
   changes:
@@ -134,6 +134,7 @@ jobs:
         run: |
           yarn workspace server build
           cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
+          echo "DB_URL=${{ steps.secrets.outputs.DB_URL }}" >> workspaces/server/dist/.env
 
       - id: 'appengine'
         uses: 'google-github-actions/deploy-appengine@v1'
