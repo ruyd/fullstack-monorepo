@@ -1,0 +1,46 @@
+name: Server Tests
+
+on:
+  push:
+    branches: ['master']
+    paths:
+      - 'workspaces/lib/**'
+      - 'workspaces/server/**'
+      - '.github/workflows/deploy-server.yml'
+
+jobs:
+  tests:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: 'actions/checkout@v3'
+
+      - uses: dorny/paths-filter@v2
+        name: filter
+        with:
+          filters: |
+            client:
+              - 'workspaces/lib/**'
+              - 'workspaces/client/**'
+              - '.github/workflows/**'
+            server:
+              - 'workspaces/lib/**'
+              - 'workspaces/server/**'
+              - '.github/workflows/**'
+
+      - uses: actions/setup-node@v1
+        name: Setup Node.js
+        with:
+          node-version: 16.x
+
+      - uses: actions/checkout@v3
+
+      - name: Install
+        run: yarn install --immutable
+
+      - name: Server Tests
+        if: ${{ steps.filter.outputs.server == 'true' }}
+        run: yarn workspace server test
+
+      - name: Client Tests
+        if: ${{ steps.filter.outputs.client == 'true' }}
+        run: yarn workspace client test
