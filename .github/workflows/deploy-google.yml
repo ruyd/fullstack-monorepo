@@ -128,13 +128,12 @@ jobs:
         run: |
           yarn workspace server build
           cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
+          cp yarn.lock workspaces/server/dist/yarn.lock
 
       - id: 'appengine'
         uses: 'google-github-actions/deploy-appengine@v1'
         with:
           working_directory: 'workspaces/server/dist'
-          secrets: |
-            DB_URL=DB_URL:latest
 
       - id: 'cloudrun'
         uses: 'google-github-actions/deploy-cloudrun@v1'
