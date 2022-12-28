@@ -152,19 +152,17 @@ jobs:
         run: |
           yarn workspace server build
           cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
-          echo "DB_URL=${{ steps.secrets.outputs.DB_URL }}" >> workspaces/server/dist/.env
+          echo "env_variables:\n  DB_URL=${{ steps.secrets.outputs.DB_URL }}" >> workspaces/server/dist/app.yaml
 
       - id: 'appengine'
         uses: 'google-github-actions/deploy-appengine@v1'
         with:
           working_directory: 'workspaces/server/dist'
-          env: |
-            DB_URL=${{ steps.secrets.outputs.DB_URL }}
 
-      - id: 'cloudrun'
-        uses: 'google-github-actions/deploy-cloudrun@v1'
-        with:
-          service: 'server'
-          source: 'workspaces/server'
-          secrets: |
-            DB_URL=DB_URL:latest
+      # - id: 'cloudrun'
+      #   uses: 'google-github-actions/deploy-cloudrun@v1'
+      #   with:
+      #     service: 'server'
+      #     source: 'workspaces/server'
+      #     secrets: |
+      #       DB_URL=DB_URL:latest
