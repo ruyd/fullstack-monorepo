@@ -96,8 +96,8 @@ describe('Entity CRUD', () => {
   const app = createBackend()
   test('init', async () => {
     Connection.init()
-    const seq = await checkDatabase()
-    expect(seq).toBeTruthy()
+    const result = await checkDatabase()
+    expect(result).toBeTruthy()
   })
 
   const sorted = Connection.entities.sort(sortEntities)
