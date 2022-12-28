@@ -89,10 +89,15 @@ export function toMatchObjectExceptTimestamps(
 }
 
 describe('Entity CRUD', () => {
+  const app = createBackend()
   test('init', async () => {
-    Connection.init()
-    const check = await checkDatabase()
-    expect(check).toBeTruthy()
+    const checks = await app.onStartupCompletePromise
+    for (const check of checks) {
+      expect(check).toBeTruthy()
+    }
+  })
+  afterAll(() => {
+    Connection.db.close()
   })
 
   const sorted = Connection.entities.sort(sortEntities)
@@ -174,8 +179,4 @@ describe('Entity CRUD', () => {
       expect(result).toBeTruthy()
     })
   }
-
-  afterAll(() => {
-    Connection.db.close()
-  })
 })
