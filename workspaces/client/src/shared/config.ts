@@ -31,11 +31,11 @@ export interface Config {
     paypal?: string
   }
 }
-const env = process.env
+const env = process['env']
 const defaultBaseName = process.env.NODE_ENV === 'test' ? '/' : packageJson.homepage || '/'
 export const config: Config = {
   baseName: env.BASE_NAME || defaultBaseName,
-  backendUrl: env.BACKEND || 'https://drawspace-api.herokuapp.com',
+  backendUrl: env.BACKEND || 'https://api.drawspace.app',
   defaultTitle: 'Drawspace',
   defaultColor: 'green',
   defaultLineSize: 5,
@@ -48,9 +48,9 @@ export const config: Config = {
     baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
     audience: `https://backend`,
     clientId: env.AUTH_CLIENT_ID || '',
-    redirectUrl: env.AUTH_REDIRECT_URL || 'https://drawspace-api.herokuapp.com/callback',
+    redirectUrl: env.AUTH_REDIRECT_URL || 'https://api.drawspace.app/callback',
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
+      clientId: env.GOOGLE_CLIENT_ID || '',
     },
   },
   admin: {
