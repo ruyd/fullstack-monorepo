@@ -154,7 +154,7 @@ jobs:
           cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
 
       - name: 'env vars'
-        run: 'echo "env_variables:\n  DB_URL:$DB_URL" >> workspaces/server/dist/app.yaml'
+        run: 'echo "DB_URL=$DB_URL" >> workspaces/server/dist/.env'
         shell: bash
         env:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
