@@ -1,12 +1,11 @@
-name: Server Tests
+name: Tests
 
 on:
   push:
     branches: ['master']
     paths:
-      - 'workspaces/lib/**'
-      - 'workspaces/server/**'
-      - '.github/workflows/deploy-server.yml'
+      - 'workspaces/**'
+      - '.github/workflows/**'
 
 jobs:
   tests:
@@ -26,11 +25,6 @@ jobs:
               - 'workspaces/lib/**'
               - 'workspaces/server/**'
               - '.github/workflows/**'
-
-      - uses: actions/setup-node@v1
-        name: Setup Node.js
-        with:
-          node-version: 16.x
 
       - uses: actions/checkout@v3
 
