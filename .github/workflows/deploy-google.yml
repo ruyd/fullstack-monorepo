@@ -1,7 +1,7 @@
 name: 'Deploy: Google Cloud'
 on:
   push:
-    branches: ['master']
+    # branches: ['master']
     paths:
       - 'workspaces/**'
       - '.github/workflows/**'
