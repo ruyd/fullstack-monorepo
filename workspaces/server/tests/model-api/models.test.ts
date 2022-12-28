@@ -88,16 +88,11 @@ export function toMatchObjectExceptTimestamps(
   }
 }
 
-afterAll(() => {
-  Connection.db.close()
-})
-
 describe('Entity CRUD', () => {
-  const app = createBackend()
   test('init', async () => {
     Connection.init()
-    const result = await checkDatabase()
-    expect(result).toBeTruthy()
+    const check = await checkDatabase()
+    expect(check).toBeTruthy()
   })
 
   const sorted = Connection.entities.sort(sortEntities)
@@ -180,7 +175,7 @@ describe('Entity CRUD', () => {
     })
   }
 
-  afterAll(async () => {
-    await Connection.db.close()
+  afterAll(() => {
+    Connection.db.close()
   })
 })

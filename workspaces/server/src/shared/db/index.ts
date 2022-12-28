@@ -216,12 +216,11 @@ export async function checkMigrations(): Promise<boolean> {
 }
 
 export async function checkDatabase(): Promise<boolean> {
+  if (!Connection.initialized) {
+    logger.error('DB Connection not initialized')
+    return false
+  }
   try {
-    if (!Connection.initialized) {
-      logger.error('DB Connection not initialized')
-      return false
-    }
-
     logger.info('Connecting to database...')
     config.db.models = Connection.entities.map(m => m.name)
     await Connection.db.authenticate()
@@ -233,7 +232,6 @@ export async function checkDatabase(): Promise<boolean> {
       )
       await Connection.db.sync({ alter: config.db.alter, force: config.db.force })
     }
-
     return true
   } catch (e: unknown) {
     const msg = (e as Error)?.message

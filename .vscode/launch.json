@@ -26,6 +26,12 @@
       "request": "launch",
       "type": "node-terminal",
       "preLaunchTask": "docker.start"
+    },
+    {
+      "command": "node ${fileDirname}/${fileBasename}",
+      "name": "node $file",
+      "request": "launch",
+      "type": "node-terminal"
     }
   ]
 }
