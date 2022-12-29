@@ -28,17 +28,17 @@ const post = <T>(url: string, data: unknown) =>
  * - Check for Rules
  */
 export async function authProviderSync(): Promise<boolean> {
-  logger.info('Auth0 Sync()')
+  logger.info('Auth0: Sync()')
   if (process.env.NODE_ENV === 'test') {
-    logger.info('Auth0 Sync Skipped for Tests')
+    logger.info('Auth0: Skipped for Tests')
     return false
   }
   if (!config.auth.sync || config.auth.offline) {
-    logger.info('Auth0 Sync Off')
+    logger.info('Auth0: Sync Off')
     return false
   }
   if (!config.auth.tenant || !config.auth.explorerId || !config.auth.explorerSecret) {
-    log('Auth0 explorer credentials not set - skipping sync')
+    log('Auth0: explorer credentials not set - skipping sync')
     // eslint-disable-next-line no-console
     console.warn(
       '\x1b[33m*****************************\n\x1b[33m*** AUTH_TENANT AUTH_EXPLORER_ID AND AUTH_EXPLORER_SECRET ARE NOT SET - AUTH0 SYNC TURNED OFF ***\n\x1b[33m***************************** \x1b[0m',

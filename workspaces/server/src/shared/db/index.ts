@@ -221,16 +221,17 @@ export async function checkDatabase(): Promise<boolean> {
     return false
   }
   try {
-    logger.info('Connecting to database...')
+    logger.info('Database: Connecting...')
     config.db.models = Connection.entities.map(m => m.name)
     await Connection.db.authenticate()
 
     if (config.db.sync) {
       logger.info(
-        `Database models: 
+        `Database: models: 
         ${Connection.entities.map(a => a.name).join(', ')}`,
       )
       await Connection.db.sync({ alter: config.db.alter, force: config.db.force })
+      logger.info('Database: Connected')
     }
     return true
   } catch (e: unknown) {

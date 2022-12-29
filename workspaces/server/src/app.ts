@@ -28,8 +28,8 @@ export function createBackendApp(): BackendApp {
   Connection.init()
   const promises = [
     checkDatabase()
-      .then(async ok => (ok ? await loadSettingsAsync() : ok))
-      .then(async ok => (ok ? await authProviderSync() : ok)),
+      .then(ok => (ok ? loadSettingsAsync() : ok))
+      .then(ok => (ok ? authProviderSync() : ok)),
   ]
 
   // Add Middlewares - Order is important

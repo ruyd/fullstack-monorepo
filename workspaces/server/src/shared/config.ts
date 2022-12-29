@@ -236,7 +236,7 @@ export async function loadSettingsAsync() {
   logger.info(`Loading settings...`)
   const settings = (await SettingModel.findAll({ raw: true })) as unknown as Setting[]
   for (const setting of settings) {
-    logger.info(`Applying: ${setting.name}`)
+    logger.info(`Setting: ${setting.name}`)
     config.settings[setting.name] = setting.data as SettingDataType
     const setter = setters[setting.name]
     if (setter) {
