@@ -243,13 +243,12 @@ export default function Settings() {
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" component="p" mb={1}>
-                    Auto setup only needs the `Client ID` and `Client Secret` from the API Explorer
-                    Application:{' '}
+                    Auto configure application and create resources in Auth0. Only needs the `Client
+                    ID` and `Client Secret` from the API Explorer Application:{' '}
                     <Link href="https://manage.auth0.com/dashboard" target="_blank">
-                      Auth0 dashboard
+                      Open Auth0 dashboard
                     </Link>{' '}
-                    and go to API Explorer Application - Settings - copy Client ID and Secret into
-                    Explorer ID and Secret
+                    and go to API Explorer Application - Settings - copy Client ID and Secret
                   </Typography>
                 </Grid>
 
