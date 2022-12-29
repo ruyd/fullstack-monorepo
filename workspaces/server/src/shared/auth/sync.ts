@@ -4,8 +4,9 @@ import { config } from '../config'
 import logger from '../logger'
 
 const readOptions = () => ({
-  headers: {},
-  Authorization: `Bearer ${config.auth.manageToken || 'error not set'}`,
+  headers: {
+    Authorization: `Bearer ${config.auth.manageToken || 'error not set'}`,
+  },
   validateStatus: () => true,
 })
 
@@ -27,14 +28,18 @@ const post = <T>(url: string, data: unknown) =>
  * - Check for Client Grants
  * - Check for Rules
  */
-export async function authProviderSync(): Promise<boolean> {
+export async function authProviderAutoConfigure(): Promise<boolean> {
   logger.info('Auth0: Sync()')
   if (process.env.NODE_ENV === 'test') {
     logger.info('Auth0: Skipped for Tests')
     return false
   }
-  if (!config.auth.sync || config.auth.offline) {
+  if (!config.auth.sync) {
     logger.info('Auth0: Sync Off')
+    return false
+  }
+  if (!config.auth.enabled) {
+    logger.info('Auth0: Offline Mode')
     return false
   }
   if (!config.auth.tenant || !config.auth.explorerId || !config.auth.explorerSecret) {
@@ -48,6 +53,10 @@ export async function authProviderSync(): Promise<boolean> {
   const success = await lazyLoadManagementToken()
   if (!success) {
     logger.warn('Failed to get auth0 management token - skipping')
+    return false
+  }
+  if (!config.auth.manageToken) {
+    logger.error('Auth0: management token not set - aborting sync')
     return false
   }
   await ensureResourceServers()
@@ -188,7 +197,7 @@ async function ensureClients() {
   }
 
   if (!config.auth.clientId && existingClient) {
-    log(`Setting auth.clientId to ${existingClient.client_id}`)
+    log(`Setting config.auth.clientId to ${existingClient.client_id}`)
     config.auth.clientId = existingClient.client_id
     config.auth.clientSecret = existingClient.client_secret
   } else {

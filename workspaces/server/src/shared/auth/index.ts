@@ -84,7 +84,7 @@ export async function tokenCheckWare(
 ) {
   try {
     const { header, token } = setRequest(req)
-    if (config.auth.offline) {
+    if (!config.auth.enabled) {
       return next()
     }
     const accessToken = await checkToken(header, token)
@@ -106,7 +106,7 @@ export async function modelAuthMiddleware(
   try {
     const entity = Connection.entities.find(e => e.name === req.originalUrl.replace('/', ''))
     const { header, token } = setRequest(req, entity)
-    if (config.auth.offline) {
+    if (!config.auth.enabled) {
       return next()
     }
     if (

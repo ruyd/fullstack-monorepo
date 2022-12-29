@@ -221,7 +221,7 @@ export async function checkDatabase(): Promise<boolean> {
     return false
   }
   try {
-    logger.info('Database: Connecting...')
+    logger.info('Connecting to database...')
     config.db.models = Connection.entities.map(m => m.name)
     await Connection.db.authenticate()
 

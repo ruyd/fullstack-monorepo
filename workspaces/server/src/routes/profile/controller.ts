@@ -53,7 +53,7 @@ export async function login(req: express.Request, res: express.Response) {
     })
   )?.get()
 
-  if (config.auth.offline && user) {
+  if (!config.auth.enabled && user) {
     logger.info('Auth in offline dev mode' + user?.email)
     res.json({
       token: createToken(user),

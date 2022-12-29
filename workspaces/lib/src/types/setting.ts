@@ -35,6 +35,7 @@ export interface Auth0Settings {
   redirectUrl?: string
   explorerId?: string
   explorerSecret?: string
+  sync?: boolean
   enabled?: boolean
 }
 export type SettingDataType = SystemSettings & GoogleSettings & Auth0Settings

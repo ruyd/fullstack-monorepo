@@ -37,7 +37,7 @@ export interface Config {
     models: string[]
   }
   auth: {
-    offline: boolean
+    enabled: boolean
     sync: boolean
     trace: boolean
     tokenSecret?: string
@@ -133,9 +133,9 @@ export function getConfig(): Config {
       models: [],
     },
     auth: {
-      offline: true,
+      enabled: false,
       sync: true,
-      trace: false,
+      trace: true,
       tokenSecret: env.TOKEN_SECRET || 'blank',
       redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
       tenant: env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
@@ -217,10 +217,12 @@ export function envi(val: unknown): unknown {
  * @param data
  */
 function setConfigAuth(data: unknown) {
-  const value = data as { [key: string]: string }
+  const value = data as { [key: string]: string | boolean }
   const merged = {
     ...config.auth,
     ...value,
+    enabled: value.enabled === true,
+    sync: value.sync === true,
     domain: `${value.tenant}.auth0.com`,
     baseUrl: `https://${value.tenant}.auth0.com`,
     explorerAudience: `https://${value.tenant}.auth0.com/api/v2/`,

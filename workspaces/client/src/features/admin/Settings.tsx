@@ -148,6 +148,7 @@ export default function Settings() {
                     Authentication
                   </Typography>
                 </Grid>
+
                 <Grid item xs={8}>
                   <Typography variant="h6" component="h3">
                     New User Registrations
@@ -161,6 +162,22 @@ export default function Settings() {
                         onChange={e =>
                           save('system', 'enableRegistration', !system?.enableRegistration)
                         }
+                      />
+                    }
+                    label="Enable"
+                  />
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography variant="h6" component="h3">
+                    Auth0
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} sx={{ textAlign: 'right' }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={!!auth0?.enabled}
+                        onChange={e => save('auth0', 'enabled', !auth0?.enabled)}
                       />
                     }
                     label="Enable"
@@ -205,7 +222,7 @@ export default function Settings() {
                     label="Audience"
                     fullWidth
                     value={auth0?.clientAudience || ''}
-                    onChange={e => save('auth0', 'audience', e.target.value)}
+                    onChange={e => save('auth0', 'clientAudience', e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={8}>
@@ -217,8 +234,8 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={!!auth0?.enabled}
-                        onChange={e => save('auth0', 'enabled', !auth0?.enabled)}
+                        checked={!!auth0?.sync}
+                        onChange={e => save('auth0', 'sync', !auth0?.sync)}
                       />
                     }
                     label="Enable"
