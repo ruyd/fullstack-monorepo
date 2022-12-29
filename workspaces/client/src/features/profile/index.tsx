@@ -23,7 +23,7 @@ import {
   useTheme,
 } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { Drawing, User } from '@shared/lib'
+import { Drawing, User } from '@lib'
 import React from 'react'
 import { useGet } from 'src/features/app'
 import { BlurBackdrop } from 'src/features/ui/BlurBackdrop'

@@ -19,7 +19,7 @@ import {
   Grid,
 } from '@mui/material'
 import { useSearchParams } from 'react-router-dom'
-import { PagedResult, GridPatchProps } from '@shared/lib'
+import { PagedResult, GridPatchProps } from '@lib'
 import DataTable from './DataTable'
 import SearchIcon from '@mui/icons-material/Search'
 import { Method } from '../app/thunks'

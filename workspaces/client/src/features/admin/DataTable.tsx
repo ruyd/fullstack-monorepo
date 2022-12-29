@@ -4,7 +4,7 @@ import React from 'react'
 import Paper from '@mui/material/Paper'
 import _ from 'lodash'
 import { Box, useTheme } from '@mui/material'
-import { GridPatchProps, PagedResult } from '@shared/lib'
+import { GridPatchProps, PagedResult } from '@lib'
 import { DataGrid, GridColDef, GridEventListener, GridSelectionModel } from '@mui/x-data-grid'
 import { PagingProps } from './Data'
 

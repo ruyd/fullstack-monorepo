@@ -1,6 +1,6 @@
 import decode from 'jwt-decode'
 import axios from 'axios'
-import { Jwt, User } from '@shared/lib'
+import { Jwt, User } from '@lib'
 import { Paths } from './routes'
 import { config } from './config'
 import authProvider from 'auth0-js'

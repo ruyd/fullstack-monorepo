@@ -1,4 +1,4 @@
-import { Address, PaymentMethod, User, UserActive } from '@shared/lib'
+import { Address, PaymentMethod, User, UserActive } from '@lib'
 import { DataTypes } from 'sequelize'
 import { addModel } from '../../db'
 

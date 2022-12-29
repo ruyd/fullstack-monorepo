@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material'
 import { config } from '../../shared/config'
-import { Drawing, PagedResult } from '@shared/lib'
+import { Drawing, PagedResult } from '@lib'
 import { useGet } from '../app/thunks'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from '../../shared/routes'

@@ -18,7 +18,7 @@ import {
   DialogTitle,
 } from '@mui/material'
 import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid'
-import { PagedResult, User } from '@shared/lib'
+import { PagedResult, User } from '@lib'
 import React from 'react'
 import { useGet } from 'src/features/app'
 import AlertDialog, { AlertDialogProps } from 'src/features/ui/AlertDialog'

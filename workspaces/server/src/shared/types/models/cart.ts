@@ -1,4 +1,4 @@
-import { Cart } from '@shared/lib'
+import { Cart } from '@lib'
 import { DataTypes } from 'sequelize'
 import { addModel } from '../../../shared/db'
 

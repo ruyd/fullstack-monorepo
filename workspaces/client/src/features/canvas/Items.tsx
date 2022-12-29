@@ -12,7 +12,7 @@ import {
   Paper,
   Typography,
 } from '@mui/material'
-import { Drawing } from '@shared/lib'
+import { Drawing } from '@lib'
 import React from 'react'
 import { useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { CheckoutRequest, OrderStatus } from '@shared/lib'
+import { CheckoutRequest, OrderStatus } from '@lib'
 import express from 'express'
 import { DrawingModel, EnrichedRequest } from '../../shared/types'
 import { OrderModel } from '../../shared/types/models/order'

@@ -1,4 +1,4 @@
-import { Drawing } from '@shared/lib'
+import { Drawing } from '@lib'
 import { config } from '../../shared/config'
 
 export function setBrushDefaults(

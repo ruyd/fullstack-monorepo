@@ -4,6 +4,8 @@ import packageJson from '../../package.json'
 import appConfig from '../../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
+import { Setting, SettingData, SettingDataType, SettingType } from '@lib'
+import { SettingModel } from './types'
 
 // Anti-webpack sorcery
 const env = process['env']
@@ -54,6 +56,9 @@ export interface Config {
     manageToken?: string
   }
   swaggerSetup: Partial<OAS3Definition>
+  settings: {
+    [K in SettingType]?: SettingData[K]
+  }
 }
 
 export function parseDatabaseConfig(
@@ -159,6 +164,7 @@ export function getConfig(): Config {
       ],
       basePath: '/docs',
     },
+    settings: {},
   }
 }
 
@@ -191,6 +197,15 @@ export function getLimitedEnv() {
 
 export function envi(val: unknown): unknown {
   return typeof val === 'string' && val.startsWith('$') ? env[val.slice(1)] : val
+}
+
+export async function loadSettingsAsync() {
+  logger.info(`Loading settings...`)
+  const settings = (await SettingModel.findAll({ raw: true })) as unknown as Setting[]
+  for (const setting of settings) {
+    config.settings[setting.name] = setting.data as SettingDataType
+  }
+  return true
 }
 
 export function canStart() {

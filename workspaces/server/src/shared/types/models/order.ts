@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize'
 import { addModel } from '../../db'
-import { Order } from '@shared/lib'
+import { Order } from '@lib'
 
 export const OrderModel = addModel<Order>('order', {
   orderId: {

@@ -5,7 +5,7 @@ import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { PaymentIntent, PaymentIntentResult, StripePaymentElementOptions } from '@stripe/stripe-js'
 import styled from '@emotion/styled'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { Payment, PaymentSource, StripeToPaymentStatusMap } from '@shared/lib'
+import { Payment, PaymentSource, StripeToPaymentStatusMap } from '@lib'
 import { Box, Button, CircularProgress, Typography } from '@mui/material'
 
 function ReceiptView({ id }: { id?: string }): JSX.Element {

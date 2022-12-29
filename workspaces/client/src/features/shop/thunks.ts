@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Address, Cart, CheckoutRequest, Drawing, Order, PaymentMethod } from '@shared/lib'
+import { Address, Cart, CheckoutRequest, Drawing, Order, PaymentMethod } from '@lib'
 import { RootState } from '../../shared/store'
 import { get, Method, notify, request } from '../app'
 import { patch } from './slice'

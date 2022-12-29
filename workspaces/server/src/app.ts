@@ -1,4 +1,4 @@
-import { config } from './shared/config'
+import { config, loadSettingsAsync } from './shared/config'
 import express from 'express'
 import bodyParser from 'body-parser'
 import swaggerUi from 'swagger-ui-express'
@@ -20,15 +20,18 @@ export interface BackendApp extends express.Express {
 export function createBackendApp(): BackendApp {
   const app = express() as BackendApp
   Connection.init()
-  const promises: Promise<boolean>[] = []
-  promises.push(checkDatabase())
+  const promises: Promise<boolean>[] = [checkDatabase()]
+  promises.push(
+    loadSettingsAsync().then(async ok => {
+      if (ok && process.env.NODE_ENV !== 'test') {
+        return ok && (await authProviderSync())
+      }
+      return ok
+    }),
+  )
 
   if (!config.production && config.trace) {
     activateAxiosTrace()
-  }
-
-  if (process.env.NODE_ENV !== 'test') {
-    authProviderSync()
   }
 
   // Add Middlewares - Order is important

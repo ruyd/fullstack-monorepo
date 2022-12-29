@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ActionType } from '@shared/lib'
+import { ActionType } from '@lib'
 import { adjustToResolution, setBrushDefaults } from './helpers'
 import { useAppSelector } from '../../shared/store'
 import { config } from '../../shared/config'
