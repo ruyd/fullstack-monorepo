@@ -1,21 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import TabPanel from '../ui/TabPanel'
+
 import Box from '@mui/material/Box'
 import {
   Card,
   CardContent,
-  CardHeader,
-  Chip,
-  Container,
-  FormControl,
   FormControlLabel,
   FormGroup,
   Grid,
   Link,
-  Paper,
   Switch,
   TextField,
   Typography,
@@ -23,8 +16,11 @@ import {
 import { useAppDispatch } from '../../shared/store'
 import { Setting, SystemSettings, GoogleSettings, Auth0Settings, PagedResult } from '@lib'
 import { get, notify, notifyError, request } from '../app'
+import { debounce } from 'lodash'
+
 export default function Settings() {
   const dispatch = useAppDispatch()
+  const throttle = React.useRef<number>(0)
   const [system, setSystem] = React.useState<SystemSettings>({
     disable: false,
     enableStore: false,
@@ -38,15 +34,15 @@ export default function Settings() {
   })
   const [settings, setSettings] = React.useState<Setting[]>([])
   type SetFn = React.Dispatch<React.SetStateAction<unknown>>
-  const sets: {
-    [key: string]: SetFn
-  } = {
-    system: setSystem as SetFn,
-    google: setGoogle as SetFn,
-    auth0: setAuth0 as SetFn,
-  }
 
   const save = async (name: string, prop: string, value: unknown) => {
+    const sets: {
+      [key: string]: SetFn
+    } = {
+      system: setSystem as SetFn,
+      google: setGoogle as SetFn,
+      auth0: setAuth0 as SetFn,
+    }
     const setting = settings.find(s => s.name === name) || ({ name, data: {} } as Setting)
     const data = { ...setting.data, [prop]: value }
     const payload = {
@@ -55,12 +51,12 @@ export default function Settings() {
     }
     const response = await request<Setting>('setting', payload)
     if (response.status === 200) {
-      dispatch(notify(`${name} updated`))
+      dispatch(notify(`${name}/${prop}`))
       const update = sets[name]
       update(data)
       setSettings(settings.map(s => (s.name === name ? response.data : s)))
     } else {
-      dispatch(notifyError(`Save ${name} failed: ${response.data}`))
+      dispatch(notifyError(`Save ${prop} failed: ${response.data}`))
     }
   }
 
@@ -95,7 +91,7 @@ export default function Settings() {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={system.disable}
+                          checked={!!system?.disable}
                           onChange={e => save('system', 'disable', !system.disable)}
                         />
                       }
@@ -104,7 +100,7 @@ export default function Settings() {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={system.enableStore}
+                          checked={!!system?.enableStore}
                           onChange={e => save('system', 'enableStore', !system.enableStore)}
                         />
                       }
@@ -113,7 +109,7 @@ export default function Settings() {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={system.enableCookieConsent}
+                          checked={!!system?.enableCookieConsent}
                           onChange={e =>
                             save('system', 'enableCookieConsent', !system.enableCookieConsent)
                           }
@@ -161,7 +157,7 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={system?.enableRegistration}
+                        checked={!!system?.enableRegistration}
                         onChange={e =>
                           save('system', 'enableRegistration', !system?.enableRegistration)
                         }
@@ -200,7 +196,7 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={auth0?.enabled}
+                        checked={!!auth0?.enabled}
                         onChange={e => save('auth0', 'enabled', !auth0?.enabled)}
                       />
                     }
@@ -281,8 +277,8 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={google?.enabled}
-                        onChange={e => save('google', 'enabled', !google.enabled)}
+                        checked={!!google?.enabled}
+                        onChange={e => save('google', 'enabled', !google?.enabled)}
                       />
                     }
                     label="Enable"
@@ -297,7 +293,7 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={system.enableOneTapLogin}
+                        checked={!!system?.enableOneTapLogin}
                         onChange={e =>
                           save('system', 'enableOneTapLogin', !system.enableOneTapLogin)
                         }
