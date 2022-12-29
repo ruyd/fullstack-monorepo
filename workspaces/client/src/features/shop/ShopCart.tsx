@@ -20,7 +20,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { Cart, Drawing } from '@shared/lib'
+import { Cart, Drawing } from '@lib'
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { patch } from '../app'
 import { cartAsync, loadAsync } from './thunks'

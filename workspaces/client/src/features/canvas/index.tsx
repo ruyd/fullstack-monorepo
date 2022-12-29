@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useRef, startTransition } from 'react'
-import { DrawAction, ActionType, Drawing } from '@shared/lib'
+import { DrawAction, ActionType, Drawing } from '@lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { getAsync, saveAsync } from './thunks'
 import { Box, Container, Fab } from '@mui/material'

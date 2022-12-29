@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import { Drawing } from '@shared/lib'
+import { Drawing } from '@lib'
 import { addModel } from '../../db'
 
 export const DrawingModel = addModel<Drawing>('drawing', {

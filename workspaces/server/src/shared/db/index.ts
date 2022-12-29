@@ -227,10 +227,11 @@ export async function checkDatabase(): Promise<boolean> {
 
     if (config.db.sync) {
       logger.info(
-        `Database models: 
+        `Database: models: 
         ${Connection.entities.map(a => a.name).join(', ')}`,
       )
       await Connection.db.sync({ alter: config.db.alter, force: config.db.force })
+      logger.info('Database: Connected')
     }
     return true
   } catch (e: unknown) {

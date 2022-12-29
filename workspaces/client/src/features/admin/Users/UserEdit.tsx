@@ -16,7 +16,7 @@ import {
   ListItemText,
   ListItemButton,
 } from '@mui/material'
-import { User } from '@shared/lib'
+import { User } from '@lib'
 
 export function UserEdit({ user }: { user?: User }): JSX.Element {
   const submitHandler = function (e: React.FormEvent<HTMLFormElement>) {

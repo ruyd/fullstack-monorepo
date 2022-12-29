@@ -10,7 +10,7 @@ import {
 } from '../../shared/auth'
 import { createOrUpdate } from '../../shared/model-api/controller'
 import { UserModel } from '../../shared/types/models/user'
-import { AppAccessToken, getPictureMock, IdentityToken } from '@shared/lib'
+import { AppAccessToken, getPictureMock, IdentityToken } from '@lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 import logger from '../../shared/logger'
@@ -53,7 +53,7 @@ export async function login(req: express.Request, res: express.Response) {
     })
   )?.get()
 
-  if (config.auth.offline && user) {
+  if (!config.auth.enabled && user) {
     logger.info('Auth in offline dev mode' + user?.email)
     res.json({
       token: createToken(user),

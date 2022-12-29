@@ -1,4 +1,4 @@
-import { Setting } from '@shared/lib'
+import { Setting } from '@lib'
 import { DataTypes } from 'sequelize'
 import { addModel } from '../../../shared/db'
 
@@ -7,14 +7,8 @@ export const SettingModel = addModel<Setting>('setting', {
     primaryKey: true,
     type: DataTypes.STRING,
   },
-  type: {
-    type: DataTypes.STRING,
-  },
   data: {
     type: DataTypes.JSONB,
-  },
-  enabled: {
-    type: DataTypes.BOOLEAN,
   },
 })
 

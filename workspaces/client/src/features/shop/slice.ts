@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Address, Cart, Drawing, Order, PaymentMethod, Subscription } from '@shared/lib'
+import { Address, Cart, Drawing, Order, PaymentMethod, Subscription } from '@lib'
 
 export interface ShopState {
   loaded?: boolean

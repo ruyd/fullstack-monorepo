@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { DrawAction } from '@shared/lib'
+import { DrawAction } from '@lib'
 // import { useAppSelector } from '../../shared/store'
 import StyledSlider from '../ui/StyledSlider'
 import Box from '@mui/material/Box'

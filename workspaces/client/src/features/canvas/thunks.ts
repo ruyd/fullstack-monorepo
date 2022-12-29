@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Drawing, PagedResult } from '@shared/lib'
+import { Drawing, PagedResult } from '@lib'
 import { RootState } from '../../shared/store'
 import { notify, notifyError } from '../app'
 import { get, Method, request } from '../app/thunks'

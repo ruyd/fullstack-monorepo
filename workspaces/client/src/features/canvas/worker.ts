@@ -1,4 +1,4 @@
-import { ActionType, DrawAction } from '@shared/lib'
+import { ActionType, DrawAction } from '@lib'
 import { createOffscreen } from './helpers'
 
 export type WorkMessage = {

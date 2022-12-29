@@ -4,6 +4,7 @@ import packageJson from '../../package.json'
 import appConfig from '../../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
+import { AppAccessToken, SettingData, SettingType } from '@lib'
 
 // Anti-webpack sorcery
 const env = process['env']
@@ -35,7 +36,7 @@ export interface Config {
     models: string[]
   }
   auth: {
-    offline: boolean
+    enabled: boolean
     sync: boolean
     trace: boolean
     tokenSecret?: string
@@ -54,6 +55,9 @@ export interface Config {
     manageToken?: string
   }
   swaggerSetup: Partial<OAS3Definition>
+  settings: {
+    [K in SettingType]?: SettingData[K]
+  }
 }
 
 export function parseDatabaseConfig(
@@ -116,7 +120,7 @@ export function getConfig(): Config {
       origin: env.CORS_ORIGIN || '*',
     },
     db: {
-      trace: true,
+      trace: false,
       sync: true,
       force: false,
       alter: true,
@@ -128,14 +132,14 @@ export function getConfig(): Config {
       models: [],
     },
     auth: {
-      offline: true,
+      enabled: false,
       sync: true,
-      trace: false,
+      trace: true,
       tokenSecret: env.TOKEN_SECRET || 'blank',
+      redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
       tenant: env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
       domain: `${env.AUTH_TENANT}.auth0.com`,
       baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
-      redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
       explorerAudience: `https://${env.AUTH_TENANT}.auth0.com/api/v2/`,
       explorerId: env.AUTH_EXPLORER_ID || '',
       explorerSecret: env.AUTH_EXPLORER_SECRET || '',
@@ -159,6 +163,7 @@ export function getConfig(): Config {
       ],
       basePath: '/docs',
     },
+    settings: {},
   }
 }
 
@@ -167,7 +172,18 @@ export function getConfig(): Config {
  * @DevNotes Don't use Connection here since
  * it's a dependency of this file, circular error
  */
-export function getClientConfig() {
+export function getClientConfig(user: AppAccessToken) {
+  const google = config.settings?.google?.enabled
+    ? {
+        clientId: config.settings.google?.clientId,
+      }
+    : {}
+  const admin =
+    !config.production || user?.roles?.includes('admin')
+      ? {
+          models: config.db.models,
+        }
+      : {}
   return {
     auth: {
       domain: config.auth.domain,
@@ -175,10 +191,12 @@ export function getClientConfig() {
       audience: config.auth.clientAudience,
       clientId: config.auth.clientId,
       redirectUrl: config.auth.redirectUrl,
+      google,
     },
-    admin: {
-      models: config.db.models,
+    settings: {
+      system: config.settings?.system,
     },
+    admin,
   }
 }
 

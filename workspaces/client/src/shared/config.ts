@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import axios from 'axios'
+import { SettingTypes, SystemSettings } from '../../../lib/src/types'
 import packageJson from '../../package.json'
 
 export interface Config {
@@ -21,6 +22,9 @@ export interface Config {
     google?: {
       clientId: string
     }
+  }
+  settings?: {
+    [SettingTypes.System]: SystemSettings
   }
   admin: {
     path: string

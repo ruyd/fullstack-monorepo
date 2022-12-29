@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
-import { GridPatchProps, PagedResult } from '@shared/lib'
+import { GridPatchProps, PagedResult } from '@lib'
 import { get } from '../app'
 import { patch } from './slice'
 
