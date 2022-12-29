@@ -70,7 +70,6 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                autoFocus
                 inputRef={emailRef}
                 autoComplete="email"
                 required

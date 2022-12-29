@@ -137,7 +137,7 @@ export function getConfig(): Config {
       trace: true,
       tokenSecret: env.TOKEN_SECRET || 'blank',
       redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
-      tenant: env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
+      tenant: env.AUTH_TENANT || '',
       domain: `${env.AUTH_TENANT}.auth0.com`,
       baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
       explorerAudience: `https://${env.AUTH_TENANT}.auth0.com/api/v2/`,
@@ -184,15 +184,18 @@ export function getClientConfig(user: AppAccessToken) {
           models: config.db.models,
         }
       : {}
+  const auth = config.auth.tenant
+    ? {
+        domain: config.auth.domain,
+        baseUrl: config.auth.baseUrl,
+        audience: config.auth.clientAudience,
+        clientId: config.auth.clientId,
+        redirectUrl: config.auth.redirectUrl,
+        google,
+      }
+    : undefined
   return {
-    auth: {
-      domain: config.auth.domain,
-      baseUrl: config.auth.baseUrl,
-      audience: config.auth.clientAudience,
-      clientId: config.auth.clientId,
-      redirectUrl: config.auth.redirectUrl,
-      google,
-    },
+    auth,
     settings: {
       system: config.settings?.system,
     },

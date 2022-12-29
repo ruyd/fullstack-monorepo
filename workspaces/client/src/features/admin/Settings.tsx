@@ -21,13 +21,13 @@ import { debounce } from 'lodash'
 export default function Settings() {
   const dispatch = useAppDispatch()
   const throttle = React.useRef<number>(0)
-  const [system, setSystem] = React.useState<SystemSettings>({
+  const [system, setSystem] = React.useState<SystemSettings | undefined>({
     disable: false,
     enableStore: false,
     auth: 'auth0',
   })
-  const [google, setGoogle] = React.useState<GoogleSettings>({})
-  const [auth0, setAuth0] = React.useState<Auth0Settings>({
+  const [google, setGoogle] = React.useState<GoogleSettings | undefined>({})
+  const [auth0, setAuth0] = React.useState<Auth0Settings | undefined>({
     tenant: '',
     redirectUrl: '',
     enabled: false,
@@ -92,7 +92,7 @@ export default function Settings() {
                       control={
                         <Switch
                           checked={!!system?.disable}
-                          onChange={e => save('system', 'disable', !system.disable)}
+                          onChange={e => save('system', 'disable', !system?.disable)}
                         />
                       }
                       label="Maintenance Mode"
@@ -101,7 +101,7 @@ export default function Settings() {
                       control={
                         <Switch
                           checked={!!system?.enableStore}
-                          onChange={e => save('system', 'enableStore', !system.enableStore)}
+                          onChange={e => save('system', 'enableStore', !system?.enableStore)}
                         />
                       }
                       label="Enable Store"
@@ -111,7 +111,7 @@ export default function Settings() {
                         <Switch
                           checked={!!system?.enableCookieConsent}
                           onChange={e =>
-                            save('system', 'enableCookieConsent', !system.enableCookieConsent)
+                            save('system', 'enableCookieConsent', !system?.enableCookieConsent)
                           }
                         />
                       }
@@ -124,7 +124,7 @@ export default function Settings() {
                   xs={4}
                   md={2}
                   sx={{
-                    backgroundColor: system.disable ? 'error.dark' : 'success.dark',
+                    backgroundColor: system?.disable ? 'error.dark' : 'success.dark',
                     borderRadius: '10px',
                     display: 'flex',
                     alignItems: 'center',
@@ -133,7 +133,7 @@ export default function Settings() {
                     filter: 'brightness(0.8)',
                   }}
                 >
-                  <Typography variant="h5">{system.disable ? 'Offline' : 'Running'}</Typography>
+                  <Typography variant="h5">{system?.disable ? 'Offline' : 'Running'}</Typography>
                 </Grid>
               </Grid>
             </CardContent>
@@ -308,7 +308,7 @@ export default function Settings() {
                       <Switch
                         checked={!!system?.enableOneTapLogin}
                         onChange={e =>
-                          save('system', 'enableOneTapLogin', !system.enableOneTapLogin)
+                          save('system', 'enableOneTapLogin', !system?.enableOneTapLogin)
                         }
                       />
                     }
