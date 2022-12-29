@@ -32,7 +32,7 @@ export async function authProviderAutoConfigure(): Promise<boolean> {
   logger.info('Auth0: Sync()')
   if (process.env.NODE_ENV === 'test') {
     logger.info('Auth0: Skipped for Tests')
-    return false
+    return true
   }
   if (!config.auth.sync) {
     logger.info('Auth0: Sync Off')

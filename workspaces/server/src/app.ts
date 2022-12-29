@@ -1,4 +1,4 @@
-import { config, loadSettingsAsync } from './shared/config'
+import { config } from './shared/config'
 import express from 'express'
 import bodyParser from 'body-parser'
 import swaggerUi from 'swagger-ui-express'
@@ -12,6 +12,7 @@ import { activateAxiosTrace, endpointTracingMiddleware } from './shared/logger'
 import { authProviderAutoConfigure } from './shared/auth/sync'
 import { checkDatabase, Connection } from './shared/db'
 import { modelAuthMiddleware } from './shared/auth'
+import { loadSettingsAsync } from './shared/settings'
 
 export interface BackendApp extends express.Express {
   onStartupCompletePromise: Promise<boolean[]>
@@ -29,7 +30,7 @@ export function createBackendApp(): BackendApp {
   const promises = [
     checkDatabase()
       .then(async ok => (ok ? await loadSettingsAsync() : ok))
-      .then(ok => (ok ? authProviderAutoConfigure() : ok)),
+      .then(async ok => (ok ? await authProviderAutoConfigure() : ok)),
   ]
 
   // Add Middlewares - Order is important
