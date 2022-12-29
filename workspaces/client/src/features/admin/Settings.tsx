@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useAppDispatch } from '../../shared/store'
-import { Setting, SystemSettings, GoogleSettings, Auth0Settings } from '@lib'
+import { Setting, SystemSettings, GoogleSettings, Auth0Settings, PagedResult } from '@lib'
 import { get, notify, notifyError, request } from '../app'
 export default function Settings() {
   const dispatch = useAppDispatch()
@@ -31,35 +31,49 @@ export default function Settings() {
     auth: 'auth0',
   })
   const [google, setGoogle] = React.useState<GoogleSettings>({})
-  const [auth, setAuth] = React.useState<Auth0Settings>({
+  const [auth0, setAuth0] = React.useState<Auth0Settings>({
     tenant: '',
     redirectUrl: '',
     enabled: false,
   })
   const [settings, setSettings] = React.useState<Setting[]>([])
-
-  const load = async () => {
-    const response = await get<Setting[]>('setting')
-    if (Array.isArray(response.data)) {
-      setSystem(response.data.find(s => s.name === 'system')?.data as SystemSettings)
-      setGoogle(response.data.find(s => s.name === 'google')?.data as GoogleSettings)
-      setAuth(response.data.find(s => s.name === 'auth0')?.data as Auth0Settings)
-      setSettings(response.data)
-    }
+  type SetFn = React.Dispatch<React.SetStateAction<unknown>>
+  const sets: {
+    [key: string]: SetFn
+  } = {
+    system: setSystem as SetFn,
+    google: setGoogle as SetFn,
+    auth0: setAuth0 as SetFn,
   }
 
   const save = async (name: string, prop: string, value: unknown) => {
     const setting = settings.find(s => s.name === name) || ({ name, data: {} } as Setting)
+    const data = { ...setting.data, [prop]: value }
     const payload = {
       name,
-      data: { ...setting.data, [prop]: value },
+      data,
     }
     const response = await request<Setting>('setting', payload)
     if (response.status === 200) {
-      dispatch(notify(`Setting ${name} saved`))
+      dispatch(notify(`${name} updated`))
+      const update = sets[name]
+      update(data)
+      setSettings(settings.map(s => (s.name === name ? response.data : s)))
     } else {
       dispatch(notifyError(`Save ${name} failed: ${response.data}`))
     }
+  }
+
+  const load = async () => {
+    const response = await get<PagedResult<Setting>>('setting')
+    const result = response.data.items || []
+    // for (const setting of result) {
+    //   sets[setting.name](setting.data)
+    // }
+    setSystem(result.find(s => s.name === 'system')?.data as SystemSettings)
+    setGoogle(result.find(s => s.name === 'google')?.data as GoogleSettings)
+    setAuth0(result.find(s => s.name === 'auth0')?.data as Auth0Settings)
+    setSettings(result)
   }
 
   React.useEffect(() => {
@@ -81,15 +95,32 @@ export default function Settings() {
                     <FormControlLabel
                       control={
                         <Switch
-                          value={true}
                           checked={system.disable}
-                          onChange={e => save('system', 'disable', e.target.value)}
+                          onChange={e => save('system', 'disable', !system.disable)}
                         />
                       }
                       label="Maintenance Mode"
                     />
-                    <FormControlLabel control={<Switch />} label="Enable Store" />
-                    <FormControlLabel control={<Switch />} label="Enable Cookie Consent" />
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={system.enableStore}
+                          onChange={e => save('system', 'enableStore', !system.enableStore)}
+                        />
+                      }
+                      label="Enable Store"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={system.enableCookieConsent}
+                          onChange={e =>
+                            save('system', 'enableCookieConsent', !system.enableCookieConsent)
+                          }
+                        />
+                      }
+                      label="Enable Cookie Consent"
+                    />
                   </FormGroup>
                 </Grid>
                 <Grid
@@ -97,15 +128,16 @@ export default function Settings() {
                   xs={4}
                   md={2}
                   sx={{
-                    backgroundColor: 'success.main',
+                    backgroundColor: system.disable ? 'error.dark' : 'success.dark',
                     borderRadius: '10px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    transition: 'all 0.1s ease-out',
                     filter: 'brightness(0.8)',
                   }}
                 >
-                  <Typography variant="h5">Running</Typography>
+                  <Typography variant="h5">{system.disable ? 'Offline' : 'Running'}</Typography>
                 </Grid>
               </Grid>
             </CardContent>
@@ -126,7 +158,17 @@ export default function Settings() {
                   </Typography>
                 </Grid>
                 <Grid item xs={4} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel control={<Switch />} label="Enable" />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={system?.enableRegistration}
+                        onChange={e =>
+                          save('system', 'enableRegistration', !system?.enableRegistration)
+                        }
+                      />
+                    }
+                    label="Enable"
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="h6" component="h4">
@@ -134,10 +176,20 @@ export default function Settings() {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Tenant" fullWidth />
+                  <TextField
+                    label="Tenant"
+                    fullWidth
+                    value={auth0?.tenant || ''}
+                    onChange={e => save('auth0', 'tenant', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Redirect Url" fullWidth />
+                  <TextField
+                    label="Redirect Url"
+                    fullWidth
+                    value={auth0?.redirectUrl || ''}
+                    onChange={e => save('auth0', 'redirectUrl', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={8}>
                   <Typography variant="h6" component="h3">
@@ -145,7 +197,15 @@ export default function Settings() {
                   </Typography>
                 </Grid>
                 <Grid item xs={4} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel control={<Switch />} label="Enable" />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={auth0?.enabled}
+                        onChange={e => save('auth0', 'enabled', !auth0?.enabled)}
+                      />
+                    }
+                    label="Enable"
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" component="p">
@@ -160,19 +220,44 @@ export default function Settings() {
                 </Grid>
 
                 <Grid item xs={6}>
-                  <TextField label="Explorer Client ID" fullWidth />
+                  <TextField
+                    label="Explorer Client ID"
+                    fullWidth
+                    value={auth0?.explorerClientId || ''}
+                    onChange={e => save('auth0', 'explorerClientId', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField label="Explorer Client Secret" fullWidth />
+                  <TextField
+                    label="Explorer Client Secret"
+                    fullWidth
+                    value={auth0?.explorerClientSecret || ''}
+                    onChange={e => save('auth0', 'explorerClientSecret', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField label="Client ID" fullWidth />
+                  <TextField
+                    label="Client ID"
+                    fullWidth
+                    value={auth0?.clientId || ''}
+                    onChange={e => save('auth0', 'clientId', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField label="Client Secret" fullWidth />
+                  <TextField
+                    label="Client Secret"
+                    fullWidth
+                    value={auth0?.clientSecret || ''}
+                    onChange={e => save('auth0', 'clientSecret', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Audience" fullWidth />
+                  <TextField
+                    label="Audience"
+                    fullWidth
+                    value={auth0?.audience || ''}
+                    onChange={e => save('auth0', 'audience', e.target.value)}
+                  />
                 </Grid>
               </Grid>
             </CardContent>
@@ -193,7 +278,15 @@ export default function Settings() {
                   </Typography>
                 </Grid>
                 <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel control={<Switch />} label="Enable" />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={google?.enabled}
+                        onChange={e => save('google', 'enabled', !google.enabled)}
+                      />
+                    }
+                    label="Enable"
+                  />
                 </Grid>
                 <Grid item xs={9}>
                   <Typography variant="h6" component="h5">
@@ -201,7 +294,17 @@ export default function Settings() {
                   </Typography>
                 </Grid>
                 <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel control={<Switch />} label="Enable" />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={system.enableOneTapLogin}
+                        onChange={e =>
+                          save('system', 'enableOneTapLogin', !system.enableOneTapLogin)
+                        }
+                      />
+                    }
+                    label="Enable"
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Typography variant="body2" component="p">
@@ -212,16 +315,36 @@ export default function Settings() {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Client ID" fullWidth />
+                  <TextField
+                    label="Client ID"
+                    fullWidth
+                    value={google?.clientId || ''}
+                    onChange={e => save('google', 'clientId', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Client Secret" fullWidth />
+                  <TextField
+                    label="Client Secret"
+                    fullWidth
+                    value={google?.clientSecret || ''}
+                    onChange={e => save('google', 'clientSecret', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Project ID" fullWidth />
+                  <TextField
+                    label="Project ID"
+                    fullWidth
+                    value={google?.projectId || ''}
+                    onChange={e => save('google', 'projectId', e.target.value)}
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Analytics ID" fullWidth />
+                  <TextField
+                    label="Analytics ID"
+                    fullWidth
+                    value={google?.analyticsId || ''}
+                    onChange={e => save('google', 'analyticsId', e.target.value)}
+                  />
                 </Grid>
               </Grid>
             </CardContent>

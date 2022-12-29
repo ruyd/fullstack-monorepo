@@ -17,6 +17,7 @@ export interface SystemSettings {
   auth: 'fake' | 'auth0' | 'off'
   enableCookieConsent?: boolean
   enableOneTapLogin?: boolean
+  enableRegistration?: boolean
 }
 export interface GoogleSettings {
   clientId?: string
