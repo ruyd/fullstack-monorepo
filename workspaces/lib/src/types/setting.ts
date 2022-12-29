@@ -32,6 +32,7 @@ export interface Auth0Settings {
   redirectUri?: string
   explorerClientId?: string
   explorerClientSecret?: string
+  enabled?: boolean
 }
 export type SettingDataType = SystemSettings & GoogleSettings & Auth0Settings
 export interface SettingData {

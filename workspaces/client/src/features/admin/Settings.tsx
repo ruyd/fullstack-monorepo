@@ -6,9 +6,16 @@ import TabPanel from '../ui/TabPanel'
 import Box from '@mui/material/Box'
 import {
   Card,
+  CardContent,
+  CardHeader,
+  Chip,
+  Container,
   FormControl,
   FormControlLabel,
   FormGroup,
+  Grid,
+  Link,
+  Paper,
   Switch,
   TextField,
   Typography,
@@ -57,54 +64,158 @@ export default function Settings() {
   }, [])
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Typography variant="h5" component="h1">
+    <Box sx={{ flexGrow: 1, m: 2 }}>
+      <Typography variant="h5" component="h1" mb={1}>
         Settings
       </Typography>
-      <FormGroup>
-        <FormControlLabel control={<Switch />} label="Maintenance (Set Offline)" />
-        <FormControlLabel control={<Switch />} label="Enable Google OneTap" />
-        <FormControlLabel control={<Switch />} label="Enable Registrations" />
-        <FormControlLabel control={<Switch />} label="Enable Store" />
-        <FormControlLabel control={<Switch />} label="Show Cookie Consent" />
-      </FormGroup>
-      <Card title="Google">
-        <FormControl>
-          <TextField label="Client ID" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Client Secret" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Project ID" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Analytics ID" />
-        </FormControl>
-      </Card>
-      <Card title="Auth0">
-        <FormControl>
-          <TextField label="Tenant" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Explorer ID" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Explorer Secret" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Client ID" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Client Secret" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Audience" />
-        </FormControl>
-        <FormControl>
-          <TextField label="Redirect Url" />
-        </FormControl>
-      </Card>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Grid container>
+                <Grid item xs={8} md={10}>
+                  <FormGroup>
+                    <FormControlLabel control={<Switch />} label="Maintenance Mode" />
+                    <FormControlLabel control={<Switch />} label="Enable Store" />
+                    <FormControlLabel control={<Switch />} label="Enable Cookie Consent" />
+                  </FormGroup>
+                </Grid>
+                <Grid
+                  item
+                  xs={4}
+                  md={2}
+                  sx={{
+                    backgroundColor: 'success.main',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    filter: 'brightness(0.8)',
+                  }}
+                >
+                  <Typography variant="h5">Running</Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item md={6}>
+          <Card>
+            <CardContent>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <Typography variant="h5" component="h2">
+                    Authentication
+                  </Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography variant="h6" component="h3">
+                    New User Registrations
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} sx={{ textAlign: 'right' }}>
+                  <FormControlLabel control={<Switch />} label="Enable" />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h6" component="h4">
+                    Auth0 Setup
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField label="Tenant" fullWidth />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField label="Redirect Url" fullWidth />
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography variant="h6" component="h3">
+                    Automatically Configure Auth0
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} sx={{ textAlign: 'right' }}>
+                  <FormControlLabel control={<Switch />} label="Enable" />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" component="p">
+                    Auto setup only needs the `Client ID` and `Client Secret` from the API Explorer
+                    Application:{' '}
+                    <Link href="https://manage.auth0.com/dashboard" target="_blank">
+                      Auth0 dashboard
+                    </Link>{' '}
+                    and go to API Explorer Application - Settings - copy Client ID and Secret into
+                    Explorer ID and Secret
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField label="Explorer Client ID" fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="Explorer Client Secret" fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="Client ID" fullWidth />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField label="Client Secret" fullWidth />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField label="Audience" fullWidth />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item md={6}>
+          <Card>
+            <CardContent>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <Typography variant="h5" component="h2">
+                    Google
+                  </Typography>
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography variant="h6" component="h3">
+                    Signin with Google
+                  </Typography>
+                </Grid>
+                <Grid item xs={3} sx={{ textAlign: 'right' }}>
+                  <FormControlLabel control={<Switch />} label="Enable" />
+                </Grid>
+                <Grid item xs={9}>
+                  <Typography variant="h6" component="h5">
+                    OneTap Onboarding
+                  </Typography>
+                </Grid>
+                <Grid item xs={3} sx={{ textAlign: 'right' }}>
+                  <FormControlLabel control={<Switch />} label="Enable" />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" component="p">
+                    <Link href="https://console.cloud.google.com/apis/credentials" target="_blank">
+                      Project OAuth 2.0 Client ID and Secret (Click Create Credentials then OAth
+                      client ID)
+                    </Link>
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField label="Client ID" fullWidth />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField label="Client Secret" fullWidth />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField label="Project ID" fullWidth />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField label="Analytics ID" fullWidth />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </Box>
   )
 }
