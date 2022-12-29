@@ -51,7 +51,7 @@ export default function Settings() {
     }
     const response = await request<Setting>('setting', payload)
     if (response.status === 200) {
-      dispatch(notify(`${name}/${prop}`))
+      dispatch(notify(`${name}/${prop} saved`))
       const update = sets[name]
       update(data)
       setSettings(settings.map(s => (s.name === name ? response.data : s)))
@@ -167,15 +167,11 @@ export default function Settings() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h6" component="h4">
-                    Auth0 Setup
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
                   <TextField
                     label="Tenant"
                     fullWidth
                     value={auth0?.tenant || ''}
+                    required
                     onChange={e => save('auth0', 'tenant', e.target.value)}
                   />
                 </Grid>
@@ -183,8 +179,33 @@ export default function Settings() {
                   <TextField
                     label="Redirect Url"
                     fullWidth
+                    required
                     value={auth0?.redirectUrl || ''}
                     onChange={e => save('auth0', 'redirectUrl', e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Client ID"
+                    fullWidth
+                    value={auth0?.clientId || ''}
+                    onChange={e => save('auth0', 'clientId', e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Client Secret"
+                    fullWidth
+                    value={auth0?.clientSecret || ''}
+                    onChange={e => save('auth0', 'clientSecret', e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Audience"
+                    fullWidth
+                    value={auth0?.clientAudience || ''}
+                    onChange={e => save('auth0', 'audience', e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={8}>
@@ -204,7 +225,7 @@ export default function Settings() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="body2" component="p">
+                  <Typography variant="body2" component="p" mb={1}>
                     Auto setup only needs the `Client ID` and `Client Secret` from the API Explorer
                     Application:{' '}
                     <Link href="https://manage.auth0.com/dashboard" target="_blank">
@@ -215,44 +236,20 @@ export default function Settings() {
                   </Typography>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <TextField
                     label="Explorer Client ID"
                     fullWidth
-                    value={auth0?.explorerClientId || ''}
+                    value={auth0?.explorerId || ''}
                     onChange={e => save('auth0', 'explorerClientId', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Explorer Client Secret"
-                    fullWidth
-                    value={auth0?.explorerClientSecret || ''}
-                    onChange={e => save('auth0', 'explorerClientSecret', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Client ID"
-                    fullWidth
-                    value={auth0?.clientId || ''}
-                    onChange={e => save('auth0', 'clientId', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Client Secret"
-                    fullWidth
-                    value={auth0?.clientSecret || ''}
-                    onChange={e => save('auth0', 'clientSecret', e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    label="Audience"
+                    label="Explorer Client Secret"
                     fullWidth
-                    value={auth0?.audience || ''}
-                    onChange={e => save('auth0', 'audience', e.target.value)}
+                    value={auth0?.explorerSecret || ''}
+                    onChange={e => save('auth0', 'explorerClientSecret', e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -325,6 +322,11 @@ export default function Settings() {
                     value={google?.clientSecret || ''}
                     onChange={e => save('google', 'clientSecret', e.target.value)}
                   />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h6" component="h4">
+                    Cloud
+                  </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField

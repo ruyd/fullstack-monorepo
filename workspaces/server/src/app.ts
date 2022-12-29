@@ -19,20 +19,18 @@ export interface BackendApp extends express.Express {
 
 export function createBackendApp(): BackendApp {
   const app = express() as BackendApp
-  Connection.init()
-  const promises: Promise<boolean>[] = [checkDatabase()]
-  promises.push(
-    loadSettingsAsync().then(async ok => {
-      if (ok && process.env.NODE_ENV !== 'test') {
-        return ok && (await authProviderSync())
-      }
-      return ok
-    }),
-  )
 
   if (!config.production && config.trace) {
     activateAxiosTrace()
   }
+
+  // Startup
+  Connection.init()
+  const promises = [
+    checkDatabase()
+      .then(ok => (ok ? loadSettingsAsync() : ok))
+      .then(async ok => (ok && process.env.NODE_ENV !== 'test' ? await authProviderSync() : ok)),
+  ]
 
   // Add Middlewares - Order is important
   app.use(errorHandler)

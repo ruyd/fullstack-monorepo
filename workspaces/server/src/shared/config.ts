@@ -4,7 +4,7 @@ import packageJson from '../../package.json'
 import appConfig from '../../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
-import { Setting, SettingData, SettingDataType, SettingType } from '@lib'
+import { AppAccessToken, Setting, SettingData, SettingDataType, SettingType } from '@lib'
 import { SettingModel } from './types'
 
 // Anti-webpack sorcery
@@ -121,7 +121,7 @@ export function getConfig(): Config {
       origin: env.CORS_ORIGIN || '*',
     },
     db: {
-      trace: true,
+      trace: false,
       sync: true,
       force: false,
       alter: true,
@@ -137,10 +137,10 @@ export function getConfig(): Config {
       sync: true,
       trace: false,
       tokenSecret: env.TOKEN_SECRET || 'blank',
+      redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
       tenant: env.AUTH_TENANT || 'Set AUTH_TENANT in .env',
       domain: `${env.AUTH_TENANT}.auth0.com`,
       baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
-      redirectUrl: env.AUTH_REDIRECT_URL || 'http://localhost:3000/callback',
       explorerAudience: `https://${env.AUTH_TENANT}.auth0.com/api/v2/`,
       explorerId: env.AUTH_EXPLORER_ID || '',
       explorerSecret: env.AUTH_EXPLORER_SECRET || '',
@@ -173,7 +173,18 @@ export function getConfig(): Config {
  * @DevNotes Don't use Connection here since
  * it's a dependency of this file, circular error
  */
-export function getClientConfig() {
+export function getClientConfig(user: AppAccessToken) {
+  const google = config.settings?.google?.enabled
+    ? {
+        clientId: config.settings.google?.clientId,
+      }
+    : {}
+  const admin =
+    !config.production || user?.roles?.includes('admin')
+      ? {
+          models: config.db.models,
+        }
+      : {}
   return {
     auth: {
       domain: config.auth.domain,
@@ -181,10 +192,12 @@ export function getClientConfig() {
       audience: config.auth.clientAudience,
       clientId: config.auth.clientId,
       redirectUrl: config.auth.redirectUrl,
+      google,
     },
-    admin: {
-      models: config.db.models,
+    settings: {
+      system: config.settings?.system,
     },
+    admin,
   }
 }
 
@@ -199,11 +212,36 @@ export function envi(val: unknown): unknown {
   return typeof val === 'string' && val.startsWith('$') ? env[val.slice(1)] : val
 }
 
+/**
+ * for .env to not break and avoid refactor to use config.settings
+ * @param data
+ */
+function setConfigAuth(data: unknown) {
+  const value = data as { [key: string]: string }
+  const merged = {
+    ...config.auth,
+    ...value,
+    domain: `${value.tenant}.auth0.com`,
+    baseUrl: `https://${value.tenant}.auth0.com`,
+    explorerAudience: `https://${value.tenant}.auth0.com/api/v2/`,
+  }
+  config.auth = merged
+}
+
+const setters: { [key: string]: (d: unknown) => void } = {
+  auth0: setConfigAuth,
+}
+
 export async function loadSettingsAsync() {
   logger.info(`Loading settings...`)
   const settings = (await SettingModel.findAll({ raw: true })) as unknown as Setting[]
   for (const setting of settings) {
+    logger.info(`Applying: ${setting.name}`)
     config.settings[setting.name] = setting.data as SettingDataType
+    const setter = setters[setting.name]
+    if (setter) {
+      setter(setting.data)
+    }
   }
   return true
 }

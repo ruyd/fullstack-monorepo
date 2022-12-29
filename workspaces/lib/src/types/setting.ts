@@ -31,10 +31,10 @@ export interface Auth0Settings {
   clientId?: string
   clientSecret?: string
   tenant?: string
-  audience?: string
+  clientAudience?: string
   redirectUrl?: string
-  explorerClientId?: string
-  explorerClientSecret?: string
+  explorerId?: string
+  explorerSecret?: string
   enabled?: boolean
 }
 export type SettingDataType = SystemSettings & GoogleSettings & Auth0Settings

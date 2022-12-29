@@ -13,7 +13,7 @@ export async function list<T extends {}>(
   const { count: total, rows } = await model.findAndCountAll({
     raw: true,
     nest: true,
-    include: Object.keys(model.associations),
+    // include: Object.keys(model.associations),
     ...options,
   })
 
