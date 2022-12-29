@@ -241,7 +241,7 @@ export default function Settings() {
                     label="Explorer Client ID"
                     fullWidth
                     value={auth0?.explorerId || ''}
-                    onChange={e => save('auth0', 'explorerClientId', e.target.value)}
+                    onChange={e => save('auth0', 'explorerId', e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -249,7 +249,7 @@ export default function Settings() {
                     label="Explorer Client Secret"
                     fullWidth
                     value={auth0?.explorerSecret || ''}
-                    onChange={e => save('auth0', 'explorerClientSecret', e.target.value)}
+                    onChange={e => save('auth0', 'explorerSecret', e.target.value)}
                   />
                 </Grid>
               </Grid>

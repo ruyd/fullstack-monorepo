@@ -28,8 +28,13 @@ const post = <T>(url: string, data: unknown) =>
  * - Check for Rules
  */
 export async function authProviderSync(): Promise<boolean> {
+  logger.info('Auth0 Sync()')
+  if (process.env.NODE_ENV === 'test') {
+    logger.info('Auth0 Sync Skipped for Tests')
+    return false
+  }
   if (!config.auth.sync || config.auth.offline) {
-    log('Auth0 Sync Off')
+    logger.info('Auth0 Sync Off')
     return false
   }
   if (!config.auth.tenant || !config.auth.explorerId || !config.auth.explorerSecret) {
