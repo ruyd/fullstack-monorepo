@@ -22,6 +22,8 @@ export interface GoogleSettings {
   clientId?: string
   clientSecret?: string
   projectId?: string
+  analyticsId?: string
+  enabled?: boolean
 }
 
 export interface Auth0Settings {
@@ -29,7 +31,7 @@ export interface Auth0Settings {
   clientSecret?: string
   tenant?: string
   audience?: string
-  redirectUri?: string
+  redirectUrl?: string
   explorerClientId?: string
   explorerClientSecret?: string
   enabled?: boolean

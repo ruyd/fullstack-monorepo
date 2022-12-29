@@ -22,42 +22,45 @@ import {
 } from '@mui/material'
 import { useAppDispatch } from '../../shared/store'
 import { Setting, SystemSettings, GoogleSettings, Auth0Settings } from '@lib'
-import { get, request } from '../app'
+import { get, notify, notifyError, request } from '../app'
 export default function Settings() {
   const dispatch = useAppDispatch()
-  const [data, setData] = React.useState({})
+  const [system, setSystem] = React.useState<SystemSettings>({
+    disable: false,
+    enableStore: false,
+    auth: 'auth0',
+  })
+  const [google, setGoogle] = React.useState<GoogleSettings>({})
+  const [auth, setAuth] = React.useState<Auth0Settings>({
+    tenant: '',
+    redirectUrl: '',
+    enabled: false,
+  })
   const [settings, setSettings] = React.useState<Setting[]>([])
-  const [value, setValue] = React.useState(0)
-  const [value2, setValue2] = React.useState(0)
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue)
-  }
-
-  const handleChange2 = (event: React.SyntheticEvent, newValue: number) => {
-    setValue2(newValue)
-  }
-
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    const payload = {} as Record<string, unknown>
-    data.forEach((value, key) => (payload[key] = value))
-  }
 
   const load = async () => {
     const response = await get<Setting[]>('setting')
     if (Array.isArray(response.data)) {
+      setSystem(response.data.find(s => s.name === 'system')?.data as SystemSettings)
+      setGoogle(response.data.find(s => s.name === 'google')?.data as GoogleSettings)
+      setAuth(response.data.find(s => s.name === 'auth0')?.data as Auth0Settings)
       setSettings(response.data)
     }
   }
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target
-    setData({ ...data, [name]: value })
+  const save = async (name: string, prop: string, value: unknown) => {
+    const setting = settings.find(s => s.name === name) || ({ name, data: {} } as Setting)
+    const payload = {
+      name,
+      data: { ...setting.data, [prop]: value },
+    }
+    const response = await request<Setting>('setting', payload)
+    if (response.status === 200) {
+      dispatch(notify(`Setting ${name} saved`))
+    } else {
+      dispatch(notifyError(`Save ${name} failed: ${response.data}`))
+    }
   }
-
-  // dispatch(settingAsync(data))
 
   React.useEffect(() => {
     load()
@@ -75,7 +78,16 @@ export default function Settings() {
               <Grid container>
                 <Grid item xs={8} md={10}>
                   <FormGroup>
-                    <FormControlLabel control={<Switch />} label="Maintenance Mode" />
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          value={true}
+                          checked={system.disable}
+                          onChange={e => save('system', 'disable', e.target.value)}
+                        />
+                      }
+                      label="Maintenance Mode"
+                    />
                     <FormControlLabel control={<Switch />} label="Enable Store" />
                     <FormControlLabel control={<Switch />} label="Enable Cookie Consent" />
                   </FormGroup>
@@ -194,7 +206,7 @@ export default function Settings() {
                 <Grid item xs={12}>
                   <Typography variant="body2" component="p">
                     <Link href="https://console.cloud.google.com/apis/credentials" target="_blank">
-                      Project OAuth 2.0 Client ID and Secret (Click Create Credentials then OAth
+                      Project OAuth 2.0 Client ID and Secret (Click Create Credentials then OAuth
                       client ID)
                     </Link>
                   </Typography>
