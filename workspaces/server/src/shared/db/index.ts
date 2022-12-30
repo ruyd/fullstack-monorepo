@@ -63,7 +63,7 @@ export class Connection {
       logger.error('DB URL not found, skipping DB init')
       return
     }
-    console.log(`Initializing DB: ${config.db.url}`)
+    logger.info(`Initializing DB...`)
     try {
       Connection.db = new Sequelize(config.db.url, {
         logging: sql => (config.db.trace ? logger.info(`${sql}\n`) : undefined),
