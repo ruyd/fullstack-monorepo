@@ -14,6 +14,9 @@ import {
 import StartImage from './images/start.svg'
 
 export default function StartPage() {
+  // send request create internal setting with admin email
+  // create token with admin roles
+  // if success redirect to admin page
   return (
     <Paper
       sx={{
@@ -35,7 +38,13 @@ export default function StartPage() {
             <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
               Please enter the first admin&apos;s email:
             </Typography>
-            <TextField label="Email" type="email" fullWidth variant="filled" />
+            <TextField
+              label="Email"
+              type="email"
+              fullWidth
+              variant="filled"
+              inputProps={{ sx: { fontSize: '1.5rem' } }}
+            />
           </CardContent>
           <CardActions>
             <Button variant="contained" fullWidth size="large">

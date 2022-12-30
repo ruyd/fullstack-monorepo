@@ -1,8 +1,7 @@
 import express from 'express'
-import sequelize from 'sequelize'
-import { DrawingModel, EnrichedRequest } from '../../shared/types'
-import { list } from '../../shared/model-api/controller'
+import { EnrichedRequest } from '../../shared/types'
 import { getClientConfig } from '../../shared/config'
+import { gallery, start } from './controller'
 
 const router = express.Router()
 
@@ -11,18 +10,7 @@ const router = express.Router()
  * /gallery:
  *  get:
  */
-router.get(['/gallery', '/gallery/:userId'], async (req, res) => {
-  const conditional = req.params.userId ? { userId: req.params.userId } : {}
-  const items = await list(DrawingModel, {
-    where: {
-      ...conditional,
-      private: {
-        [sequelize.Op.not]: true,
-      },
-    },
-  })
-  res.json(items)
-})
+router.get(['/gallery', '/gallery/:userId'], gallery)
 
 /**
  * @swagger
@@ -33,5 +21,12 @@ router.get('/config', async (_req, res) => {
   const req = _req as EnrichedRequest
   res.json(getClientConfig(req.auth))
 })
+
+/**
+ * @swagger
+ * /start:
+ *  post:
+ */
+router.post('/start', start)
 
 export default router

@@ -14,6 +14,9 @@ export interface AppState {
   loading?: boolean
   loaded?: boolean
   dialog?: string
+  enableLogin?: boolean
+  enableRegistration?: boolean
+  deviceId?: string
 }
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')

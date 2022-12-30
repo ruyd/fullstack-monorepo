@@ -2,14 +2,8 @@ export const SettingTypes = {
   System: 'system',
   Google: 'google',
   Auth0: 'auth0',
+  Internal: 'internal',
 } as const
-
-export type SettingType = typeof SettingTypes[keyof typeof SettingTypes]
-
-export interface Setting<T = SystemSettings | GoogleSettings | Auth0Settings> {
-  name: SettingType
-  data: T
-}
 
 export interface SystemSettings {
   disable: boolean
@@ -38,8 +32,19 @@ export interface Auth0Settings {
   sync?: boolean
   enabled?: boolean
 }
-export type SettingDataType = SystemSettings & GoogleSettings & Auth0Settings
+
+export interface InternalSettings {
+  startAdminEmail: string
+}
+
+export type SettingType = typeof SettingTypes[keyof typeof SettingTypes]
+export interface Setting<T = SystemSettings | GoogleSettings | Auth0Settings | InternalSettings> {
+  name: SettingType
+  data: T
+}
+export type SettingDataType = SystemSettings & GoogleSettings & Auth0Settings & InternalSettings
 export interface SettingData {
+  [SettingTypes.Internal]: InternalSettings
   [SettingTypes.System]: SystemSettings
   [SettingTypes.Google]: GoogleSettings
   [SettingTypes.Auth0]: Auth0Settings
