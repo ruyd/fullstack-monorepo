@@ -67,16 +67,17 @@ export function parseDatabaseConfig(
   if (!production) {
     return db
   }
-  const url = envi(db.url) as string
+  const url = env.DB_URL || (envi(db.url) as string)
   if (!url) {
     logger.error('DB_URL is not set')
     return db
   }
+  const chunks = url.split(':')
   const database = url.slice(url.lastIndexOf('/') + 1)
-  const username = url.slice(url.indexOf('//') + 2, url.indexOf(':'))
-  const password = url.slice(url.indexOf(':') + 1, url.indexOf('@'))
+  const username = chunks[1].slice(2)
+  const password = chunks[2].slice(0, chunks[2].lastIndexOf('@'))
   const host = url.slice(url.indexOf('@') + 1, url.lastIndexOf(':'))
-  const dialect = url.slice(0, url.indexOf(':'))
+  const dialect = chunks[0]
   return {
     database,
     host,
@@ -97,8 +98,8 @@ export function getConfig(): Config {
     production,
     serviceConfig.db,
   )
-  const databaseUrl = `${dialect}://${username}:${password}@${host}/${database}`
-  const DB_URL = env.DB_URL || databaseUrl
+
+  const DB_URL = `${dialect}://${username}:${password}@${host}/${database}`
   const osHost = os.hostname()
   const isLocalhost = osHost.includes('local')
   const port = Number(env.PORT) || Number(envi(serviceConfig.service.port))

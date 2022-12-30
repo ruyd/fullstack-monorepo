@@ -22,14 +22,20 @@
     },
     {
       "command": "yarn jest ${fileBasename}",
-      "name": "jest $file",
+      "name": "jest: $file",
       "request": "launch",
       "type": "node-terminal",
       "preLaunchTask": "docker.start"
     },
     {
       "command": "node ${fileDirname}/${fileBasename}",
-      "name": "node $file",
+      "name": "node: $file",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "yarn workspace server prod",
+      "name": "prod",
       "request": "launch",
       "type": "node-terminal"
     }

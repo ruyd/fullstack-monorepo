@@ -20,7 +20,7 @@
         "db": {
             "url": "$DB_URL",
             "schema": "public",
-            "ssl": true
+            "ssl": false
         },
         "service": {
             "port": "8080",
