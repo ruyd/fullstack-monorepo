@@ -16,7 +16,7 @@ import SocketListener from './SocketListener'
 
 export function MainLayout() {
   const route = currentRoute()
-  if (route?.popup)
+  if (route?.cleanLayout)
     return (
       <ThemeSwitch>
         <RouteElement route={route} />

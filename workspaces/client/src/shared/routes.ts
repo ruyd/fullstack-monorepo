@@ -1,13 +1,12 @@
 import React from 'react'
 export interface AppRoute {
   path: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  component: React.LazyExoticComponent<(props?: any) => JSX.Element>
+  component: React.LazyExoticComponent<(props?: { [key: string]: unknown }) => JSX.Element>
   title?: string
   description?: string
   secure?: boolean
   animate?: string
-  popup?: boolean
+  cleanLayout?: boolean
   dialog?: string
   link?: boolean
   profile?: boolean
@@ -64,7 +63,7 @@ export const routes: AppRoute[] = [
   {
     title: 'Authenticating...',
     path: '/callback',
-    popup: true,
+    cleanLayout: true,
     component: React.lazy(() => import('../features/profile/Callback')),
   },
   {
@@ -89,6 +88,12 @@ export const routes: AppRoute[] = [
     title: 'Offline',
     path: '/maintenance',
     component: React.lazy(() => import('../features/pages/maintenance')),
+  },
+  {
+    title: 'Start',
+    path: '/start',
+    cleanLayout: true,
+    component: React.lazy(() => import('../features/pages/start')),
   },
 ]
 

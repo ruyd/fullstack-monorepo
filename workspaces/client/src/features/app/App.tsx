@@ -7,6 +7,7 @@ import { store } from '../../shared/store'
 import { config } from '../../shared/config'
 import '../../styles/index.css'
 import { MainLayout } from '../ui/MainLayout'
+import React from 'react'
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, cacheTime: 3000, staleTime: 3000 } },
@@ -15,6 +16,14 @@ const queryClient = new QueryClient({
 applyConfig()
 
 export default function App() {
+  const ready = config.settings?.system
+
+  React.useEffect(() => {
+    if (!ready && window.location.pathname !== '/start') {
+      window.location.assign('/start')
+    }
+  }, [ready])
+
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
