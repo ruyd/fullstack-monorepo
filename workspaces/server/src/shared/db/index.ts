@@ -68,6 +68,7 @@ export class Connection {
       ssl: !!config.db.ssl,
       dialectOptions: config.db.ssl
         ? {
+            dialect: 'postgresql',
             ssl: {
               require: true,
               rejectUnauthorized: false,
