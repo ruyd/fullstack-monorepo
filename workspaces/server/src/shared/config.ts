@@ -206,6 +206,7 @@ export function getClientConfig(user: AppAccessToken) {
     auth,
     settings,
     admin,
+    ready: !!config.settings?.system,
   }
 }
 

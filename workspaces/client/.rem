@@ -1,0 +1,7 @@
+BACKEND=http://localhost:3001
+GOOGLE_CLIENT_ID=364055912546-5dqa4i1r818qud6bc4pedejt6k80crh9.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+AUTH_REDIRECT_URL=http://localhost:3000/callback
+AUTH_CLIENT_ID=BxAHLEBuoERnULdNKQJrHgk7etR7x1KR
+AUTH_TENANT=ruy
+AUTH_AUDIENCE=https://backend

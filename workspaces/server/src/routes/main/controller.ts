@@ -7,9 +7,14 @@ import { v4 as uuid } from 'uuid'
 import { createToken } from '../../shared/auth'
 
 export async function start(req: express.Request, res: express.Response) {
-  logger.info(`Database Initialization by: ${req.body.startAdminEmail}`)
-  logger.info('Creating default settings...')
-  let defaultSetting
+  logger.info(`Database Initialization by: ${req.body.email}`)
+  logger.info('Creating internal settings...')
+  let defaultSetting = (await SettingModel.findOne({ where: { name: 'internal' } }))?.get()
+  if (defaultSetting) {
+    res.status(500)
+    res.json({ ok: false, error: 'Database already initialized' })
+    return
+  }
   let error: Error | null = null
   try {
     defaultSetting = (
@@ -27,6 +32,19 @@ export async function start(req: express.Request, res: express.Response) {
   if (!defaultSetting) {
     res.status(500)
     res.json({ ok: false, error: error?.message })
+    return
+  }
+
+  logger.info('Creating system settings...')
+  const systemSetting = await SettingModel.upsert({
+    name: 'system',
+    data: {
+      disabled: true,
+    } as { [key: string]: unknown },
+  })
+  if (!systemSetting) {
+    res.status(500)
+    res.json({ ok: false, error: 'Failed to create system setting' })
     return
   }
 

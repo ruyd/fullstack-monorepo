@@ -5,12 +5,14 @@ import { AppUser, onLogin, getAuthProvider } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
 
-export enum Method {
-  GET = 'get',
-  POST = 'post',
-  DELETE = 'delete',
-  PATCH = 'patch',
-}
+export const Method = {
+  GET: 'get',
+  POST: 'post',
+  DELETE: 'delete',
+  PATCH: 'patch',
+} as const
+
+export type Method = typeof Method[keyof typeof Method]
 
 /**
  * Axios wrapper for thunks with token from onLogin

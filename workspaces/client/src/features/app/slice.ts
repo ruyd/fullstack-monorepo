@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { SettingTypes, SystemSettings } from '@lib'
 import { AppUser, getPersistedAuthFromStorage } from '../../shared/auth'
 import { ThemeState } from '../ui/Theme/getTheme'
 import { AppNotification, NotificationSeverity } from './types'
@@ -14,15 +15,18 @@ export interface AppState {
   loading?: boolean
   loaded?: boolean
   dialog?: string
-  enableLogin?: boolean
-  enableRegistration?: boolean
+  settings?: {
+    [SettingTypes.System]: SystemSettings
+  }
   deviceId?: string
+  ready: boolean
 }
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
 const defaultState: AppState = {
   darkMode: !!prefersDark,
   notifications: [],
+  ready: false,
 }
 
 const persistedAuth = getPersistedAuthFromStorage()

@@ -1,19 +1,49 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  Button,
+  Alert,
   Card,
   CardActions,
   CardContent,
-  CardHeader,
-  Container,
   Grid,
   Paper,
   TextField,
   Typography,
 } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import StartImage from './images/start.svg'
+import { useAppSelector } from 'src/shared/store'
+import { User } from '@lib'
+import React from 'react'
+import { request } from '../app'
+import { onLogin } from 'src/shared/auth'
+import loadConfig from 'src/shared/loadConfig'
 
 export default function StartPage() {
+  const loading = useAppSelector(state => state.app.loading)
+  const [error, setError] = React.useState<string | null>(null)
+  const [form, setForm] = React.useState<{ email: string }>({
+    email: '',
+  })
+  const submitHanlder = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const response = await request<{ ok: boolean; token: string; user: User; error?: string }>(
+      'start',
+      {
+        email: form.email,
+      },
+      'post',
+      {
+        validateStatus: () => true,
+      },
+    )
+    if (response.data.ok) {
+      await loadConfig()
+      onLogin(response.data)
+      // window.location.assign('/admin/settings')
+    } else {
+      setError(response.data.error || 'Unknown error')
+    }
+  }
+
   // send request create internal setting with admin email
   // create token with admin roles
   // if success redirect to admin page
@@ -30,28 +60,46 @@ export default function StartPage() {
       }}
     >
       <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Card sx={{ p: '2rem 3rem 2rem 3rem', borderRadius: '16px' }}>
-          <CardContent sx={{ textAlign: 'center' }}>
-            <Typography variant="h3" component="h1" sx={{ mb: 2 }}>
-              Empty Database
-            </Typography>
-            <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
-              Please enter the first admin&apos;s email:
-            </Typography>
-            <TextField
-              label="Email"
-              type="email"
-              fullWidth
-              variant="filled"
-              inputProps={{ sx: { fontSize: '1.5rem' } }}
-            />
-          </CardContent>
-          <CardActions>
-            <Button variant="contained" fullWidth size="large">
-              Start
-            </Button>
-          </CardActions>
-        </Card>
+        <form onSubmit={submitHanlder}>
+          <Card sx={{ p: '2rem 3rem 2rem 3rem', borderRadius: '16px' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Typography variant="h3" component="h1" sx={{ mb: 2 }}>
+                Empty Database
+              </Typography>
+              <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
+                Please enter the first admin&apos;s email:
+              </Typography>
+              <TextField
+                autoFocus
+                label="Email"
+                type="email"
+                fullWidth
+                variant="filled"
+                required
+                inputProps={{ sx: { fontSize: '1.5rem' } }}
+                value={form.email}
+                onChange={e => setForm(current => ({ ...current, email: e.target.value }))}
+              />
+              {error && (
+                <Alert variant="outlined" color="error" sx={{ color: 'red', mt: 2 }}>
+                  {error}
+                </Alert>
+              )}
+            </CardContent>
+            <CardActions>
+              <LoadingButton
+                loading={loading}
+                variant="contained"
+                fullWidth
+                size="large"
+                loadingIndicator="Initializing..."
+                type="submit"
+              >
+                Start
+              </LoadingButton>
+            </CardActions>
+          </Card>
+        </form>
       </Grid>
     </Paper>
   )

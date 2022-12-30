@@ -4,7 +4,7 @@ import appReducer from '../features/app/slice'
 import canvasReducer from '../features/canvas/slice'
 import adminReducer from '../features/admin/slice'
 import shopReducer from '../features/shop/slice'
-import { save, load } from 'redux-localstorage-simple'
+import { load } from 'redux-localstorage-simple'
 
 export const customMiddleware: Middleware = () => next => action => {
   const result = next(action)
@@ -22,9 +22,9 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat([
       customMiddleware,
-      save({
-        ignoreStates: ['canvas', 'shop'],
-      }),
+      // save({
+      //   ignoreStates: ['canvas', 'shop'],
+      // }),
     ]),
 })
 

@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-import axios from 'axios'
-import { SettingTypes, SystemSettings } from '../../../lib/src/types'
 import packageJson from '../../package.json'
 
 export interface Config {
@@ -22,9 +19,6 @@ export interface Config {
     google?: {
       clientId: string
     }
-  }
-  settings?: {
-    [SettingTypes.System]: SystemSettings
   }
   admin: {
     path: string
@@ -65,23 +59,6 @@ export const config: Config = {
     stripe: env.STRIPE_KEY || '',
     paypal: env.PAYPAL_KEY || '',
   },
-}
-
-export async function applyConfig() {
-  axios.defaults.baseURL = config.backendUrl
-  // Remotish config
-  const serverConfig = (await axios.get('/config'))?.data
-  if (!serverConfig) {
-    return
-  }
-  Object.keys(serverConfig).forEach((key: string) => {
-    const indexed = config as unknown as { [key: string]: unknown }
-    if (typeof serverConfig[key] === 'object') {
-      indexed[key] = { ...(indexed[key] as { [key: string]: unknown }), ...serverConfig[key] }
-    } else {
-      indexed[key] = serverConfig[key]
-    }
-  })
 }
 
 export default config
