@@ -8,6 +8,12 @@
       "preLaunchTask": "client.watch"
     },
     {
+      "command": "yarn workspace server prod",
+      "name": "prod",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
       "command": "yarn workspace client dev",
       "name": "client",
       "request": "launch",
@@ -30,12 +36,6 @@
     {
       "command": "node ${fileDirname}/${fileBasename}",
       "name": "node: $file",
-      "request": "launch",
-      "type": "node-terminal"
-    },
-    {
-      "command": "yarn workspace server prod",
-      "name": "prod",
       "request": "launch",
       "type": "node-terminal"
     }

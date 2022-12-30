@@ -72,12 +72,13 @@ export function parseDatabaseConfig(
     logger.error('DB_URL is not set')
     return db
   }
-  const chunks = url.split(':')
   const database = url.slice(url.lastIndexOf('/') + 1)
-  const username = chunks[1].slice(2)
-  const password = chunks[2].slice(0, chunks[2].lastIndexOf('@'))
-  const host = url.slice(url.indexOf('@') + 1, url.lastIndexOf(':'))
-  const dialect = chunks[0]
+  const regex = /(\w+):\/\/(\w+):(.*)@(.*):(\d+)\/(\w+)/
+  const found = url.match(regex)
+  const dialect = found?.[1] || 'postgres'
+  const username = found?.[2] || ''
+  const password = found?.[3] || ''
+  const host = found?.[4] || ''
   return {
     database,
     host,
