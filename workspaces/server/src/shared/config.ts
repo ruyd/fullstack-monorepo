@@ -177,13 +177,13 @@ export function getClientConfig(user: AppAccessToken) {
     ? {
         clientId: config.settings.google?.clientId,
       }
-    : {}
+    : undefined
   const admin =
     !config.production || user?.roles?.includes('admin')
       ? {
           models: config.db.models,
         }
-      : {}
+      : undefined
   const auth = config.auth.tenant
     ? {
         domain: config.auth.domain,
@@ -194,11 +194,15 @@ export function getClientConfig(user: AppAccessToken) {
         google,
       }
     : undefined
+  const settings = config.settings?.system
+    ? {
+        system: config.settings?.system,
+      }
+    : undefined
+
   return {
     auth,
-    settings: {
-      system: config.settings?.system,
-    },
+    settings,
     admin,
   }
 }
