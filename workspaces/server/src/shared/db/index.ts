@@ -187,7 +187,6 @@ export async function createDatabase(): Promise<boolean> {
   logger.info('Database does not exist, creating...')
 
   const rootUrl = config.db.url.replace(config.db.name, 'postgres')
-  console.log('root', rootUrl)
   const root = new Sequelize(rootUrl)
   const qi = root.getQueryInterface()
   try {
