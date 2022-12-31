@@ -4,6 +4,7 @@ import axios from 'axios'
 import winston from 'winston'
 import { config } from './config'
 import { decodeToken } from './auth'
+import { getRoutesFromApp } from './server'
 
 const format = winston.format.combine(winston.format.timestamp(), winston.format.simple())
 const logger = winston.createLogger({
@@ -72,39 +73,11 @@ export function activateAxiosTrace() {
 }
 
 export function printRouteSummary(app: express.Application) {
+  if (!config.trace) {
+    return
+  }
   logger.info('******** ROUTE SUMMARY ********')
-  type Stack = {
-    name: string
-    handle: {
-      name: string
-      stack: Stack[]
-    }
-    regexp: string
-    route: {
-      path: string
-      methods: {
-        get?: boolean
-        post?: boolean
-        patch?: boolean
-      }
-    }
-  }
-  const composite = app._router.stack.find((s: Stack) => s.name === 'router') as Stack
-  const recurse = (list: Stack[], level = 0): { [key: string]: string; from: string }[] => {
-    let result: { [key: string]: string; from: string }[] = []
-    for (const s of list) {
-      if (s.route?.path) {
-        result.push({
-          [Object.keys(s.route.methods).join(',')]: s.route.path,
-          from: level === 1 ? 'model-api' : 'controller',
-        })
-      } else {
-        result = [...result, ...recurse(s.handle.stack, level + 1)]
-      }
-    }
-    return result
-  }
-  const report = recurse([composite])
+  const report = getRoutesFromApp(app)
   console.log(report)
 }
 
