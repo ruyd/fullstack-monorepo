@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { config } from './shared/config'
 import express from 'express'
 import bodyParser from 'body-parser'
@@ -9,11 +8,7 @@ import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
-import logger, {
-  activateAxiosTrace,
-  endpointTracingMiddleware,
-  printRouteSummary,
-} from './shared/logger'
+import { activateAxiosTrace, endpointTracingMiddleware, printRouteSummary } from './shared/logger'
 import { authProviderAutoConfigure } from './shared/auth/sync'
 import { checkDatabase, Connection } from './shared/db'
 import { modelAuthMiddleware } from './shared/auth'

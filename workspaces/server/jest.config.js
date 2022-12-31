@@ -8,7 +8,7 @@ module.exports = {
   testEnvironment: 'node',
   modulePathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/dist/'],
   roots: ['<rootDir>'],
-  testMatch: ['<rootDir>/tests/**/*.test.ts'],
+  testMatch: ['<rootDir>/tests/**/*.tests.ts'],
   modulePaths: [compilerOptions.baseUrl],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
 }
