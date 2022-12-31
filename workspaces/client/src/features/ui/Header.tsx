@@ -225,7 +225,11 @@ export default function HeaderNavBar() {
               {profileLinks
                 .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
                 .filter(route => (route.roles ? route.roles.every(r => hasRole(r)) : true))
-                .filter(r => (!enableAuth || !enableRegistrations ? r.path !== '/register' : true))
+                .filter(r =>
+                  !enableAuth || !enableRegistrations
+                    ? !['/register', '/login'].includes(r.path)
+                    : true,
+                )
                 .map(setting => (
                   <MenuItem
                     key={setting.path}

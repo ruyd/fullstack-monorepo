@@ -29,6 +29,14 @@ export const routes: AppRoute[] = [
     component: React.lazy(() => import('../features/home')),
   },
   {
+    title: 'Admin',
+    path: '/admin/*',
+    component: React.lazy(() => import('../features/admin')),
+    roles: ['admin'],
+    secure: true,
+    profile: true,
+  },
+  {
     title: 'Login',
     path: Paths.Login,
     component: React.lazy(() => import('../features/profile/Login')),
@@ -71,14 +79,7 @@ export const routes: AppRoute[] = [
     path: '/terms',
     component: React.lazy(() => import('../features/pages/terms')),
   },
-  {
-    title: 'Admin',
-    path: '/admin/*',
-    component: React.lazy(() => import('../features/admin')),
-    roles: ['admin'],
-    secure: true,
-    profile: true,
-  },
+
   {
     title: 'Not Found',
     path: '*',

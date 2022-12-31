@@ -17,6 +17,8 @@ import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 
 export default function Login(props?: ContainerProps & Partial<React.Component>): JSX.Element {
+  const enableRegistration = useAppSelector(state => state.app.settings?.system?.enableRegistration)
+  const enableAuth = useAppSelector(state => state.app.settings?.auth0?.enabled)
   const token = useAppSelector(state => state.app.token)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -51,13 +53,16 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
   }, [dispatch, navigate, returnTo, token])
 
   return (
-    <Container maxWidth="xs" {...props}>
+    <Container maxWidth="xs" sx={{ flex: 1, display: 'flex' }} {...props}>
       <Box
         sx={{
+          flex: 1,
           minHeight: '44vh',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
+          mb: 5,
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -97,25 +102,29 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
           <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3 }}>
             Sign In
           </Button>
-          <Button
-            type="submit"
-            fullWidth
-            variant="outlined"
-            color="primary"
-            sx={{ mt: 1, mb: 2 }}
-            onClick={forgotHandler}
-          >
-            Forgot Password?
-          </Button>
-          <Grid container justifyContent="flex-end" spacing={1}>
-            {isRoutedPage && (
-              <Grid item>
-                <MuiLink variant="body2" component={Link} to={`${Paths.Register}${returnTo}`}>
-                  or Register if new
-                </MuiLink>
-              </Grid>
-            )}
-          </Grid>
+          {enableAuth && (
+            <Button
+              type="submit"
+              fullWidth
+              variant="outlined"
+              color="primary"
+              sx={{ mt: 1, mb: 2 }}
+              onClick={forgotHandler}
+            >
+              Forgot Password?
+            </Button>
+          )}
+          {enableRegistration && (
+            <Grid container justifyContent="flex-end" spacing={1}>
+              {isRoutedPage && (
+                <Grid item>
+                  <MuiLink variant="body2" component={Link} to={`${Paths.Register}${returnTo}`}>
+                    or Register if new
+                  </MuiLink>
+                </Grid>
+              )}
+            </Grid>
+          )}
         </Box>
       </Box>
     </Container>

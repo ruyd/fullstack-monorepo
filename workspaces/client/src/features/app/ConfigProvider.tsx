@@ -12,9 +12,11 @@ export function ConfigProvider({ children }: { children: React.ReactNode }): JSX
   const isLoading = React.useRef<boolean>(false)
   const loaded = useAppSelector(state => state.app.loaded)
   const ready = useAppSelector(state => state.app.ready)
+  const token = useAppSelector(state => state.app.token)
   const maintenance = useAppSelector(state => state.app.settings?.system?.disable)
   const showStart = loaded && !ready
-  const showMaintenance = maintenance && !hasRole('admin') && location.pathname !== '/login'
+  const showMaintenance =
+    maintenance && (!token || !hasRole('admin')) && location.pathname !== '/login'
 
   React.useEffect(() => {
     const run = async () => {
