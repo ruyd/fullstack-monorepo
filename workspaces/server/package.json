@@ -34,7 +34,7 @@
     "pg": "^8.7.3",
     "sequelize": "^6.19.1",
     "socket.io": "^4.5.4",
-    "swagger-jsdoc": "^6.2.5",
+    "swagger-jsdoc": "6.2.5",
     "swagger-ui-express": "^4.4.0",
     "umzug": "^3.2.1",
     "utf-8-validate": "^5.0.10",

@@ -53,7 +53,7 @@ export function createBackendApp(): BackendApp {
   // Swagger Portal
   const swaggerDoc = swaggerJsdoc({
     swaggerDefinition: config.swaggerSetup as OAS3Definition,
-    apis: ['**/*/swagger.yaml', '**/routes/**/index.*s'],
+    apis: ['**/*/swagger.yaml', '**/*/index.ts', 'index.js'],
   }) as OAS3Definition
 
   applyEntitiesToSwaggerDoc(Connection.entities, swaggerDoc)

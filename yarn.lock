@@ -16220,7 +16220,7 @@ __metadata:
     pg: ^8.7.3
     sequelize: ^6.19.1
     socket.io: ^4.5.4
-    swagger-jsdoc: ^6.2.5
+    swagger-jsdoc: 6.2.5
     swagger-ui-express: ^4.4.0
     ts-jest: ^29.0.3
     ts-loader: ^9.4.1
@@ -17094,7 +17094,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swagger-jsdoc@npm:^6.2.5":
+"swagger-jsdoc@npm:6.2.5":
   version: 6.2.5
   resolution: "swagger-jsdoc@npm:6.2.5"
   dependencies:
