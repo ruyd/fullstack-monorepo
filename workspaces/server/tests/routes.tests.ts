@@ -3,7 +3,7 @@ import createBackendApp from 'src/app'
 import { getRoutesFromApp } from 'src/shared/server'
 
 describe('routes', () => {
-  const app = createBackendApp()
+  const app = createBackendApp({ checks: false, trace: false })
   const routes = getRoutesFromApp(app)
   test('should have at least one route', () => {
     expect(routes.length).toBeGreaterThan(0)

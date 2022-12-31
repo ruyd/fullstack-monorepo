@@ -18,8 +18,17 @@ export interface BackendApp extends express.Express {
   onStartupCompletePromise: Promise<boolean[]>
 }
 
-export function createBackendApp(): BackendApp {
+export interface BackendOptions {
+  checks?: boolean
+  trace?: boolean
+}
+
+export function createBackendApp({ checks, trace }: BackendOptions = { checks: true }): BackendApp {
   const app = express() as BackendApp
+
+  if (trace) {
+    config.trace = trace
+  }
 
   if (!config.production && config.trace) {
     activateAxiosTrace()
@@ -28,9 +37,11 @@ export function createBackendApp(): BackendApp {
   // Startup
   Connection.init()
   const promises = [
-    checkDatabase()
-      .then(async ok => (ok ? await loadSettingsAsync() : ok))
-      .then(async ok => (ok ? await authProviderAutoConfigure() : ok)),
+    checks
+      ? checkDatabase()
+          .then(async ok => (ok ? await loadSettingsAsync() : ok))
+          .then(async ok => (ok ? await authProviderAutoConfigure() : ok))
+      : loadSettingsAsync(),
   ]
 
   // Add Middlewares - Order is important
