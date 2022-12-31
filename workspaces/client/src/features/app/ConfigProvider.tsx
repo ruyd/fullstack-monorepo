@@ -1,9 +1,9 @@
 import React from 'react'
 import loadConfig from 'src/shared/loadConfig'
 import { useAppSelector } from 'src/shared/store'
-import MaintenancePage from 'src/features/pages/Maintenance'
+import MaintenancePage from 'src/features/pages/Maintenance1'
 import ThemeSwitch from '../ui/Theme'
-import StartPage from 'src/features/pages/Start'
+import StartPage from 'src/features/pages/Start1'
 import { useLocation } from 'react-router-dom'
 import { hasRole } from 'src/shared/auth'
 

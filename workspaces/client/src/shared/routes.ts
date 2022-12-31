@@ -89,13 +89,13 @@ export const routes: AppRoute[] = [
     title: 'Offline',
     path: '/maintenance',
     cleanLayout: true,
-    component: React.lazy(() => import('../features/pages/Maintenance')),
+    component: React.lazy(() => import('../features/pages/Maintenance1')),
   },
   {
     title: 'Start',
     path: '/start',
     cleanLayout: true,
-    component: React.lazy(() => import('../features/pages/Start')),
+    component: React.lazy(() => import('../features/pages/Start1')),
   },
 ]
 
