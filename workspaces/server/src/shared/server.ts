@@ -1,4 +1,5 @@
 import express from 'express'
+import config from './config'
 export type ExpressStack = {
   name: string
   handle: {
@@ -38,4 +39,19 @@ export function getRoutesFromApp(app: express.Application) {
     return result
   }
   return recurse([composite])
+}
+
+// Homepage
+export function homepage(req: express.Request, res: express.Response) {
+  const title = config.swaggerSetup.info?.title || 'Backend'
+  res.send(`<html><title>${title}</title>
+    <body style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    ">
+    <div>
+    ⚡️[server]: Backend is running on ${req.headers.host} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
+    </div>
+    </body></html>`)
 }

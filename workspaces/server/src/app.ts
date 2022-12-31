@@ -13,6 +13,7 @@ import { authProviderAutoConfigure } from './shared/auth/sync'
 import { checkDatabase, Connection } from './shared/db'
 import { modelAuthMiddleware } from './shared/auth'
 import { loadSettingsAsync } from './shared/settings'
+import { homepage } from './shared/server'
 
 export interface BackendApp extends express.Express {
   onStartupCompletePromise: Promise<boolean[]>
@@ -41,7 +42,7 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
       ? checkDatabase()
           .then(async ok => (ok ? await loadSettingsAsync() : ok))
           .then(async ok => (ok ? await authProviderAutoConfigure() : ok))
-      : loadSettingsAsync(),
+      : Promise.resolve(true),
   ]
 
   // Add Middlewares - Order is important
@@ -83,6 +84,8 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
   app.onStartupCompletePromise = Promise.all(promises)
 
   printRouteSummary(app)
+
+  app.get('/', homepage)
 
   return app
 }
