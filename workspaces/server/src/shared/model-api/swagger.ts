@@ -1,6 +1,8 @@
 import { Model, ModelStatic } from 'sequelize/types'
 import { OAS3Definition, Schema } from 'swagger-jsdoc'
+import config from '../config'
 import Connection, { EntityConfig } from '../db'
+import logger from '../logger'
 
 const conversions: Record<string, string> = {
   INTEGER: 'number',
@@ -159,11 +161,16 @@ export function autoCompleteResponses(swaggerDoc: OAS3Definition) {
   }
 }
 
-export function applyModelsToSwaggerDoc(entities: EntityConfig[], swaggerDoc: OAS3Definition) {
+export function applyEntitiesToSwaggerDoc(entities: EntityConfig[], swaggerDoc: OAS3Definition) {
+  if (config.trace) {
+    logger.info('***** Swagger Paths *****')
+    // eslint-disable-next-line no-console
+    console.table(Object.keys(swaggerDoc?.paths || {}))
+  }
+  autoCompleteResponses(swaggerDoc)
   if (!Connection.initialized) {
     return
   }
-  autoCompleteResponses(swaggerDoc)
   for (const entity of entities) {
     const model = entity.model as ModelStatic<Model>
     const schema = getSchema(model)

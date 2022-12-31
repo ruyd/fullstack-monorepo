@@ -19,7 +19,7 @@ import { useGet } from '../app/thunks'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
 import { notify } from '../app'
-import { useAppDispatch } from '../../shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import ShareIcon from '@mui/icons-material/Share'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import waiting from '../home/images/looking.svg'
@@ -45,6 +45,9 @@ export default function Gallery({
   const { data } = useGet<PagedResult<Drawing>>(
     'gallery',
     '/gallery' + (userId ? '/' + userId : ''),
+    {
+      enabled: !!userId,
+    },
   )
   const items = data?.items || []
   const origin =

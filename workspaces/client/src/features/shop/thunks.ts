@@ -13,7 +13,13 @@ export const intentAsync = createAsyncThunk(
     return response.data?.intent
   },
 )
-export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch }) => {
+export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, getState }) => {
+  const state = getState() as RootState
+  const disable = state.app.settings?.system?.disable
+  const enableStore = state.app.settings?.system?.enableStore
+  if (disable || !enableStore) {
+    return
+  }
   const { data: items } = await get<Cart[]>('cart')
   const { data: orders } = await get<Order[]>('order')
   // const { data: sales } = await get<Order[]>('order')

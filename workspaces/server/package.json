@@ -14,7 +14,7 @@
     "migrator": "yarn ts-node src/shared/db/migrator.ts",
     "clean": "rm -rf node_modules dist",
     "prod": "docker compose up --wait && yarn tsc --build && yarn concurrently \"NODE_ENV=production yarn nodemon -r tsconfig-paths/register -q src/index.ts\" \"NODE_ENV=production yarn webpack watch\"",
-    "prod:cloud": "yarn build && NODE_ENV=production gcloud beta code dev --secrets=DB_URL=DB_URL:latest --allow-secret-manager"
+    "cloud": "yarn build && NODE_ENV=production gcloud beta code dev --secrets=DB_URL=DB_URL:latest --allow-secret-manager"
   },
   "dependencies": {
     "@google-cloud/secret-manager": "^4.2.0",
@@ -69,6 +69,7 @@
     "typescript": "^4.9.4",
     "webpack": "^5.75.0",
     "webpack-cli": "^4.10.0",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "yaml-loader": "^0.8.0"
   }
 }

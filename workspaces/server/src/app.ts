@@ -1,14 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { config } from './shared/config'
 import express from 'express'
 import bodyParser from 'body-parser'
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc, { OAS3Definition } from 'swagger-jsdoc'
-import { applyModelsToSwaggerDoc } from './shared/model-api/swagger'
+import { applyEntitiesToSwaggerDoc } from './shared/model-api/swagger'
 import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
-import { activateAxiosTrace, endpointTracingMiddleware } from './shared/logger'
+import logger, {
+  activateAxiosTrace,
+  endpointTracingMiddleware,
+  printRouteSummary,
+} from './shared/logger'
 import { authProviderAutoConfigure } from './shared/auth/sync'
 import { checkDatabase, Connection } from './shared/db'
 import { modelAuthMiddleware } from './shared/auth'
@@ -51,7 +56,7 @@ export function createBackendApp(): BackendApp {
     apis: ['**/*/swagger.yaml', '**/routes/**/index.*s'],
   }) as OAS3Definition
 
-  applyModelsToSwaggerDoc(Connection.entities, swaggerDoc)
+  applyEntitiesToSwaggerDoc(Connection.entities, swaggerDoc)
 
   app.use(
     config.swaggerSetup.basePath,
@@ -70,6 +75,8 @@ export function createBackendApp(): BackendApp {
   app.use(api)
 
   app.onStartupCompletePromise = Promise.all(promises)
+
+  printRouteSummary(app)
 
   return app
 }
