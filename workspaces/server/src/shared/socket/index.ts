@@ -22,9 +22,6 @@ export function registerSocket(server: Server | ServerHttps): void {
     logger.info(`⚡️[socket]: New connection: ${socket.id}`)
 
     socket.send('Helo', {
-      config: {
-        test: true,
-      },
       notifications: ['Hi!'],
     })
 
