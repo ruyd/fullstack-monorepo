@@ -18,7 +18,7 @@ import { onLogin } from 'src/shared/auth'
 import loadConfig from 'src/shared/loadConfig'
 import { useNavigate } from 'react-router-dom'
 
-export default function StartPage() {
+export default function Start() {
   const dispatch = useAppDispatch()
   const nav = useNavigate()
   const loading = useAppSelector(state => state.app.loading)
