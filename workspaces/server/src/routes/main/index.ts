@@ -1,7 +1,5 @@
 import express from 'express'
-import { EnrichedRequest } from '../../shared/types'
-import { getClientConfig } from '../../shared/config'
-import { gallery, start } from './controller'
+import { gallery, start, getClientConfig } from './controller'
 
 const router = express.Router()
 
@@ -17,10 +15,7 @@ router.get(['/gallery', '/gallery/:userId'], gallery)
  * /config:
  *  get:
  */
-router.get('/config', async (_req, res) => {
-  const req = _req as EnrichedRequest
-  res.json(getClientConfig(req.auth))
-})
+router.get('/config', getClientConfig)
 
 /**
  * @swagger

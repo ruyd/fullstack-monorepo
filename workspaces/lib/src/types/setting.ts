@@ -8,7 +8,7 @@ export const SettingTypes = {
 export interface SystemSettings {
   disable: boolean
   enableStore: boolean
-  auth: 'fake' | 'auth0' | 'off'
+  enableAuth?: boolean
   enableCookieConsent?: boolean
   enableOneTapLogin?: boolean
   enableRegistration?: boolean

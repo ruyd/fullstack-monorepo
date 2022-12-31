@@ -2,9 +2,12 @@ import express from 'express'
 import sequelize from 'sequelize'
 import logger from '../../shared/logger'
 import { list } from '../../shared/model-api/controller'
-import { DrawingModel, SettingModel, UserModel } from '../../shared/types'
+import { DrawingModel, EnrichedRequest, SettingModel, UserModel } from '../../shared/types'
 import { v4 as uuid } from 'uuid'
 import { createToken } from '../../shared/auth'
+import config from 'src/shared/config'
+import { loadSettingsAsync } from 'src/shared/settings'
+import { SystemSettings } from '@lib'
 
 export async function start(req: express.Request, res: express.Response) {
   logger.info(`Database Initialization by: ${req.body.email}`)
@@ -36,25 +39,33 @@ export async function start(req: express.Request, res: express.Response) {
   }
 
   logger.info('Creating system settings...')
-  const systemSetting = await SettingModel.upsert({
-    name: 'system',
-    data: {
-      disabled: true,
-    } as { [key: string]: unknown },
-  })
+  const systemSetting = (
+    await SettingModel.create({
+      name: 'system',
+      data: {
+        disabled: true,
+      } as { [key: string]: unknown },
+    })
+  )?.get()
   if (!systemSetting) {
     res.status(500)
     res.json({ ok: false, error: 'Failed to create system setting' })
     return
   }
 
-  const user = (
-    await UserModel.create({
-      userId: uuid(),
-      email: req.body.email,
-      firstName: 'Admin',
-    })
-  ).get()
+  //if statefull
+  config.settings.system = systemSetting.data as SystemSettings
+
+  let user = (await UserModel.findOne({ where: { email: req.body.email } }))?.get()
+  if (!user) {
+    user = (
+      await UserModel.create({
+        userId: uuid(),
+        email: req.body.email,
+        firstName: 'Admin',
+      })
+    ).get()
+  }
 
   const token = createToken({
     ...user,
@@ -75,4 +86,43 @@ export async function gallery(req: express.Request, res: express.Response) {
     },
   })
   res.json(items)
+}
+
+export async function getClientConfig(req: express.Request, res: express.Response) {
+  const user = (req as EnrichedRequest).auth
+  await loadSettingsAsync() // stateless, add config for statefull, to skip stuff like this on VMs
+  const google = config.settings?.google?.enabled
+    ? {
+        clientId: config.settings.google?.clientId,
+      }
+    : undefined
+  const admin =
+    !config.production || user?.roles?.includes('admin')
+      ? {
+          models: config.db.models,
+        }
+      : undefined
+  const auth = config.auth.tenant
+    ? {
+        domain: config.auth.domain,
+        baseUrl: config.auth.baseUrl,
+        audience: config.auth.clientAudience,
+        clientId: config.auth.clientId,
+        redirectUrl: config.auth.redirectUrl,
+        google,
+      }
+    : undefined
+  const settings = config.settings?.system
+    ? {
+        system: config.settings?.system,
+      }
+    : undefined
+
+  const payload = {
+    auth,
+    settings,
+    admin,
+    ready: !!config.settings?.system,
+  }
+  res.json(payload)
 }

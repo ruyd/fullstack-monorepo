@@ -28,6 +28,12 @@ const profileLinks = routes.filter(route => route.profile)
 
 export default function HeaderNavBar() {
   const items = useAppSelector(state => state.shop.items)
+  const enableAuth = useAppSelector(state => state.app.settings?.system?.enableAuth)
+  const enableRegistrations = useAppSelector(
+    state => state.app.settings?.system?.enableRegistration,
+  )
+  const enableStore = useAppSelector(state => state.app.settings?.system?.enableStore)
+
   const dispatch = useAppDispatch()
   const authenticated = useAppSelector(state => state.app.token)
   const user = useAppSelector(state => state.app.user)
@@ -164,22 +170,24 @@ export default function HeaderNavBar() {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Shopping">
-              <Badge
-                color="secondary"
-                badgeContent={items
-                  .map(i => i.quantity)
-                  .reduce((prev, curr) => {
-                    return prev + curr
-                  }, 0)}
-              >
-                <IconButton onClick={handleCheckout}>
-                  <ShoppingCartCheckout />
-                </IconButton>
-              </Badge>
-            </Tooltip>
-          </Box>
+          {enableStore && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Shopping">
+                <Badge
+                  color="secondary"
+                  badgeContent={items
+                    .map(i => i.quantity)
+                    .reduce((prev, curr) => {
+                      return prev + curr
+                    }, 0)}
+                >
+                  <IconButton onClick={handleCheckout}>
+                    <ShoppingCartCheckout />
+                  </IconButton>
+                </Badge>
+              </Tooltip>
+            </Box>
+          )}
           <Box sx={{ flexGrow: 0, ml: 1 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
@@ -204,6 +212,8 @@ export default function HeaderNavBar() {
             >
               {profileLinks
                 .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
+                .filter(r => (enableAuth ? true : !['/register'].includes(r.path)))
+                .filter(r => (enableRegistrations ? true : r.path !== '/register'))
                 .map(setting => (
                   <MenuItem
                     key={setting.path}

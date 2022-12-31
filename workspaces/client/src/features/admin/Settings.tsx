@@ -24,7 +24,7 @@ export default function Settings() {
   const [system, setSystem] = React.useState<SystemSettings | undefined>({
     disable: false,
     enableStore: false,
-    auth: 'auth0',
+    enableAuth: true,
   })
   const [google, setGoogle] = React.useState<GoogleSettings | undefined>({})
   const [auth0, setAuth0] = React.useState<Auth0Settings | undefined>({

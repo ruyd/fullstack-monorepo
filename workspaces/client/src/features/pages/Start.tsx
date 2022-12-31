@@ -10,15 +10,20 @@ import {
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import StartImage from './images/start.svg'
-import { useAppSelector } from 'src/shared/store'
+import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { User } from '@lib'
 import React from 'react'
-import { request } from '../app'
+import { patch, request } from '../app'
 import { onLogin } from 'src/shared/auth'
 import loadConfig from 'src/shared/loadConfig'
+import { useNavigate } from 'react-router-dom'
 
 export default function StartPage() {
+  const dispatch = useAppDispatch()
+  const nav = useNavigate()
   const loading = useAppSelector(state => state.app.loading)
+  const token = useAppSelector(state => state.app.token)
+  const ready = useAppSelector(state => state.app.ready)
   const [error, setError] = React.useState<string | null>(null)
   const [form, setForm] = React.useState<{ email: string }>({
     email: '',
@@ -36,13 +41,19 @@ export default function StartPage() {
       },
     )
     if (response.data.ok) {
-      await loadConfig()
+      dispatch(patch({ token: response.data.token, user: response.data.user }))
       onLogin(response.data)
-      // window.location.assign('/admin/settings')
+      await loadConfig()
     } else {
       setError(response.data.error || 'Unknown error')
     }
   }
+
+  React.useEffect(() => {
+    if (ready && token) {
+      nav('/admin/settings')
+    }
+  }, [nav, ready, token])
 
   // send request create internal setting with admin email
   // create token with admin roles

@@ -39,6 +39,9 @@ export async function loadSettingsAsync() {
   const settings = (await SettingModel.findAll({ raw: true })) as unknown as Setting[]
   for (const setting of settings) {
     logger.info(`Setting: ${setting.name}`)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const debug = config.settings
+
     config.settings[setting.name] = setting.data as SettingDataType
     const setter = setters[setting.name]
     if (setter) {

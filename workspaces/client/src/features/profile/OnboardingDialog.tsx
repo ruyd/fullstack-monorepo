@@ -31,6 +31,7 @@ const Transition = React.forwardRef(function Transition(
 
 export default function OnboardingDialog() {
   const dispatch = useAppDispatch()
+  const enableRegistration = useAppSelector(state => state.app.settings?.system?.enableRegistration)
   const requested = useAppSelector(state => state.app.dialog)
   const [show, setShow] = React.useState('login')
   const open = requested?.includes('onboard')
@@ -65,9 +66,11 @@ export default function OnboardingDialog() {
           <Button variant="outlined" onClick={() => setShow('login')}>
             Sign in
           </Button>
-          <Button variant="outlined" onClick={() => setShow('register')}>
-            Sign up
-          </Button>
+          {enableRegistration && (
+            <Button variant="outlined" onClick={() => setShow('register')}>
+              Sign up
+            </Button>
+          )}
         </DialogActions>
       </DialogContent>
     </Dialog>

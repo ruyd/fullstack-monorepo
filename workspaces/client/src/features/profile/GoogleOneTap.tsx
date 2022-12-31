@@ -184,16 +184,21 @@ export function GoogleOneTapButton({
 }
 export function GoogleOneTap(): JSX.Element {
   const token = useAppSelector(state => state.app.token)
+  const enabled = useAppSelector(state => state.app.settings?.system?.enableOneTapLogin)
   const dispatch = useAppDispatch()
   const loaded = React.useRef(false)
   React.useEffect(() => {
+    if (!enabled) {
+      return
+    }
+
     if (!loaded.current && !token) {
       loadScriptAndInit({
         ...initOptions,
       })
       loaded.current = true
     }
-  }, [dispatch, token])
+  }, [dispatch, token, enabled])
 
   return <></>
 }
