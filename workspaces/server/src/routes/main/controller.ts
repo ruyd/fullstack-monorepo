@@ -43,8 +43,8 @@ export async function start(req: express.Request, res: express.Response) {
     await SettingModel.create({
       name: 'system',
       data: {
-        disabled: true,
-      } as { [key: string]: unknown },
+        disable: true,
+      } as SystemSettings,
     })
   )?.get()
   if (!systemSetting) {

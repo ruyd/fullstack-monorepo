@@ -87,6 +87,7 @@ export const routes: AppRoute[] = [
   {
     title: 'Offline',
     path: '/maintenance',
+    cleanLayout: true,
     component: React.lazy(() => import('../features/pages/maintenance')),
   },
   {

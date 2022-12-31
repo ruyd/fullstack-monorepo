@@ -9,10 +9,18 @@ export default async function loadConfig() {
   if (!serverConfig) {
     return
   }
+  setConfig(serverConfig)
+}
+
+// TODO: Type serverClientConfig
+export function setConfig(serverConfig: { [key: string]: unknown }) {
   const indexed = config as unknown as { [key: string]: unknown }
   Object.keys(serverConfig).forEach((key: string) => {
     if (typeof serverConfig[key] === 'object') {
-      indexed[key] = { ...(indexed[key] as { [key: string]: unknown }), ...serverConfig[key] }
+      indexed[key] = {
+        ...(indexed[key] as { [key: string]: unknown }),
+        ...(serverConfig[key] as object),
+      }
     } else {
       indexed[key] = serverConfig[key]
     }

@@ -13,28 +13,21 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { useAppDispatch } from '../../shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { Setting, SystemSettings, GoogleSettings, Auth0Settings, PagedResult } from '@lib'
 import { get, notify, notifyError, request } from '../app'
 import { debounce } from 'lodash'
 
 export default function Settings() {
   const dispatch = useAppDispatch()
-  const throttle = React.useRef<number>(0)
-  const [system, setSystem] = React.useState<SystemSettings | undefined>({
-    disable: false,
-    enableStore: false,
-    enableAuth: true,
-  })
-  const [google, setGoogle] = React.useState<GoogleSettings | undefined>({})
-  const [auth0, setAuth0] = React.useState<Auth0Settings | undefined>({
-    tenant: '',
-    redirectUrl: '',
-    enabled: false,
-  })
+  const systemSettings = useAppSelector(state => state.app.settings?.system)
+  const [system, setSystem] = React.useState<SystemSettings | undefined>(systemSettings)
+  const googleSettings = useAppSelector(state => state.app.settings?.google)
+  const [google, setGoogle] = React.useState<GoogleSettings | undefined>(googleSettings)
+  const auth0Settings = useAppSelector(state => state.app.settings?.auth0)
+  const [auth0, setAuth0] = React.useState<Auth0Settings | undefined>(auth0Settings)
   const [settings, setSettings] = React.useState<Setting[]>([])
   type SetFn = React.Dispatch<React.SetStateAction<unknown>>
-
   const save = async (name: string, prop: string, value: unknown) => {
     const sets: {
       [key: string]: SetFn

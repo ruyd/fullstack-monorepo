@@ -21,12 +21,15 @@ import routes, { AppRoute } from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Badge, Link } from '@mui/material'
 import { prompt } from '../profile/GoogleOneTap'
-import { ShoppingBag, ShoppingCart, ShoppingCartCheckout } from '@mui/icons-material'
+import { ShoppingBag, ShoppingCart, ShoppingCartCheckout, Warning } from '@mui/icons-material'
+import { hasRole } from 'src/shared/auth'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
 
 export default function HeaderNavBar() {
+  const maintenance = useAppSelector(state => state.app.settings?.system?.disable)
+  const backgroundColor = maintenance ? 'error.dark' : 'primary.main'
   const items = useAppSelector(state => state.shop.items)
   const enableAuth = useAppSelector(state => state.app.settings?.system?.enableAuth)
   const enableRegistrations = useAppSelector(
@@ -77,7 +80,12 @@ export default function HeaderNavBar() {
   }
 
   return (
-    <AppBar position="static" enableColorOnDark color="primary" sx={{ maxHeight: '4rem' }}>
+    <AppBar
+      position="static"
+      enableColorOnDark
+      color="primary"
+      sx={{ maxHeight: '4rem', backgroundColor }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -98,7 +106,6 @@ export default function HeaderNavBar() {
           >
             {config.defaultTitle}
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -170,6 +177,11 @@ export default function HeaderNavBar() {
             ))}
           </Box>
 
+          {maintenance && (
+            <Tooltip title="Maintenance Mode - Only Admins" color="warning">
+              <Warning />
+            </Tooltip>
+          )}
           {enableStore && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Shopping">
@@ -212,8 +224,8 @@ export default function HeaderNavBar() {
             >
               {profileLinks
                 .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
-                .filter(r => (enableAuth ? true : !['/register'].includes(r.path)))
-                .filter(r => (enableRegistrations ? true : r.path !== '/register'))
+                .filter(route => (route.roles ? route.roles.every(r => hasRole(r)) : true))
+                .filter(r => (!enableAuth || !enableRegistrations ? r.path !== '/register' : true))
                 .map(setting => (
                   <MenuItem
                     key={setting.path}

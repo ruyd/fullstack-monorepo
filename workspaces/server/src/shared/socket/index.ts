@@ -10,8 +10,10 @@ import { config } from '../config'
 
 export type SocketHandler = (io: SocketService, socket: Socket) => void
 
+export let io: SocketService
+
 export function registerSocket(server: Server | ServerHttps): void {
-  const io = new SocketService(server, {
+  io = new SocketService(server, {
     cors: config.cors,
   })
   const onConnection = (socket: Socket) => {
@@ -45,4 +47,14 @@ export function registerSocket(server: Server | ServerHttps): void {
     })
   }
   io.on('connection', onConnection)
+}
+
+export async function broadcastChange(eventName: string, data: unknown): Promise<void> {
+  // const sockets = await io.except(userId).fetchSockets()
+  // io.except(userId).emit('config', { data })
+  io.emit(eventName, { data })
+}
+
+export async function notifyChange(eventName: string): Promise<void> {
+  io.emit(eventName)
 }

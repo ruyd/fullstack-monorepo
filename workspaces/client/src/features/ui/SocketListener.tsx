@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 import React from 'react'
 import { io, Socket } from 'socket.io-client'
-// import { PayloadAction } from '@reduxjs/toolkit'
+
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { AppNotification, patch } from '../app'
 import { config } from 'src/shared/config'
+
+import loadConfig from 'src/shared/loadConfig'
 
 export default function SocketListener() {
   const dispatch = useAppDispatch()
@@ -51,8 +53,9 @@ export default function SocketListener() {
       dispatch(patch({ token: undefined }))
     })
 
-    socket.on('config', payload => {
-      console.log('config', payload)
+    // SettingHandler - move to file
+    socket.on('setting', () => {
+      loadConfig()
     })
 
     socket.on('notification', (notification: AppNotification) => {

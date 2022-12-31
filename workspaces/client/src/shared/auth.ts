@@ -1,6 +1,6 @@
 import decode from 'jwt-decode'
 import axios from 'axios'
-import { Jwt, User } from '@lib'
+import { AppAccessToken, Jwt, User } from '@lib'
 import { Paths } from './routes'
 import { config } from './config'
 import authProvider from 'auth0-js'
@@ -24,7 +24,7 @@ export const NONCE_KEY = 'nonce'
  */
 export const RULE_PREFIX = 'https://'
 
-export function decodeToken(token: string): Jwt | null {
+export function decodeToken(token: string): AppAccessToken | null {
   if (!token) {
     return null
   }
@@ -43,7 +43,7 @@ export function decodeToken(token: string): Jwt | null {
       accessToken[key.replace(RULE_PREFIX, '')] = accessToken[key]
       delete accessToken[key]
     }
-    return accessToken
+    return accessToken as AppAccessToken
   } catch {
     return null
   }
@@ -122,4 +122,12 @@ export function getNonce() {
 
 export function clearNonce() {
   localStorage.removeItem(NONCE_KEY)
+}
+
+export function hasRole(role: string): boolean {
+  const token = getPersistedAuthFromStorage()?.token
+  if (!token) return false
+  const decoded = decodeToken(token)
+  if (!decoded) return false
+  return decoded.roles?.includes(role) || false
 }

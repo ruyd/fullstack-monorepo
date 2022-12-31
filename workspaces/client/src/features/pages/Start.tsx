@@ -41,9 +41,9 @@ export default function StartPage() {
       },
     )
     if (response.data.ok) {
+      await loadConfig()
       dispatch(patch({ token: response.data.token, user: response.data.user }))
       onLogin(response.data)
-      await loadConfig()
     } else {
       setError(response.data.error || 'Unknown error')
     }
@@ -51,7 +51,7 @@ export default function StartPage() {
 
   React.useEffect(() => {
     if (ready && token) {
-      nav('/admin/settings')
+      nav('/admin/settings', { replace: true })
     }
   }, [nav, ready, token])
 
