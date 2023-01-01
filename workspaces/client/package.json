@@ -114,7 +114,8 @@
     "dev": "node scripts/dev.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "deploy": "gh-pages -d build",
+    "ghpages": "gh-pages -d build",
+    "deploy": "yarn build && firebase deploy",
     "clean": "rm -rf node_modules package-lock.json dist build",
     "lint": "eslint . --fix"
   },
