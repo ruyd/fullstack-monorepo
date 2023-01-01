@@ -28,6 +28,8 @@ yarn-debug.log*
 yarn-error.log*
 *.tsbuildinfo
 *.log
+*.cache
+.rem
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
