@@ -55,9 +55,6 @@ export default function Start() {
     }
   }, [nav, ready, token])
 
-  // send request create internal setting with admin email
-  // create token with admin roles
-  // if success redirect to admin page
   return (
     <Paper
       sx={{
