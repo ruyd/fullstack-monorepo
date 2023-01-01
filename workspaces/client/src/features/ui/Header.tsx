@@ -226,9 +226,7 @@ export default function HeaderNavBar() {
                 .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
                 .filter(route => (route.roles ? route.roles.every(r => hasRole(r)) : true))
                 .filter(r =>
-                  !enableAuth || !enableRegistrations
-                    ? !['/register', '/login'].includes(r.path)
-                    : true,
+                  !enableAuth || !enableRegistrations ? !['/register'].includes(r.path) : true,
                 )
                 .map(setting => (
                   <MenuItem

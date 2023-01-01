@@ -77,7 +77,7 @@ export const routes: AppRoute[] = [
   {
     title: 'Terms of Service',
     path: '/terms',
-    component: React.lazy(() => import('../features/pages/terms')),
+    component: React.lazy(() => import('../features/pages/Terms1')),
   },
 
   {
@@ -89,13 +89,13 @@ export const routes: AppRoute[] = [
     title: 'Offline',
     path: '/maintenance',
     cleanLayout: true,
-    component: React.lazy(() => import('../features/pages/Maintenance1')),
+    component: React.lazy(() => import('../features/pages/Maintenance')),
   },
   {
     title: 'Start',
     path: '/start',
     cleanLayout: true,
-    component: React.lazy(() => import('../features/pages/Start1')),
+    component: React.lazy(() => import('../features/pages/Start')),
   },
 ]
 
