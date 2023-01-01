@@ -7,6 +7,7 @@ import { createOrUpdate } from '../model-api/controller'
 import { UserActiveModel } from '../types'
 import handlers from './handlers'
 import { config } from '../config'
+import { getClientConfig } from 'src/routes/main/controller'
 
 export type SocketHandler = (io: SocketService, socket: Socket) => void
 
@@ -54,4 +55,9 @@ export async function broadcastChange(eventName: string, data: unknown): Promise
 
 export async function notifyChange(eventName: string): Promise<void> {
   io.emit(eventName)
+}
+
+export function sendConfig(): void {
+  const payload = getClientConfig()
+  io.emit('config', { ...payload })
 }

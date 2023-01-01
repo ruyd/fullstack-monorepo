@@ -3,10 +3,11 @@ import React from 'react'
 import { io, Socket } from 'socket.io-client'
 
 import { useAppDispatch, useAppSelector } from 'src/shared/store'
-import { AppNotification, patch } from '../app'
+import { AppNotification, AppState, patch } from '.'
 import { config } from 'src/shared/config'
 
-import loadConfig from 'src/shared/loadConfig'
+import loadConfig, { setConfig } from 'src/shared/loadConfig'
+import { ClientSettings } from '../../../../lib/src/types'
 
 export default function SocketListener() {
   const dispatch = useAppDispatch()
@@ -53,9 +54,16 @@ export default function SocketListener() {
       dispatch(patch({ token: undefined }))
     })
 
-    // SettingHandler - move to file
     socket.on('setting', () => {
       loadConfig()
+    })
+
+    socket.on('state', (state: AppState) => {
+      dispatch(patch({ ...state }))
+    })
+
+    socket.on('config', (config: ClientSettings) => {
+      setConfig(config)
     })
 
     socket.on('notification', (notification: AppNotification) => {

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { SettingData, SettingType } from '@lib'
+import { ClientSettings } from '@lib'
 import { AppUser, getPersistedAuthFromStorage } from '../../shared/auth'
 import { ThemeState } from '../ui/Theme/getTheme'
 import { AppNotification, NotificationSeverity } from './types'
@@ -15,12 +15,7 @@ export interface AppState {
   loading?: boolean
   loaded?: boolean
   dialog?: string
-  settings?: Omit<
-    {
-      [k in SettingType]: SettingData[k]
-    },
-    'internal'
-  >
+  settings?: ClientSettings
   deviceId?: string
   ready: boolean
 }

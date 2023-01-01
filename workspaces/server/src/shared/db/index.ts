@@ -30,7 +30,7 @@ export interface EntityConfig<M extends Model = Model> {
   publicWrite?: boolean
   model?: ModelStatic<M>
   joins?: Join[]
-  onChanges?: (source: string, item: M) => Promise<void>
+  onChanges?: (source?: string, model?: M) => Promise<void> | void
 }
 
 export function sortEntities(a: EntityConfig, b: EntityConfig): number {
@@ -168,7 +168,7 @@ export function addModel<T extends object>(
   roles?: string[],
   publicRead?: boolean,
   publicWrite?: boolean,
-  onChanges?: (source: string, model: Model<T>) => Promise<void>,
+  onChanges?: (source?: string, model?: Model<T>) => Promise<void> | void,
 ): ModelStatic<Model<T, T>> {
   const model = class extends Model {}
   const cfg: EntityConfig = {

@@ -1,6 +1,6 @@
 import { Setting } from '@lib'
 import { DataTypes } from 'sequelize'
-import { notifyChange } from 'src/shared/socket'
+import { sendConfig } from 'src/shared/socket'
 import { addModel } from '../../../shared/db'
 
 export const SettingModel = addModel<Setting>(
@@ -18,7 +18,7 @@ export const SettingModel = addModel<Setting>(
   [],
   false,
   false,
-  notifyChange,
+  sendConfig,
 )
 
 export default SettingModel

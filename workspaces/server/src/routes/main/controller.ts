@@ -88,7 +88,7 @@ export async function gallery(req: express.Request, res: express.Response) {
   res.json(items)
 }
 
-export async function getClientConfig(req: express.Request, res: express.Response) {
+export async function getClientConfig(req?: express.Request, res?: express.Response) {
   const user = (req as EnrichedRequest).auth
   await loadSettingsAsync() // stateless, add config for statefull, to skip stuff like this on VMs
   const google = config.settings?.google?.enabled
@@ -124,5 +124,6 @@ export async function getClientConfig(req: express.Request, res: express.Respons
     admin,
     ready: !!config.settings?.system,
   }
-  res.json(payload)
+  res?.json(payload)
+  return payload
 }

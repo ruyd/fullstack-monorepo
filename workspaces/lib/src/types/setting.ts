@@ -49,3 +49,5 @@ export interface SettingData {
   [SettingTypes.Google]: GoogleSettings
   [SettingTypes.Auth0]: Auth0Settings
 }
+
+export type ClientSettings = Omit<SettingData, 'internal'>

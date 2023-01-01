@@ -11,7 +11,7 @@ import AuthProviders from '../profile/AuthProviders'
 import { currentRoute } from 'src/shared/routes'
 import Dialogs from './Dialogs'
 import CssBaseline from '@mui/material/CssBaseline'
-import SocketListener from './SocketListener'
+import SocketListener from '../app/SocketListener'
 
 export function MainLayout() {
   const route = currentRoute()

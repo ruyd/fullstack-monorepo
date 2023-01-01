@@ -1,3 +1,4 @@
+import { ClientSettings } from '@lib'
 import axios from 'axios'
 import { patch } from 'src/features/app'
 import config from './config'
@@ -12,8 +13,8 @@ export default async function loadConfig() {
   setConfig(serverConfig)
 }
 
-// TODO: Type serverClientConfig
-export function setConfig(serverConfig: { [key: string]: unknown }) {
+export function setConfig(payload: ClientSettings) {
+  const serverConfig = payload as { [key: string]: unknown }
   const indexed = config as unknown as { [key: string]: unknown }
   Object.keys(serverConfig).forEach((key: string) => {
     if (typeof serverConfig[key] === 'object') {
