@@ -7,7 +7,7 @@ import { createOrUpdate } from '../model-api/controller'
 import { UserActiveModel } from '../types'
 import handlers from './handlers'
 import { config } from '../config'
-import { getClientConfig } from 'src/routes/main/controller'
+import { getClientConfigSettings } from '../settings'
 
 export type SocketHandler = (io: SocketService, socket: Socket) => void
 
@@ -20,7 +20,7 @@ export function registerSocket(server: Server | ServerHttps): void {
   const onConnection = (socket: Socket) => {
     handlers.forEach((handler: SocketHandler) => handler(io, socket))
 
-    logger.info(`⚡️[socket]: New connection: ${socket.id}`)
+    logger.info(`⚡️ [socket]: New connection: ${socket.id}`)
 
     socket.send('Helo', {
       notifications: ['Hi!'],
@@ -36,7 +36,7 @@ export function registerSocket(server: Server | ServerHttps): void {
     })
 
     socket.on('disconnect', () => {
-      logger.info('user disconnected' + socket.id)
+      logger.info('- socket disconnected: ' + socket.id)
       UserActiveModel.destroy({
         where: {
           socketId: socket.id,
@@ -57,7 +57,7 @@ export async function notifyChange(eventName: string): Promise<void> {
   io.emit(eventName)
 }
 
-export function sendConfig(): void {
-  const payload = getClientConfig()
+export async function sendConfig(): Promise<void> {
+  const payload = await getClientConfigSettings()
   io.emit('config', { ...payload })
 }

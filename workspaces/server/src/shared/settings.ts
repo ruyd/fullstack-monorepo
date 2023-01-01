@@ -1,4 +1,4 @@
-import { Setting, SettingDataType } from '@lib'
+import { ClientConfig, Setting, SettingDataType } from '@lib'
 import config from './config'
 import Connection from './db'
 import logger from './logger'
@@ -43,14 +43,38 @@ export async function loadSettingsAsync() {
   }
   for (const setting of settings) {
     logger.info(`Setting: ${setting.name}`)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const debug = config.settings
-
     config.settings[setting.name] = setting.data as SettingDataType
     const setter = setters[setting.name]
     if (setter) {
       setter(setting.data)
     }
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const debug = config.settings
   return true
+}
+export async function getClientConfigSettings(isAdmin = false): Promise<ClientConfig> {
+  await loadSettingsAsync() // stateless, add config for statefull, to skip stuff like this on VMs
+  const admin =
+    !config.production || isAdmin
+      ? {
+          models: config.db.models,
+        }
+      : undefined
+
+  const settings = config.settings?.system
+    ? {
+        system: config.settings?.system,
+        auth0: config.settings?.auth0,
+        google: config.settings?.google,
+      }
+    : undefined
+
+  const payload = {
+    settings,
+    admin,
+    ready: !!config.settings?.system,
+  }
+  return payload as ClientConfig
 }

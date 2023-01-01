@@ -51,3 +51,11 @@ export interface SettingData {
 }
 
 export type ClientSettings = Omit<SettingData, 'internal'>
+
+export interface ClientConfig {
+  admin: {
+    models?: string[]
+  }
+  ready: boolean
+  settings: ClientSettings
+}

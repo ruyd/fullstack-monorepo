@@ -1,5 +1,5 @@
 import express from 'express'
-import { gallery, start, getClientConfig } from './controller'
+import { gallery, sendClientConfigSettings, start } from './controller'
 
 const router = express.Router()
 
@@ -15,7 +15,7 @@ router.get(['/gallery', '/gallery/:userId'], gallery)
  * /config:
  *  get:
  */
-router.get('/config', getClientConfig)
+router.get('/config', sendClientConfigSettings)
 
 /**
  * @swagger

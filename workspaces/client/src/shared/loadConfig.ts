@@ -1,4 +1,4 @@
-import { ClientSettings } from '@lib'
+import { ClientConfig } from '@lib'
 import axios from 'axios'
 import { patch } from 'src/features/app'
 import config from './config'
@@ -13,24 +13,26 @@ export default async function loadConfig() {
   setConfig(serverConfig)
 }
 
-export function setConfig(payload: ClientSettings) {
-  const serverConfig = payload as { [key: string]: unknown }
+export function setConfig(payload: ClientConfig) {
+  const fromServer = payload as unknown as { [key: string]: unknown }
+  // update config - TODO, reduce or remove config
   const indexed = config as unknown as { [key: string]: unknown }
-  Object.keys(serverConfig).forEach((key: string) => {
-    if (typeof serverConfig[key] === 'object') {
+  Object.keys(fromServer).forEach((key: string) => {
+    if (typeof fromServer[key] === 'object') {
       indexed[key] = {
         ...(indexed[key] as { [key: string]: unknown }),
-        ...(serverConfig[key] as object),
+        ...(fromServer[key] as object),
       }
     } else {
-      indexed[key] = serverConfig[key]
+      indexed[key] = fromServer[key]
     }
   })
+  // update state
   store.dispatch(
     patch({
-      ...serverConfig,
+      ...fromServer,
       loaded: true,
     }),
   )
-  return serverConfig
+  return fromServer
 }

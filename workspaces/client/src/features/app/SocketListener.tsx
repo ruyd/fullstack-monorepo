@@ -7,7 +7,7 @@ import { AppNotification, AppState, patch } from '.'
 import { config } from 'src/shared/config'
 
 import loadConfig, { setConfig } from 'src/shared/loadConfig'
-import { ClientSettings } from '../../../../lib/src/types'
+import { ClientConfig } from '@lib'
 
 export default function SocketListener() {
   const dispatch = useAppDispatch()
@@ -62,7 +62,7 @@ export default function SocketListener() {
       dispatch(patch({ ...state }))
     })
 
-    socket.on('config', (config: ClientSettings) => {
+    socket.on('config', (config: ClientConfig) => {
       setConfig(config)
     })
 

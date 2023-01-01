@@ -6,7 +6,7 @@ import { DrawingModel, EnrichedRequest, SettingModel, UserModel } from '../../sh
 import { v4 as uuid } from 'uuid'
 import { createToken } from '../../shared/auth'
 import config from 'src/shared/config'
-import { loadSettingsAsync } from 'src/shared/settings'
+import { loadSettingsAsync, getClientConfigSettings } from 'src/shared/settings'
 import { SystemSettings } from '@lib'
 
 export async function start(req: express.Request, res: express.Response) {
@@ -88,42 +88,11 @@ export async function gallery(req: express.Request, res: express.Response) {
   res.json(items)
 }
 
-export async function getClientConfig(req?: express.Request, res?: express.Response) {
+export async function sendClientConfigSettings(req?: express.Request, res?: express.Response) {
   const user = (req as EnrichedRequest).auth
+  const isAdmin = user?.roles?.includes('admin')
   await loadSettingsAsync() // stateless, add config for statefull, to skip stuff like this on VMs
-  const google = config.settings?.google?.enabled
-    ? {
-        clientId: config.settings.google?.clientId,
-      }
-    : undefined
-  const admin =
-    !config.production || user?.roles?.includes('admin')
-      ? {
-          models: config.db.models,
-        }
-      : undefined
-  const auth = config.auth.tenant
-    ? {
-        domain: config.auth.domain,
-        baseUrl: config.auth.baseUrl,
-        audience: config.auth.clientAudience,
-        clientId: config.auth.clientId,
-        redirectUrl: config.auth.redirectUrl,
-        google,
-      }
-    : undefined
-  const settings = config.settings?.system
-    ? {
-        system: config.settings?.system,
-      }
-    : undefined
-
-  const payload = {
-    auth,
-    settings,
-    admin,
-    ready: !!config.settings?.system,
-  }
+  const payload = await getClientConfigSettings(isAdmin)
   res?.json(payload)
   return payload
 }
