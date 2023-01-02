@@ -18,11 +18,9 @@ jobs:
             client:
               - 'workspaces/lib/**'
               - 'workspaces/client/**'
-              - '.github/workflows/**'
             server:
               - 'workspaces/lib/**'
               - 'workspaces/server/**'
-              - '.github/workflows/**'
 
       - uses: actions/checkout@v3
 
