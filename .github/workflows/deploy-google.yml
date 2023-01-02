@@ -171,6 +171,7 @@ jobs:
           gcloud --quiet auth configure-docker
 
       - name: 'docker.push.artifactRegistry'
+        description: 'Image can be deployed to vm, kubernetes, cloud run, app engine'
         run: |
           docker build -t $TAG workspaces/server
           docker push $TAG
@@ -183,13 +184,14 @@ jobs:
           if [ $? -eq 0 ]; then
             echo "VM exists, continuing"
           else
-            echo "VM does not exist, creating"
+            echo "VM does not exist, creating with container"
             gcloud compute instances create-with-container $VM_NAME \
               --zone $ZONE \
               --container-image $TAG
           fi
 
       - name: 'vm.trigger.redeploy'
+        if: ${{ env.VM_EXISTS == 0 }}
         run: |
           gcloud compute instances update-container $VM_NAME \
             --zone $ZONE \
