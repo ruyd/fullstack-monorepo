@@ -179,7 +179,7 @@ jobs:
           # check if it exists 
           gcloud compute instances describe $VM_NAME > /dev/null 2>&1
           if [ $? -eq 0 ]; then
-            echo "VM exists, continuing"
+            echo "VM exists, continuing "
             echo 0 >> $GITHUB_OUTPUT
           else
             echo "VM does not exist"
