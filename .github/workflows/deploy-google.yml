@@ -150,15 +150,15 @@ jobs:
 
       - name: '.env'
         run: 'echo "DB_URL=$DB_URL" >> workspaces/server/dist/.env'
-        # run: 'echo "env_variables:\n  DB_URL: \'$DB_URL\'" >> workspaces/server/dist/.env'
+        # run: 'echo "env_variables:\n  DB_URL: \'$DB_URL\'" >> workspaces/server/dist/app.yaml'
         shell: bash
         env:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
 
       - name: 'docker.push.artifactRegistry'
         run: |
-          docker build -t ${{ TAG }} workspaces/server/dist
-          docker push ${{ TAG }}
+          docker build -t ${{ $TAG }} workspaces/server/dist
+          docker push ${{ $TAG }}
         env:
           TAG: gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest
         outputs:
