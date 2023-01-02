@@ -168,18 +168,18 @@ jobs:
       - name: 'tag'
         run: echo "TAG2=gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest" >> $GITHUB_ENV
 
-      - name: 'docker.push.artifactRegistry'
-        run: |
-          docker build -t $TAG workspaces/server
-          docker push $TAG
-          echo test: ${{ env.TAG2}}
-
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
       - name: auth
         run: |-
           gcloud --quiet auth configure-docker
+
+      - name: 'docker.push.artifactRegistry'
+        run: |
+          docker build -t $TAG workspaces/server
+          docker push $TAG
+          echo test: ${{ env.TAG2}}
 
       - name: 'vm.check'
         run: |
