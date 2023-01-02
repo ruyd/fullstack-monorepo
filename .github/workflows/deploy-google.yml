@@ -156,14 +156,14 @@ jobs:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
 
       - name: 'tag'
-        run: echo 'gcr.io/${{ env.PROJECT }}/${{ env.VM_NAME }}.${{ github.ref_name }}:latest' > $GITHUB_OUTPUT
+        run: echo 'TAG=gcr.io/${{ env.PROJECT }}/${{ env.VM_NAME }}.${{ github.ref_name }}:latest' >> $GITHUB_OUTPUT
 
       - name: 'docker.push.artifactRegistry'
         run: |
           docker build -t $TAG workspaces/server/dist
           docker push $TAG
         env:
-          TAG: ${{ steps.tag.outputs.output1 }}
+          TAG: ${{ steps.tag.outputs.TAG }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
