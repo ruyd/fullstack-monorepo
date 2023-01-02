@@ -171,7 +171,6 @@ jobs:
           gcloud --quiet auth configure-docker
 
       - name: 'docker.push.artifactRegistry'
-        description: 'Image can be deployed to vm, kubernetes, cloud run, app engine'
         run: |
           docker build -t $TAG workspaces/server
           docker push $TAG
@@ -196,3 +195,18 @@ jobs:
           gcloud compute instances update-container $VM_NAME \
             --zone $ZONE \
             --container-image $TAG
+
+      - id: 'appengine'
+        if: ${{ false }}
+        uses: 'google-github-actions/deploy-appengine@v1'
+        with:
+          working_directory: 'workspaces/server/dist'
+
+      - id: 'cloudrun'
+        if: ${{ false }}
+        uses: 'google-github-actions/deploy-cloudrun@v1'
+        with:
+          service: 'server'
+          source: 'workspaces/server'
+          secrets: |
+            DB_URL=DB_URL:latest
