@@ -10,6 +10,7 @@ env:
   PROJECT: 'mstream-368503'
   PROJECT_NO: 364055912546
   ZONE: 'us-central1-a'
+  TAG: gcr.io/mstream-368503/drawserver.${{ github.ref_name }}:latest
 
 jobs:
   changes:
@@ -131,8 +132,6 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    env:
-      TAG: gcr.io/${{ env.PROJECT }}/${{ env.VM_NAME }}.${{ github.ref_name }}:latest
     steps:
       - uses: 'actions/checkout@v3'
 
