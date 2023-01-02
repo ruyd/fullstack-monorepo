@@ -181,8 +181,6 @@ jobs:
           gcloud --quiet auth configure-docker
 
       - name: 'vm.check'
-        env:
-          TAG: ${{ steps.tag.outputs.output1 }}
         run: |
           # check if it exists 
           gcloud compute instances describe $VM_NAME > /dev/null 2>&1
@@ -198,8 +196,6 @@ jobs:
           fi
 
       - name: 'vm.trigger.redeploy'
-        env:
-          TAG: ${{ steps.tag.outputs.output1 }}
         run: |
           gcloud compute instances update-container $VM_NAME \
             --zone $ZONE \
