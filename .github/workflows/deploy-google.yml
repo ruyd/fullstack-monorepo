@@ -126,8 +126,6 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    env:
-      TAG: 'gcr.io/${{ env.PROJECT }}/${{ env.VM_NAME }}.${{ github.ref_name }}:latest'
     steps:
       - uses: 'actions/checkout@v3'
 
@@ -157,10 +155,17 @@ jobs:
         env:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
 
+      - name: 'tag'
+        run: echo 'gcr.io/${{ env.PROJECT }}/${{ env.VM_NAME }}.${{ github.ref_name }}:latest' >> $GITHUB_OUTPUT
+        outputs:
+          tag: ${{ steps.tag.outputs.output1 }}
+
       - name: 'docker.push.artifactRegistry'
         run: |
           docker build -t $TAG workspaces/server/dist
           docker push $TAG
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
