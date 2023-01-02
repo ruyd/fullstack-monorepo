@@ -1,7 +1,7 @@
 name: 'Deploy: Google Cloud'
 on:
   push:
-    branches: ['develop']
+    branches: ['master', 'develop']
     paths:
       - 'workspaces/**'
       - '.github/workflows/**'
@@ -127,7 +127,7 @@ jobs:
 
   server_deploy:
     needs: [changes, tests]
-    if: ${{ needs.changes.outputs.server == 'true' || needs.changes.outputs.deploy == 'true' }}
+    if: ${{ needs.changes.outputs.server == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
