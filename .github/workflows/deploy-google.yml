@@ -15,6 +15,8 @@ jobs:
   changes:
     runs-on: 'ubuntu-latest'
     outputs:
+      deploy: ${{ steps.filter.outputs.deploy }}
+      test: ${{ steps.filter.outputs.test }}
       client: ${{ steps.filter.outputs.client }}
       server: ${{ steps.filter.outputs.server }}
       killswitch: ${{ steps.filter.outputs.killswitch }}
@@ -40,12 +42,11 @@ jobs:
   tests:
     needs: [changes]
     runs-on: 'ubuntu-latest'
-    if: ${{ needs.changes.outputs.client == 'true' || needs.changes.outputs.server == 'true' }}
+    if: ${{ needs.changes.outputs.test == 'true' }}
     steps:
       - uses: actions/checkout@v3
 
       - name: Install
-        if: ${{ needs.changes.outputs.test == 'true' }}
         run: yarn install --immutable
 
       - name: Server Tests
