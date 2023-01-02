@@ -43,11 +43,11 @@ jobs:
   tests:
     needs: [changes]
     runs-on: 'ubuntu-latest'
-    if: ${{ needs.changes.outputs.test == 'true' }}
     steps:
       - uses: actions/checkout@v3
 
       - name: Install
+        if: ${{ needs.changes.outputs.test == 'true' }}
         run: yarn install --immutable
 
       - name: Server Tests
@@ -127,7 +127,7 @@ jobs:
 
   server_deploy:
     needs: [changes, tests]
-    if: ${{ needs.changes.outputs.server == 'true' }}
+    if: ${{ needs.changes.outputs.server == 'true' || needs.changes.outputs.deploy == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
