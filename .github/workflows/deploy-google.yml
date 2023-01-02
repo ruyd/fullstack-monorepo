@@ -5,6 +5,11 @@ on:
     paths:
       - 'workspaces/**'
       - '.github/workflows/**'
+env:
+  VM_NAME: 'drawserver'
+  PROJECT: 'mstream-368503'
+  PROJECT_NO: 364055912546
+  ZONE: 'us-central1-a'
 
 jobs:
   changes:
@@ -143,14 +148,44 @@ jobs:
           yarn workspace server build
           cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
 
-      - name: 'appengine_secrets'
+      - name: '.env'
         run: 'echo "DB_URL=$DB_URL" >> workspaces/server/dist/.env'
         # run: 'echo "env_variables:\n  DB_URL: \'$DB_URL\'" >> workspaces/server/dist/.env'
         shell: bash
         env:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
 
-      - id: 'appengine'
-        uses: 'google-github-actions/deploy-appengine@v1'
-        with:
-          working_directory: 'workspaces/server/dist'
+      - name: 'docker.push.artifactRegistry'
+        run: |
+          docker build -t ${{ TAG }} workspaces/server/dist
+          docker push ${{ TAG }}
+        env:
+          TAG: gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest
+        outputs:
+          TAG: ${{ env.TAG }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: auth
+        run: |-
+          gcloud --quiet auth configure-docker
+
+      - name: 'vm.check'
+        run: |
+          # check if it exists 
+          gcloud compute instances describe $VM_NAME > /dev/null 2>&1
+          if [ $? -eq 1 ]; then
+            echo "VM exists, continuing"
+          else
+            echo "VM does not exist"
+            gcloud compute instances create-with-container $VM_NAME \
+              --zone "$ZONE" \
+              --container-image ${{ steps.docker.outputs.TAG }}
+          fi
+
+      - name: 'vm.trigger.redeploy'
+        run: |
+          gcloud compute instances update-container $VM_NAME \
+            --zone "$ZONE" \
+            --container-image ${{ steps.docker.outputs.TAG }}
