@@ -170,8 +170,6 @@ jobs:
         run: |
           docker build -t $TAG workspaces/server/dist
           docker push $TAG
-        env:
-          TAG: ${{ steps.tag.outputs.TAG }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
