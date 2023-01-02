@@ -180,11 +180,11 @@ jobs:
             echo "VM does not exist"
             gcloud compute instances create-with-container $VM_NAME \
               --zone "$ZONE" \
-              --container-image ${{ steps.docker.outputs.TAG }}
+              --container-image $TAG
           fi
 
       - name: 'vm.trigger.redeploy'
         run: |
           gcloud compute instances update-container $VM_NAME \
             --zone "$ZONE" \
-            --container-image ${{ steps.docker.outputs.TAG }}
+            --container-image $TAG
