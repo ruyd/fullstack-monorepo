@@ -1,7 +1,7 @@
 name: 'Deploy: Google Cloud'
 on:
   push:
-    branches: ['develop']
+    branches: ['master']
     paths:
       - 'workspaces/**'
       - '.github/workflows/**'
@@ -176,19 +176,19 @@ jobs:
           docker push $TAG
           echo test: ${{ env.TAG2}}
 
-      # - name: 'vm.check'
-      #   run: |
-      #     # check if it exists
-      #     gcloud compute instances describe $VM_NAME > /dev/null 2>&1
-      #     echo "EXISTS=$?" >> $GITHUB_ENV
-      #     if [ $? -eq 0 ]; then
-      #       echo "VM exists, continuing"
-      #     else
-      #       echo "VM does not exist, creating"
-      #       gcloud compute instances create-with-container $VM_NAME \
-      #         --zone $ZONE \
-      #         --container-image $TAG
-      #     fi
+      - name: 'vm.check'
+        run: |
+          # check if it exists
+          gcloud compute instances describe $VM_NAME > /dev/null 2>&1
+          echo "VM_EXISTS=$?" >> $GITHUB_ENV
+          if [ $? -eq 0 ]; then
+            echo "VM exists, continuing"
+          else
+            echo "VM does not exist, creating"
+            gcloud compute instances create-with-container $VM_NAME \
+              --zone $ZONE \
+              --container-image $TAG
+          fi
 
       - name: 'vm.trigger.redeploy'
         run: |
