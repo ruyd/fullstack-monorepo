@@ -157,8 +157,8 @@ jobs:
 
       - name: 'docker.push.artifactRegistry'
         run: |
-          docker build -t ${{ $TAG }} workspaces/server/dist
-          docker push ${{ $TAG }}
+          docker build -t $TAG workspaces/server/dist
+          docker push $TAG
         env:
           TAG: gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest
         outputs:
