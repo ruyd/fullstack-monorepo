@@ -91,7 +91,7 @@ jobs:
 
   client_bucket_deploy:
     needs: [changes, tests]
-    if: ${{ needs.changes.outputs.client == 'true' }}
+    if: ${{ false }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
@@ -127,7 +127,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     env:
-      TAG: gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest
+      TAG: gcr.io/${{ env.PROJECT }}/${{ env.VM_NAME }}.${{ github.ref_name }}:latest
     steps:
       - uses: 'actions/checkout@v3'
 
