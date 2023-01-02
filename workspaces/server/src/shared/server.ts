@@ -1,7 +1,7 @@
 import express from 'express'
 import config from './config'
-export type ExpressStack = {
-  name: string
+export interface ExpressStack {
+  name: string | string[]
   handle: {
     name: string
     stack: ExpressStack[]
@@ -17,25 +17,34 @@ export type ExpressStack = {
   }
 }
 export interface End {
-  [key: string]: string
+  path: string
+  methods: string[]
   from: string
 }
 
+/**
+ * TODO: Move Swagger Generation to use this
+ * @param app
+ * @returns
+ */
 export function getRoutesFromApp(app: express.Application) {
   const composite = app._router.stack.find((s: ExpressStack) => s.name === 'router') as ExpressStack
   const recurse = (list: ExpressStack[], level = 0): End[] => {
-    let result: { [key: string]: string; from: string }[] = []
+    let result: End[] = []
     for (const s of list) {
-      if (s.route?.path) {
-        result.push({
-          [Object.keys(s.route.methods).join(',')]: s.route.path,
-          from: level === 1 ? 'model-api' : 'controller',
-        })
-      } else {
-        result = [...result, ...recurse(s.handle.stack, level + 1)]
+      const paths = Array.isArray(s.route?.path) ? s.route?.path : [s.route?.path]
+      for (const path of paths) {
+        if (path) {
+          result.push({
+            path: s.route.path,
+            methods: Object.keys(s.route.methods),
+            from: level === 1 ? 'model-api' : 'controller',
+          })
+        } else {
+          result = [...result, ...recurse(s.handle.stack, level + 1)]
+        }
       }
     }
-
     return result
   }
   return recurse([composite])

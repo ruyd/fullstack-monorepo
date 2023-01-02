@@ -2,8 +2,7 @@ import { config } from './shared/config'
 import express from 'express'
 import bodyParser from 'body-parser'
 import swaggerUi from 'swagger-ui-express'
-import swaggerJsdoc, { OAS3Definition } from 'swagger-jsdoc'
-import { applyEntitiesToSwaggerDoc } from './shared/model-api/swagger'
+import { prepareSwagger } from './shared/model-api/swagger'
 import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
@@ -57,14 +56,11 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
   app.use(endpointTracingMiddleware)
   app.use(modelAuthMiddleware)
 
-  // Swagger Portal
-  const swaggerDoc = swaggerJsdoc({
-    swaggerDefinition: config.swaggerSetup as OAS3Definition,
-    apis: ['**/*/swagger.yaml', '**/*/index.ts', 'index.js'],
-  }) as OAS3Definition
+  // Add Routes
+  app.use(api)
+  registerModelApiRoutes(Connection.entities, api)
 
-  applyEntitiesToSwaggerDoc(Connection.entities, swaggerDoc)
-
+  const swaggerDoc = prepareSwagger(app, Connection.entities)
   app.use(
     config.swaggerSetup.basePath,
     swaggerUi.serve,
@@ -75,11 +71,6 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
       },
     }),
   )
-
-  // Endpoints
-  registerModelApiRoutes(Connection.entities, api)
-
-  app.use(api)
 
   app.onStartupCompletePromise = Promise.all(promises)
 
