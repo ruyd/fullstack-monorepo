@@ -24,6 +24,8 @@ jobs:
         id: filter
         with:
           filters: |
+            test:
+              - 'workspaces/**'
             client:
               - 'workspaces/lib/**'
               - 'workspaces/client/**'
@@ -42,6 +44,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install
+        if: ${{ needs.changes.outputs.test == 'true' }}
         run: yarn install --immutable
 
       - name: Server Tests
