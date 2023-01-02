@@ -10,7 +10,7 @@ env:
   PROJECT: 'mstream-368503'
   PROJECT_NO: 364055912546
   ZONE: 'us-central1-a'
-  TAG: gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest
+  TAG: gcr.io/mstream-368503/drawserver.${{ github.ref_name }}:latest
 
 jobs:
   changes:
@@ -160,8 +160,6 @@ jobs:
         run: |
           docker build -t $TAG workspaces/server/dist
           docker push $TAG
-        env:
-          TAG: gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
@@ -176,15 +174,17 @@ jobs:
           gcloud compute instances describe $VM_NAME > /dev/null 2>&1
           if [ $? -eq 0 ]; then
             echo "VM exists, continuing"
+            echo 0 >> $GITHUB_OUTPUT
           else
             echo "VM does not exist"
+            echo 1 >> $GITHUB_OUTPUT
             gcloud compute instances create-with-container $VM_NAME \
-              --zone "$ZONE" \
+              --zone $ZONE \
               --container-image $TAG
           fi
 
       - name: 'vm.trigger.redeploy'
         run: |
           gcloud compute instances update-container $VM_NAME \
-            --zone "$ZONE" \
+            --zone $ZONE \
             --container-image $TAG
