@@ -162,9 +162,9 @@ jobs:
 
       - name: 'tag'
         run: |
-          export TAG='gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest'
+          export TAG=gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest
           echo $TAG >> $GITHUB_OUTPUT
-          echo 'TAG: $tag'
+          echo TAG: $TAG
 
       - name: 'docker.push.artifactRegistry'
         run: |
