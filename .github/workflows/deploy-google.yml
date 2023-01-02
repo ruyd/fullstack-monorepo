@@ -37,6 +37,7 @@ jobs:
   tests:
     needs: [changes]
     runs-on: 'ubuntu-latest'
+    if: ${{ needs.changes.outputs.client == 'true' || needs.changes.outputs.server == 'true' }}
     steps:
       - uses: actions/checkout@v3
 
