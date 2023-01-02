@@ -161,7 +161,7 @@ jobs:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
 
       - name: 'tag'
-        run: 'echo TAG=gcr.io/${{ $PROJECT }}/${{ VM_NAME }}.${{ github.ref_name }}:latest >> $GITHUB_ENV'
+        run: echo TAG=gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest >> $GITHUB_ENV
 
       - name: 'docker.push.artifactRegistry'
         run: |
