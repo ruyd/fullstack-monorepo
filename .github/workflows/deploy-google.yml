@@ -24,6 +24,8 @@ jobs:
         id: filter
         with:
           filters: |
+            deploy:
+              - '.github/workflows/deploy-google.yml'
             test:
               - 'workspaces/**'
             client:
@@ -31,8 +33,7 @@ jobs:
               - 'workspaces/client/**'
             server:
               - 'workspaces/lib/**'
-              - 'workspaces/server/**'
-              - '.github/workflows/deploy-google.yml'
+              - 'workspaces/server/**'     
             killswitch:
               - 'workspaces/function-gkill/**'
 
@@ -124,7 +125,7 @@ jobs:
 
   server_deploy:
     needs: [changes, tests]
-    if: ${{ needs.changes.outputs.server == 'true' }}
+    if: ${{ needs.changes.outputs.server == 'true' || needs.changes.outputs.deploy == 'true' }}
     runs-on: 'ubuntu-latest'
     permissions:
       contents: 'read'
