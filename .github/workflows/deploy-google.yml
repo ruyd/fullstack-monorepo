@@ -161,7 +161,9 @@ jobs:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
 
       - name: 'tag'
-        run: echo 'tag=gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest' >> $GITHUB_OUTPUT
+        run: |
+          echo 'tag=gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest' >> $GITHUB_OUTPUT
+          echo 'TAG: $tag'
 
       - name: 'docker.push.artifactRegistry'
         run: |
