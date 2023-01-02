@@ -167,7 +167,7 @@ jobs:
 
       - name: 'docker.push.artifactRegistry'
         run: |
-          docker build -t $TAG workspaces/server/dist
+          docker build -t $TAG workspaces/server
           docker push $TAG
 
       - name: Set up Cloud SDK
