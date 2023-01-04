@@ -2,11 +2,11 @@
 
 ## TypeScript App Project Template
 
-[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-client.yml)
+[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml)
 [![Demo](https://img.shields.io/badge/Deployment-GITHUB%20PAGES-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
 
-[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-server.yml)
-[![Demo](https://img.shields.io/badge/Deployment-HEROKU-GREEN.svg)](https://drawspace-api.herokuapp.com/docs)
+[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-google.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-google.yml)
+[![Demo](https://img.shields.io/badge/Deployment-GCLOUD-GREEN.svg)](https://api.drawspace.app/docs)
 
 ### Best Practices and Scalability Template 🙌
 
@@ -17,7 +17,7 @@
 - Super Fast Webpack Hot Reloading with Cache (except devServer cold start...)
 - Git Pre-Push Hook that run tests and blocks bad commits
 - Repositoryless shared code packages (bundled by webpack)
-- Deploy Ready Actions for AWS, GCP, Azure (Bucket + Functions|Container)
+- Deploy Ready Actions for Google Cloud (Bucket + Container + Run, Engine, Functions)
 - [Automated Backend](https://github.com/ruyd/automated-express-backend)
 ### Made with
 

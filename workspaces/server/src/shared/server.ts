@@ -22,11 +22,6 @@ export interface End {
   from: string
 }
 
-/**
- * TODO: Move Swagger Generation to use this
- * @param app
- * @returns
- */
 export function getRoutesFromApp(app: express.Application) {
   const composite = app._router.stack.find((s: ExpressStack) => s.name === 'router') as ExpressStack
   const recurse = (list: ExpressStack[], level = 0): End[] => {
