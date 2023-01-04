@@ -1,8 +1,5 @@
 name: 'Deploy: Client: Firebase > Review App'
 on:
-  push:
-    paths:
-      - '.github/workflows/firebase*'
   pull_request:
     branches: ['master']
     paths:
