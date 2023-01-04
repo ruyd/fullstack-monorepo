@@ -211,7 +211,8 @@ jobs:
           secrets: |
             DB_URL=DB_URL:latest
 
-      - uses: google-github-actions/get-gke-credentials@1
+      - uses: - name: Get GKE Credentials
+        uses: 'google-github-actions/get-gke-credentials@v1.0.1'
         if: ${{ false }}
         with:
           cluster_name: ${{ env.VM_NAME }}
