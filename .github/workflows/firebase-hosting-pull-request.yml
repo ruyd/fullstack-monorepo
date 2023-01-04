@@ -1,4 +1,4 @@
-name: 'Deploy: Client: Firebase Review App'
+name: 'Deploy: Client: Firebase > Review App'
 on:
   push:
     branches: ['master']
