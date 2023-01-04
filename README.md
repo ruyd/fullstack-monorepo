@@ -14,7 +14,7 @@
 
 ### Developer Experience 💕😎✨
 - VSCode concurrent separate terminals debugging client, server and tests
-- Super Fast Webpack Hot Reloading with Cache (except devServer cold start...)
+- Webpack Hot Reloading with Cache
 - Git Pre-Push Hook that run tests and blocks bad commits
 - Repositoryless shared code packages (bundled by webpack)
 - Deploy Ready for Google Cloud (Bucket, Branch Container > Artifact Registry > Run, Compute, Function, GKE)
