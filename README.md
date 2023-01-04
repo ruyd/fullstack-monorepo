@@ -17,7 +17,7 @@
 - Super Fast Webpack Hot Reloading with Cache (except devServer cold start...)
 - Git Pre-Push Hook that run tests and blocks bad commits
 - Repositoryless shared code packages (bundled by webpack)
-- Deploy Ready Actions for Google Cloud (Bucket + Container + Run, Engine, Functions)
+- Deploy Ready for Google Cloud (Bucket, Branch Container > Artifact Registry > Run, Compute, Function, GKE)
 - [Automated Backend](https://github.com/ruyd/automated-express-backend)
 ### Made with
 
