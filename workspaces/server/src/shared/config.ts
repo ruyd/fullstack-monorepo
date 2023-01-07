@@ -18,8 +18,8 @@ export interface Config {
   protocol: string
   backendBaseUrl: Readonly<string>
   jsonLimit: string
-  certFile?: string
-  certKeyFile?: string
+  sslKey?: string
+  sslCert?: string
   cors: {
     origin: string
   }
@@ -106,6 +106,8 @@ export function getConfig(): Config {
   const port = Number(env.PORT) || Number(envi(serviceConfig.service.port))
   const hostname = envi(serviceConfig.service.host) as string
   const protocol = envi(serviceConfig.service.protocol) as string
+  const sslKey = envi(serviceConfig.service.sslKey) as string
+  const sslCert = envi(serviceConfig.service.sslCert) as string
 
   return {
     trace: true,
@@ -114,8 +116,8 @@ export function getConfig(): Config {
     hostname,
     protocol,
     backendBaseUrl: `${protocol}://${hostname}:${port}`,
-    certFile: env.SSL_CRT_FILE,
-    certKeyFile: env.SSL_KEY_FILE,
+    sslKey,
+    sslCert,
     port,
     jsonLimit: env.JSON_LIMIT || '1mb',
     cors: {

@@ -8,7 +8,7 @@ export function setBrushDefaults(
   context.lineWidth = config.defaultLineSize
   context.lineCap = 'round'
   context.lineJoin = 'round'
-  context.miterLimit = 2
+  context.miterLimit = 5
 }
 
 function setWH(canvas: HTMLCanvasElement, w: number, h: number) {

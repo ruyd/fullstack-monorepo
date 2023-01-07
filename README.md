@@ -36,18 +36,17 @@
 
 - `git clone https://github.com/ruyd/fullstack-monorepo desiredName`
 - `yarn dev` or open in vscode and run debug  
-- For Auth0 Auto Setup, copy sample.env to workspaces/server/.env and populate with:
-  Dashboard > Applications > API Explorer Application > Settings
-  - AUTH_TENANT=`tenant` (ie: domain without .auth0.com)
-  - AUTH_EXPLORER_ID=`Client ID`
-  - AUTH_EXPLORER_SECRET=`Client Secret`
+
+
+
 
 
 ### Requirements
 - [Docker](https://www.docker.com/) 
+  
 ### About Drawspace App
 
-A drawing web and mobile application that allows users to sketch on an empty piece of “paper” and upload it to a public list of drawings
+A drawing web and mobile application that allows users to sketch on an empty piece of “paper” and upload it to a public drawings market
 
 ### [Frontend Demo](https://ruyd.github.io/fullstack-monorepo)
 
