@@ -155,10 +155,15 @@ jobs:
           cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
 
       - name: '.env'
-        run: 'echo "DB_URL=$DB_URL" >> workspaces/server/dist/.env'
+        run: |
+          echo "DB_URL=$DB_URL" >> workspaces/server/dist/.env
+          echo "SSL_CERT=$SSL_CERT" >> workspaces/server/dist/.env
+          echo "SSL_KEY=$SSL_KEY" >> workspaces/server/dist/.env
         shell: bash
         env:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
+          SSL_CERT: ${{ secrets.SSL_CERT }}
+          SSL_KEY: ${{ secrets.SSL_KEY }}
 
       - name: 'tag'
         run: echo "TAG=gcr.io/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest" >> $GITHUB_ENV
