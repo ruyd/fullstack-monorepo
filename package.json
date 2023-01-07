@@ -22,7 +22,7 @@
     "test": "yarn build && yarn docker && yarn workspace server test && yarn workspace client test",
     "prettify": "yarn prettier . --write",
     "clean": "rm -rf node_modules workspaces/*/node_modules package-lock.json yarn.lock workspaces/*/build workspaces/*/dist",
-    "precommit": "yarn build && yarn build:test",
+    "precommit": "yarn build && yarn build:tests",
     "prepare": "husky install"
   },
   "devDependencies": {
