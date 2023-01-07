@@ -184,7 +184,6 @@ export function envi(val: unknown): unknown {
 
 export function canStart() {
   logger.info(`****** READYNESS CHECK *******`)
-  // logger.info(`env.PORT: ${env.PORT} ⚡️`)
   const p = config.port
   const d = config.db.name
   const result = !!p
@@ -195,6 +194,7 @@ export function canStart() {
     `${d ? '✅' : '❌'} DB: ${d ? `${config.db.name}@${config.db.host}` : 'ERROR - Missing'}`,
   )
   logger.info(`**: ${result ? 'READY!' : 'HALT'}`)
+  logger.info(`env.PORT: ${env.PORT} ⚡️`)
   return result
 }
 export class Backend {
