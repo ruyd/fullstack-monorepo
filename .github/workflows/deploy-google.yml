@@ -11,8 +11,9 @@ env:
   PROJECT_NO: 364055912546
   ZONE: 'us-central1-a'
   # REGISTRY: 'gcr.io'
+  # IMAGE_PATH: 'gcr.io/mstream-368503'
   REGISTRY: 'us-central1-docker.pkg.dev'
-  # us-central1-docker.pkg.dev/mstream-368503/goodvibes
+  IMAGE_PATH: 'us-central1-docker.pkg.dev/mstream-368503/goodvibes'
 
 jobs:
   changes:
@@ -169,7 +170,7 @@ jobs:
           SSL_KEY: ${{ secrets.SSL_KEY }}
 
       - name: 'tag'
-        run: echo "TAG=$REGISTRY/$PROJECT/$VM_NAME.${{ github.ref_name }}:latest" >> $GITHUB_ENV
+        run: echo "TAG=$IMAGE_PATH/$VM_NAME.${{ github.ref_name }}:latest" >> $GITHUB_ENV
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
