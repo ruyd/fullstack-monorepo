@@ -187,9 +187,9 @@ jobs:
       - name: 'vm.check'
         run: |
           # check if it exists
-          VM_EXISTS=$(gcloud compute instances describe $VM_NAME --zone $ZONE --format='value(name)' --quiet 2>/dev/null)
+          VM_EXISTS=$(gcloud compute instances describe $VM_NAME --zone=$ZONE --format='value(name)' --quiet 2>/dev/null)
           echo $VM_EXISTS
-          echo "VM_EXISTS=$?" >> $GITHUB_ENV
+          echo "VM_EXISTS=$VM_EXISTS" >> $GITHUB_ENV
           if [ $? -eq 0 ]; then
             echo "VM exists, continuing"
           fi
