@@ -1,4 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn precommit
+declare HAS_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/')
+
+if [ -n "$HAS_CHANGE" ]; then
+  echo "Changes detected, running precommit"
+  yarn precommit
+fi
+
