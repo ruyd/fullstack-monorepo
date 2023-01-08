@@ -6,7 +6,7 @@ import { DrawingModel, EnrichedRequest, SettingModel, UserModel } from '../../sh
 import { v4 as uuid } from 'uuid'
 import { createToken } from '../../shared/auth'
 import config from 'src/shared/config'
-import { loadSettingsAsync, getClientConfigSettings } from 'src/shared/settings'
+import { getClientConfigSettings } from 'src/shared/settings'
 import { SystemSettings } from '@lib'
 
 export async function start(req: express.Request, res: express.Response) {
@@ -91,7 +91,6 @@ export async function gallery(req: express.Request, res: express.Response) {
 export async function sendClientConfigSettings(req?: express.Request, res?: express.Response) {
   const user = (req as EnrichedRequest).auth
   const isAdmin = user?.roles?.includes('admin')
-  await loadSettingsAsync() // stateless, add config for statefull, to skip stuff like this on VMs
   const payload = await getClientConfigSettings(isAdmin)
   res?.json(payload)
   return payload

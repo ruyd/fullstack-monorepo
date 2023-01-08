@@ -36,8 +36,12 @@ export async function loadSettingsAsync() {
     return false
   }
   logger.info(`Loading settings...`)
-
-  const settings = (await SettingModel.findAll({ raw: true })) as unknown as Setting[]
+  let settings: Setting[] = []
+  try {
+    settings = (await SettingModel.findAll({ raw: true })) as unknown as Setting[]
+  } catch (e) {
+    logger.error(e)
+  }
   if (settings.length === 0) {
     config.settings = {}
   }
@@ -49,7 +53,6 @@ export async function loadSettingsAsync() {
       setter(setting.data)
     }
   }
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const debug = config.settings
   return true
