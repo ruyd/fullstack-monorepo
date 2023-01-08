@@ -191,11 +191,15 @@ jobs:
           echo "VM_EXISTS=$?" >> $GITHUB_ENV
           if [ $? -eq 0 ]; then
             echo "VM exists, continuing"
-          else
-            echo "VM does not exist, creating with container"
-            gcloud compute instances create-with-container $VM_NAME \
-              --zone $ZONE \
-              --container-image $TAG
+          fi
+
+      - name: 'vm.create'
+        if: ${{ env.VM_EXISTS == 1 }}
+        run: |
+          echo "VM does not exist, creating with container"
+          gcloud compute instances create-with-container $VM_NAME \
+            --zone $ZONE \
+            --container-image $TAG
           fi
 
       - name: 'vm.trigger.redeploy'
