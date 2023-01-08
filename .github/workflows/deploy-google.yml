@@ -12,6 +12,7 @@ env:
   ZONE: 'us-central1-a'
   # REGISTRY: 'gcr.io'
   # IMAGE_PATH: 'gcr.io/mstream-368503'
+  # x
   REGISTRY: 'us-central1-docker.pkg.dev'
   IMAGE_PATH: 'us-central1-docker.pkg.dev/mstream-368503/goodvibes'
 
