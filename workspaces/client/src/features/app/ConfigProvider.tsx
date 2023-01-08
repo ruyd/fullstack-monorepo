@@ -2,12 +2,11 @@ import React from 'react'
 import loadConfig from 'src/shared/loadConfig'
 import { useAppSelector } from 'src/shared/store'
 import MaintenancePage from 'src/features/pages/Maintenance'
-import ThemeSwitch from '../ui/Theme'
 import StartPage from 'src/features/pages/Start'
 import { useLocation } from 'react-router-dom'
 import { hasRole } from 'src/shared/auth'
 
-export function ConfigProvider({ children }: { children: React.ReactNode }): JSX.Element {
+export function ConfigProvider({ children }: { children: React.ReactElement }): JSX.Element {
   const location = useLocation()
   const isLoading = React.useRef<boolean>(false)
   const loaded = useAppSelector(state => state.app.loaded)
@@ -20,7 +19,7 @@ export function ConfigProvider({ children }: { children: React.ReactNode }): JSX
 
   React.useEffect(() => {
     const run = async () => {
-      if (loaded || ready || isLoading.current) return
+      if ((loaded && ready) || isLoading.current) return
       isLoading.current = true
       await loadConfig()
       isLoading.current = false
@@ -29,22 +28,14 @@ export function ConfigProvider({ children }: { children: React.ReactNode }): JSX
   }, [loaded, ready])
 
   if (showStart) {
-    return (
-      <ThemeSwitch>
-        <StartPage />
-      </ThemeSwitch>
-    )
+    return <StartPage />
   }
 
   if (showMaintenance) {
-    return (
-      <ThemeSwitch>
-        <MaintenancePage />
-      </ThemeSwitch>
-    )
+    return <MaintenancePage />
   }
 
-  return children as JSX.Element
+  return children
 }
 
 export default ConfigProvider
