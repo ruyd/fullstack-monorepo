@@ -43,6 +43,12 @@ export async function register(req: express.Request, res: express.Response) {
   res.json({ token })
 }
 
+export function authReady() {
+  const cfg = config.settings.auth0
+  const enabled = !!cfg?.enabled && !!cfg?.tenant && !!cfg.clientId
+  return enabled
+}
+
 /**
  * Login count
  * allow offline mode
@@ -56,7 +62,8 @@ export async function login(req: express.Request, res: express.Response) {
     })
   )?.get()
 
-  if (!config.auth.enabled && user) {
+  const ready = authReady()
+  if (!ready && user) {
     logger.warn('Auth not enabled - dev mode no password login: ' + user?.email)
     res.json({
       token: createToken({
@@ -66,6 +73,10 @@ export async function login(req: express.Request, res: express.Response) {
       user,
     })
     return
+  }
+
+  if (!ready) {
+    throw new Error('Auth not enabled')
   }
 
   const response = await authProviderLogin(email, password)
