@@ -9,7 +9,7 @@
 [![Firebase CI/CD](https://github.com/ruyd/fullstack-monorepo/actions/workflows/firebase-hosting-live.yml/badge.svg)](https://drawspace.app)
 
 
-### Best Practices and Scalability Template 🙌
+### Best Practices Template 🙌
 
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/4Pane.png)](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/4Pane.png)
 
