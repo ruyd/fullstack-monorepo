@@ -13,8 +13,6 @@
 
 [![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/4Pane.png)](https://drawspace.app/draw)
 
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/lighthouse.png)](https://drawspace.app)
-
 ### Developer Experience 💕😎✨
 - VSCode concurrent separate terminals debugging client, server and tests
 - Webpack Hot Reloading with Cache
@@ -48,6 +46,7 @@
 
 A drawing web and mobile application that allows users to sketch on an empty piece of “paper” and upload it to a public drawings market
 
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/lighthouse.png)](https://drawspace.app)
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
