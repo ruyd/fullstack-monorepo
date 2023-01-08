@@ -2,11 +2,11 @@
 
 ## TypeScript App Project Template
 
-[![Docs](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml)
+[![Docs](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml/badge.svg)](https://ruyd.github.io/fullstack-monorepo)
 
-[![Backend CI/CD](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-google.yml/badge.svg)](https://api.drawspace.app/docs)
+[![GCP CI/CD](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-google.yml/badge.svg)](https://api.drawspace.app/docs)
 
-[![Frontend CI/CD](https://github.com/ruyd/fullstack-monorepo/actions/workflows/firebase-hosting-live.yml/badge.svg)](https://drawspace.app)
+[![Firebase CI/CD](https://github.com/ruyd/fullstack-monorepo/actions/workflows/firebase-hosting-live.yml/badge.svg)](https://drawspace.app)
 
 
 ### Best Practices and Scalability Template 🙌
