@@ -150,14 +150,6 @@ jobs:
           secrets: |-
             DB_URL:364055912546/DB_URL
 
-      - name: 'install'
-        run: yarn install --immutable
-
-      - name: 'build'
-        run: |
-          yarn workspace server build
-          cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
-
       - name: '.env'
         run: |
           echo "DB_URL=$DB_URL" >> workspaces/server/dist/.env
@@ -175,7 +167,27 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
-      - name: auth
+      - name: 'vmExists'
+        run: |
+          # check if it exists
+          gcloud compute instances describe $VM_NAME --zone $ZONE > /dev/null 2>&1 || export NOT_FOUND=1
+          if [ $NOT_FOUND -eq 1 ]; then
+            echo "Not Found"
+            echo "VM_EXISTS=0" >> $GITHUB_ENV
+          else
+            echo "Found"
+            echo "VM_EXISTS=1" >> $GITHUB_ENV
+          fi
+
+      - name: 'install'
+        run: yarn install --immutable
+
+      - name: 'build'
+        run: |
+          yarn workspace server build
+          cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
+
+      - name: 'docker.auth'
         run: |-
           gcloud --quiet auth configure-docker $REGISTRY
 
@@ -184,20 +196,8 @@ jobs:
           docker build -t $TAG workspaces/server
           docker push $TAG
 
-      - name: 'vmExists'
-        run: |
-          # check if it exists
-          gcloud compute instances describe $VM_NAME --zone $ZONE > /dev/null 2>&1 || echo "VM does not exist"
-          echo "npi $?"
-          echo "VM_EXISTS=$?" >> $GITHUB_ENV
-          if [ $? -eq 0 ]; then
-            echo "VM 0"
-          else
-            echo "VM other"
-          fi
-
       - name: 'vm.create'
-        if: ${{ steps.vmExists.outcome == 'failure' }}
+        if: ${{ env.VM_EXISTS == 0 }}
         run: |
           echo "VM does not exist, creating with container"
           gcloud compute instances create-with-container $VM_NAME \
@@ -205,8 +205,8 @@ jobs:
             --container-image $TAG
           fi
 
-      - name: 'vm.trigger.redeploy'
-        if: ${{ steps.vmExists.outcome == 'success' }}
+      - name: 'vm.existing.redeploy'
+        if: ${{ env.VM_EXISTS == 1 }}
         run: |
           gcloud compute instances update-container $VM_NAME \
             --zone $ZONE \
