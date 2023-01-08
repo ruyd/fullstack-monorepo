@@ -10,11 +10,10 @@ env:
   PROJECT: 'mstream-368503'
   PROJECT_NO: 364055912546
   ZONE: 'us-central1-a'
-  # REGISTRY: 'gcr.io'
-  # IMAGE_PATH: 'gcr.io/mstream-368503'
-  # x
-  REGISTRY: 'us-central1-docker.pkg.dev'
-  IMAGE_PATH: 'us-central1-docker.pkg.dev/mstream-368503/goodvibes'
+  REGISTRY: 'gcr.io'
+  IMAGE_PATH: 'gcr.io/mstream-368503'
+  # REGISTRY: 'us-central1-docker.pkg.dev'
+  # IMAGE_PATH: 'us-central1-docker.pkg.dev/mstream-368503/goodvibes'
 
 jobs:
   changes:
@@ -188,7 +187,7 @@ jobs:
       - name: 'vm.check'
         run: |
           # check if it exists
-          VM_EXISTS=$(gcloud compute instances describe $VM_NAME --zone $ZONE --format='value(name)' 2>/dev/null)
+          VM_EXISTS=$(gcloud compute instances describe $VM_NAME --zone $ZONE --format='value(name)' --quiet 2>/dev/null)
           echo $VM_EXISTS
           echo "VM_EXISTS=$?" >> $GITHUB_ENV
           if [ $? -eq 0 ]; then
