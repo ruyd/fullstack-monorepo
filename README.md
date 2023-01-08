@@ -11,7 +11,7 @@
 
 ### Best Practices and Scalability Template 🙌
 
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/4Pane.png)](https://drawspace.app/draw)
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/4Pane.png)](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/4Pane.png)
 
 ### Developer Experience 💕😎✨
 - VSCode concurrent separate terminals debugging client, server and tests
