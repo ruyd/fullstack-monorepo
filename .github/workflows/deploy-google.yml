@@ -176,8 +176,7 @@ jobs:
 
       - name: auth
         run: |-
-          gcloud --quiet auth configure-docker
-          # gcloud --quiet auth configure-docker $REGISTRY
+          gcloud --quiet auth configure-docker $REGISTRY
 
       - name: 'docker.push.artifactRegistry'
         run: |
