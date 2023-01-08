@@ -149,8 +149,8 @@ jobs:
         with:
           secrets: |-
             DB_URL:364055912546/DB_URL
-            SSL_CERT:364055912546/SSL_CERT
-            SSL_KEY:364055912546/SSL_KEY
+            # SSL_CERT:364055912546/SSL_CERT
+            # SSL_KEY:364055912546/SSL_KEY
 
       - name: 'install'
         run: yarn install --immutable
@@ -168,8 +168,8 @@ jobs:
         shell: bash
         env:
           DB_URL: ${{ steps.secrets.outputs.DB_URL }}
-          # SSL_CERT: ${{ steps.secrets.outputs.SSL_CERT }}
-          # SSL_KEY: ${{ steps.secrets.outputs.SSL_KEY }}
+          SSL_CERT: ${{ steps.secrets.outputs.SSL_CERT }}
+          SSL_KEY: ${{ steps.secrets.outputs.SSL_KEY }}
 
       - name: 'tag'
         run: echo "TAG=$IMAGE_PATH/$VM_NAME.${{ github.ref_name }}:latest" >> $GITHUB_ENV
