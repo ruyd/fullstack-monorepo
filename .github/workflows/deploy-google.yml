@@ -184,19 +184,18 @@ jobs:
           docker build -t $TAG workspaces/server
           docker push $TAG
 
-      - name: 'vm.check'
+      - name: 'vmExists'
         continue-on-error: true
         run: |
           # check if it exists
-          VM_EXISTS=$(gcloud compute instances describe $VM_NAME --zone=$ZONE --format='value(name)')
-          echo $VM_EXISTS
-          echo "VM_EXISTS=$VM_EXISTS" >> $GITHUB_ENV
-          if [ $? -eq 0 ]; then
+          gcloud compute instances describe $VM_NAME --zone $ZONE --format value(name)
+          echo "VM_EXISTS=1" >> $GITHUB_ENV
+          if [ $VM_EXISTS -eq 1 ]; then
             echo "VM exists, continuing"
           fi
 
       - name: 'vm.create'
-        if: ${{ env.VM_EXISTS == 1 }}
+        if: ${{ steps.vmExists.outcome == 'failure' }}
         run: |
           echo "VM does not exist, creating with container"
           gcloud compute instances create-with-container $VM_NAME \
@@ -205,7 +204,7 @@ jobs:
           fi
 
       - name: 'vm.trigger.redeploy'
-        if: ${{ env.VM_EXISTS == 0 }}
+        if: ${{ steps.vmExists.outcome == 'success' }}
         run: |
           gcloud compute instances update-container $VM_NAME \
             --zone $ZONE \
