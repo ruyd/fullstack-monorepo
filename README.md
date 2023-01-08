@@ -2,15 +2,18 @@
 
 ## TypeScript App Project Template
 
-[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml)
-[![Demo](https://img.shields.io/badge/Deployment-GITHUB%20PAGES-GREEN.svg)](https://ruyd.github.io/fullstack-monorepo)
+[![Docs](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/client-deploy-ghpages.yml)
 
-[![Workflow](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-google.yml/badge.svg)](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-google.yml)
-[![Demo](https://img.shields.io/badge/Deployment-GCLOUD-GREEN.svg)](https://api.drawspace.app/docs)
+[![Backend CI/CD](https://github.com/ruyd/fullstack-monorepo/actions/workflows/deploy-google.yml/badge.svg)](https://api.drawspace.app/docs)
+
+[![Frontend CI/CD](https://github.com/ruyd/fullstack-monorepo/actions/workflows/firebase-hosting-live.yml/badge.svg)](https://drawspace.app)
+
 
 ### Best Practices and Scalability Template 🙌
 
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/workspaces/client/src/features/home/images/lighthouse.png)](https://ruyd.github.io/fullstack-monorepo)
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/4Pane.png)](https://drawspace.app/draw)
+
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/images/lighthouse.png)](https://drawspace.app)
 
 ### Developer Experience 💕😎✨
 - VSCode concurrent separate terminals debugging client, server and tests
@@ -36,8 +39,7 @@
 
 - `git clone https://github.com/ruyd/fullstack-monorepo desiredName`
 - `yarn dev` or open in vscode and run debug  
-
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/4Pane.png)](https://drawspace.app/draw)
+- Enter email in start page and go to settings admin
 
 ### Best with
 - [Docker](https://www.docker.com/) 
