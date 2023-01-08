@@ -37,22 +37,15 @@
 - `git clone https://github.com/ruyd/fullstack-monorepo desiredName`
 - `yarn dev` or open in vscode and run debug  
 
+[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/docs/4Pane.png)](https://drawspace.app/draw)
 
-
-
-
-### Requirements
+### Best with
 - [Docker](https://www.docker.com/) 
   
 ### About Drawspace App
 
 A drawing web and mobile application that allows users to sketch on an empty piece of “paper” and upload it to a public drawings market
 
-### [Frontend Demo](https://ruyd.github.io/fullstack-monorepo)
-
-Backend might be sleeping, takes a bit to wake up
-
-[![Image](https://raw.githubusercontent.com/ruyd/fullstack-monorepo/master/workspaces/client/src/features/home/images/self.PNG)](https://ruyd.github.io/fullstack-monorepo/draw)
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
