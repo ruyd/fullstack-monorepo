@@ -201,8 +201,10 @@ jobs:
         run: |
           echo "VM does not exist, creating with container"
           gcloud compute instances create-with-container $VM_NAME \
-            --zone $ZONE \
-            --container-image $TAG
+            --zone=$ZONE \
+            --container-image=$TAG \
+            --machine-type=e2-micro \
+            --tags=http-server,https-server
 
       - name: 'vm.existing.redeploy'
         if: ${{ env.VM_EXISTS == 1 }}
