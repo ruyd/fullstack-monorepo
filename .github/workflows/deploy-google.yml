@@ -203,7 +203,6 @@ jobs:
           gcloud compute instances create-with-container $VM_NAME \
             --zone $ZONE \
             --container-image $TAG
-          fi
 
       - name: 'vm.existing.redeploy'
         if: ${{ env.VM_EXISTS == 1 }}
