@@ -28,7 +28,7 @@ export default function Settings() {
   const [settings, setSettings] = React.useState<Setting[]>([])
   const delay = 1000
   type SetFn = React.Dispatch<React.SetStateAction<unknown>>
-  const [debouncer, setDebouncer] = React.useState<{ [key: string]: number | undefined }>({})
+  const debouncer = React.useRef<{ [key: string]: number | undefined }>({})
   const saveAsync = async (setting: Setting) => {
     const response = await request<Setting>('setting', { ...setting })
     if (response.status === 200) {
@@ -39,11 +39,11 @@ export default function Settings() {
   }
 
   const bounce = (setting: Setting) => {
-    if (debouncer[setting.name]) {
-      window.clearTimeout(debouncer[setting.name])
+    if (debouncer.current[setting.name]) {
+      window.clearTimeout(debouncer.current[setting.name])
     }
     const timer = window.setTimeout(() => saveAsync(setting), delay)
-    setDebouncer({ ...debouncer, [setting.name]: timer })
+    debouncer.current[setting.name] = timer
   }
 
   const save = (name: string, prop: string, value: unknown) => {
