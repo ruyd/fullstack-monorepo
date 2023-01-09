@@ -16,7 +16,6 @@ import {
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { Setting, SystemSettings, GoogleSettings, Auth0Settings, PagedResult } from '@lib'
 import { get, notify, notifyError, request } from '../app'
-import { debounce } from 'lodash'
 
 export default function Settings() {
   const dispatch = useAppDispatch()
@@ -27,8 +26,27 @@ export default function Settings() {
   const auth0Settings = useAppSelector(state => state.app.settings?.auth0)
   const [auth0, setAuth0] = React.useState<Auth0Settings | undefined>(auth0Settings)
   const [settings, setSettings] = React.useState<Setting[]>([])
+  const delay = 1000
   type SetFn = React.Dispatch<React.SetStateAction<unknown>>
-  const save = async (name: string, prop: string, value: unknown) => {
+  const [debouncer, setDebouncer] = React.useState<{ [key: string]: number | undefined }>({})
+  const saveAsync = async (setting: Setting) => {
+    const response = await request<Setting>('setting', { ...setting })
+    if (response.status === 200) {
+      dispatch(notify(`${setting.name} saved`))
+    } else {
+      dispatch(notifyError(`Save ${setting.name} failed: ${response.data}`))
+    }
+  }
+
+  const bounce = (setting: Setting) => {
+    if (debouncer[setting.name]) {
+      window.clearTimeout(debouncer[setting.name])
+    }
+    const timer = window.setTimeout(() => saveAsync(setting), delay)
+    setDebouncer({ ...debouncer, [setting.name]: timer })
+  }
+
+  const save = (name: string, prop: string, value: unknown) => {
     const sets: {
       [key: string]: SetFn
     } = {
@@ -37,20 +55,11 @@ export default function Settings() {
       auth0: setAuth0 as SetFn,
     }
     const setting = settings.find(s => s.name === name) || ({ name, data: {} } as Setting)
-    const data = { ...setting.data, [prop]: value }
-    const payload = {
-      name,
-      data,
-    }
-    const response = await request<Setting>('setting', payload)
-    if (response.status === 200) {
-      dispatch(notify(`${name}/${prop} saved`))
-      const update = sets[name]
-      update(data)
-      setSettings(settings.map(s => (s.name === name ? response.data : s)))
-    } else {
-      dispatch(notifyError(`Save ${prop} failed: ${response.data}`))
-    }
+    setting.data = { ...setting.data, [prop]: value }
+    const update = sets[name]
+    update(setting.data)
+    setSettings(settings.map(s => (s.name === name ? setting : s)))
+    bounce(setting)
   }
 
   const load = async () => {
