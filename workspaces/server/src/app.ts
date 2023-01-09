@@ -5,7 +5,7 @@ import swaggerUi from 'swagger-ui-express'
 import { prepareSwagger } from './shared/model-api/swagger'
 import { registerModelApiRoutes } from './shared/model-api/routes'
 import { errorHandler } from './shared/errorHandler'
-// import cors from 'cors'
+import cors from 'cors'
 import api from './routes'
 import { activateAxiosTrace, endpointTracingMiddleware, printRouteSummary } from './shared/logger'
 import { authProviderAutoConfigure } from './shared/auth/sync'
@@ -46,7 +46,7 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
 
   // Add Middlewares - Order is important
   app.use(errorHandler)
-  // app.use(cors())
+  app.use(cors())
   app.use(express.json({ limit: config.jsonLimit }))
   app.use(
     bodyParser.urlencoded({
