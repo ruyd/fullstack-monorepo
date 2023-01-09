@@ -37,7 +37,7 @@ export async function register(req: express.Request, res: express.Response) {
   setPictureIfEmpty(payload)
   const user = await createOrUpdate(UserModel, payload)
   const token = createToken({
-    user,
+    userId: user.userId,
     roles: [],
   })
   res.json({ token })
@@ -67,7 +67,7 @@ export async function login(req: express.Request, res: express.Response) {
     logger.warn('Auth not enabled - dev mode no password login: ' + user?.email)
     res.json({
       token: createToken({
-        user,
+        userId: user?.userId,
         roles: config.settings?.internal?.startAdminEmail === user.email ? ['admin'] : [],
       }),
       user,

@@ -41,12 +41,13 @@ export default function Gallery({
   onData?: (items: Drawing[]) => void
 }): JSX.Element {
   const dispatch = useAppDispatch()
+  const loaded = useAppSelector(state => state.app.loaded)
   const navigate = useNavigate()
   const { data } = useGet<PagedResult<Drawing>>(
     'gallery',
     '/gallery' + (userId ? '/' + userId : ''),
     {
-      enabled: !!userId,
+      enabled: loaded,
     },
   )
   const items = data?.items || []
