@@ -3,6 +3,7 @@ import config from './config'
 import Connection from './db'
 import logger from './logger'
 import { SettingModel } from './types'
+import { omit } from 'lodash'
 
 /**
  * for .env to not break and avoid refactor to use config.settings
@@ -66,11 +67,13 @@ export async function getClientConfigSettings(isAdmin = false): Promise<ClientCo
         }
       : undefined
 
+  // TODO: ditch 1-1, just do client config
+  const exclude = ['clientSecret', 'explorerSecret', 'secret']
   const settings = config.settings?.system
     ? {
         system: config.settings?.system,
-        auth0: config.settings?.auth0,
-        google: config.settings?.google,
+        auth0: omit(config.settings?.auth0, exclude),
+        google: omit(config.settings?.google, exclude),
       }
     : undefined
 

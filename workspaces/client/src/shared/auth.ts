@@ -97,10 +97,11 @@ export async function checkSocialToken(token: string): Promise<string | undefine
   return response.data?.userId
 }
 export const authOptions = () => ({
-  domain: config.auth.domain,
-  clientID: config.auth.clientId,
-  audience: config.auth.audience,
-  redirectUri: config.auth.redirectUrl,
+  domain: `${config.settings?.auth0?.tenant}.auth0.com`,
+  baseUrl: `https://${config.settings?.auth0?.tenant}.auth0.com`,
+  clientID: config.settings?.auth0?.clientId as string,
+  audience: config.settings?.auth0?.clientAudience as string,
+  redirectUri: config.settings?.auth0?.redirectUrl as string,
   responseType: 'id_token token',
   scope: 'openid profile email',
 })

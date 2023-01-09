@@ -14,7 +14,7 @@ type OneTapBase = {
 }
 
 export const initOptions: OneTapParams = {
-  client_id: config.auth?.google?.clientId,
+  client_id: config.settings?.google?.clientId as string,
   callback: async ok => {
     console.log('Google One Tap callback', ok)
     googleCredentialsLogin(ok.credential as string)

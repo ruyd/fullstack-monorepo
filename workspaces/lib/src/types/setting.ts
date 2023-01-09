@@ -12,6 +12,8 @@ export interface SystemSettings {
   enableCookieConsent?: boolean
   enableOneTapLogin?: boolean
   enableRegistration?: boolean
+  stripeKey?: string
+  paypalKey?: string
 }
 export interface GoogleSettings {
   clientId?: string

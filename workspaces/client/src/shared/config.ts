@@ -1,5 +1,9 @@
+import { SettingData, SettingType } from '../../../lib/src/types'
 import packageJson from '../../package.json'
 
+/**
+ * move most to redux and settings
+ */
 export interface Config {
   baseName: string
   backendUrl: string
@@ -10,23 +14,12 @@ export interface Config {
     width: number
     height: number
   }
-  auth: {
-    domain: string
-    baseUrl: string
-    redirectUrl: string
-    clientId: string
-    audience: string
-    google?: {
-      clientId: string
-    }
+  settings: {
+    [k in SettingType]?: SettingData[k]
   }
   admin: {
     path: string
     models?: string[]
-  }
-  keys: {
-    stripe?: string
-    paypal?: string
   }
 }
 const env = process['env']
@@ -41,23 +34,17 @@ export const config: Config = {
     width: 250,
     height: 250,
   },
-  auth: {
-    domain: `${env.AUTH_TENANT}.auth0.com`,
-    baseUrl: `https://${env.AUTH_TENANT}.auth0.com`,
-    audience: `https://backend`,
-    clientId: env.AUTH_CLIENT_ID || '',
-    redirectUrl: env.AUTH_REDIRECT_URL || 'https://api.drawspace.app/callback',
-    google: {
-      clientId: env.GOOGLE_CLIENT_ID || '',
+  settings: {
+    auth0: {
+      tenant: env.AUTH_TENANT,
+      clientAudience: `https://backend`,
+      clientId: env.AUTH_CLIENT_ID || '',
+      redirectUrl: env.AUTH_REDIRECT_URL || 'https://api.drawspace.app/callback',
     },
   },
   admin: {
     path: '/admin',
     models: [],
-  },
-  keys: {
-    stripe: env.STRIPE_KEY || '',
-    paypal: env.PAYPAL_KEY || '',
   },
 }
 

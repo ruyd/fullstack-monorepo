@@ -15,7 +15,7 @@ export const SettingModel = addModel<Setting>(
     },
   },
   [],
-  [],
+  ['admin'],
   false,
   false,
   sendConfig,

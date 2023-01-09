@@ -10,8 +10,8 @@ import { config } from '../../shared/config'
 
 let stripePromise: Promise<Stripe | null>
 function getStripe() {
-  if (!stripePromise && config.keys.stripe) {
-    stripePromise = loadStripe(config.keys.stripe)
+  if (!stripePromise && config.settings?.system?.stripeKey) {
+    stripePromise = loadStripe(config.settings?.system?.stripeKey)
   }
   return stripePromise
 }
@@ -35,7 +35,7 @@ export default function StripeCheckout({
   approveCallback?: () => void
   onLoading?: () => void
 }>): JSX.Element {
-  const stripe = useMemo(getStripe, [config.keys.stripe])
+  const stripe = useMemo(getStripe, [config.settings?.system?.stripeKey])
   const [intent, setIntent] = React.useState<PaymentIntentResult | undefined>()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const token = useAppSelector(state => state.app.token)
