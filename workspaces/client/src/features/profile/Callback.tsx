@@ -4,8 +4,10 @@ import { AlertTitle, Box, Grid, LinearProgress, Paper, Typography } from '@mui/m
 import authProvider from 'auth0-js'
 import { authOptions, getNonce } from 'src/shared/auth'
 import loginImage from './images/login.svg'
+import { useAppSelector } from 'src/shared/store'
 
 export default function Callback(): JSX.Element {
+  const clientId = useAppSelector(state => state.app.settings?.auth0?.clientId)
   const access_token = new URLSearchParams(window.location.hash).get('#access_token')
   const id_token = new URLSearchParams(window.location.href).get('id_token')
   const state = new URLSearchParams(window.location.href).get('state') as string
@@ -14,7 +16,7 @@ export default function Callback(): JSX.Element {
   React.useEffect(() => {
     const parseCallback = async () => {
       const { state, nonce } = getNonce()
-      const options = { ...authOptions(), state, nonce }
+      const options = { ...authOptions(), state, nonce, clientId }
       const webAuth = new authProvider.WebAuth(options)
       webAuth.popup.callback({
         hash: window.location.hash,
@@ -26,7 +28,7 @@ export default function Callback(): JSX.Element {
       parseCallback()
     }
     parseCallback()
-  }, [access_token, id_token, state])
+  }, [access_token, id_token, state, clientId])
 
   return (
     <Paper sx={{ height: '100vh' }}>

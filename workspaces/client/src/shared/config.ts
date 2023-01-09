@@ -32,14 +32,7 @@ export const config: Config = {
     width: 250,
     height: 250,
   },
-  settings: {
-    auth0: {
-      tenant: env.AUTH_TENANT,
-      clientAudience: `https://backend`,
-      clientId: env.AUTH_CLIENT_ID || '',
-      redirectUrl: env.AUTH_REDIRECT_URL || 'https://api.drawspace.app/callback',
-    },
-  },
+  settings: {},
   admin: {
     path: '/admin',
     models: [],

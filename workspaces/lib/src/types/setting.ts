@@ -28,7 +28,6 @@ export interface Auth0Settings {
   clientSecret?: string
   tenant?: string
   clientAudience?: string
-  redirectUrl?: string
   explorerId?: string
   explorerSecret?: string
   sync?: boolean
