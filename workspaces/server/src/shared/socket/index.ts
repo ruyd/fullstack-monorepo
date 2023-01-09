@@ -13,19 +13,22 @@ export type SocketHandler = (io: SocketService, socket: Socket) => void
 
 export let io: SocketService
 
-export function registerSocket(server: Server | ServerHttps): void {
-  io = new SocketService(server, {
-    cors: config.cors,
-  })
-  const onConnection = (socket: Socket) => {
-    handlers.forEach((handler: SocketHandler) => handler(io, socket))
-
-    logger.info(`⚡️ [socket]: New connection: ${socket.id}`)
-
-    socket.send('Helo', {
-      notifications: ['Hi!'],
+function onDisconnect(socket: Socket) {
+  logger.info('- socket disconnected: ' + socket.id)
+  try {
+    UserActiveModel.destroy({
+      where: {
+        socketId: socket.id,
+      },
     })
+  } catch (error) {
+    logger.error(error)
+  }
+}
 
+function onConnect(socket: Socket) {
+  logger.info(`⚡️ [socket]: New connection: ${socket.id}`)
+  try {
     const decoded = decodeToken(socket.handshake.auth.token)
     logger.info('decoded' + JSON.stringify(decoded))
     createOrUpdate(UserActiveModel, {
@@ -34,15 +37,25 @@ export function registerSocket(server: Server | ServerHttps): void {
       ip: socket.handshake.address,
       userAgent: socket.handshake.headers['user-agent'],
     })
+  } catch (error) {
+    logger.error(error)
+  }
+}
 
-    socket.on('disconnect', () => {
-      logger.info('- socket disconnected: ' + socket.id)
-      UserActiveModel.destroy({
-        where: {
-          socketId: socket.id,
-        },
-      })
+export function registerSocket(server: Server | ServerHttps): void {
+  io = new SocketService(server, {
+    cors: config.cors,
+  })
+  const onConnection = (socket: Socket) => {
+    handlers.forEach((handler: SocketHandler) => handler(io, socket))
+
+    socket.send('Helo', {
+      notifications: ['Hi!'],
     })
+
+    onConnect(socket)
+
+    socket.on('disconnect', () => onDisconnect(socket))
   }
   io.on('connection', onConnection)
 }
