@@ -6,11 +6,10 @@ declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEA
 
 if [ -n "$HAS_CLIENT_CHANGE" ]; then
   echo "Client changed, testing client build"
-  yarn docker && yarn workspace client tsc --build && yarn workspace client test
+  yarn workspace client tsc --build && yarn workspace client test
 fi
 
 if [ -n "$HAS_SERVER_CHANGE" ]; then
   echo "Server changed, testing server build"
   yarn docker && yarn workspace server tsc --build && yarn workspace server test
 fi
-
