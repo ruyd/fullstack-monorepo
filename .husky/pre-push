@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-declare HAS_SHARED_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/lib')
-declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/server')
-declare HAS_CLIENT_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/client')
+declare HAS_SHARED_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/lib/')
+declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/server/')
+declare HAS_CLIENT_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/client/')
 
 if [ -n "$HAS_CLIENT_CHANGE" ] || [ -n "$HAS_SHARED_CHANGE" ]; then
   echo "Client or shared changed, running client build"
