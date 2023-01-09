@@ -1,12 +1,12 @@
 name: 'Deploy: Client: Github Pages'
 
-on:
-  push:
-    branches: ['master']
-    paths:
-      - 'workspaces/lib/**'
-      - 'workspaces/client/**'
-      - '.github/workflows/deploy-client.yml'
+# on:
+#   push:
+#     branches: ['master']
+#     paths:
+#       - 'workspaces/lib/**'
+#       - 'workspaces/client/**'
+#       - '.github/workflows/deploy-client.yml'
 
 jobs:
   publish:
