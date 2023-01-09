@@ -1,4 +1,4 @@
-import { SettingData, SettingType } from '../../../lib/src/types'
+import { ClientSettings } from '@lib'
 import packageJson from '../../package.json'
 
 /**
@@ -14,9 +14,7 @@ export interface Config {
     width: number
     height: number
   }
-  settings: {
-    [k in SettingType]?: SettingData[k]
-  }
+  settings: ClientSettings
   admin: {
     path: string
     models?: string[]

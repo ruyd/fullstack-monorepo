@@ -196,15 +196,6 @@ export default function Settings() {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    label="Redirect Url"
-                    fullWidth
-                    required
-                    value={auth0?.redirectUrl || ''}
-                    onChange={e => save('auth0', 'redirectUrl', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
                     label="Client ID"
                     fullWidth
                     value={auth0?.clientId || ''}

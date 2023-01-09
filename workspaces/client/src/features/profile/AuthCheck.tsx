@@ -1,7 +1,4 @@
 import React from 'react'
-// import { useNavigate } from 'react-router-dom'
-// import { config } from  'src/shared/config'
-// import { Paths } from 'src/shared/routes'
 import { useAppSelector } from '../../shared/store'
 import Login from './Login'
 
@@ -13,16 +10,7 @@ export default function AuthCheck({
   secure?: boolean
 }) {
   const token = useAppSelector(state => state.app.token)
-  //const navigate = useNavigate()
   const denied = secure && !token
-  // React.useEffect(() => {
-  //   if (denied) {
-  //     const fullPath = window.location.href
-  //       .replace(window.location.origin, '')
-  //       .replace(config.baseName, '')
-  //     navigate(`${Paths.Login}?returnTo=${fullPath}`)
-  //   }
-  // }, [denied, navigate])
   if (denied) {
     return <Login />
   }

@@ -52,7 +52,7 @@ export interface SettingData {
   [SettingTypes.Auth0]: Auth0Settings
 }
 
-export type ClientSettings = Omit<SettingData, 'internal'>
+export type ClientSettings = Partial<Omit<SettingData, 'internal'>>
 
 export interface ClientConfig {
   admin: {

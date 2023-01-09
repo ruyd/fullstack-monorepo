@@ -2,7 +2,6 @@
 import React from 'react'
 import store, { useAppDispatch, useAppSelector } from 'src/shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
-import { config } from '../../shared/config'
 import decode from 'jwt-decode'
 import authProvider from 'auth0-js'
 import { authOptions, checkSocialToken, generateNonce } from 'src/shared/auth'
@@ -14,7 +13,6 @@ type OneTapBase = {
 }
 
 export const initOptions: OneTapParams = {
-  client_id: config.settings?.google?.clientId as string,
   callback: async ok => {
     console.log('Google One Tap callback', ok)
     googleCredentialsLogin(ok.credential as string)
@@ -172,33 +170,41 @@ export function GoogleOneTapButton({
   const ref = React.createRef<HTMLDivElement>()
   const loaded = React.useRef(false)
   const tap = (window as WindowWithGoogle).google?.accounts?.id
+  const token = useAppSelector(state => state.app.token)
+  const enabled = useAppSelector(state => state.app.settings?.system?.enableOneTapLogin)
+  const clientId = useAppSelector(state => state.app.settings?.google?.clientId)
   React.useEffect(() => {
-    if (!loaded.current) {
+    if (!loaded.current && clientId && enabled) {
       loaded.current = true
-      tap?.initialize(initOptions)
+      tap?.initialize({
+        ...initOptions,
+        client_id: clientId,
+      })
       const button = document.getElementById(id)
       if (button) renderButton(button)
     }
-  }, [tap, id, ref])
+  }, [tap, id, ref, token, enabled, clientId])
   return <div id={id} ref={ref} {...props} />
 }
 export function GoogleOneTap(): JSX.Element {
   const token = useAppSelector(state => state.app.token)
   const enabled = useAppSelector(state => state.app.settings?.system?.enableOneTapLogin)
+  const clientId = useAppSelector(state => state.app.settings?.google?.clientId)
   const dispatch = useAppDispatch()
   const loaded = React.useRef(false)
   React.useEffect(() => {
-    if (!enabled) {
+    if (!enabled || !clientId) {
       return
     }
 
     if (!loaded.current && !token) {
       loadScriptAndInit({
         ...initOptions,
+        clientId,
       })
       loaded.current = true
     }
-  }, [dispatch, token, enabled])
+  }, [dispatch, token, enabled, clientId])
 
   return <></>
 }
