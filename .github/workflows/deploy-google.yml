@@ -33,7 +33,8 @@ jobs:
             deploy:
               - '.github/workflows/deploy-google.yml' 
             test:
-              - 'workspaces/**'
+              - 'workspaces/lib/**'
+              - 'workspaces/server/**'
             client:
               - 'workspaces/lib/**'
               - 'workspaces/client/**'
@@ -48,6 +49,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v3
+        if: ${{ needs.changes.outputs.test == 'true' }}
 
       - name: Install
         if: ${{ needs.changes.outputs.test == 'true' }}
