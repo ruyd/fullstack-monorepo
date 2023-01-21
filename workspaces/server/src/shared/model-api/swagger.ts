@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import express from 'express'
-import { Model, ModelStatic } from 'sequelize/types'
+import { Model, ModelStatic } from 'sequelize'
 import swaggerJsdoc, { OAS3Definition, Schema } from 'swagger-jsdoc'
 import config from '../config'
 import Connection, { EntityConfig } from '../db'

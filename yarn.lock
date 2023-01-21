@@ -16624,6 +16624,7 @@ __metadata:
     concurrently: ^7.5.0
     eslint: ^8.19.0
     eslint-config-prettier: ^8.5.0
+    eslint-plugin-import: ^2.26.0
     eslint-plugin-no-only-tests: ^2.6.0
     eslint-plugin-react: ^7.30.1
     eslint-plugin-react-hooks: ^4.6.0
