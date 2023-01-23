@@ -1,6 +1,5 @@
 import React from 'react'
 import Header from './Header'
-import '../../styles/index.css'
 import DrawerRight from './Drawer'
 import Routing, { RouteElement } from './Routing'
 import Notifications from './Notifications'
