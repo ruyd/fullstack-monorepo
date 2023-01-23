@@ -11,8 +11,18 @@ module.exports = {
   ignorePatterns: ['dist', 'build', 'node_modules'],
   rules: {
     '@typescript-eslint/ban-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     'no-console': 'warn',
+    'import/no-named-as-default': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      node: true,
+      typescript: {
+        project: 'workspaces/*/tsconfig.json',
+      },
+    },
   },
   overrides: [
     {

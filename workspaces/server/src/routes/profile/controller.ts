@@ -155,16 +155,18 @@ export async function social(req: express.Request, res: express.Response) {
 
   let renew = false
   if (access.userId !== user.userId) {
-    logger.info('Updating metadata userId', access.userId, user.userId)
-    await lazyLoadManagementToken()
-    const response = await authProviderPatch(access.sub, {
-      connection: 'google-oauth2',
-      user_metadata: {
-        id: user.userId,
-      },
-    })
-    logger.info('success' + JSON.stringify(response))
-    renew = true
+    const ok = await lazyLoadManagementToken()
+    if (ok) {
+      logger.info('Updating metadata userId', access.userId, user.userId)
+      const response = await authProviderPatch(access.sub, {
+        connection: 'google-oauth2',
+        user_metadata: {
+          id: user.userId,
+        },
+      })
+      logger.info('success' + JSON.stringify(response))
+      renew = true
+    }
   }
 
   res.json({

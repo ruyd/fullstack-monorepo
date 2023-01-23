@@ -265,6 +265,7 @@ export async function authProviderPatch(
   },
 ): Promise<oAuthError | string> {
   try {
+    const token = config.auth?.manageToken
     const response = await axios.patch(
       `${config.auth?.baseUrl}/api/v2/users/${sub}`,
       {
@@ -272,7 +273,7 @@ export async function authProviderPatch(
       },
       {
         headers: {
-          Authorization: `Bearer ${config.auth?.manageToken}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     )
