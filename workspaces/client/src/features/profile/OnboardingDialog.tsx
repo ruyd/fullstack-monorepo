@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from '../app'
 import Login from './Login'
 import Register from './Register'

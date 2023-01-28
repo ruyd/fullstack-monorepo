@@ -22,7 +22,7 @@ import { logoutAsync } from '../app/thunks'
 import { Badge, Link } from '@mui/material'
 import { prompt } from '../profile/GoogleOneTap'
 import { ShoppingBag, ShoppingCart, ShoppingCartCheckout, Warning } from '@mui/icons-material'
-import { hasRole } from 'src/shared/auth'
+import { hasRole } from '../../shared/auth'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)

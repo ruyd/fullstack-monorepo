@@ -5,7 +5,7 @@ import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
 import SkeletonTotalGrowthBarChart from '../../ui/Card/Skeleton/TotalGrowthBarChart'
 import MainCard from '../../ui/Card'
-import { gridSpacing } from 'src/shared/constant'
+import { gridSpacing } from '../../../shared/constant'
 import chartData from './chart-data/total-growth-bar-chart'
 
 const status = [

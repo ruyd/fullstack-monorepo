@@ -10,12 +10,12 @@ import {
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import StartImage from './images/start.svg'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { User } from '@lib'
 import React from 'react'
 import { patch, request } from '../app'
-import { onLogin } from 'src/shared/auth'
-import loadConfig from 'src/shared/loadConfig'
+import { onLogin } from '../../shared/auth'
+import loadConfig from '../../shared/loadConfig'
 import { useNavigate } from 'react-router-dom'
 
 export default function Start() {

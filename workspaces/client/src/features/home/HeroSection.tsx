@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Button, Container, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
-import { Paths } from 'src/shared/routes'
+import { Paths } from '../../shared/routes'
 import { FormattedMessage } from 'react-intl'
 
 export default function HeroSection({

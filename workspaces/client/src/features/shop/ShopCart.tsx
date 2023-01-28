@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@mui/material'
 import { Cart, Drawing } from '@lib'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from '../app'
 import { cartAsync, loadAsync } from './thunks'
 import {

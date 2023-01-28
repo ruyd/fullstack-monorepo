@@ -2,11 +2,11 @@
 import React from 'react'
 import { io, Socket } from 'socket.io-client'
 
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { AppNotification, AppState, patch } from '.'
-import { config } from 'src/shared/config'
+import { config } from '../../shared/config'
 
-import loadConfig, { setConfig } from 'src/shared/loadConfig'
+import loadConfig, { setConfig } from '../../shared/loadConfig'
 import { ClientConfig } from '@lib'
 
 export default function SocketListener() {

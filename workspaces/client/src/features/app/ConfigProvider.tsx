@@ -1,10 +1,10 @@
 import React from 'react'
-import loadConfig from 'src/shared/loadConfig'
-import { useAppSelector } from 'src/shared/store'
-import MaintenancePage from 'src/features/pages/Maintenance'
-import StartPage from 'src/features/pages/Start'
+import loadConfig from '../../shared/loadConfig'
+import { useAppSelector } from '../../shared/store'
+import MaintenancePage from '../../features/pages/Maintenance'
+import StartPage from '../../features/pages/Start'
 import { useLocation } from 'react-router-dom'
-import { hasRole } from 'src/shared/auth'
+import { hasRole } from '../../shared/auth'
 
 export function ConfigProvider({ children }: { children: React.ReactElement }): JSX.Element {
   const location = useLocation()

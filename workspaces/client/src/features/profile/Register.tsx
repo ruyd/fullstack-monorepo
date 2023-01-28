@@ -13,7 +13,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '../../shared/store'
 import { registerAsync } from '../app/thunks'
-import { Paths } from 'src/shared/routes'
+import { Paths } from '../../shared/routes'
 import { googlePopupLogin } from './GoogleOneTap'
 
 export default function Register(props?: ContainerProps) {

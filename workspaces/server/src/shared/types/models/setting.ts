@@ -1,6 +1,6 @@
 import { Setting } from '@lib'
 import { DataTypes } from 'sequelize'
-import { sendConfig } from 'src/shared/socket'
+import { sendConfig } from '../../../shared/socket'
 import { addModel } from '../../../shared/db'
 
 export const SettingModel = addModel<Setting>(

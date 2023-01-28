@@ -4,12 +4,12 @@ import { useTheme } from '@mui/material/styles'
 import { Box, Card, Divider, Grid, Typography } from '@mui/material'
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs'
 import HorizontalLineIcon from '@mui/icons-material/HorizontalRule'
-import { gridSpacing } from 'src/shared/constant'
+import { gridSpacing } from '../../../shared/constant'
 
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
 import HomeIcon from '@mui/icons-material/Home'
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone'
-import { config } from 'src/shared/config'
+import { config } from '../../../shared/config'
 
 const linkSX = {
   display: 'flex',

@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles'
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material'
 import EarningIcon from './images/earning.svg'
@@ -9,8 +8,8 @@ import GetAppTwoToneIcon from '@mui/icons-material/GetAppOutlined'
 import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined'
 import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined'
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined'
-import Card from 'src/features/ui/Card'
-import Skeleton from 'src/features/ui/Card/Skeleton/EarningCard'
+import Card from '../../ui/Card'
+import Skeleton from '../../ui/Card/Skeleton/EarningCard'
 
 const CardWrapper = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.dark,

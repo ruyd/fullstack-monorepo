@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import { Box, Card } from '@mui/material'
-import { useAppSelector } from 'src/shared/store'
+import { useAppSelector } from '../../shared/store'
 import { Address } from '../../../../lib/src/types'
 
 export default function AddressForm() {

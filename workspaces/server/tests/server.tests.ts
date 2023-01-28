@@ -1,6 +1,6 @@
 import request from 'supertest'
-import createBackendApp from 'src/app'
-import { getRoutesFromApp } from 'src/shared/server'
+import createBackendApp from '../../app'
+import { getRoutesFromApp } from '../../shared/server'
 
 describe('server route checks', () => {
   const app = createBackendApp({ checks: false, trace: true })

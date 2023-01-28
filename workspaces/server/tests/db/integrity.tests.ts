@@ -1,4 +1,4 @@
-import createBackendApp from 'src/app'
+import createBackendApp from '../../app'
 import { Connection } from '../../src/shared/db'
 
 describe('integrity check', () => {

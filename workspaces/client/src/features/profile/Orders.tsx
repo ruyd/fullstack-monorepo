@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { Order, PagedResult } from '@lib'
-import { useGet } from 'src/features/app'
+import { useGet } from '../../features/app'
 
 export function Orders() {
   const { data, isLoading, error } = useGet<PagedResult<Order>>('ordercache', 'order', undefined, {

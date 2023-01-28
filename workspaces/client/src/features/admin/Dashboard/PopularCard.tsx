@@ -18,7 +18,7 @@ import {
 import BajajAreaChartCard from './BajajAreaChartCard'
 import MainCard from '../../ui/Card'
 import SkeletonPopularCard from '../../ui/Card/Skeleton/PopularCard'
-import { gridSpacing } from 'src/shared/constant'
+import { gridSpacing } from '../../../shared/constant'
 
 // assets
 import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined'

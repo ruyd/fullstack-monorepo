@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import Box from '@mui/material/Box'
-import { useAppDispatch } from 'src/shared/store'
+import { useAppDispatch } from '../../shared/store'
 import React from 'react'
-import { request, useGet } from '../app'
+import { request, useGet, notify } from '../app'
 import _ from 'lodash'
 import {
   Alert,
@@ -23,7 +23,6 @@ import { PagedResult, GridPatchProps } from '@lib'
 import DataTable from './DataTable'
 import SearchIcon from '@mui/icons-material/Search'
 import { Method } from '../app/thunks'
-import { notify } from '../app'
 import { DeleteForever } from '@mui/icons-material'
 import Spacer from '../ui/Spacer'
 import AlertDialog, { AlertDialogProps } from '../ui/AlertDialog'

@@ -7,7 +7,7 @@ import Collapse from '@mui/material/Collapse'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import { Link } from 'react-router-dom'
-import { config } from 'src/shared/config'
+import { config } from '../../shared/config'
 
 export interface MenuModel {
   text: string

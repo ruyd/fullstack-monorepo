@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material'
 import Moment from 'react-moment'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { Drawing } from '../../../../lib/src/types'
 import { Method, notify, request } from '../app'
 import { actions } from './slice'

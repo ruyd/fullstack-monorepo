@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import React from 'react'
-import store, { useAppDispatch, useAppSelector } from 'src/shared/store'
+import store, { useAppDispatch, useAppSelector } from '../../shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
 import decode from 'jwt-decode'
 import authProvider from 'auth0-js'
-import { authOptions, checkSocialToken, generateNonce } from 'src/shared/auth'
+import { authOptions, checkSocialToken, generateNonce } from '../../shared/auth'
 import { notifyError, socialLoginAsync } from '../app'
 
 type OneTapBase = {

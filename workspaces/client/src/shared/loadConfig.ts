@@ -1,6 +1,6 @@
 import { ClientConfig } from '@lib'
 import axios from 'axios'
-import { patch } from 'src/features/app'
+import { patch } from '../features/app'
 import config from './config'
 import store from './store'
 

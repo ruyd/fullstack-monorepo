@@ -305,7 +305,11 @@ module.exports = function (webpackEnv) {
         }),
         ...(modules.webpackAliases || {}),
       },
-      plugins: [new TsconfigPathsPlugin({})],
+      plugins: [
+        new TsconfigPathsPlugin({
+          configFile: paths.appTsConfig,
+        }),
+      ],
       fallback: {
         crypto: require.resolve('crypto-browserify'),
         stream: require.resolve('stream-browserify'),

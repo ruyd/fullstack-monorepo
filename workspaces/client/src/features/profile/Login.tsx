@@ -12,7 +12,7 @@ import {
   ContainerProps,
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { Paths } from 'src/shared/routes'
+import { Paths } from '../../shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 

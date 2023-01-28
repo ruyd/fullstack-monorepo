@@ -5,8 +5,8 @@ import { list } from '../../shared/model-api/controller'
 import { DrawingModel, EnrichedRequest, SettingModel, UserModel } from '../../shared/types'
 import { v4 as uuid } from 'uuid'
 import { createToken } from '../../shared/auth'
-import config from 'src/shared/config'
-import { getClientConfigSettings } from 'src/shared/settings'
+import config from '../../shared/config'
+import { getClientConfigSettings } from '../../shared/settings'
 import { SystemSettings } from '@lib'
 
 export async function start(req: express.Request, res: express.Response) {

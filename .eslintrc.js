@@ -20,7 +20,7 @@ module.exports = {
     'import/resolver': {
       node: true,
       typescript: {
-        project: 'workspaces/*/tsconfig.json',
+        project: './workspaces/*/tsconfig.json',
       },
     },
   },

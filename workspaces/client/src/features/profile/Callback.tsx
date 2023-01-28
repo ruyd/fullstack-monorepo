@@ -2,9 +2,9 @@ import React from 'react'
 import Alert from '@mui/material/Alert'
 import { AlertTitle, Box, Grid, LinearProgress, Paper, Typography } from '@mui/material'
 import authProvider from 'auth0-js'
-import { authOptions, getNonce } from 'src/shared/auth'
+import { authOptions, getNonce } from '../../shared/auth'
 import loginImage from './images/login.svg'
-import { useAppSelector } from 'src/shared/store'
+import { useAppSelector } from '../../shared/store'
 
 export default function Callback(): JSX.Element {
   const clientId = useAppSelector(state => state.app.settings?.auth0?.clientId)

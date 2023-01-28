@@ -1,16 +1,14 @@
 import React from 'react'
 import { IntlProvider } from 'react-intl'
-import { useAppSelector } from 'src/shared/store'
+import { useAppSelector } from '../../shared/store'
+
+export type IntlProviderProps = React.ComponentProps<typeof IntlProvider>
 
 export interface MessagesFile {
-  [key: string]: {
-    defaultMessage: string
-    description?: string
-    values?: Record<string, string>
-  }
+  [key: string]: string
 }
 
-async function loadLocale(locale: string) {
+async function loadLocale(locale: string): Promise<Record<string, string>> {
   return import(`../languages/${locale}.json`) as unknown as Record<string, string>
 }
 
@@ -23,7 +21,7 @@ export default function LanguageProvider(props: { children: React.ReactElement }
   }, [locale])
 
   return (
-    <IntlProvider locale={locale} messages={messages}>
+    <IntlProvider locale={locale} messages={messages} defaultLocale="en">
       {children}
     </IntlProvider>
   )
