@@ -2721,6 +2721,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@formatjs/cli@npm:^5.1.12":
+  version: 5.1.12
+  resolution: "@formatjs/cli@npm:5.1.12"
+  peerDependencies:
+    "@vue/compiler-sfc": ^3.2.34
+  peerDependenciesMeta:
+    "@vue/compiler-sfc":
+      optional: true
+  bin:
+    formatjs: bin/formatjs
+  checksum: a76c5995078aebc750b58ae049dae0118e265054e4b9c004e45efcf42086138267fa7ab35a5161f027a5c79eef1ea8e5897073a70dfa1dd93b99023a73c280f9
+  languageName: node
+  linkType: hard
+
 "@formatjs/ecma402-abstract@npm:1.13.0":
   version: 1.13.0
   resolution: "@formatjs/ecma402-abstract@npm:1.13.0"
@@ -7315,6 +7329,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": ^7.19.0
     "@emotion/react": ^11.9.0
     "@emotion/styled": ^11.8.1
+    "@formatjs/cli": ^5.1.12
     "@mui/icons-material": ^5.10.9
     "@mui/lab": ^5.0.0-alpha.114
     "@mui/material": ^5.10.13
@@ -7348,6 +7363,7 @@ __metadata:
     browserslist: ^4.18.1
     camelcase: ^6.2.1
     case-sensitive-paths-webpack-plugin: ^2.4.0
+    copy-webpack-plugin: ^11.0.0
     crypto-browserify: ^3.12.0
     css-loader: ^6.5.1
     css-minimizer-webpack-plugin: ^3.2.0
@@ -7799,6 +7815,22 @@ __metadata:
   version: 2.1.3
   resolution: "cookiejar@npm:2.1.3"
   checksum: 88259983ebc52ceb23cdacfa48762b6a518a57872eff1c7ed01d214fff5cf492e2660d7d5c04700a28f1787a76811df39e8639f8e17670b3cf94ecd86e161f07
+  languageName: node
+  linkType: hard
+
+"copy-webpack-plugin@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "copy-webpack-plugin@npm:11.0.0"
+  dependencies:
+    fast-glob: ^3.2.11
+    glob-parent: ^6.0.1
+    globby: ^13.1.1
+    normalize-path: ^3.0.0
+    schema-utils: ^4.0.0
+    serialize-javascript: ^6.0.0
+  peerDependencies:
+    webpack: ^5.1.0
+  checksum: df4f8743f003a29ee7dd3d9b1789998a3a99051c92afb2ba2203d3dacfa696f4e757b275560fafb8f206e520a0aa78af34b990324a0e36c2326cefdeef3ca82e
   languageName: node
   linkType: hard
 
@@ -10671,7 +10703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-parent@npm:^6.0.2":
+"glob-parent@npm:^6.0.1, glob-parent@npm:^6.0.2":
   version: 6.0.2
   resolution: "glob-parent@npm:6.0.2"
   dependencies:
@@ -10794,7 +10826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^13.1.2":
+"globby@npm:^13.1.1, globby@npm:^13.1.2":
   version: 13.1.3
   resolution: "globby@npm:13.1.3"
   dependencies:

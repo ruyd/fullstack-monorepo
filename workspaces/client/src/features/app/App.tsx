@@ -8,6 +8,7 @@ import { MainLayout } from '../ui/MainLayout'
 import ConfigProvider from './ConfigProvider'
 import axios from 'axios'
 import ThemeSwitch from '../ui/Theme'
+import LanguageProvider from './LanguageProvider'
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false, cacheTime: 3000, staleTime: 3000 } },
@@ -23,7 +24,9 @@ export default function App() {
           <BrowserRouter basename={config.baseName}>
             <ThemeSwitch>
               <ConfigProvider>
-                <MainLayout />
+                <LanguageProvider>
+                  <MainLayout />
+                </LanguageProvider>
               </ConfigProvider>
             </ThemeSwitch>
           </BrowserRouter>

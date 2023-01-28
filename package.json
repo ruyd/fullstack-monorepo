@@ -12,7 +12,8 @@
   "scripts": {
     "start": "HEROKU=true NODE_ENV=production yarn workspace server start",
     "build": "HEROKU=true yarn workspace lib build && NODE_ENV=production yarn workspace server build",
-    "build:tests": "yarn tsc --build --verbose workspaces/*/tests/tsconfig.json",
+    "build:tests": "yarn tsc -b workspaces/*/tests -v",
+    "build:check": "yarn tsc -b workspaces/*/tsconfig.json -v",
     "prod": "NODE_ENV=production concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
     "dev": "yarn install && docker compose up --wait && concurrently \"yarn workspace server dev\" \"yarn workspace client dev\" \"yarn workspace lib dev\"",
     "client": "yarn workspace client dev",
@@ -22,7 +23,7 @@
     "test": "yarn build && yarn docker && yarn workspace server test && yarn workspace client test",
     "prettify": "yarn prettier . --write",
     "clean": "rm -rf node_modules workspaces/*/node_modules package-lock.json yarn.lock workspaces/*/build workspaces/*/dist",
-    "precommit": "yarn build && yarn build:tests",
+    "precommit": "yarn build:check",
     "prepare": "husky install"
   },
   "devDependencies": {

@@ -18,6 +18,7 @@ export interface AppState {
   settings?: ClientSettings
   deviceId?: string
   ready: boolean
+  locale: string
 }
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
@@ -25,6 +26,7 @@ const defaultState: AppState = {
   darkMode: !!prefersDark,
   notifications: [],
   ready: false,
+  locale: 'en',
 }
 
 const persistedAuth = getPersistedAuthFromStorage()

@@ -3,8 +3,7 @@
 
 declare HAS_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/')
 
-if [ -n "$HAS_CHANGE" ]; then
-  echo "Changes detected, running precommit"
+if [ -n "$HAS_CHANGE" ]; then  
   yarn precommit
 fi
 
