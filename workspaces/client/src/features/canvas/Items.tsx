@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Delete, Edit, Settings as SettingsIcon } from '@mui/icons-material'
 import {
-  Box,
-  Button,
-  ButtonGroup,
   Container,
   ContainerProps,
   Grid,
@@ -14,7 +10,6 @@ import {
 } from '@mui/material'
 import { Drawing } from '@lib'
 import React from 'react'
-import { useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
 import { config } from '../../shared/config'
@@ -29,8 +24,8 @@ export default function Items(props: ContainerProps) {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { id } = useParams()
-  const activeId = useAppSelector(store => store.canvas.active?.drawingId)
-  const isActive = (item: Drawing) => activeId === item?.drawingId
+  // const activeId = useAppSelector(store => store.canvas.active?.drawingId)
+  // const isActive = (item: Drawing) => activeId === item?.drawingId
 
   const setItem = (item: Drawing) => {
     dispatch(actions.patchActive(item))
