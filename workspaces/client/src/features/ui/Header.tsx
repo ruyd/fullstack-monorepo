@@ -19,7 +19,7 @@ import { patch } from '../app/slice'
 import { Link as RouterLink } from 'react-router-dom'
 import routes, { AppRoute } from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
-import { Badge, Link } from '@mui/material'
+import { Badge, FormControlLabel, Link, Radio, RadioGroup } from '@mui/material'
 import { prompt } from '../profile/GoogleOneTap'
 import { ShoppingBag, ShoppingCart, ShoppingCartCheckout, Warning } from '@mui/icons-material'
 import { hasRole } from '../../shared/auth'
@@ -28,6 +28,7 @@ const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
 
 export default function HeaderNavBar() {
+  const locale = useAppSelector(state => state.app.locale)
   const maintenance = useAppSelector(state => state.app.settings?.system?.disable)
   const backgroundColor = maintenance ? 'error.dark' : 'primary.main'
   const items = useAppSelector(state => state.shop.items)
@@ -77,6 +78,10 @@ export default function HeaderNavBar() {
 
   const handleLogout = () => {
     dispatch(logoutAsync())
+  }
+
+  const handleLang = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(patch({ locale: e.target.value }))
   }
 
   return (
@@ -243,6 +248,12 @@ export default function HeaderNavBar() {
               </MenuItem>
               <MenuItem onClick={handleThemeToggle}>
                 <Typography textAlign="center">Theme</Typography>
+              </MenuItem>
+              <MenuItem>
+                <RadioGroup onChange={handleLang} value={locale}>
+                  <FormControlLabel value="en" control={<Radio />} label="en" />
+                  <FormControlLabel value="es" control={<Radio />} label="es" />
+                </RadioGroup>
               </MenuItem>
               {authenticated && (
                 <MenuItem onClick={handleLogout}>
