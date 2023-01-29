@@ -4,12 +4,12 @@ import { useAppSelector } from '../../shared/store'
 
 export type IntlProviderProps = React.ComponentProps<typeof IntlProvider>
 
-export interface MessagesFile {
-  [key: string]: string
-}
+const cache: Record<string, Record<string, string>> = {}
 
 async function loadLocale(locale: string): Promise<Record<string, string>> {
-  return import(`../languages/${locale}.json`) as unknown as Record<string, string>
+  if (cache[locale]) return cache[locale]
+  cache[locale] = await import(`../languages/${locale}.json`)
+  return cache[locale]
 }
 
 export default function LanguageProvider(props: { children: React.ReactElement }) {
