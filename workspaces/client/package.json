@@ -123,7 +123,9 @@
     "ghpages": "gh-pages -d build",
     "deploy": "yarn build && firebase deploy",
     "clean": "rm -rf node_modules package-lock.json dist build",
-    "lang:init": "yarn formatjs extract --ast --out-file languages/en.json",
+    "lang:extract": "yarn formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file src/features/languages/extract.json",
+    "lang:sync": "node tools/react-intl-sync.js",
+    "lang": "yarn lang:extract && yarn lang:sync",
     "lint": "eslint . --fix"
   },
   "eslintConfig": {
