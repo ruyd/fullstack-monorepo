@@ -1,4 +1,8 @@
 {
+  "home.button": {
+    "defaultMessage": "Take it for a spin",
+    "description": "Hero Button Caption"
+  },
   "home.title": {
     "defaultMessage": "Drawings Marketplace",
     "description": "Hero Title"
