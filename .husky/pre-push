@@ -1,15 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-declare HAS_CLIENT_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/client/')
-declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/server/')
+declare HAS_CLIENT_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/client')
+declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEAD | grep 'workspaces/server')
 
 if [ -n "$HAS_CLIENT_CHANGE" ]; then
   echo "Client changed, testing client build"
-  yarn workspace client tsc --build && yarn workspace client test
+  yarn jest --selectProjects client
 fi
 
 if [ -n "$HAS_SERVER_CHANGE" ]; then
   echo "Server changed, testing server build"
-  yarn docker && yarn workspace server tsc --build && yarn workspace server test
+  yarn docker && yarn jest --selectProjects server
 fi
