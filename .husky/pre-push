@@ -11,5 +11,6 @@ fi
 
 if [ -n "$HAS_SERVER_CHANGE" ]; then
   echo "Server changed, testing server build"
-  yarn docker && yarn jest --selectProjects server
+  yarn docker && yarn jest --selectProjects server --runInBand --bail
 fi
+
