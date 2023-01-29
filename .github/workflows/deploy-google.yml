@@ -199,7 +199,8 @@ jobs:
           docker push $TAG
 
       - name: 'vm.create'
-        if: ${{ env.VM_EXISTS == 0 }}
+        # if: ${{ env.VM_EXISTS == 0 }}
+        if: ${{ false }}
         run: |
           echo "VM does not exist, creating with container"
           gcloud compute instances create-with-container $VM_NAME \
@@ -209,7 +210,8 @@ jobs:
             --tags=http-server,https-server
 
       - name: 'vm.existing.redeploy'
-        if: ${{ env.VM_EXISTS == 1 }}
+        # if: ${{ env.VM_EXISTS == 1 }}
+        if: ${{ false }}
         run: |
           gcloud compute instances update-container $VM_NAME \
             --zone $ZONE \
