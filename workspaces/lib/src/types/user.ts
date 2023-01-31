@@ -29,7 +29,7 @@ export interface Address extends Entity {
   zip: string
   country: string
   phone: string
-  default?: boolean
+  favorite?: boolean
 }
 
 export interface PaymentMethod extends Entity {
@@ -40,7 +40,7 @@ export interface PaymentMethod extends Entity {
   last4: string
   expMonth: number
   expYear: number
-  default?: boolean
+  favorite?: boolean
 }
 
 export interface UserActive {

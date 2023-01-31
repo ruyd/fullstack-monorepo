@@ -167,7 +167,7 @@ code {
       content: '';
       height: 100px;
       position: absolute;
-      background: #ffffff;
+      background: transparent;
       transform: rotate(-45deg);
     }
 
@@ -216,7 +216,7 @@ code {
       height: 85px;
       position: absolute;
       transform: rotate(-45deg);
-      background-color: #ffffff;
+      background-color: transparent;
     }
   }
 }

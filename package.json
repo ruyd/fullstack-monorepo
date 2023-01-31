@@ -11,7 +11,7 @@
   "outDir": "dist",
   "scripts": {
     "start": "HEROKU=true NODE_ENV=production yarn workspace server start",
-    "build": "HEROKU=true yarn workspace lib build && NODE_ENV=production yarn workspace server build",
+    "build": "HEROKU=true yarn workspace server build",
     "build:tests": "yarn tsc -b workspaces/*/tests -v",
     "build:check": "yarn tsc -b workspaces/*/tsconfig.json -v",
     "prod": "NODE_ENV=production concurrently \"yarn workspace server start\" \"yarn workspace client start\"",

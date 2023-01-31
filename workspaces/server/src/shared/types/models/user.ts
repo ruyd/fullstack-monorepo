@@ -73,7 +73,7 @@ export const AddressModel = addModel<Address>('address', {
   phone: {
     type: DataTypes.STRING,
   },
-  default: {
+  favorite: {
     type: DataTypes.BOOLEAN,
   },
 })
@@ -102,7 +102,7 @@ export const PaymentMethodModel = addModel<PaymentMethod>('payment_method', {
   expYear: {
     type: DataTypes.INTEGER,
   },
-  default: {
+  favorite: {
     type: DataTypes.BOOLEAN,
   },
 })
