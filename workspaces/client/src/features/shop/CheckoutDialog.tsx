@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import {
@@ -48,7 +49,7 @@ const steps: { title: string; component: JSX.Element; next: string }[] = [
 ]
 
 export default function CheckoutDialog() {
-  const theme = useTheme()
+  const token = useAppSelector(store => store.app.token)
   const [activeStep, setActiveStep] = React.useState(0)
   const dispatch = useAppDispatch()
   const loaded = useAppSelector(store => store.shop.loaded)
@@ -84,10 +85,11 @@ export default function CheckoutDialog() {
     setShow(requested?.split('.')[1] || 'checkout')
   }, [requested, setShow])
   React.useEffect(() => {
-    if (!loaded) {
+    console.log('loadAsync', loaded, token)
+    if (!loaded && token) {
       dispatch(loadAsync())
     }
-  }, [dispatch, loaded])
+  }, [dispatch, loaded, token])
 
   if (!open) {
     return null

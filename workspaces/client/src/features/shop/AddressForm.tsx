@@ -1,21 +1,16 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
+import debouncer from '../../shared/debouncer'
 import {
   Box,
   Button,
   ButtonGroup,
-  Card,
   IconButton,
   List,
   ListItem,
   ListItemButton,
-  ListItemSecondaryAction,
   ListItemText,
 } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
@@ -24,7 +19,8 @@ import { patch } from './slice'
 import { v4 as uuid } from 'uuid'
 import Favorite from '@mui/icons-material/Favorite'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder'
-import { Check, Delete, DeleteOutline, ShoppingCartCheckout } from '@mui/icons-material'
+import { DeleteOutline } from '@mui/icons-material'
+import { request } from '../app'
 
 const newAddress = () => ({
   addressId: '',
@@ -38,12 +34,12 @@ const newAddress = () => ({
   country: '',
 })
 
-const SelectableListItem = () => <ListItem />
-
 export default function AddressForm() {
-  const [edit, setEdit] = useState(false)
   const items = useAppSelector(store => store.shop.addresses)
-  const [selected, setSelected] = useState<Partial<Address>>(newAddress())
+  const shippingAddressId = useAppSelector(store => store.shop.shippingAddressId)
+  const shippingAddress = items?.find(a => a.addressId === shippingAddressId) || newAddress()
+
+  const [selected, setSelected] = useState<Partial<Address>>(shippingAddress)
   const dispatch = useAppDispatch()
 
   const resetHandler = () => setSelected(newAddress())
@@ -58,6 +54,7 @@ export default function AddressForm() {
     }
     setSelected(item)
     dispatch(patch({ addresses }))
+    debouncer('address', () => request('address', item), 1000)
   }
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
@@ -66,13 +63,12 @@ export default function AddressForm() {
   }
 
   const deleteHandler = (item: Address) => {
-    console.log('deleteHandler', item)
     const addresses = items?.filter(a => a.addressId !== item.addressId) || []
     dispatch(patch({ addresses }))
     if (selected.addressId === item.addressId) {
       setSelected(addresses.find(a => a.addressId !== item.addressId) || newAddress())
     }
-    return false
+    request('address', { ids: [item.addressId] }, 'delete')
   }
 
   const favoriteHandler = (item: Address) => {
@@ -87,7 +83,7 @@ export default function AddressForm() {
 
   const editHandler = (item: Address) => {
     setSelected(item)
-    console.log('editHandler', item)
+    dispatch(patch({ shippingAddressId: item.addressId }))
   }
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -246,14 +242,7 @@ export default function AddressForm() {
                         <div>{item.address2}</div>
                       </>
                     }
-                    secondary={
-                      <>
-                        <div>
-                          {item.city} {item.state} {item.zip}
-                        </div>
-                        <div>{item.country}</div>
-                      </>
-                    }
+                    secondary={`${item.city} ${item.state} ${item.zip} ${item.country}`}
                   />
                 </ListItemButton>
               </ListItem>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Address, Cart, CheckoutRequest, Drawing, Order, PaymentMethod } from '@lib'
+import { Address, Cart, CheckoutRequest, Drawing, Order, PagedResult, PaymentMethod } from '@lib'
 import { RootState } from '../../shared/store'
 import { get, Method, notify, request } from '../app'
 import { patch } from './slice'
@@ -15,18 +15,11 @@ export const intentAsync = createAsyncThunk(
 )
 export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, getState }) => {
   const state = getState() as RootState
-  const disable = state.app.settings?.system?.disable
-  const enableStore = state.app.settings?.system?.enableStore
-  if (disable || !enableStore) {
-    return
-  }
-  const { data: items } = await get<Cart[]>('cart')
-  const { data: orders } = await get<Order[]>('order')
-  // const { data: sales } = await get<Order[]>('order')
-  const { data: addresses } = await get<Address[]>('address')
-  const { data: paymentMethods } = await get<PaymentMethod[]>('payment_method')
-  // dispatch(patch({ items, orders, addresses, loaded: true }))
-
+  const { data: cart } = await get<PagedResult<Cart>>('cart')
+  const { data: orders } = await get<PagedResult<Order>>('order')
+  const { data: address } = await get<PagedResult<Address>>('address')
+  const { data: payment } = await get<PagedResult<PaymentMethod>>('payment_method')
+  dispatch(patch({ addresses: address.items, loaded: true }))
   // dispatch(patch({ intent: response.data.intent }))
 })
 

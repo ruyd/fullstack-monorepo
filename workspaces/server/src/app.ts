@@ -59,8 +59,8 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
   app.use(modelAuthMiddleware)
 
   // Add Routes
-  app.use(api)
   registerModelApiRoutes(Connection.entities, api)
+  app.use(api)
 
   const swaggerDoc = prepareSwagger(app, Connection.entities)
   app.use(
