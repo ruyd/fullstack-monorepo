@@ -9,12 +9,12 @@ import Connection from '../db'
 
 export async function list<T extends {}>(
   model: ModelStatic<Model<T>>,
-  options: FindOptions = { limit: 100, offset: 0 },
+  options: FindOptions = { limit: 100, offset: 0, include: [] },
 ): Promise<PagedResult<T>> {
   const { count: total, rows } = await model.findAndCountAll({
     raw: true,
     nest: true,
-    // include: Object.keys(model.associations),
+    include: options.include || [],
     ...options,
   })
 

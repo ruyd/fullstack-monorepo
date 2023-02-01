@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useMemo } from 'react'
 import { loadStripe } from '@stripe/stripe-js/pure'
@@ -7,6 +8,7 @@ import { useAppSelector } from '../../shared/store'
 import StripeForm from './StripePay'
 import { CircularProgress, Typography } from '@mui/material'
 import { config } from '../../shared/config'
+import { request } from '../app'
 
 let stripePromise: Promise<Stripe | null>
 function getStripe() {
@@ -38,6 +40,7 @@ export default function StripeCheckout({
   const stripe = useMemo(getStripe, [config.settings?.system?.stripeKey])
   const [intent, setIntent] = React.useState<PaymentIntentResult | undefined>()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const isLoadingRef = React.useRef<boolean>(false)
   const token = useAppSelector(state => state.app.token)
   const userEmail = useAppSelector(state => state.app.user?.email)
   const activeItem = useAppSelector(state => state.shop.activeItem)
@@ -55,20 +58,26 @@ export default function StripeCheckout({
   }, [amount, currency, userEmail, activeItem])
   const clientSecret = intent?.paymentIntent?.client_secret || undefined
 
-  // useEffect((): void => {
-  //   if (intent || !token) {
-  //     return
-  //   }
-  //   setIsLoading(true)
-  //   createPaymentIntent(payload)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setIntent(data)
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false)
-  //     })
-  // }, [intent, payload, token])
+  useEffect((): void => {
+    if (intent || !token || isLoadingRef.current) {
+      return
+    }
+    const run = async (): Promise<void> => {
+      setIsLoading(true)
+      isLoadingRef.current = true
+      const result = await request<PaymentIntentResult>('/stripe/payment/intent', {}, 'post', {
+        validateStatus: status => true,
+      })
+      isLoadingRef.current = false
+      setIsLoading(false)
+      if (result.status === 200) {
+        setIntent(result.data as any)
+      } else {
+        setIntent({ error: { message: result.statusText, type: 'api_error' } })
+      }
+    }
+    run()
+  }, [intent, payload, token, isLoading])
 
   function onSubmitHandler(): void {
     if (approveCallback) {
@@ -77,12 +86,12 @@ export default function StripeCheckout({
     modalState()
   }
 
-  if (!stripe || !intent || isLoading) {
-    return <LoadingView />
+  if (intent?.error) {
+    return <div>Error: {intent.error.message}</div>
   }
 
-  if (intent.error) {
-    return <div>Error: {intent.error.message}</div>
+  if (!stripe || !intent || isLoading) {
+    return <LoadingView />
   }
 
   return (

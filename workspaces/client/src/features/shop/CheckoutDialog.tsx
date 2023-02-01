@@ -104,10 +104,9 @@ export default function CheckoutDialog() {
       sx={{ m: '3vw 2vw 0 2vw' }}
       fullScreen
     >
-      <DialogContent sx={{ backgroundColor: 'background.paper' }}>
-        {/* <Grid item xs={12} textAlign="center" sx={{ m: '-.5rem 0 .5rem 0' }} color="text.secondary">
-          <Typography>Shopping</Typography>
-        </Grid> */}
+      <DialogContent
+        sx={{ backgroundColor: 'background.paper', display: 'flex', flexDirection: 'column' }}
+      >
         <Grid container>
           <Stepper
             activeStep={activeStep === steps.length - 1 ? activeStep + 1 : activeStep}
@@ -128,7 +127,7 @@ export default function CheckoutDialog() {
             ))}
           </Stepper>
         </Grid>
-        <Box sx={{ mt: 2 }}>{steps[activeStep]?.component}</Box>
+        <Box sx={{ mt: 2, display: 'flex', flex: 1 }}>{steps[activeStep]?.component}</Box>
       </DialogContent>
       <DialogActions sx={{ backgroundColor: 'background.paper' }}>
         {activeStep < steps.length - 1 && (

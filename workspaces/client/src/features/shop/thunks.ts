@@ -15,11 +15,11 @@ export const intentAsync = createAsyncThunk(
 )
 export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, getState }) => {
   const state = getState() as RootState
-  const { data: cart } = await get<PagedResult<Cart>>('cart')
+  const { data: cart } = await get<PagedResult<Cart>>('cart?include=drawing')
   const { data: orders } = await get<PagedResult<Order>>('order')
   const { data: address } = await get<PagedResult<Address>>('address')
   const { data: payment } = await get<PagedResult<PaymentMethod>>('payment_method')
-  dispatch(patch({ addresses: address.items, loaded: true }))
+  dispatch(patch({ items: cart.items, addresses: address.items, loaded: true }))
   // dispatch(patch({ intent: response.data.intent }))
 })
 
@@ -34,8 +34,12 @@ export const cartAsync = createAsyncThunk(
       cart.cartId = existing.cartId
       cart.quantity += existing.quantity
     }
-    const response = await request<Cart>('cart', { ...cart }, method)
-    const others = state.shop.items.filter(i => i.drawingId !== item.drawingId)
+    const response = await request<Cart>(
+      'cart',
+      method === Method.DELETE ? { ids: [cart.cartId] } : { ...cart },
+      method,
+    )
+    const others = state.shop.items.filter(i => i.cartId !== cart.cartId)
     if (method === Method.DELETE) {
       dispatch(notify(`Removed ${item?.name}`))
       dispatch(patch({ items: others }))

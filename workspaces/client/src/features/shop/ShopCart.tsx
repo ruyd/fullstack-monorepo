@@ -56,7 +56,7 @@ export function ShopCart(props?: BoxProps & Partial<React.Component>) {
   const formatted = (value?: number) => (value ? format(value) : '')
 
   return (
-    <Box {...props}>
+    <Box {...props} sx={{ flex: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={9}>
           <Card>
@@ -76,7 +76,7 @@ export function ShopCart(props?: BoxProps & Partial<React.Component>) {
                 </TableHead>
                 <TableBody>
                   {items?.map(item => (
-                    <TableRow key={item.drawingId}>
+                    <TableRow key={item.cartId}>
                       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                         <Box>
                           <img

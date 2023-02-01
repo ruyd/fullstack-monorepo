@@ -155,6 +155,9 @@ export async function listHandler(
       order.push([field.replace(/^-{1}/, ''), direction])
     }
   }
+
+  const include = req.query.include || []
+
   //userId filtering from authentication token
   const authId = modelApiConfig.getAuthUserId(req)
   if (authId && Object.keys(fields).includes(modelApiConfig.userIdColumn)) {
@@ -162,7 +165,7 @@ export async function listHandler(
   }
   const limit = Number(req.query.limit || 100)
   const offset = Number(req.query.offset || 0)
-  const result = await list(model, { where, limit, offset, order })
+  const result = await list(model, { where, limit, offset, order, include })
   res.json(result)
 }
 

@@ -77,7 +77,7 @@ export function printRouteSummary(app: express.Application) {
     return
   }
   logger.info('******** ROUTE SUMMARY ********')
-  const report = getRoutesFromApp(app)
+  const report = getRoutesFromApp(app).filter(r => r.from !== 'model-api')
   console.log(report)
 }
 
