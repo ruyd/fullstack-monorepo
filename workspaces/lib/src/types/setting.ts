@@ -4,6 +4,35 @@ export const SettingTypes = {
   Auth0: 'auth0',
   Internal: 'internal',
 } as const
+export type SettingType = typeof SettingTypes[keyof typeof SettingTypes]
+
+export const PaymentTypes = {
+  Stripe: 'stripe',
+  Paypal: 'paypal',
+  Fake: 'fake',
+} as const
+export type PaymentType = typeof PaymentTypes[keyof typeof PaymentTypes]
+
+export interface SecretKeys {
+  token?: string
+  apiKey?: string
+  clientSecret?: string
+  managerSecret?: string
+  webhookKey?: string
+}
+
+export interface InternalSettings {
+  startAdminEmail: string
+  secretManager?: {
+    enabled: boolean
+    endpoint: string
+    region?: string
+    tokenOrKey?: string
+  }
+  secrets?: {
+    [k in PaymentType | SettingType]: SecretKeys
+  }
+}
 
 export interface SystemSettings {
   disable: boolean
@@ -19,7 +48,6 @@ export interface SystemSettings {
 }
 export interface GoogleSettings {
   clientId?: string
-  clientSecret?: string
   projectId?: string
   analyticsId?: string
   enabled?: boolean
@@ -27,27 +55,21 @@ export interface GoogleSettings {
 
 export interface Auth0Settings {
   clientId?: string
-  clientSecret?: string
   tenant?: string
   clientAudience?: string
   explorerId?: string
-  explorerSecret?: string
   sync?: boolean
   enabled?: boolean
 }
 
 export interface PaymentMethodSettings {
   enabled: boolean
-  secretKey?: string
+  subscriptionsEnabled?: boolean
+  identityEnabled?: boolean
   publishableKey?: string
-  webhookSecret?: string
+  clientId?: string
 }
 
-export interface InternalSettings {
-  startAdminEmail: string
-}
-
-export type SettingType = typeof SettingTypes[keyof typeof SettingTypes]
 export interface Setting<T = SystemSettings | GoogleSettings | Auth0Settings | InternalSettings> {
   name: SettingType
   data: T

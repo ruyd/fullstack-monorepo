@@ -67,15 +67,7 @@ export async function getClientConfigSettings(isAdmin = false): Promise<ClientCo
         }
       : undefined
 
-  // TODO: ditch 1-1, just do client config
-  const exclude = ['clientSecret', 'explorerSecret', 'secret']
-  const settings = config.settings?.system
-    ? {
-        system: config.settings?.system,
-        auth0: omit(config.settings?.auth0, exclude),
-        google: omit(config.settings?.google, exclude),
-      }
-    : undefined
+  const settings = config.settings?.system ? omit(config.settings, 'internal') : undefined
 
   const payload = {
     settings,

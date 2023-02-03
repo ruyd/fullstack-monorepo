@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react'
-
 import Box from '@mui/material/Box'
 import {
   Card,
@@ -13,25 +11,15 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { useAppDispatch, useAppSelector } from '../../shared/store'
-import {
-  Setting,
-  SystemSettings,
-  GoogleSettings,
-  Auth0Settings,
-  PagedResult,
-  SettingData,
-  SettingType,
-} from '@lib'
+import { useAppDispatch } from '../../shared/store'
+import { Setting, PagedResult, SettingData, SettingType } from '@lib'
 import { get, notify, notifyError, request } from '../app'
+import debouncer from '../../shared/debouncer'
+import _ from 'lodash'
 
 export default function Settings() {
   const dispatch = useAppDispatch()
   const [data, setData] = React.useState<{ [k in SettingType]: SettingData[k] }>()
-
-  const delay = 1000
-  type SetFn = React.Dispatch<React.SetStateAction<unknown>>
-  const debouncer = React.useRef<{ [key: string]: number | undefined }>({})
   const saveAsync = async (setting: Setting) => {
     const response = await request<Setting>('setting', { ...setting })
     if (response.status === 200) {
@@ -41,19 +29,13 @@ export default function Settings() {
     }
   }
 
-  const bounce = (setting: Setting) => {
-    if (debouncer.current[setting.name]) {
-      window.clearTimeout(debouncer.current[setting.name])
-    }
-    const timer = window.setTimeout(() => saveAsync(setting), delay)
-    debouncer.current[setting.name] = timer
-  }
-
   const save = (name: SettingType, prop: string, value: unknown) => {
-    const existing = data ? data[name] : {}
-    const setting = { name, data: { ...existing, [prop]: value } } as Setting
-    setData({ ...data, [name]: setting.data } as { [k in SettingType]: SettingData[k] })
-    bounce(setting)
+    const existing = data ? data[name] || {} : {}
+    const newValue = _.set(existing, prop, value)
+    const newData = { ...data, [name]: newValue } as { [k in SettingType]: SettingData[k] }
+    const setting = { name, data: newValue } as Setting
+    setData(newData)
+    debouncer(setting.name, () => saveAsync(setting))
   }
 
   const load = async () => {
@@ -86,7 +68,7 @@ export default function Settings() {
                       control={
                         <Switch
                           checked={!!data?.system?.disable}
-                          onChange={e => save('system', 'disable', !data?.system?.disable)}
+                          onChange={() => save('system', 'disable', !data?.system?.disable)}
                         />
                       }
                       label="Maintenance Mode"
@@ -95,7 +77,7 @@ export default function Settings() {
                       control={
                         <Switch
                           checked={!!data?.system?.enableStore}
-                          onChange={e => save('system', 'enableStore', !data?.system?.enableStore)}
+                          onChange={() => save('system', 'enableStore', !data?.system?.enableStore)}
                         />
                       }
                       label="Enable Store"
@@ -104,7 +86,7 @@ export default function Settings() {
                       control={
                         <Switch
                           checked={!!data?.system?.enableCookieConsent}
-                          onChange={e =>
+                          onChange={() =>
                             save(
                               'system',
                               'enableCookieConsent',
@@ -159,7 +141,7 @@ export default function Settings() {
                     control={
                       <Switch
                         checked={!!data?.system?.enableRegistration}
-                        onChange={e =>
+                        onChange={() =>
                           save('system', 'enableRegistration', !data?.system?.enableRegistration)
                         }
                       />
@@ -177,7 +159,7 @@ export default function Settings() {
                     control={
                       <Switch
                         checked={!!data?.auth0?.enabled}
-                        onChange={e => save('auth0', 'enabled', !data?.auth0?.enabled)}
+                        onChange={() => save('auth0', 'enabled', !data?.auth0?.enabled)}
                       />
                     }
                     label="Enable"
@@ -204,8 +186,8 @@ export default function Settings() {
                   <TextField
                     label="Client Secret"
                     fullWidth
-                    value={data?.auth0?.clientSecret || ''}
-                    onChange={e => save('auth0', 'clientSecret', e.target.value)}
+                    value={data?.internal?.secrets?.auth0?.clientSecret || ''}
+                    onChange={e => save('internal', 'secrets.auth0.clientSecret', e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -226,7 +208,7 @@ export default function Settings() {
                     control={
                       <Switch
                         checked={!!data?.auth0?.sync}
-                        onChange={e => save('auth0', 'sync', !data?.auth0?.sync)}
+                        onChange={() => save('auth0', 'sync', !data?.auth0?.sync)}
                       />
                     }
                     label="Enable"
@@ -255,8 +237,8 @@ export default function Settings() {
                   <TextField
                     label="Explorer Client Secret"
                     fullWidth
-                    value={data?.auth0?.explorerSecret || ''}
-                    onChange={e => save('auth0', 'explorerSecret', e.target.value)}
+                    value={data?.internal?.secrets?.auth0?.managerSecret || ''}
+                    onChange={e => save('internal', 'secrets.auth0.managerSecret', e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -282,7 +264,7 @@ export default function Settings() {
                     control={
                       <Switch
                         checked={!!data?.google?.enabled}
-                        onChange={e => save('google', 'enabled', !data?.google?.enabled)}
+                        onChange={() => save('google', 'enabled', !data?.google?.enabled)}
                       />
                     }
                     label="Enable"
@@ -298,7 +280,7 @@ export default function Settings() {
                     control={
                       <Switch
                         checked={!!data?.system?.enableOneTapLogin}
-                        onChange={e =>
+                        onChange={() =>
                           save('system', 'enableOneTapLogin', !data?.system?.enableOneTapLogin)
                         }
                       />
@@ -326,8 +308,8 @@ export default function Settings() {
                   <TextField
                     label="Client Secret"
                     fullWidth
-                    value={data?.google?.clientSecret || ''}
-                    onChange={e => save('google', 'clientSecret', e.target.value)}
+                    value={data?.internal?.secrets?.google?.clientSecret || ''}
+                    onChange={e => save('internal', 'secrets.google.clientSecret', e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -374,7 +356,13 @@ export default function Settings() {
                     control={
                       <Switch
                         checked={!!data?.system?.paymentMethods?.stripe?.enabled}
-                        onChange={e => save('system', 'enabled', !data?.google?.enabled)}
+                        onChange={() =>
+                          save(
+                            'system',
+                            'paymentMethods.stripe.enabled',
+                            !data?.system?.paymentMethods?.stripe?.enabled,
+                          )
+                        }
                       />
                     }
                     label="Enable"
@@ -389,8 +377,14 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={!!data?.system?.paymentMethods?.stripe?.enabled}
-                        onChange={e => save('system', 'enabled', !data?.google?.enabled)}
+                        checked={!!data?.system?.paymentMethods?.stripe?.subscriptionsEnabled}
+                        onChange={() =>
+                          save(
+                            'system',
+                            'paymentMethods.stripe.subscriptionsEnabled',
+                            !data?.system?.paymentMethods?.stripe?.subscriptionsEnabled,
+                          )
+                        }
                       />
                     }
                     label="Enable"
@@ -405,8 +399,14 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={!!data?.system?.paymentMethods?.stripe?.enabled}
-                        onChange={e => save('system', 'enabled', !data?.google?.enabled)}
+                        checked={!!data?.system?.paymentMethods?.stripe?.identityEnabled}
+                        onChange={() =>
+                          save(
+                            'system',
+                            'paymentMethods.stripe.identityEnabled',
+                            !data?.system?.paymentMethods?.stripe?.identityEnabled,
+                          )
+                        }
                       />
                     }
                     label="Enable"
@@ -416,16 +416,18 @@ export default function Settings() {
                   <TextField
                     label="Publishable Key"
                     fullWidth
-                    value={data?.google?.clientId || ''}
-                    onChange={e => save('google', 'clientId', e.target.value)}
+                    value={data?.system?.paymentMethods?.stripe?.publishableKey || ''}
+                    onChange={e =>
+                      save('system', 'paymentMethods.stripe.publishableKey', e.target.value)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     label="API Secret"
                     fullWidth
-                    value={data?.google?.clientSecret || ''}
-                    onChange={e => save('google', 'clientSecret', e.target.value)}
+                    value={data?.internal?.secrets?.stripe?.apiKey || ''}
+                    onChange={e => save('internal', 'secrets.stripe.apiKey', e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -450,8 +452,14 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={!!data?.system?.paymentMethods?.stripe?.enabled}
-                        onChange={e => save('system', 'enabled', !data?.google?.enabled)}
+                        checked={!!data?.system?.paymentMethods?.paypal?.enabled}
+                        onChange={() =>
+                          save(
+                            'system',
+                            'paymentMethods.paypal.enabled',
+                            !data?.system?.paymentMethods?.paypal?.enabled,
+                          )
+                        }
                       />
                     }
                     label="Enable"
@@ -466,8 +474,14 @@ export default function Settings() {
                   <FormControlLabel
                     control={
                       <Switch
-                        checked={!!data?.system?.paymentMethods?.stripe?.enabled}
-                        onChange={e => save('system', 'enabled', !data?.google?.enabled)}
+                        checked={!!data?.system?.paymentMethods?.paypal?.subscriptionsEnabled}
+                        onChange={() =>
+                          save(
+                            'system',
+                            'paymentMethods.paypal.subscriptionsEnabled',
+                            !data?.system?.paymentMethods?.paypal?.subscriptionsEnabled,
+                          )
+                        }
                       />
                     }
                     label="Enable"
@@ -477,8 +491,8 @@ export default function Settings() {
                   <TextField
                     label="API Secret"
                     fullWidth
-                    value={data?.google?.clientId || ''}
-                    onChange={e => save('google', 'clientId', e.target.value)}
+                    value={data?.internal?.secrets?.paypal?.apiKey || ''}
+                    onChange={e => save('internal', 'secrets.paypal.apiKey', e.target.value)}
                   />
                 </Grid>
               </Grid>

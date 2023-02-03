@@ -27,7 +27,7 @@ export async function checkout(_req: express.Request, res: express.Response) {
 }
 
 function getStripe() {
-  const apiKey = config.settings.system?.paymentMethods?.stripe?.secretKey
+  const apiKey = config.settings.internal?.secrets?.stripe?.apiKey
   if (!apiKey) {
     throw new Error('Stripe API Key not configured')
   }
@@ -48,7 +48,7 @@ export async function stripeCreatePaymentIntent(_req: express.Request, res: expr
 
 export function stripeWebHook(request: express.Request, response: express.Response) {
   const stripe = getStripe()
-  const endpointSecret = config.settings.system?.paymentMethods?.stripe?.webhookSecret
+  const endpointSecret = config.settings.internal?.secrets?.stripe?.webhookKey
 
   let event = request.body
   // Only verify the event if you have an endpoint secret defined.
