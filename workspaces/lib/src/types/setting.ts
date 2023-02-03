@@ -12,8 +12,10 @@ export interface SystemSettings {
   enableCookieConsent?: boolean
   enableOneTapLogin?: boolean
   enableRegistration?: boolean
-  stripeKey?: string
-  paypalKey?: string
+  paymentMethods?: {
+    stripe?: PaymentMethodSettings
+    paypal?: PaymentMethodSettings
+  }
 }
 export interface GoogleSettings {
   clientId?: string
@@ -32,6 +34,13 @@ export interface Auth0Settings {
   explorerSecret?: string
   sync?: boolean
   enabled?: boolean
+}
+
+export interface PaymentMethodSettings {
+  enabled: boolean
+  secretKey?: string
+  publishableKey?: string
+  webhookSecret?: string
 }
 
 export interface InternalSettings {

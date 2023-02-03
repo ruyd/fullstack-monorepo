@@ -4919,6 +4919,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:>=8.1.0":
+  version: 18.11.18
+  resolution: "@types/node@npm:18.11.18"
+  checksum: 03f17f9480f8d775c8a72da5ea7e9383db5f6d85aa5fefde90dd953a1449bd5e4ffde376f139da4f3744b4c83942166d2a7603969a6f8ea826edfb16e6e3b49d
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^14.11.2":
   version: 14.18.35
   resolution: "@types/node@npm:14.18.35"
@@ -17335,6 +17342,7 @@ __metadata:
     pg: ^8.7.3
     sequelize: ^6.19.1
     socket.io: ^4.5.4
+    stripe: ^11.8.0
     supertest: ^6.3.3
     swagger-jsdoc: 6.2.5
     swagger-jsdoc-webpack-plugin: ^2.1.0
@@ -18029,6 +18037,16 @@ __metadata:
   dependencies:
     escape-string-regexp: ^1.0.2
   checksum: f8d65d33ca2b49aabc66bb41d689dda7b8b9959d320e3a40a2ef4d7079ff2f67ffb72db43f179f48dbf9495c2e33742863feab7a584d180fa62505439162c191
+  languageName: node
+  linkType: hard
+
+"stripe@npm:^11.8.0":
+  version: 11.8.0
+  resolution: "stripe@npm:11.8.0"
+  dependencies:
+    "@types/node": ">=8.1.0"
+    qs: ^6.11.0
+  checksum: 1bebbef91519a5cc9fb42a5a303671e52463bc8a8e7e9d0220cea5df112dd1ce2c32c14ec90ae69a2aa4fedea1e8465d3782c7d03bc54065fa1895f69d168b3d
   languageName: node
   linkType: hard
 
