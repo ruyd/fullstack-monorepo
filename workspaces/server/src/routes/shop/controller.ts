@@ -7,34 +7,6 @@ import { CartModel, DrawingModel, EnrichedRequest, UserModel } from '../../share
 import { OrderModel } from '../../shared/types/models/order'
 import config from 'src/shared/config'
 
-export async function checkout(_req: express.Request, res: express.Response) {
-  const req = _req as EnrichedRequest
-  const { ids, intent, shippingAddressId } = req.body as CheckoutRequest
-  const productSelect = await DrawingModel.findAll({
-    where: { drawingId: ids.map(i => i[1]) },
-  })
-  const products = productSelect.map(item => item.get())
-  const total = products.reduce((acc, item) => acc + (item.price || 0), 0)
-  const order = OrderModel.create({
-    userId: req.auth?.userId,
-    status: OrderStatus.Pending,
-    shippingAddressId,
-    total,
-  })
-
-  res.json({ order })
-}
-
-function getStripe() {
-  const apiKey = config.settings.internal?.secrets?.stripe?.apiKey
-  if (!apiKey) {
-    throw new Error('Stripe API Key not configured')
-  }
-  return new Stripe(apiKey, {
-    apiVersion: '2022-11-15',
-  })
-}
-
 async function getTotalCharge(userId: string) {
   const items = (await CartModel.findAll({
     where: { userId },
@@ -46,6 +18,35 @@ async function getTotalCharge(userId: string) {
   // TODO: Add shipping and tax
   // TODO: Return metadata with tuple?
   return subtotal
+}
+
+export async function checkout(_req: express.Request, res: express.Response) {
+  const req = _req as EnrichedRequest
+  const { ids, intent, shippingAddressId } = req.body as CheckoutRequest
+  const listTotal = await getTotalCharge(req.auth.userId)
+  const total = intent?.amount
+  const order = (
+    await OrderModel.create({
+      userId: req.auth?.userId,
+      status: OrderStatus.Pending,
+      shippingAddressId,
+      total,
+    })
+  ).get()
+
+  await CartModel.destroy({ where: { userId: req.auth.userId } })
+
+  res.json({ ...order })
+}
+
+function getStripe() {
+  const apiKey = config.settings.internal?.secrets?.stripe?.apiKey
+  if (!apiKey) {
+    throw new Error('Stripe API Key not configured')
+  }
+  return new Stripe(apiKey, {
+    apiVersion: '2022-11-15',
+  })
 }
 
 export async function stripeCreatePaymentIntent(req: express.Request, res: express.Response) {

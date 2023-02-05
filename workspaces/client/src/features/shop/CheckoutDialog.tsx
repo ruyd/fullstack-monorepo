@@ -63,7 +63,7 @@ export default function CheckoutDialog() {
       dispatch(patch({ activeStep: activeStep + 1 }))
     }
     if (activeStep === Object.keys(steps).length - 1) {
-      dispatch(patch({ activeStep: 0 }))
+      dispatch(patch({ activeStep: 0, receipt: undefined }))
       dispatch(patchApp({ dialog: undefined }))
     }
   }
