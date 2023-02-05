@@ -157,18 +157,6 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
-      - name: 'vmExists'
-        run: |
-          # check if it exists
-          gcloud compute instances describe $VM_NAME --zone $ZONE > /dev/null 2>&1 || export NOT_FOUND=1
-          if [ $NOT_FOUND -eq 1 ]; then
-            echo "Not Found"
-            echo "VM_EXISTS=0" >> $GITHUB_ENV
-          else
-            echo "Found"
-            echo "VM_EXISTS=1" >> $GITHUB_ENV
-          fi
-
       - name: 'install'
         run: yarn install --immutable
 
@@ -197,6 +185,18 @@ jobs:
           docker build -t $TAG workspaces/server
           docker push $TAG
 
+      - name: 'vmExists'
+        run: |
+          # check if it exists
+          gcloud compute instances describe $VM_NAME --zone $ZONE > /dev/null 2>&1 || export NOT_FOUND=1
+          if [ $NOT_FOUND -eq 1 ]; then
+            echo "Not Found"
+            echo "VM_EXISTS=0" >> $GITHUB_ENV
+          else
+            echo "Found"
+            echo "VM_EXISTS=1" >> $GITHUB_ENV
+          fi
+
       - name: 'vm.create'
         # if: ${{ env.VM_EXISTS == 0 }}
         if: ${{ false }}
@@ -223,7 +223,7 @@ jobs:
           working_directory: 'workspaces/server/dist'
 
       - name: cloudrun
-        if: ${{ false }}
+        if: ${{ needs.changes.outputs.server == 'true' }}
         uses: 'google-github-actions/deploy-cloudrun@v1'
         with:
           service: 'server'
