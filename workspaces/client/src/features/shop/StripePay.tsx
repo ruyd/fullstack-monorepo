@@ -71,7 +71,8 @@ export function StripePay({
         setResult(res)
         dispatch(checkoutAsync(res))
       }
-    } catch (error: any) {
+    } catch (err: unknown) {
+      const error = err as Error
       setMessage(error.message)
       return
     } finally {

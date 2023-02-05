@@ -1,9 +1,7 @@
 name: Tests
 
 on:
-  push:
-    paths:
-      - 'workspaces/**'
+  pull_request:
 
 jobs:
   tests:
@@ -11,26 +9,11 @@ jobs:
     steps:
       - uses: 'actions/checkout@v3'
 
-      - uses: dorny/paths-filter@v2
-        name: filter
-        with:
-          filters: |
-            client:
-              - 'workspaces/lib/**'
-              - 'workspaces/client/**'
-            server:
-              - 'workspaces/lib/**'
-              - 'workspaces/server/**'
-
       - uses: actions/checkout@v3
 
       - name: Install
         run: yarn install --immutable
 
-      - name: Server Tests
-        if: ${{ steps.filter.outputs.server == 'true' }}
-        run: yarn workspace server test
+      - name: Tests
 
-      - name: Client Tests
-        if: ${{ steps.filter.outputs.client == 'true' }}
-        run: yarn workspace client test
+        run: yarn test
