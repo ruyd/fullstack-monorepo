@@ -33,8 +33,7 @@ jobs:
             deploy:
               - '.github/workflows/deploy-google.yml' 
             test:
-              - 'workspaces/lib/**'
-              - 'workspaces/server/**'
+              - 'workspaces/**'
             client:
               - 'workspaces/lib/**'
               - 'workspaces/client/**'
