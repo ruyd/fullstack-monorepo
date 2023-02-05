@@ -1,16 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import Typography from '@mui/material/Typography'
 import { Box, List, ListItem, ListItemButton, ListItemText, Stack } from '@mui/material'
 import StripeCheckout from './StripeCheckout'
-import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import { useAppSelector } from 'src/shared/store'
 import OrderAddress from './OrderAddress'
 import OrderItems from './OrderItems'
-import { PaymentIntentResult } from '@stripe/stripe-js'
-import { patch } from './slice'
 
 export default function PaymentStep() {
-  const dispatch = useAppDispatch()
   const settings = useAppSelector(state => state.app.settings?.system?.paymentMethods)
   const [option, setOption] = React.useState<
     | {

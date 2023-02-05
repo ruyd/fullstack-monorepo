@@ -249,5 +249,7 @@ jobs:
         with:
           service: 'server'
           source: 'workspaces/server'
+          # env:
+          # INSTANCE_CONNECTION_NAME: $INSTANCE_CONNECTION_NAME
           secrets: |
             DB_URL=DB_URL:latest

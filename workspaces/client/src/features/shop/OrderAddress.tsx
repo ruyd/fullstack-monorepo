@@ -1,22 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react'
-import {
-  Grid,
-  Box,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Stack,
-} from '@mui/material'
+import { Grid, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 import { useAppSelector } from 'src/shared/store'
-import OrderItems from './OrderItems'
 import { ExpandMore } from '@mui/icons-material'
 
-export default function OrderSummary() {
+export default function OrderAddress() {
+  const enableShipping = useAppSelector(state => state.app.settings?.system?.enableShippingAddress)
   const shippingAddressId = useAppSelector(state => state.shop.shippingAddressId)
   const addresses = useAppSelector(state => state.shop.addresses)
   const shippingAddress = addresses?.find(a => a.addressId === shippingAddressId)
+
+  if (!enableShipping) {
+    return null
+  }
+
   return (
     <Accordion>
       <AccordionSummary expandIcon={<ExpandMore />} sx={{ borderRadius: '16px' }}>
