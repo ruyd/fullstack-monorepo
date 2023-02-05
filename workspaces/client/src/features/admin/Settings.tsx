@@ -62,7 +62,7 @@ export default function Settings() {
           <Card>
             <CardContent>
               <Grid container>
-                <Grid item xs={8} md={10}>
+                <Grid item xs={4} md={5}>
                   <FormGroup>
                     <FormControlLabel
                       control={
@@ -72,15 +72,6 @@ export default function Settings() {
                         />
                       }
                       label="Maintenance Mode"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={!!data?.system?.enableStore}
-                          onChange={() => save('system', 'enableStore', !data?.system?.enableStore)}
-                        />
-                      }
-                      label="Enable Store"
                     />
                     <FormControlLabel
                       control={
@@ -96,6 +87,34 @@ export default function Settings() {
                         />
                       }
                       label="Enable Cookie Consent"
+                    />
+                  </FormGroup>
+                </Grid>
+                <Grid item xs={4} md={5}>
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={!!data?.system?.enableStore}
+                          onChange={() => save('system', 'enableStore', !data?.system?.enableStore)}
+                        />
+                      }
+                      label="Enable Store"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={!!data?.system?.enableShippingAddress}
+                          onChange={() =>
+                            save(
+                              'system',
+                              'enableShippingAddress',
+                              !data?.system?.enableShippingAddress,
+                            )
+                          }
+                        />
+                      }
+                      label="Enable Shipping Address"
                     />
                   </FormGroup>
                 </Grid>
@@ -424,7 +443,7 @@ export default function Settings() {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
-                    label="API Secret"
+                    label="Secret key"
                     fullWidth
                     value={data?.internal?.secrets?.stripe?.apiKey || ''}
                     onChange={e => save('internal', 'secrets.stripe.apiKey', e.target.value)}

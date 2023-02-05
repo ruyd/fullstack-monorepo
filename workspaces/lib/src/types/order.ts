@@ -2,13 +2,15 @@ import { Entity } from '.'
 import { User } from './user'
 import { Drawing } from './drawing'
 
-export enum OrderStatus {
-  Pending = 'pending',
-  Paid = 'paid',
-  Shipped = 'shipped',
-  Delivered = 'delivered',
-  Cancelled = 'cancelled',
-}
+export const OrderStatus = {
+  Pending: 'pending',
+  Paid: 'paid',
+  Shipped: 'shipped',
+  Delivered: 'delivered',
+  Cancelled: 'cancelled',
+} as const
+
+export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus]
 
 export interface OrderItem extends Entity {
   orderItemId?: string
@@ -24,12 +26,24 @@ export interface Order extends Entity {
   userId?: string
   billingAddressId?: string
   shippingAddressId?: string
-  paymentMethodId?: string
+
+  paymentType?: PaymentType
+  paymentIntentId?: string
+  payment?: {
+    [key: string]: unknown
+  }
   total?: number
   status?: OrderStatus
   OrderItems?: OrderItem[]
   user?: User
 }
+
+export const PaymentTypes = {
+  Subscription: 'subscription',
+  OneTime: 'onetime',
+} as const
+
+export type PaymentType = typeof PaymentTypes[keyof typeof PaymentTypes]
 
 export interface Payment extends Entity {
   paymentId: string
@@ -40,28 +54,23 @@ export interface Payment extends Entity {
   status?: string
 }
 
-export enum PaymentSource {
-  Stripe = 'STRIPE',
-  PayPal = 'PAYPAL',
-}
+export const CaptureStatus = {
+  Successful: 'completed',
+  Pending: 'pending',
+  Failed: 'failed',
+  Created: 'created',
+} as const
 
-export enum PaymentStatus {
-  Successful = 'COMPLETED',
-  Pending = 'PENDING',
-  Failed = 'FAILED',
-  Created = 'CREATED',
-}
-
-export const StripeToPaymentStatusMap = {
-  canceled: PaymentStatus.Failed,
-  succeeded: PaymentStatus.Successful,
-  processing: PaymentStatus.Pending,
-  requires_action: PaymentStatus.Pending,
-  requires_capture: PaymentStatus.Pending,
-  requires_confirmation: PaymentStatus.Pending,
-  requires_payment_method: PaymentStatus.Pending,
-  unknown: PaymentStatus.Failed,
-}
+export const StripeToCaptureStatusMap = {
+  canceled: CaptureStatus.Failed,
+  succeeded: CaptureStatus.Successful,
+  processing: CaptureStatus.Pending,
+  requires_action: CaptureStatus.Pending,
+  requires_capture: CaptureStatus.Pending,
+  requires_confirmation: CaptureStatus.Pending,
+  requires_payment_method: CaptureStatus.Pending,
+  unknown: CaptureStatus.Failed,
+} as const
 
 export interface Subscription extends Entity {
   subscriptionId: string
@@ -70,4 +79,5 @@ export interface Subscription extends Entity {
   amount: number
   currency: string
   status?: string
+  order?: Order
 }

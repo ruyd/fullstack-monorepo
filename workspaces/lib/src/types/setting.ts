@@ -6,12 +6,12 @@ export const SettingTypes = {
 } as const
 export type SettingType = typeof SettingTypes[keyof typeof SettingTypes]
 
-export const PaymentTypes = {
+export const PaymentSources = {
   Stripe: 'stripe',
   Paypal: 'paypal',
   Fake: 'fake',
 } as const
-export type PaymentType = typeof PaymentTypes[keyof typeof PaymentTypes]
+export type PaymentSource = typeof PaymentSources[keyof typeof PaymentSources]
 
 export interface SecretKeys {
   token?: string
@@ -30,7 +30,7 @@ export interface InternalSettings {
     tokenOrKey?: string
   }
   secrets?: {
-    [k in PaymentType | SettingType]: SecretKeys
+    [k in PaymentSource | SettingType]: SecretKeys
   }
 }
 
@@ -38,6 +38,7 @@ export interface SystemSettings {
   disable: boolean
   enableStore: boolean
   enableAuth?: boolean
+  enableShippingAddress?: boolean
   enableCookieConsent?: boolean
   enableOneTapLogin?: boolean
   enableRegistration?: boolean

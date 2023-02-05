@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Stripe from 'stripe'
-import { CheckoutRequest, OrderStatus } from '@lib'
+import { Cart, CheckoutRequest, OrderStatus, User } from '@lib'
 import express from 'express'
 import logger from 'src/shared/logger'
-import { DrawingModel, EnrichedRequest } from '../../shared/types'
+import { CartModel, DrawingModel, EnrichedRequest, UserModel } from '../../shared/types'
 import { OrderModel } from '../../shared/types/models/order'
 import config from 'src/shared/config'
 
 export async function checkout(_req: express.Request, res: express.Response) {
   const req = _req as EnrichedRequest
-  const { items, intent, shippingAddressId, paymentMethodId } = req.body as CheckoutRequest
+  const { ids, intent, shippingAddressId } = req.body as CheckoutRequest
   const productSelect = await DrawingModel.findAll({
-    where: { drawingId: items.map(i => i.drawingId) },
+    where: { drawingId: ids.map(i => i[1]) },
   })
   const products = productSelect.map(item => item.get())
   const total = products.reduce((acc, item) => acc + (item.price || 0), 0)
@@ -19,7 +19,6 @@ export async function checkout(_req: express.Request, res: express.Response) {
     userId: req.auth?.userId,
     status: OrderStatus.Pending,
     shippingAddressId,
-    paymentMethodId,
     total,
   })
 
@@ -36,14 +35,38 @@ function getStripe() {
   })
 }
 
-export async function stripeCreatePaymentIntent(_req: express.Request, res: express.Response) {
-  const stripe = getStripe()
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: 1099,
-    currency: 'usd',
-  })
+async function getTotalCharge(userId: string) {
+  const items = (await CartModel.findAll({
+    where: { userId },
+    include: ['drawing'],
+    raw: true,
+    nest: true,
+  })) as unknown as Cart[]
+  const subtotal = items.reduce((acc, item) => acc + Number(item?.drawing?.price || 0), 0)
+  // TODO: Add shipping and tax
+  // TODO: Return metadata with tuple?
+  return subtotal
+}
 
-  res.json({ ...paymentIntent })
+export async function stripeCreatePaymentIntent(req: express.Request, res: express.Response) {
+  const stripe = getStripe()
+  try {
+    const { userId } = (req as EnrichedRequest).auth
+    const user = (await UserModel.findByPk(userId, { raw: true })) as unknown as User
+    const total = await getTotalCharge(userId)
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: total,
+      currency: 'USD',
+      receipt_email: user.email || '',
+    })
+    res.json({ paymentIntent })
+  } catch (e) {
+    const err = e as Stripe.errors.StripeAPIError & { raw?: { message: string; type: string } }
+    const message = err.raw?.message || err.message
+    logger.error(e)
+    res.status(500).json({ error: { message } })
+  }
 }
 
 export function stripeWebHook(request: express.Request, response: express.Response) {

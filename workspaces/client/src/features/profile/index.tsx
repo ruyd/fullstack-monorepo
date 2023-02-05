@@ -30,7 +30,7 @@ import { BlurBackdrop } from '../../features/ui/BlurBackdrop'
 import Gallery from '../../features/ui/Gallery'
 import TabPanel from '../../features/ui/TabPanel'
 import { useAppSelector } from '../../shared/store'
-import AddressForm from '../shop/AddressForm'
+import AddressForm from '../shop/Address'
 import UserEdit from './Edit'
 import Orders from './Orders'
 

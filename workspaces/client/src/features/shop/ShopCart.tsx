@@ -22,7 +22,7 @@ import {
 } from '@mui/material'
 import { Cart, Drawing } from '@lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { patch } from '../app'
+import { patch, stepStatus } from './slice'
 import { cartAsync, loadAsync } from './thunks'
 import {
   Add,
@@ -46,14 +46,18 @@ const QuantityBox = styled(ButtonGroup)`
   border: 1px solid rgba(106, 122, 138, 0.32);
 `
 
-export function ShopCart(props?: BoxProps & Partial<React.Component>) {
+export function ShopCart({ readOnly, ...props }: BoxProps & { readOnly?: boolean }) {
   const dispatch = useAppDispatch()
   const deleteHandler = (cart: Cart) =>
     dispatch(cartAsync({ item: cart.drawing as Drawing, quantity: 0 }))
-  const items = useAppSelector(store => store.shop.items) || []
+  const items = useAppSelector(store => store.shop.items || [])
   const subtotal = items.reduce((a, b) => a + b.quantity * (b.drawing?.price || 0), 0)
   const format = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format
   const formatted = (value?: number) => (value ? format(value) : '')
+
+  React.useEffect(() => {
+    dispatch(stepStatus({ cart: items.length > 0 }))
+  }, [dispatch, items])
 
   return (
     <Box {...props} sx={{ flex: 1 }}>

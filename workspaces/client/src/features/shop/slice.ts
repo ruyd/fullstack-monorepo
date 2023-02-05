@@ -10,15 +10,21 @@ export interface ShopState {
   paymentMethods?: PaymentMethod[]
   showCart?: boolean
   showCheckout?: boolean
-  intent?: string
+  receipt?: Order
   activeItem?: Drawing
   shippingAddressId?: string
   billingAddressId?: string
   paymentMethodId?: string
+  activeStep: number
+  steps: {
+    [key: string]: boolean
+  }
 }
 
 export const initialState: ShopState = {
   items: [],
+  activeStep: 0,
+  steps: {},
 }
 
 export const shopSlice = createSlice({
@@ -28,10 +34,13 @@ export const shopSlice = createSlice({
     patch(state, action: PayloadAction<Partial<ShopState>>) {
       return { ...state, ...action.payload }
     },
+    stepStatus(state, payload: PayloadAction<{ [key: string]: boolean }>) {
+      state.steps = { ...state.steps, ...payload.payload }
+    },
   },
 })
 
-export const { patch } = shopSlice.actions
+export const { patch, stepStatus } = shopSlice.actions
 export const actions = shopSlice.actions
 
 export default shopSlice.reducer

@@ -6,29 +6,22 @@ import {
   Button,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  Fade,
   Grid,
-  Grow,
   Slide,
   Step,
   StepLabel,
   Stepper,
-  Typography,
-  useTheme,
 } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { patch } from '../app'
+import { patch } from './slice'
+import { patch as patchApp } from '../app'
 import ShopCart from './ShopCart'
-import { checkoutAsync, loadAsync } from './thunks'
-import PaymentForm from './PaymentForm'
-import Review from './Review'
-import AddressForm from './AddressForm'
-import Receipt from './Receipt'
-import StripePay from './StripePay'
-import Items from '../canvas/Items'
+import { loadAsync } from './thunks'
+import PaymentStep from './Payment'
+import AddressStep from './Address'
+import ReceiptStep from './Receipt'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -40,50 +33,56 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const steps: { title: string; component: JSX.Element; next: string }[] = [
-  { title: 'Cart', component: <ShopCart />, next: 'Checkout' },
-  { title: 'Address', component: <AddressForm />, next: 'Continue' },
-  { title: 'Payment', component: <PaymentForm />, next: 'Continue' },
-  { title: 'Review', component: <Review />, next: 'Place Order' },
-  { title: 'Confirmation', component: <Receipt />, next: 'Close' },
+const stepsBase: { title: string; component: JSX.Element; next: string; key: string }[] = [
+  { title: 'Cart', component: <ShopCart />, next: 'Checkout', key: 'cart' },
+  { title: 'Shipping', component: <AddressStep />, next: 'Continue', key: 'address' },
+  { title: 'Identification', component: <></>, next: 'Continue', key: 'identity' },
+  { title: 'Payment', component: <PaymentStep />, next: 'Continue', key: 'payment' },
+  { title: 'Receipt', component: <ReceiptStep />, next: 'Close', key: 'receipt' },
 ]
 
 export default function CheckoutDialog() {
-  const token = useAppSelector(store => store.app.token)
-  const [activeStep, setActiveStep] = React.useState(0)
+  const token = useAppSelector(state => state.app.token)
+  const activeStep = useAppSelector(state => state.shop.activeStep)
+  const stepsStatus = useAppSelector(state => state.shop.steps)
   const dispatch = useAppDispatch()
-  const loaded = useAppSelector(store => store.shop.loaded)
-  const items = useAppSelector(store => store.shop.items)
+  const loaded = useAppSelector(state => state.shop.loaded)
+  const items = useAppSelector(state => state.shop.items)
+  const enableShippingAddress = useAppSelector(
+    state => state.app.settings?.system?.enableShippingAddress,
+  )
+  const enableIdentity = useAppSelector(
+    state => state.app.settings?.system?.paymentMethods?.stripe?.identityEnabled,
+  )
+  const steps = stepsBase
+    .filter(a => enableShippingAddress || a.key !== 'address')
+    .filter(a => enableIdentity || a.key !== 'identity')
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) {
-      setActiveStep(activeStep + 1)
+      dispatch(patch({ activeStep: activeStep + 1 }))
     }
     if (activeStep === Object.keys(steps).length - 1) {
-      setActiveStep(0)
-      dispatch(patch({ dialog: undefined }))
-      dispatch(checkoutAsync())
+      dispatch(patch({ activeStep: 0 }))
+      dispatch(patchApp({ dialog: undefined }))
     }
   }
 
   const handleBack = () => {
     if (activeStep === 0) {
-      dispatch(patch({ dialog: undefined }))
+      dispatch(patchApp({ dialog: undefined }))
       return
     }
-    setActiveStep(activeStep - 1)
+    dispatch(patch({ activeStep: activeStep - 1 }))
   }
 
   const requested = useAppSelector(state => state.app.dialog)
-  const [show, setShow] = React.useState('checkout')
+
   const open = requested?.includes('checkout')
   const handleClose = React.useCallback(() => {
-    dispatch(patch({ dialog: undefined }))
+    dispatch(patchApp({ dialog: undefined }))
   }, [dispatch])
 
-  React.useEffect(() => {
-    setShow(requested?.split('.')[1] || 'checkout')
-  }, [requested, setShow])
   React.useEffect(() => {
     console.log('loadAsync', loaded, token)
     if (!loaded && token) {
@@ -120,7 +119,9 @@ export default function CheckoutDialog() {
               <Step
                 key={index}
                 sx={{ m: '.3rem .7rem', cursor: 'pointer' }}
-                onClick={() => (index < steps.length - 1 ? setActiveStep(index) : null)}
+                onClick={() =>
+                  index < steps.length - 1 ? dispatch(patch({ activeStep: index })) : null
+                }
               >
                 <StepLabel>{step.title}</StepLabel>
               </Step>
@@ -140,7 +141,7 @@ export default function CheckoutDialog() {
           onClick={handleNext}
           sx={{ ml: 1 }}
           size="large"
-          disabled={!items.length}
+          disabled={!stepsStatus[steps[activeStep].key]}
         >
           {steps[activeStep].next}
         </Button>

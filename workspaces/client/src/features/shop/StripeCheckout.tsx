@@ -1,14 +1,13 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useMemo } from 'react'
 import { loadStripe } from '@stripe/stripe-js/pure'
 import { Elements } from '@stripe/react-stripe-js'
 import { Stripe, PaymentIntentResult } from '@stripe/stripe-js'
 import { useAppSelector } from '../../shared/store'
-import StripeForm from './StripePay'
-import { CircularProgress, Typography } from '@mui/material'
+import StripePay from './StripePay'
+import { CircularProgress, Stack, Typography } from '@mui/material'
 import { config } from '../../shared/config'
 import { request } from '../app'
+import StripeLogo from './images/stripe.png'
 
 let stripePromise: Promise<Stripe | null>
 function getStripe() {
@@ -20,21 +19,20 @@ function getStripe() {
 
 function LoadingView() {
   return (
-    <div className="flex-center-column">
-      <CircularProgress size="l" />
-      <Typography>Loading payment form...</Typography>
-    </div>
+    <Stack
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '400px' }}
+    >
+      <CircularProgress sx={{ m: 1 }} />
+      <img src={StripeLogo} />
+    </Stack>
   )
 }
 
 export default function StripeCheckout({
   children,
-  modalState,
-  approveCallback = undefined,
   onLoading = undefined,
 }: React.PropsWithChildren<{
-  modalState: () => void
-  approveCallback?: () => void
+  onApproval?: (result: PaymentIntentResult) => void
   onLoading?: () => void
 }>): JSX.Element {
   const stripe = useMemo(getStripe, [
@@ -44,20 +42,7 @@ export default function StripeCheckout({
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const isLoadingRef = React.useRef<boolean>(false)
   const token = useAppSelector(state => state.app.token)
-  const userEmail = useAppSelector(state => state.app.user?.email)
-  const activeItem = useAppSelector(state => state.shop.activeItem)
-  const amount = activeItem?.price?.toFixed(2).replace('.', '')
-  const currency = 'USD'
-  const payload = useMemo(() => {
-    return {
-      amount,
-      currency,
-      metadata: {
-        drawingId: activeItem?.drawingId || '',
-      },
-      receipt_email: userEmail || '',
-    }
-  }, [amount, currency, userEmail, activeItem])
+
   const clientSecret = intent?.paymentIntent?.client_secret || undefined
 
   useEffect((): void => {
@@ -68,28 +53,25 @@ export default function StripeCheckout({
       setIsLoading(true)
       isLoadingRef.current = true
       const result = await request<PaymentIntentResult>('/stripe/payment/intent', {}, 'post', {
-        validateStatus: status => true,
+        validateStatus: () => true,
       })
       isLoadingRef.current = false
       setIsLoading(false)
-      if (result.status === 200) {
-        setIntent(result.data as any)
+      if (result.data) {
+        setIntent(result.data)
       } else {
         setIntent({ error: { message: result.statusText, type: 'api_error' } })
       }
     }
     run()
-  }, [intent, payload, token, isLoading])
-
-  function onSubmitHandler(): void {
-    if (approveCallback) {
-      approveCallback()
-    }
-    modalState()
-  }
+  }, [intent, token, isLoading])
 
   if (intent?.error) {
-    return <div>Error: {intent.error.message}</div>
+    return (
+      <Typography color="error" variant="h3">
+        Error: {intent.error.message}
+      </Typography>
+    )
   }
 
   if (!stripe || !intent || isLoading) {
@@ -98,7 +80,7 @@ export default function StripeCheckout({
 
   return (
     <Elements stripe={stripe} options={{ clientSecret }}>
-      <StripeForm intent={intent.paymentIntent} onSubmit={onSubmitHandler} onLoading={onLoading} />
+      <StripePay intent={intent.paymentIntent} onLoading={onLoading} />
       {children}
     </Elements>
   )

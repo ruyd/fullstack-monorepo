@@ -15,7 +15,7 @@ import {
 } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { Address } from '../../../../lib/src/types'
-import { patch } from './slice'
+import { patch, stepStatus } from './slice'
 import { v4 as uuid } from 'uuid'
 import Favorite from '@mui/icons-material/Favorite'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder'
@@ -90,6 +90,10 @@ export default function AddressForm() {
     const { name, value } = event.target
     save({ ...selected, [name]: value } as Address)
   }
+
+  React.useEffect(() => {
+    dispatch(stepStatus({ address: !!shippingAddressId }))
+  }, [dispatch, shippingAddressId])
 
   return (
     <Grid container sx={{ justifyContent: 'center', flex: 1 }} spacing={3}>

@@ -1,47 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
-import { v4 as uuid } from 'uuid'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { PaymentIntent, PaymentIntentResult, StripePaymentElementOptions } from '@stripe/stripe-js'
-import styled from '@emotion/styled'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { Payment, PaymentSource, StripeToPaymentStatusMap } from '@lib'
-import { Box, Button, CircularProgress, Typography } from '@mui/material'
-
-function ReceiptView({ id }: { id?: string }): JSX.Element {
-  return (
-    <div>
-      <h2 className="my-5">Your order was placed succesfully!</h2>
-      <div className="success-checkmark">
-        <div className="check-icon">
-          <span className="icon-line line-tip"></span>
-          <span className="icon-line line-long"></span>
-          <div className="icon-circle"></div>
-          <div className="icon-fix"></div>
-        </div>
-      </div>
-      <h3>reference #: {id}</h3>
-    </div>
-  )
-}
-
-const formatPrice = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-}).format.bind({})
+import { Alert, Box, Button, CircularProgress, Typography } from '@mui/material'
+import { checkoutAsync } from './thunks'
 
 export function StripePay({
   intent,
-  onSubmit,
   onLoading,
 }: {
   intent?: Partial<PaymentIntent>
-  onSubmit?: () => void
+
   onLoading?: (loading: boolean) => void
 }) {
   const dispatch = useAppDispatch()
   const user = useAppSelector(state => state.app.user)
-  const activeProductPurchase = useAppSelector(state => state.shop.activeItem)
   const stripe = useStripe()
   const elements = useElements()
   const [message, setMessage] = React.useState<string | undefined>()
@@ -53,14 +26,14 @@ export function StripePay({
       billingDetails: 'never',
     },
   }
-  const price = formatPrice(activeProductPurchase?.price || 0)
+
   React.useEffect(() => {
     if (onLoading) {
       onLoading(isLoading)
     }
   }, [isLoading, onLoading])
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     if (!stripe || !elements || !clientSecret) {
@@ -96,18 +69,7 @@ export function StripePay({
         setMessage(res?.error.message)
       } else {
         setResult(res)
-        // const paymentDetails: Payment = {
-        //   paymentId: uuid(),
-        //   userId: user?.userId as string,
-        //   amount: activeItem?.price || 0,
-        //   currency: intent?.currency || 'USD',
-        //   status: StripeToPaymentStatusMap[res.paymentIntent?.status || 'unknown'],
-
-        // }
-        // await dispatch(onChargeApprovedAsync(paymentDetails))
-        if (onSubmit) {
-          setTimeout(() => onSubmit(), 3000)
-        }
+        dispatch(checkoutAsync(res))
       }
     } catch (error: any) {
       setMessage(error.message)
@@ -118,22 +80,24 @@ export function StripePay({
   }
 
   return (
-    <Box>
+    <Box sx={{ minWidth: '400px' }}>
       <form id="payment-form" onSubmit={handleSubmit}>
         {isLoading && <CircularProgress />}
-        {result && <ReceiptView id={result.paymentIntent?.id} />}
         {!result && (
           <>
             {!isLoading && (
-              <>
-                <Typography>Total Charges: {price}</Typography>
-                <h2 className="my-5">Please enter your payment details</h2>
-              </>
+              <Box sx={{ textAlign: 'center', mt: 1 }}>
+                <Typography variant="h5">Please enter card details</Typography>
+              </Box>
             )}
-            {message && <Typography>{message}</Typography>}
+            {message && (
+              <Alert color="error" variant="filled" sx={{ m: '1rem 1rem 0 1rem' }}>
+                {message}
+              </Alert>
+            )}
             <PaymentElement options={elementOptions} />
-            <Button disabled={isLoading} type="submit" fullWidth>
-              <span id="button-text">{isLoading ? 'Paying...' : 'Pay now'}</span>
+            <Button disabled={isLoading} type="submit" fullWidth variant="contained" size="large">
+              <span id="button-text">{isLoading ? 'Loading...' : 'Pay Now'}</span>
             </Button>
           </>
         )}

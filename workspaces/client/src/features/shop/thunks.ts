@@ -4,12 +4,13 @@ import { Address, Cart, CheckoutRequest, Drawing, Order, PagedResult, PaymentMet
 import { RootState } from '../../shared/store'
 import { get, Method, notify, request } from '../app'
 import { patch } from './slice'
+import { PaymentIntentResult } from '@stripe/stripe-js'
 
 export const intentAsync = createAsyncThunk(
   'shop/intent',
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request<{ intent: string }>('shop/intent', payload)
-    dispatch(patch({ intent: response.data.intent }))
+    // dispatch(patch({ receipt: response.data.intent }))
     return response.data?.intent
   },
 )
@@ -55,16 +56,19 @@ export const cartAsync = createAsyncThunk(
 
 export const checkoutAsync = createAsyncThunk(
   'shop/checkout',
-  async (_, { dispatch, getState }) => {
+  async (payload: PaymentIntentResult, { dispatch, getState }) => {
     const state = getState() as RootState
-    const payload: CheckoutRequest = {
-      items: state.shop.items,
-      intent: state.shop.intent,
+    const checkout: CheckoutRequest = {
+      ids: state.shop.items.map(i => [i.cartId, i.drawingId]),
+      intent: payload.paymentIntent,
       shippingAddressId: state.shop.shippingAddressId,
-      paymentMethodId: state.shop.paymentMethodId,
     }
-    const response = await request<Order, CheckoutRequest>('shop/checkout', payload)
-    dispatch(patch({ items: [], intent: undefined }))
+    const response = await request<Order, CheckoutRequest>('shop/checkout', checkout)
+    const orders = [...(state.shop.orders || []), response.data]
+    const activeStep = state.shop.activeStep + 1
+    dispatch(
+      patch({ items: [], orders, receipt: response.data, activeStep, steps: { receipt: true } }),
+    )
     return response.data
   },
 )
