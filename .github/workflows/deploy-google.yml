@@ -222,15 +222,6 @@ jobs:
         with:
           working_directory: 'workspaces/server/dist'
 
-      - name: cloudrun
-        if: ${{ needs.changes.outputs.server == 'true' }}
-        uses: 'google-github-actions/deploy-cloudrun@v1'
-        with:
-          service: 'server'
-          source: 'workspaces/server'
-          secrets: |
-            DB_URL=DB_URL:latest
-
       - name: Get GKE Credentials
         uses: 'google-github-actions/get-gke-credentials@v1.0.1'
         if: ${{ false }}
@@ -251,3 +242,12 @@ jobs:
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/$VM_NAME
           kubectl get services -o wide
+
+      - name: cloudrun
+        if: ${{ needs.changes.outputs.server == 'true' || needs.changes.outputs.deploy == 'true' }}
+        uses: 'google-github-actions/deploy-cloudrun@v1'
+        with:
+          service: 'server'
+          source: 'workspaces/server'
+          secrets: |
+            DB_URL=DB_URL:latest
