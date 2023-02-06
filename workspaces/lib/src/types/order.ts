@@ -71,13 +71,3 @@ export const StripeToCaptureStatusMap = {
   requires_payment_method: CaptureStatus.Pending,
   unknown: CaptureStatus.Failed,
 } as const
-
-export interface Subscription extends Entity {
-  subscriptionId: string
-  userId: string
-  orderId: string
-  amount: number
-  currency: string
-  status?: string
-  order?: Order
-}

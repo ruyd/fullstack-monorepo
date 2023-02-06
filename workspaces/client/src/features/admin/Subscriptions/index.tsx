@@ -13,35 +13,22 @@ import {
   Typography,
   debounce,
   Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from '@mui/material'
 import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid'
-import { PagedResult, User } from '@lib'
+import { PagedResult, Subscription, SubscriptionPlan } from '@lib'
 import React from 'react'
 import { useGet } from '../../app'
 import AlertDialog, { ShowDialogProps } from '../../ui/AlertDialog'
 import { PagingProps } from '../Data'
 import _ from 'lodash'
-import {
-  Edit,
-  EditAttributes,
-  NotInterested,
-  OnlinePrediction,
-  Person,
-  Search as SearchIcon,
-} from '@mui/icons-material'
-import UserDetail from './Detail'
-import { title } from 'process'
+import { Delete, Edit, Search as SearchIcon } from '@mui/icons-material'
+import PlanEdit from './Plan'
+import SubscriptionEdit from './Subscription'
 
-/**
- *
- * Users needs special view, we want to see oneline status as well as certain actions
- * maybe we can enrich generic editor via props, think
- * - Auth0 Roles, Password stuff
- */
-export default function Users() {
+export default function Subscriptions() {
   const [tab, setTab] = React.useState('all')
   const [searchText, setSearchText] = React.useState('')
   const [selectedItems, setSelectedItems] = React.useState<(string | number)[]>([])
@@ -49,56 +36,53 @@ export default function Users() {
   const [alert, setAlert] = React.useState<ShowDialogProps>({
     open: false,
   })
-  const [showDetails, setShowDetails] = React.useState<ShowDialogProps>({
+  const [showPlan, setShowPlan] = React.useState<ShowDialogProps>({
     open: false,
   })
-  const { data, isLoading, error, refetch } = useGet<PagedResult<User>>(
-    'users',
-    `user`,
+  const [showSubscription, setShowSubscription] = React.useState<ShowDialogProps>({
+    open: false,
+  })
+  const { data, isLoading, error, refetch } = useGet<PagedResult<Subscription>>(
+    'subscriptions',
+    `subscription`,
     {},
     {
       ...paging,
       search: searchText,
     },
   )
+
+  const { data: plans } = useGet<PagedResult<SubscriptionPlan>>('plans', `subscriptionplan`)
   const refresh = React.useMemo(() => debounce(refetch, 500), [refetch])
+
+  const filters = ['all', 'active', 'expired', 'cancelled']
 
   const columns: GridColDef[] = [
     {
-      field: 'picture',
-      headerName: 'Picture',
-      renderCell: params => {
-        return <img src={params.value} style={{ width: 50, height: 50 }} alt="avatar" />
-      },
-    },
-    {
-      field: 'sessions',
-      headerName: 'Active',
-    },
-    {
-      field: 'email',
-      headerName: 'Email',
+      field: 'user.email',
+      headerName: 'name',
       editable: true,
     },
     {
-      field: 'firstName',
-      headerName: 'First Name',
+      field: 'description',
+      headerName: 'Description',
+      editable: true,
     },
     {
-      field: 'lastName',
-      headerName: 'Last Name',
+      field: 'amount',
+      headerName: 'Price',
     },
     {
-      field: 'banned',
-      headerName: 'Banned',
+      field: 'interval',
+      headerName: 'Interval',
     },
     {
-      field: 'logins',
-      headerName: 'Logins',
+      field: 'intervalCount',
+      headerName: 'Count',
     },
     {
-      field: 'lastLogin',
-      headerName: 'Last Login',
+      field: 'enabled',
+      headerName: 'enabled',
     },
   ]
 
@@ -123,7 +107,7 @@ export default function Users() {
 
   const handleViewDetails = () => {
     const first = data?.items.find(i => i.userId === selectedItems[0])
-    setShowDetails({
+    setShowPlan({
       open: true,
       title: 'User Details',
       payload: first,
@@ -133,7 +117,29 @@ export default function Users() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <>
-        <Typography>Users</Typography>
+        <Accordion>
+          <AccordionSummary>
+            <Typography>Plans</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {plans?.items?.map(p => (
+              <Box key={p.subscriptionPlanId} sx={{ margin: '.5rem' }}>
+                <Typography>{p.name}</Typography>
+                <Typography>{p.description}</Typography>
+                <Typography>{p.amount}</Typography>
+                <Typography>{p.interval}</Typography>
+                <IconButton>
+                  <Edit />
+                </IconButton>
+                <IconButton>
+                  <Delete />
+                </IconButton>
+              </Box>
+            ))}
+          </AccordionDetails>
+        </Accordion>
+
+        <Typography>Subscriptions</Typography>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', margin: '.2rem 0' }}>
           <ToggleButtonGroup
             exclusive
@@ -142,22 +148,14 @@ export default function Users() {
             onChange={(e, v) => setTab(v)}
             defaultChecked={true}
           >
-            <ToggleButton value="all" aria-label="All">
-              All
-            </ToggleButton>
-            <ToggleButton value="active" aria-label="Active">
-              Active
-            </ToggleButton>
-            <ToggleButton value="banned" aria-label="Banned">
-              Banned
-            </ToggleButton>
+            {filters.map(f => (
+              <ToggleButton key={f} value={f} aria-label={f}>
+                {f}
+              </ToggleButton>
+            ))}
           </ToggleButtonGroup>
           <ButtonGroup size="small">
-            <Button onClick={handleViewDetails}>Profile</Button>
-            <Button>Reset Pass</Button>
-            <Button color="error">Delete</Button>
-            <Button color="warning">Ban</Button>
-            <Button>Manage Roles</Button>
+            <Button color="warning">Cancel</Button>
           </ButtonGroup>
         </Box>
         {error && <Alert>{JSON.stringify(error)}</Alert>}
@@ -203,8 +201,8 @@ export default function Users() {
         />
 
         <Dialog
-          open={showDetails.open}
-          onClose={() => setShowDetails({ open: false })}
+          open={showPlan.open}
+          onClose={() => setShowPlan({ open: false })}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
           sx={{
@@ -216,7 +214,7 @@ export default function Users() {
             },
           }}
         >
-          <UserDetail user={showDetails.payload as unknown as User} />
+          <PlanEdit item={showPlan.payload as SubscriptionPlan} />
         </Dialog>
       </>
     </Box>

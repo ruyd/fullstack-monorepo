@@ -133,7 +133,7 @@ export default function Menu(): JSX.Element {
     { text: 'Dashboard', icon: <AdbIcon />, path: '/' },
     { text: 'Settings', icon: <Settings />, path: '/settings' },
     { text: 'Users', icon: <PersonSearch />, path: '/users' },
-    { text: 'Orders', icon: <AttachMoney />, path: '/orders' },
+    { text: 'Subscriptions', icon: <AttachMoney />, path: '/subscriptions' },
     {
       text: 'Data',
       icon: <StorageIcon />,

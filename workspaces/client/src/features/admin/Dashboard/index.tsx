@@ -13,7 +13,6 @@ import TotalIncomeLightCard from './TotalIncomeLightCard'
 import TotalGrowthBarChart from './TotalGrowthBarChart'
 
 const gridSpacing = 3
-// ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
   const [isLoading, setLoading] = useState(true)

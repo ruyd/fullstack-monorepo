@@ -1,4 +1,4 @@
-import { Address, PaymentMethod, User, UserActive } from '@lib'
+import { Address, User, UserActive } from '@lib'
 import { DataTypes } from 'sequelize'
 import { addModel } from '../../db'
 
@@ -72,35 +72,6 @@ export const AddressModel = addModel<Address>('address', {
   },
   phone: {
     type: DataTypes.STRING,
-  },
-  favorite: {
-    type: DataTypes.BOOLEAN,
-  },
-})
-
-export const PaymentMethodModel = addModel<PaymentMethod>('payment_method', {
-  paymentMethodId: {
-    type: DataTypes.UUID,
-    primaryKey: true,
-    defaultValue: DataTypes.UUIDV4,
-  },
-  userId: {
-    type: DataTypes.UUID,
-  },
-  name: {
-    type: DataTypes.STRING,
-  },
-  type: {
-    type: DataTypes.STRING,
-  },
-  last4: {
-    type: DataTypes.STRING,
-  },
-  expMonth: {
-    type: DataTypes.INTEGER,
-  },
-  expYear: {
-    type: DataTypes.INTEGER,
   },
   favorite: {
     type: DataTypes.BOOLEAN,

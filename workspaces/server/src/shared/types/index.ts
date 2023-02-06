@@ -1,8 +1,9 @@
 export * from './models/drawing'
 export * from './models/user'
-export * from './models/order'
 export * from './models/setting'
 export * from './models/cart'
+export * from './models/order'
+export * from './models/subscription'
 
 import express from 'express'
 import { JwtPayload } from 'jsonwebtoken'

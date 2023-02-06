@@ -5,6 +5,7 @@ import Data from './Data'
 import Menu from './Menu'
 import Orders from './Orders'
 import Settings from './Settings'
+import Subscriptions from './Subscriptions'
 import Users from './Users'
 
 /**
@@ -33,6 +34,7 @@ export default function Admin(): JSX.Element {
           <Route path="settings" element={<Settings />} />
           <Route path="users" element={<Users />} />
           <Route path="orders" element={<Orders />} />
+          <Route path="subscriptions" element={<Subscriptions />} />
         </Routes>
       </Box>
     </Box>

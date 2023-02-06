@@ -7,11 +7,11 @@ import {
   Button,
 } from '@mui/material'
 
-export interface AlertDialogProps {
+export interface ShowDialogProps {
   open: boolean
   title?: string
   message?: string
-  payload?: string | number | object
+  payload?: unknown
   onConfirm?: () => void
   onCancel?: () => void
   alert?: boolean
@@ -24,7 +24,7 @@ export default function ConfirmDialog({
   onCancel,
   onConfirm,
   alert,
-}: AlertDialogProps) {
+}: ShowDialogProps) {
   return (
     <Dialog
       open={open}

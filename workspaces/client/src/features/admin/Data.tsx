@@ -25,7 +25,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import { Method } from '../app/thunks'
 import { DeleteForever } from '@mui/icons-material'
 import Spacer from '../ui/Spacer'
-import AlertDialog, { AlertDialogProps } from '../ui/AlertDialog'
+import AlertDialog, { ShowDialogProps } from '../ui/AlertDialog'
 
 const excluded = ['history']
 
@@ -41,7 +41,7 @@ export default function Data() {
   const [selectedItems, setSelectedItems] = React.useState<(string | number)[]>([])
   const model = searchParams.get('model') || ''
   const [paging, setPaging] = React.useState<PagingProps>({ limit: 100, page: 0 })
-  const [alert, setAlert] = React.useState<AlertDialogProps>({
+  const [alert, setAlert] = React.useState<ShowDialogProps>({
     open: false,
   })
   const { data, isLoading, error, refetch } = useGet<PagedResult>(
