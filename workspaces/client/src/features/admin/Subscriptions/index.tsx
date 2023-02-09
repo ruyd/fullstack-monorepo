@@ -16,6 +16,8 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  AccordionActions,
+  Divider,
 } from '@mui/material'
 import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid'
 import { PagedResult, Subscription, SubscriptionPlan } from '@lib'
@@ -120,6 +122,7 @@ export default function Subscriptions() {
         <Accordion>
           <AccordionSummary>
             <Typography>Plans</Typography>
+            <Button onClick={() => setShowPlan({ open: true })}>Add</Button>
           </AccordionSummary>
           <AccordionDetails>
             {plans?.items?.map(p => (
@@ -137,6 +140,7 @@ export default function Subscriptions() {
               </Box>
             ))}
           </AccordionDetails>
+          <AccordionActions></AccordionActions>
         </Accordion>
 
         <Typography>Subscriptions</Typography>
@@ -214,7 +218,10 @@ export default function Subscriptions() {
             },
           }}
         >
-          <PlanEdit item={showPlan.payload as SubscriptionPlan} />
+          <PlanEdit
+            item={showPlan.payload as SubscriptionPlan}
+            setState={(sub: SubscriptionPlan) => setShowPlan(prev => ({ ...prev, payload: sub }))}
+          />
         </Dialog>
       </>
     </Box>

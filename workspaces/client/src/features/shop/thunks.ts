@@ -19,9 +19,9 @@ export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, get
   const { data: cart } = await get<PagedResult<Cart>>('cart?include=drawing')
   const { data: orders } = await get<PagedResult<Order>>('order')
   const { data: address } = await get<PagedResult<Address>>('address')
-  const { data: payment } = await get<PagedResult<PaymentMethod>>('payment_method')
-  dispatch(patch({ items: cart.items, addresses: address.items, loaded: true }))
-  // dispatch(patch({ intent: response.data.intent }))
+  dispatch(
+    patch({ items: cart.items, addresses: address.items, orders: orders.items, loaded: true }),
+  )
 })
 
 export const cartAsync = createAsyncThunk(

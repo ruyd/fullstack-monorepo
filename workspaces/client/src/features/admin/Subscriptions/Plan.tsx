@@ -10,17 +10,39 @@ import {
   FormControlLabel,
   FormGroup,
   Paper,
+  List,
+  ListItem,
+  Select,
+  Typography,
+  MenuItem,
+  IconButton,
 } from '@mui/material'
-import { SubscriptionPlan, User } from '@lib'
+import { PaymentSources, SubscriptionPlan, User } from '@lib'
+import { Delete } from '@mui/icons-material'
 
-export default function PlanEdit({ item }: { item?: SubscriptionPlan }): JSX.Element {
+export default function PlanEdit({
+  item,
+  setState,
+}: {
+  item?: SubscriptionPlan
+  setState?: React.SetStateAction<unknown>
+}): JSX.Element {
   const submitHandler = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
   }
+  const newHandler = function (e: React.FormEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    if (typeof setState === 'function') {
+      setState({
+        ...item,
+        mappings: [...(item?.mappings || []), { source: PaymentSources.Stripe, productId: '123' }],
+      })
+    }
+  }
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={9}>
+    <Grid container spacing={4}>
+      <Grid item xs={6}>
         <Box component="form" sx={{}} onSubmit={submitHandler} autoComplete="off">
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -73,11 +95,29 @@ export default function PlanEdit({ item }: { item?: SubscriptionPlan }): JSX.Ele
             </Paper>
           </Grid>
           <Grid item>
-            <Paper sx={{ padding: 2, background: 'unset', textAlign: 'center' }} variant="outlined">
-              <Button variant="contained" fullWidth>
-                Modify
+            <Box sx={{ textAlign: 'center', display: 'flex', justifyContent: 'space-between' }}>
+              <Typography variant="h6">Product Mappings</Typography>
+              <Button variant="outlined" onClick={newHandler}>
+                Add New
               </Button>
-            </Paper>
+            </Box>
+            <List>
+              {item?.mappings?.map((mapping, index) => (
+                <ListItem key={index}>
+                  <Select label="Source" fullWidth>
+                    {Object.keys(PaymentSources).map(source => (
+                      <MenuItem key={source} value={source}>
+                        {source}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <TextField fullWidth value={mapping.productId} />
+                  <IconButton>
+                    <Delete />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
           </Grid>
         </Grid>
       </Grid>

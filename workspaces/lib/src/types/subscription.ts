@@ -25,9 +25,7 @@ export interface SubscriptionPlan extends Entity {
   interval?: PlanInterval
   intervalCount?: number
   trialPeriodDays?: number
-  mappings?: {
-    [k in PaymentSource]: string
-  }
+  mappings?: { source: PaymentSource; productId: string }[]
   enabled?: boolean
 }
 
