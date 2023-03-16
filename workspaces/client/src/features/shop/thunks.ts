@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { Address, Cart, CheckoutRequest, Drawing, Order, PagedResult, PaymentMethod } from '@lib'
+import {
+  Address,
+  Cart,
+  CheckoutRequest,
+  Drawing,
+  Order,
+  PagedResult,
+  PaymentMethod,
+  Product,
+} from '@lib'
 import { RootState } from '../../shared/store'
 import { get, Method, notify, request } from '../app'
 import { patch } from './slice'
@@ -19,6 +28,7 @@ export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, get
   const { data: cart } = await get<PagedResult<Cart>>('cart?include=drawing')
   const { data: orders } = await get<PagedResult<Order>>('order')
   const { data: address } = await get<PagedResult<Address>>('address')
+
   dispatch(
     patch({ items: cart.items, addresses: address.items, orders: orders.items, loaded: true }),
   )

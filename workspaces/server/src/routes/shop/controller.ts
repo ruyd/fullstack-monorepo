@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Stripe from 'stripe'
-import { Cart, CheckoutRequest, OrderStatus, User } from '@lib'
+import { Cart, CheckoutRequest, OrderStatus, Price, Product, User } from '@lib'
 import express from 'express'
 import logger from 'src/shared/logger'
 import { CartModel, DrawingModel, EnrichedRequest, UserModel } from '../../shared/types'
 import { OrderModel } from '../../shared/types/models/order'
 import config from 'src/shared/config'
+import { ProductModel } from 'src/shared/types/models/product'
+import Connection from 'src/shared/db'
+import { Model } from 'sequelize'
 
 async function getTotalCharge(userId: string) {
   const items = (await CartModel.findAll({
@@ -187,5 +190,74 @@ export async function stripeCreateVerifyIdentitySession(
         message: err.message,
       },
     })
+  }
+}
+
+/**
+ * On-demand sync of products from Stripe to the database
+ * @param req
+ * @param res
+ */
+
+export async function syncProductsHandler(req: express.Request, res: express.Response) {
+  const stripe = getStripe()
+  const products = await stripe.products.list({ limit: 100, active: true })
+  const prices = await stripe.prices.list({ limit: 100 })
+  const existing = await ProductModel.findAndCountAll({
+    where: {},
+  })
+
+  const result = []
+
+  const productsCache = products.data.map(product => ({
+    productId: product.id,
+    title: product.name,
+    description: product.description as string,
+    imageUrl: product.images[0],
+    prices: prices.data
+      .filter(p => p.product === product.id)
+      .map(
+        p =>
+          ({
+            id: p.id,
+            amount: p.unit_amount,
+            currency: p.currency,
+            interval: p.recurring?.interval,
+            intervalCount: p.recurring?.interval_count,
+            freeTrialDays: p.recurring?.trial_period_days,
+          } as Price),
+      ),
+  }))
+
+  for (const product of productsCache) {
+    const [item] = await ProductModel.upsert(product)
+    result.push(item)
+  }
+
+  await cleanProducts(existing, productsCache)
+
+  res.json(result)
+}
+
+export async function cleanProducts(
+  existing: {
+    rows: Model<Product, Product>[]
+    count: number
+  },
+  productsCache: Product[],
+) {
+  const toRemove = existing.rows
+    .filter(p => !productsCache.find(c => c.productId === p.getDataValue('productId')))
+    .map(p => p.getDataValue('productId'))
+
+  if (toRemove.length > 0) {
+    try {
+      const resu = (await Connection.db.getQueryInterface().bulkDelete('products', {
+        product_id: toRemove,
+      })) as { rowCount: number }[]
+      logger.info(`Removed ${resu[1].rowCount} products`)
+    } catch (e) {
+      logger.error(e)
+    }
   }
 }

@@ -44,6 +44,8 @@ export function getMockValue(
   switch (type) {
     case 'UUID':
       return uuid()
+    case type.match(/VARCHAR\(\w+\)\[\]/)?.input:
+      return ['test', 'test2']
     case 'TEXT':
     case type.match(/VARCHAR\(\w+\)/)?.input:
       return columnName + suffix
@@ -115,7 +117,7 @@ describe('Entity CRUD', () => {
     expect(checks[0]).toBeTruthy()
   })
 
-  console.log = jest.fn()
+  // console.log = jest.fn()
 
   const sorted = Connection.entities.sort(sortEntities)
   const mocks = {} as Record<string, { [key: string]: unknown }>

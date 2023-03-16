@@ -16,7 +16,7 @@ import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from './slice'
-import { patch as patchApp } from '../app'
+import { patch as patchApp, useGet } from '../app'
 import ShopCart from './ShopCart'
 import { loadAsync } from './thunks'
 import PaymentStep from './Payment'
@@ -46,7 +46,7 @@ export default function SubscribeDialog() {
   const stepsStatus = useAppSelector(state => state.shop.steps)
   const dispatch = useAppDispatch()
   const loaded = useAppSelector(state => state.shop.loaded)
-  const items = useAppSelector(state => state.shop.items)
+  const { data: products, isLoading: isLoadingProducts } = useGet('product', 'product')
   const enableShippingAddress = useAppSelector(
     state => state.app.settings?.system?.enableShippingAddress,
   )

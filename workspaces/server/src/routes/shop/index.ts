@@ -4,6 +4,7 @@ import {
   stripeCreatePaymentIntent,
   stripeCreateVerifyIdentitySession,
   stripeWebHook,
+  syncProductsHandler,
 } from './controller'
 import { capturePaymentHandler, createOrderHandler } from './paypal'
 
@@ -20,5 +21,7 @@ router.post('/stripe/webhook', express.raw({ type: 'application/json' }), stripe
 router.post('/paypal/order', createOrderHandler)
 
 router.post('/api/orders/:orderID/capture', capturePaymentHandler)
+
+router.get('/products/sync', syncProductsHandler)
 
 export default router

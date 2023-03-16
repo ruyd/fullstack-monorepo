@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Address, Cart, Drawing, Order, PaymentMethod, Subscription } from '@lib'
+import { Address, Cart, Drawing, Order, PaymentMethod, Product, Subscription } from '@lib'
 
 export interface ShopState {
+  products?: Product[]
   loaded?: boolean
   items: Cart[]
   orders?: Order[]

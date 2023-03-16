@@ -4,6 +4,7 @@ export * from './order'
 export * from './setting'
 export * from './user'
 export * from './subscription'
+export * from './product'
 
 export interface Jwt {
   [key: string]: unknown

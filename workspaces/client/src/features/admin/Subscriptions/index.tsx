@@ -27,7 +27,7 @@ import AlertDialog, { ShowDialogProps } from '../../ui/AlertDialog'
 import { PagingProps } from '../Data'
 import _ from 'lodash'
 import { Delete, Edit, Search as SearchIcon } from '@mui/icons-material'
-import PlanEdit from './Plan'
+import PlanEdit from './PlanEdit'
 import SubscriptionEdit from './Subscription'
 
 export default function Subscriptions() {
