@@ -22,7 +22,7 @@ export const Paths = {
   Draw: `/draw`,
 }
 
-export const routes: AppRoute[] = [
+export const routes: Readonly<AppRoute>[] = [
   {
     title: 'Home',
     path: '/',
@@ -67,6 +67,20 @@ export const routes: AppRoute[] = [
     hideFooter: true,
     link: true,
     params: ['/:id'],
+  },
+  {
+    title: 'Subscribe',
+    path: '/subscribe',
+    component: React.lazy(() => import('../features/shop/SubscribeDialog')),
+    link: true,
+    dialog: 'subscribe',
+  },
+  {
+    title: 'Tokens',
+    path: '/tokens',
+    component: React.lazy(() => import('../features/shop/Tokens')),
+    link: true,
+    dialog: 'tokens',
   },
   {
     title: 'Authenticating...',

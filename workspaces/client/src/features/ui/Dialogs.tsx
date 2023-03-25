@@ -1,20 +1,20 @@
-import CheckoutDialog from '../shop/CheckoutDialog'
+import { routes } from '../../shared/routes'
 import OnboardingDialog from '../profile/OnboardingDialog'
+const dialogs = routes.filter(route => route.dialog && !route.dialog?.includes('onboard'))
 
 /**
- * Multi component dialogs that return null if not open
+ * Multi component dialogs that return empty if not open
  * Dev Note: Single component level dialogs -> inside component
  * @returns
  */
 export default function Dialogs() {
   return (
     <>
-      <CheckoutDialog />
+      {dialogs.map(dialog => {
+        const DialogComponent = dialog.component
+        return <DialogComponent key={dialog.dialog} />
+      })}
       <OnboardingDialog />
     </>
   )
-}
-
-export const GlobalDialogs = {
-  Omboard: `onboard`,
 }

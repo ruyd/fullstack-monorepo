@@ -22,11 +22,11 @@ import { loadAsync } from './thunks'
 import PaymentStep from './Payment'
 import AddressStep from './Address'
 import ReceiptStep from './Receipt'
+import Products from './Products'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    children: React.ReactElement<any, any>
+    children: React.ReactElement
   },
   ref: React.Ref<unknown>,
 ) {
@@ -34,8 +34,7 @@ const Transition = React.forwardRef(function Transition(
 })
 
 const stepsBase: { title: string; component: JSX.Element; next: string; key: string }[] = [
-  { title: 'Subscription Plan', component: <ShopCart />, next: 'Checkout', key: 'plan' },
-  { title: 'Identification', component: <></>, next: 'Continue', key: 'identity' },
+  { title: 'Subscription', component: <Products />, next: 'Checkout', key: 'plan' },
   { title: 'Payment', component: <PaymentStep />, next: 'Continue', key: 'payment' },
   { title: 'Receipt', component: <ReceiptStep />, next: 'Close', key: 'receipt' },
 ]
@@ -46,7 +45,7 @@ export default function SubscribeDialog() {
   const stepsStatus = useAppSelector(state => state.shop.steps)
   const dispatch = useAppDispatch()
   const loaded = useAppSelector(state => state.shop.loaded)
-  const { data: products, isLoading: isLoadingProducts } = useGet('product', 'product')
+
   const enableShippingAddress = useAppSelector(
     state => state.app.settings?.system?.enableShippingAddress,
   )
@@ -76,75 +75,69 @@ export default function SubscribeDialog() {
   }
 
   const requested = useAppSelector(state => state.app.dialog)
-
-  const open = requested?.includes('checkout')
+  const open = requested === 'subscribe'
   const handleClose = React.useCallback(() => {
     dispatch(patchApp({ dialog: undefined }))
   }, [dispatch])
 
-  React.useEffect(() => {
-    console.log('loadAsync', loaded, token)
-    if (!loaded && token) {
-      dispatch(loadAsync())
-    }
-  }, [dispatch, loaded, token])
-
   if (!open) {
-    return null
+    return <></>
   }
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      TransitionComponent={Transition}
-      maxWidth={false}
-      sx={{ m: '3vw 2vw 0 2vw' }}
-      fullScreen
-    >
-      <DialogContent
-        sx={{ backgroundColor: 'background.paper', display: 'flex', flexDirection: 'column' }}
+    <Grid>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        TransitionComponent={Transition}
+        maxWidth={false}
+        sx={{ m: '3vw 2vw 0 2vw' }}
+        fullScreen
       >
-        <Grid container>
-          <Stepper
-            activeStep={activeStep === steps.length - 1 ? activeStep + 1 : activeStep}
-            sx={{
-              display: 'flex',
-              flex: 1,
-              flexWrap: 'wrap',
-            }}
-          >
-            {steps.map((step, index) => (
-              <Step
-                key={index}
-                sx={{ m: '.3rem .7rem', cursor: 'pointer' }}
-                onClick={() =>
-                  index < steps.length - 1 ? dispatch(patch({ activeStep: index })) : null
-                }
-              >
-                <StepLabel>{step.title}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-        </Grid>
-        <Box sx={{ mt: 2, display: 'flex', flex: 1 }}>{steps[activeStep]?.component}</Box>
-      </DialogContent>
-      <DialogActions sx={{ backgroundColor: 'background.paper' }}>
-        {activeStep < steps.length - 1 && (
-          <Button onClick={handleBack} sx={{ ml: 1 }} size="large">
-            {activeStep === 0 ? 'Close' : 'Back'}
-          </Button>
-        )}
-        <Button
-          variant="contained"
-          onClick={handleNext}
-          sx={{ ml: 1 }}
-          size="large"
-          disabled={!stepsStatus[steps[activeStep].key]}
+        <DialogContent
+          sx={{ backgroundColor: 'background.paper', display: 'flex', flexDirection: 'column' }}
         >
-          {steps[activeStep].next}
-        </Button>
-      </DialogActions>
-    </Dialog>
+          <Grid container>
+            <Stepper
+              activeStep={activeStep === steps.length - 1 ? activeStep + 1 : activeStep}
+              sx={{
+                display: 'flex',
+                flex: 1,
+                flexWrap: 'wrap',
+              }}
+            >
+              {steps.map((step, index) => (
+                <Step
+                  key={index}
+                  sx={{ m: '.3rem .7rem', cursor: 'pointer' }}
+                  onClick={() =>
+                    index < steps.length - 1 ? dispatch(patch({ activeStep: index })) : null
+                  }
+                >
+                  <StepLabel>{step.title}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          </Grid>
+          <Box sx={{ mt: 2, display: 'flex', flex: 1 }}>{steps[activeStep]?.component}</Box>
+        </DialogContent>
+        <DialogActions sx={{ backgroundColor: 'background.paper' }}>
+          {activeStep < steps.length - 1 && (
+            <Button onClick={handleBack} sx={{ ml: 1 }} size="large">
+              {activeStep === 0 ? 'Close' : 'Back'}
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            onClick={handleNext}
+            sx={{ ml: 1 }}
+            size="large"
+            disabled={!stepsStatus[steps[activeStep].key]}
+          >
+            {steps[activeStep].next}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Grid>
   )
 }

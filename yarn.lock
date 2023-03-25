@@ -13900,6 +13900,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment-timezone@npm:^0.5.35":
+  version: 0.5.42
+  resolution: "moment-timezone@npm:0.5.42"
+  dependencies:
+    moment: ^2.29.4
+  checksum: d4d5d68d4b98e4309e8692ddb6b790ab6b375414ea4e45ef3144bfbc689ab14e3089c4561aea43471fd58595328f43fc554231c9d8fc753b460ca0a29a105693
+  languageName: node
+  linkType: hard
+
 "moment@npm:>= 2.9.0, moment@npm:^2.29.1, moment@npm:^2.29.4":
   version: 2.29.4
   resolution: "moment@npm:2.29.4"
@@ -16822,6 +16831,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"retry-as-promised@npm:^7.0.3":
+  version: 7.0.4
+  resolution: "retry-as-promised@npm:7.0.4"
+  checksum: 2b0dcddb06649d42b1384ec1f933c7cb4461939c28004460b0c4be0c8ae16cabaed2411aa5d46e734a320f33f4a1d480078a19b97c743c754bd32e896b3f8ea2
+  languageName: node
+  linkType: hard
+
 "retry-request@npm:^5.0.0":
   version: 5.0.2
   resolution: "retry-request@npm:5.0.2"
@@ -17208,7 +17224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sequelize@npm:^6.19.1, sequelize@npm:^6.25.5":
+"sequelize@npm:^6.25.5":
   version: 6.25.5
   resolution: "sequelize@npm:6.25.5"
   dependencies:
@@ -17248,6 +17264,49 @@ __metadata:
     tedious:
       optional: true
   checksum: fc0acfeff6ba17659a1a7a6a0c2475fc6761cef4efa151e0692ed6314649dffb73288f8958e7094f644f7f0fd1b45b3084943644a69f18f6af359a678704fcfb
+  languageName: node
+  linkType: hard
+
+"sequelize@npm:^6.30.0":
+  version: 6.30.0
+  resolution: "sequelize@npm:6.30.0"
+  dependencies:
+    "@types/debug": ^4.1.7
+    "@types/validator": ^13.7.1
+    debug: ^4.3.3
+    dottie: ^2.0.2
+    inflection: ^1.13.2
+    lodash: ^4.17.21
+    moment: ^2.29.1
+    moment-timezone: ^0.5.35
+    pg-connection-string: ^2.5.0
+    retry-as-promised: ^7.0.3
+    semver: ^7.3.5
+    sequelize-pool: ^7.1.0
+    toposort-class: ^1.0.1
+    uuid: ^8.3.2
+    validator: ^13.7.0
+    wkx: ^0.5.0
+  peerDependenciesMeta:
+    ibm_db:
+      optional: true
+    mariadb:
+      optional: true
+    mysql2:
+      optional: true
+    oracledb:
+      optional: true
+    pg:
+      optional: true
+    pg-hstore:
+      optional: true
+    snowflake-sdk:
+      optional: true
+    sqlite3:
+      optional: true
+    tedious:
+      optional: true
+  checksum: a99ae86eb48ec0704e8f5173265c17578b69bd9659e21789e0f0f551c69e597d3efe7d365c417542a7cc5023b9ceaf75948650aeab6b7321c09295f17342f6d1
   languageName: node
   linkType: hard
 
@@ -17340,7 +17399,7 @@ __metadata:
     nodemon: ^2.0.16
     openapi-types: ^12.0.2
     pg: ^8.7.3
-    sequelize: ^6.19.1
+    sequelize: ^6.30.0
     socket.io: ^4.5.4
     stripe: ^11.8.0
     supertest: ^6.3.3

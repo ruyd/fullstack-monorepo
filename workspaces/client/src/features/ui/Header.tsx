@@ -53,7 +53,10 @@ export default function HeaderNavBar() {
     setAnchorElUser(event.currentTarget)
   }
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (r?: AppRoute) => {
+    if (r?.dialog) {
+      dispatch(patch({ dialog: r.dialog }))
+    }
     setAnchorElNav(null)
   }
 
@@ -64,8 +67,10 @@ export default function HeaderNavBar() {
     setAnchorElUser(null)
   }
 
-  const handleCheckout = () => {
-    dispatch(patch({ dialog: 'checkout' }))
+  const handleDialog = (dialog: string) => {
+    // eslint-disable-next-line no-console
+    console.log('handleDialog', dialog)
+    dispatch(patch({ dialog }))
   }
 
   const handleThemeToggle = () => {
@@ -135,14 +140,19 @@ export default function HeaderNavBar() {
                 horizontal: 'left',
               }}
               open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+              onClose={() => handleCloseNavMenu()}
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
             >
               {links.map(route => (
                 <MenuItem key={route.path}>
-                  <Link component={RouterLink} to={route.path} underline="none">
+                  <Link
+                    component={RouterLink}
+                    to={route.dialog ? '#' : route.path}
+                    underline="none"
+                    onClick={() => handleDialog(route.dialog as string)}
+                  >
                     {route.title}
                   </Link>
                 </MenuItem>
@@ -172,9 +182,9 @@ export default function HeaderNavBar() {
             {links.map(route => (
               <Button
                 key={route.path}
-                onClick={handleCloseNavMenu}
+                onClick={() => handleCloseNavMenu(route)}
                 component={RouterLink}
-                to={route.path}
+                to={route.dialog ? '#' : route.path}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {route.title}
@@ -198,7 +208,7 @@ export default function HeaderNavBar() {
                       return prev + curr
                     }, 0)}
                 >
-                  <IconButton onClick={handleCheckout}>
+                  <IconButton onClick={() => handleDialog('checkout')}>
                     <ShoppingCartCheckout />
                   </IconButton>
                 </Badge>
