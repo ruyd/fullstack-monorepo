@@ -1,0 +1,14 @@
+{
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-console": "warn"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": true,
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    }
+  }
+}

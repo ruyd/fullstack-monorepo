@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from '@mui/material'
 import { useAppSelector } from 'src/shared/store'
 
-export default function Receipt() {
+export default function Receipt () {
   const order = useAppSelector(state => state.shop.receipt)
   return (
     <Stack sx={{ flex: 1, textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}>

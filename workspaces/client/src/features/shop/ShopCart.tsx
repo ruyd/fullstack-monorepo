@@ -2,7 +2,7 @@
 import React from 'react'
 import {
   Box,
-  BoxProps,
+  type BoxProps,
   Button,
   ButtonGroup,
   Card,
@@ -18,9 +18,9 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material'
-import { Cart, Drawing } from '@lib'
+import { type Cart, type Drawing } from '@lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch, stepStatus } from './slice'
 import { cartAsync, loadAsync } from './thunks'
@@ -31,7 +31,7 @@ import {
   DeleteForeverOutlined,
   DeleteOutlined,
   PlusOne,
-  Remove,
+  Remove
 } from '@mui/icons-material'
 import { styled } from '@mui/system'
 import { number } from 'prop-types'
@@ -46,12 +46,11 @@ const QuantityBox = styled(ButtonGroup)`
   border: 1px solid rgba(106, 122, 138, 0.32);
 `
 
-export function ShopCart({ readOnly, ...props }: BoxProps & { readOnly?: boolean }) {
+export function ShopCart ({ readOnly, ...props }: BoxProps & { readOnly?: boolean }) {
   const dispatch = useAppDispatch()
-  const deleteHandler = (cart: Cart) =>
-    dispatch(cartAsync({ item: cart.drawing as Drawing, quantity: 0 }))
+  const deleteHandler = (cart: Cart) => { void dispatch(cartAsync({ ...cart, quantity: 0 })) }
   const items = useAppSelector(store => store.shop.items || [])
-  const subtotal = items.reduce((a, b) => a + b.quantity * (b.drawing?.price || 0), 0)
+  const subtotal = items.reduce((a, b) => a + b.quantity * (b.drawing?.price ?? 0), 0)
   const format = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format
   const formatted = (value?: number) => (value ? format(value) : '')
 
@@ -96,35 +95,35 @@ export function ShopCart({ readOnly, ...props }: BoxProps & { readOnly?: boolean
                       <TableCell sx={{ width: '14rem' }}>
                         <QuantityBox>
                           <IconButton
-                            onClick={() =>
-                              dispatch(
+                            onClick={() => {
+                              void dispatch(
                                 cartAsync({
-                                  item: item?.drawing as Drawing,
-                                  quantity: -1,
-                                }),
+                                  ...item,
+                                  quantity: -1
+                                })
                               )
-                            }
+                            }}
                           >
                             <Remove />
                           </IconButton>
                           <Typography>{item.quantity}</Typography>
                           <IconButton
-                            onClick={() =>
-                              dispatch(
+                            onClick={() => {
+                              void dispatch(
                                 cartAsync({
-                                  item: item?.drawing as Drawing,
-                                  quantity: 1,
-                                }),
+                                  ...item,
+                                  quantity: 1
+                                })
                               )
-                            }
+                            }}
                           >
                             <Add />
                           </IconButton>
                         </QuantityBox>
                       </TableCell>
-                      <TableCell>{formatted(item.quantity * (item.drawing?.price || 0))}</TableCell>
+                      <TableCell>{formatted(item.quantity * (item.drawing?.price ?? 0))}</TableCell>
                       <TableCell>
-                        <IconButton onClick={() => deleteHandler(item)} title="Delete">
+                        <IconButton onClick={() => { deleteHandler(item) }} title="Delete">
                           <DeleteForeverOutlined />
                         </IconButton>
                       </TableCell>

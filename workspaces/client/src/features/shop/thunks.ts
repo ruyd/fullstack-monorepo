@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
-  Address,
-  Cart,
-  CheckoutRequest,
-  Drawing,
-  Order,
-  PagedResult,
+  type Address,
+  type Cart,
+  type CheckoutRequest,
+  type Drawing,
+  type Order,
+  type PagedResult,
   PaymentMethod,
-  Product,
+  type Product
 } from '@lib'
-import { RootState } from '../../shared/store'
+import { type RootState } from '../../shared/store'
 import { get, Method, notify, request } from '../app'
 import { patch } from './slice'
-import { PaymentIntentResult } from '@stripe/stripe-js'
+import { type PaymentIntentResult } from '@stripe/stripe-js'
 
 export const intentAsync = createAsyncThunk(
   'shop/intent',
@@ -21,7 +21,7 @@ export const intentAsync = createAsyncThunk(
     const response = await request<{ intent: string }>('shop/intent', payload)
     // dispatch(patch({ receipt: response.data.intent }))
     return response.data?.intent
-  },
+  }
 )
 export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, getState }) => {
   const state = getState() as RootState
@@ -30,38 +30,47 @@ export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, get
   const { data: address } = await get<PagedResult<Address>>('address')
 
   dispatch(
-    patch({ items: cart.items, addresses: address.items, orders: orders.items, loaded: true }),
+    patch({ items: cart.items, addresses: address.items, orders: orders.items, loaded: true })
   )
 })
 
 export const cartAsync = createAsyncThunk(
   'shop/cart',
-  async ({ item, quantity }: { item: Drawing; quantity: number }, { dispatch, getState }) => {
+  async (
+    { drawing, product, quantity }: { drawing?: Drawing, product?: Product, quantity: number },
+    { dispatch, getState }
+  ) => {
     const state = getState() as RootState
     const method = quantity === 0 ? Method.DELETE : Method.POST
-    const cart = { drawingId: item.drawingId, quantity } as Cart
-    const existing = state.shop.items.find(i => i.drawingId === item.drawingId)
-    if (existing) {
+    const cart: Partial<Cart> = {
+      drawingId: drawing?.drawingId,
+      productId: product?.productId,
+      quantity
+    }
+    const existing = state.shop.items.find(i => i.drawingId === drawing?.drawingId)
+    if (existing != null) {
       cart.cartId = existing.cartId
-      cart.quantity += existing.quantity
+      cart.quantity = quantity + existing.quantity
     }
     const response = await request<Cart>(
       'cart',
       method === Method.DELETE ? { ids: [cart.cartId] } : { ...cart },
-      method,
+      method
     )
+    const name = drawing?.name ?? product?.description
+    const price = drawing?.price ?? product?.prices?.[0]?.amount
     const others = state.shop.items.filter(i => i.cartId !== cart.cartId)
     if (method === Method.DELETE) {
-      dispatch(notify(`Removed ${item?.name}`))
+      dispatch(notify(`Removed ${name}`))
       dispatch(patch({ items: others }))
       return response.data
     }
 
-    const fromServer = { ...response.data, drawing: item }
+    const fromServer = { ...response.data, drawing, product }
     dispatch(patch({ items: [...others, fromServer] }))
-    dispatch(notify(`Added ${item.name} ${item.price}`))
+    dispatch(notify(`Added ${name} ${price}`))
     return response.data
-  },
+  }
 )
 
 export const checkoutAsync = createAsyncThunk(
@@ -69,16 +78,16 @@ export const checkoutAsync = createAsyncThunk(
   async (payload: PaymentIntentResult, { dispatch, getState }) => {
     const state = getState() as RootState
     const checkout: CheckoutRequest = {
-      ids: state.shop.items.map(i => [i.cartId, i.drawingId]),
+      ids: state.shop.items.map(i => [i.cartId, i.drawingId, i.productId]),
       intent: payload.paymentIntent,
-      shippingAddressId: state.shop.shippingAddressId,
+      shippingAddressId: state.shop.shippingAddressId
     }
     const response = await request<Order, CheckoutRequest>('shop/checkout', checkout)
-    const orders = [...(state.shop.orders || []), response.data]
+    const orders = [...state.shop.orders, response.data]
     const activeStep = state.shop.activeStep + 1
     dispatch(
-      patch({ items: [], orders, receipt: response.data, activeStep, steps: { receipt: true } }),
+      patch({ items: [], orders, receipt: response.data, activeStep, steps: { receipt: true } })
     )
     return response.data
-  },
+  }
 )

@@ -11,10 +11,10 @@ import {
   Grid,
   IconButton,
   styled,
-  Typography,
+  Typography
 } from '@mui/material'
 import { config } from '../../shared/config'
-import { Drawing, PagedResult } from '@lib'
+import { type Drawing, type PagedResult } from '@lib'
 import { useGet } from '../app/thunks'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
@@ -30,12 +30,12 @@ import { cartAsync } from '../shop/thunks'
 
 const StyledImage = styled('img')({
   height: '45vh',
-  maxWidth: '90%',
+  maxWidth: '90%'
 })
 
-export default function Gallery({
+export default function Gallery ({
   userId,
-  onData,
+  onData
 }: {
   userId?: string
   onData?: (items: Drawing[]) => void
@@ -47,23 +47,23 @@ export default function Gallery({
     'gallery',
     '/gallery' + (userId ? '/' + userId : ''),
     {
-      enabled: loaded,
-    },
+      enabled: loaded
+    }
   )
-  const items = data?.items || []
+  const items = data?.items ?? []
   const origin =
     window.location.origin[window.location.origin.length - 1] === '/'
       ? window.location.origin.slice(0, -1)
       : window.location.origin
   const copyLink = (item: Drawing) => {
-    navigator.clipboard.writeText(`${origin}${Paths.Draw}/${item.drawingId}`)
-    dispatch(notify('Link copied to clipboard!'))
+    void navigator.clipboard.writeText(`${origin}${Paths.Draw}/${item.drawingId}`)
+    void dispatch(notify('Link copied to clipboard!'))
   }
   const buy = (item: Drawing) => {
-    dispatch(cartAsync({ item, quantity: 1 }))
+    void dispatch(cartAsync({ ...item, quantity: 1 }))
   }
   React.useEffect(() => {
-    if (onData && data?.items) {
+    if ((onData != null) && ((data?.items) != null)) {
       onData(data?.items)
     }
   }, [onData, data?.items])
@@ -80,17 +80,17 @@ export default function Gallery({
           <Grid item key={item.drawingId}>
             <GalleryCard
               item={item}
-              onClick={() => navigate(`${Paths.Draw}/${item.drawingId}`)}
+              onClick={() => { navigate(`${Paths.Draw}/${item.drawingId}`) }}
               actionPane={
                 <>
                   {item.sell && (
                     <Badge badgeContent={item.price}>
-                      <IconButton onClick={() => buy(item)} aria-label="sharing link">
+                      <IconButton onClick={() => { buy(item) }} aria-label="sharing link">
                         <AddShoppingCartIcon />
                       </IconButton>
                     </Badge>
                   )}
-                  <IconButton onClick={() => copyLink(item)} aria-label="sharing link">
+                  <IconButton onClick={() => { copyLink(item) }} aria-label="sharing link">
                     <ShareIcon />
                   </IconButton>
                 </>

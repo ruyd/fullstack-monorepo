@@ -11,7 +11,10 @@ export const CartAttributes = {
   userId: {
     type: DataTypes.UUID,
   },
-  drawingId: {
+  cartType: {
+    type: DataTypes.STRING,
+  },
+  itemId: {
     type: DataTypes.UUID,
   },
   quantity: {

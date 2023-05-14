@@ -231,7 +231,7 @@ export async function syncProductsHandler(req: express.Request, res: express.Res
 
   for (const product of productsCache) {
     const [item] = await ProductModel.upsert(product)
-    result.push(item)
+    result.push(item.get())
   }
 
   await cleanProducts(existing, productsCache)

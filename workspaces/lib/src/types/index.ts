@@ -55,7 +55,7 @@ export interface GridPatchProps {
 }
 
 export interface CheckoutRequest {
-  ids: [string, string][]
+  ids: [string, string?, string?][]
   intent?: { amount: number; currency: string }
   confirmation?: string
   shippingAddressId?: string

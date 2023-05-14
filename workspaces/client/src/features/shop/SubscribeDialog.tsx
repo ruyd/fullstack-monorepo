@@ -13,7 +13,7 @@ import {
   Stepper,
 } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
-import { TransitionProps } from '@mui/material/transitions'
+import type { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from './slice'
 import { patch as patchApp, useGet } from '../app'
@@ -33,7 +33,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-const stepsBase: { title: string; component: JSX.Element; next: string; key: string }[] = [
+const stepsBase: Array<{ title: string; component: JSX.Element; next: string; key: string }> = [
   { title: 'Subscription', component: <Products />, next: 'Checkout', key: 'plan' },
   { title: 'Payment', component: <PaymentStep />, next: 'Continue', key: 'payment' },
   { title: 'Receipt', component: <ReceiptStep />, next: 'Close', key: 'receipt' },

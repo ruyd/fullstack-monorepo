@@ -1,12 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Address, Cart, Drawing, Order, PaymentMethod, Product, Subscription } from '@lib'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { type Address, type Cart, type Drawing, type Order, type PaymentMethod, type Price, type Product, type Subscription } from '@lib'
 
 export interface ShopState {
   products?: Product[]
   loaded?: boolean
   items: Cart[]
-  orders?: Order[]
+  orders: Order[]
   subscriptions?: Subscription[]
+  selectedSubscriptionProduct?: Partial<Product & Price>
   addresses?: Address[]
   paymentMethods?: PaymentMethod[]
   showCart?: boolean
@@ -17,28 +18,27 @@ export interface ShopState {
   billingAddressId?: string
   paymentMethodId?: string
   activeStep: number
-  steps: {
-    [key: string]: boolean
-  }
+  steps: Record<string, boolean>
 }
 
 export const initialState: ShopState = {
   items: [],
+  orders: [],
   activeStep: 0,
-  steps: {},
+  steps: {}
 }
 
 export const shopSlice = createSlice({
   name: 'shop',
   initialState,
   reducers: {
-    patch(state, action: PayloadAction<Partial<ShopState>>) {
+    patch (state, action: PayloadAction<Partial<ShopState>>) {
       return { ...state, ...action.payload }
     },
-    stepStatus(state, payload: PayloadAction<{ [key: string]: boolean }>) {
+    stepStatus (state, payload: PayloadAction<Record<string, boolean>>) {
       state.steps = { ...state.steps, ...payload.payload }
-    },
-  },
+    }
+  }
 })
 
 export const { patch, stepStatus } = shopSlice.actions

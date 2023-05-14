@@ -59,7 +59,7 @@ export class Connection {
         'Connection Class cannot read config, undefined variable - check for cyclic dependency',
       )
     }
-    if (!config.db.url || !config.db.name) {
+    if (!config.db.url || !config.db.database) {
       logger.error('DB URL not found, skipping DB init')
       return
     }
@@ -192,12 +192,12 @@ export function addModel<T extends object>(
 export async function createDatabase(): Promise<boolean> {
   logger.info('Database does not exist, creating...')
 
-  const rootUrl = config.db.url.replace(config.db.name, 'postgres')
+  const rootUrl = config.db.url.replace(config.db.database, 'postgres')
   const root = new Sequelize(rootUrl)
   const qi = root.getQueryInterface()
   try {
-    await qi.createDatabase(config.db.name)
-    logger.info('Database created: ' + config.db.name)
+    await qi.createDatabase(config.db.database)
+    logger.info('Database created: ' + config.db.database)
     await Connection.db.sync()
     logger.info('Tables created')
   } catch (e: unknown) {
