@@ -43,17 +43,16 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
       ? checkDatabase()
           .then(async ok => (ok ? await loadSettingsAsync() : ok))
           .then(async ok => (ok ? await authProviderAutoConfigure() : ok))
-      : Promise.resolve(true),
+      : Promise.resolve(true)
   ]
 
-  // Add Middlewares - Order is important
-  app.use(errorHandler)
+  // Add Middlewares - Order matters
   app.use(cors())
   app.use(express.json({ limit: config.jsonLimit }))
   app.use(
     bodyParser.urlencoded({
-      extended: true,
-    }),
+      extended: true
+    })
   )
   app.use(endpointTracingMiddleware)
   app.use(modelAuthMiddleware)
@@ -69,9 +68,9 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
     swaggerUi.setup(swaggerDoc, {
       customSiteTitle: config.swaggerSetup.info?.title,
       swaggerOptions: {
-        persistAuthorization: true,
-      },
-    }),
+        persistAuthorization: true
+      }
+    })
   )
 
   app.onStartupCompletePromise = Promise.all(promises)
@@ -79,6 +78,8 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
   printRouteSummary(app)
 
   app.get('/', homepage)
+
+  app.use(errorHandler)
 
   return app
 }

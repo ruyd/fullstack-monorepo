@@ -2,9 +2,9 @@ export interface Price {
   id: string
   amount: number
   currency: string
-  interval: string
-  intervalCount: number
-  freeTrialDays: number
+  interval?: string
+  intervalCount?: number
+  freeTrialDays?: number
 }
 
 export interface Product {

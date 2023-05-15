@@ -20,7 +20,7 @@ import { useAppDispatch } from 'src/shared/store'
 
 type ProductWithPrice = Product & Price
 
-export default function Products ({
+export default function Products({
   onSelect
 }: {
   onSelect?: (item: ProductWithPrice) => void
@@ -28,7 +28,7 @@ export default function Products ({
   const dispatch = useAppDispatch()
   const { data, isLoading: isLoadingProducts } = useGet<PagedResult<Product>>('product', 'product')
   const products = data?.items
-    ?.filter(p => p.prices?.some(a => !(a.interval.length === 0)))
+    ?.filter(p => p.prices?.some(a => !(a.interval?.length === 0)))
     .reduce((acc: ProductWithPrice[], product: Product) => {
       if (product.prices == null) {
         return acc
@@ -44,7 +44,9 @@ export default function Products ({
   const intervalText = (item: ProductWithPrice) => {
     switch (item.interval) {
       case 'month':
-        if (item.intervalCount > 1) return `every ${item.intervalCount} months`
+        if (item.intervalCount && item.intervalCount > 1) {
+          return `every ${item.intervalCount} months`
+        }
         return 'per month'
       case 'year':
         return 'per year'
@@ -64,7 +66,7 @@ export default function Products ({
       <Container maxWidth="md">
         <Grid container spacing={5} alignItems="flex-end">
           {products?.map(tier => (
-            <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
+            <Grid item key={tier.id} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
               <Card>
                 <CardHeader
                   title={tier.title}

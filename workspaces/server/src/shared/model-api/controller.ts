@@ -9,13 +9,13 @@ import Connection from '../db'
 
 export async function list<T extends {}>(
   model: ModelStatic<Model<T>>,
-  options: FindOptions = { limit: 100, offset: 0, include: [] },
+  options: FindOptions = { limit: 100, offset: 0, include: [] }
 ): Promise<PagedResult<T>> {
   const { count: total, rows } = await model.findAndCountAll({
     raw: true,
     nest: true,
     include: options.include || [],
-    ...options,
+    ...options
   })
 
   return {
@@ -23,13 +23,13 @@ export async function list<T extends {}>(
     offset: options.offset || 0,
     limit: options.limit || 100,
     hasMore: total > (options.offset || 0) + (options.limit || 100),
-    total,
+    total
   }
 }
 
 export async function getIfExists<T extends {}>(
   model: ModelStatic<Model<T>>,
-  id: string,
+  id: string
 ): Promise<Model<T>> {
   const item = await model.findByPk(id)
   if (!item) {
@@ -40,7 +40,7 @@ export async function getIfExists<T extends {}>(
 
 export async function createOrUpdate<T extends object>(
   model: ModelStatic<Model<T>>,
-  payload: T,
+  payload: T
 ): Promise<T> {
   const casted = payload as unknown as MakeNullishOptional<T>
   try {
@@ -59,7 +59,7 @@ export async function createOrUpdate<T extends object>(
 
 export async function deleteIfExists<T extends {}>(
   model: ModelStatic<Model<T>>,
-  id: string,
+  id: string
 ): Promise<boolean> {
   try {
     const item = await getIfExists(model, id)
@@ -69,18 +69,17 @@ export async function deleteIfExists<T extends {}>(
     const err = e as Error
     logger.error(`${model.name}.deleteIfExists(): ${err.message}`, err)
     throw new Error(err.message)
-    return false
   }
 }
 
 export async function gridPatch<T extends object>(
   model: ModelStatic<Model<T>>,
-  payload: GridPatchProps,
+  payload: GridPatchProps
 ): Promise<T> {
   try {
     const item = await getIfExists(model, payload.id as string)
     item.update({
-      [payload.field]: payload.value,
+      [payload.field]: payload.value
     } as T)
     item.save()
     return item.get()
@@ -93,15 +92,15 @@ export async function gridPatch<T extends object>(
 
 export async function gridDelete<T extends object>(
   model: ModelStatic<Model<T>>,
-  payload: { ids: string[] },
+  payload: { ids: string[] }
 ): Promise<{ deleted: number }> {
   try {
     const deleted = await model.destroy({
       where: {
         [model.primaryKeyAttribute]: {
-          [sequelize.Op.in]: payload.ids || [],
-        },
-      } as sequelize.WhereOptions<T>,
+          [sequelize.Op.in]: payload.ids || []
+        }
+      } as sequelize.WhereOptions<T>
     })
     return { deleted }
   } catch (e: unknown) {

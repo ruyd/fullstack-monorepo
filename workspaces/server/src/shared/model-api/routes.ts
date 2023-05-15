@@ -5,14 +5,14 @@ import { EnrichedRequest } from '../types'
 import { createOrUpdate, getIfExists, gridPatch, gridDelete, list } from './controller'
 import logger from '../logger'
 
-export interface modelApiConfig {
+export interface ModelApiConfig {
   userIdColumn: string
   getAuthUserId(req: express.Request): string
 }
 
-export const modelApiConfig: modelApiConfig = {
+export const modelApiConfig: ModelApiConfig = {
   userIdColumn: 'userId',
-  getAuthUserId: req => (req as EnrichedRequest).auth?.userId,
+  getAuthUserId: req => (req as EnrichedRequest).auth?.userId
 }
 
 /**
@@ -44,7 +44,7 @@ export async function saveHandler(this: typeof Model, req: express.Request, res:
 export async function gridPatchHandler(
   this: typeof Model,
   req: express.Request,
-  res: express.Response,
+  res: express.Response
 ) {
   if (!this) {
     throw new Error('this is not defined')
@@ -68,7 +68,7 @@ export async function gridPatchHandler(
 export async function gridDeleteHandler(
   this: ModelStatic<Model>,
   req: express.Request,
-  res: express.Response,
+  res: express.Response
 ) {
   if (!this) {
     throw new Error('this is not defined')
@@ -91,7 +91,7 @@ export async function getUserRelatedRecord(r: express.Request, model: ModelStati
     } else {
       logger.warn(
         `user accesing another user ${model.tableName} ${authId} != 
-        ${item[modelApiConfig.userIdColumn]}`,
+        ${item[modelApiConfig.userIdColumn]}`
       )
     }
   }
@@ -101,7 +101,7 @@ export async function getUserRelatedRecord(r: express.Request, model: ModelStati
 export async function deleteHandler(
   this: ModelStatic<Model>,
   req: express.Request,
-  res: express.Response,
+  res: express.Response
 ) {
   if (!this) {
     throw new Error('this is not defined')
@@ -132,7 +132,7 @@ export async function getHandler(this: typeof Model, req: express.Request, res: 
 export async function listHandler(
   this: ModelStatic<Model>,
   req: express.Request,
-  res: express.Response,
+  res: express.Response
 ) {
   if (!this) {
     throw new Error('this is not defined')

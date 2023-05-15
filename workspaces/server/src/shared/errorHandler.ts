@@ -38,7 +38,7 @@ export class HttpNotFoundError extends HttpError {
     super({
       message,
       status: 404,
-      data,
+      data
     })
   }
 }
@@ -48,7 +48,7 @@ export class HttpUnauthorizedError extends HttpError {
     super({
       message,
       status: 401,
-      data,
+      data
     })
   }
 }
@@ -58,7 +58,7 @@ export class HttpForbiddenError extends HttpError {
     super({
       message,
       status: 403,
-      data,
+      data
     })
   }
 }
@@ -68,7 +68,7 @@ export class HttpBadRequestError extends HttpError {
     super({
       message,
       status: 400,
-      data,
+      data
     })
   }
 }
@@ -82,23 +82,29 @@ export function errorHandler(
   err: HttpError,
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ): void {
-  const response: HttpErrorResponse = {
+  const result: HttpErrorResponse = {
     status: err.status,
     code: err.name,
     message: err.message,
-    data: err.data,
-    stack: err.stack,
+    data: err.data
   }
 
   logger.error(
-    `Client with IP="${req.ip}" failed to complete request to="${req.method}" originating from="${req.originalUrl}". Status="${response.status}" Message="${err.message}"`,
-    err,
+    `Client with IP="${req.ip}" failed to complete request to="${req.method}" originating from="${req.originalUrl}". Status="${result.status}" Message="${err.message}"`,
+    err
   )
 
-  res.status(response.status)
-  res.json(response)
+  if (!res.headersSent && err.status) {
+    res.status(result.status)
+  }
 
-  next()
+  if (process.env.NODE_ENV !== 'production') {
+    result.stack = err.stack
+  }
+
+  res.json(result)
+
+  next(err)
 }
