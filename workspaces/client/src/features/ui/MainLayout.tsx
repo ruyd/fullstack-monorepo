@@ -13,7 +13,9 @@ import SocketListener from '../app/SocketListener'
 
 export function MainLayout() {
   const route = currentRoute()
-  if (route?.cleanLayout) return <RouteElement route={route} />
+  if (route?.cleanLayout) {
+    return <RouteElement route={route} />
+  }
 
   return (
     <React.Fragment>

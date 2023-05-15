@@ -92,7 +92,7 @@ export function loginPrompt() {
 
 export async function checkSocialToken(token: string): Promise<string | undefined> {
   const response = await axios.post<{ userId?: string }>(`profile/social/check`, {
-    token,
+    token
   })
   return response.data?.userId
 }
@@ -105,7 +105,7 @@ export const authOptions = () => ({
   audience: config.settings?.auth0?.clientAudience as string,
   redirectUri: `${window.location.origin}${config.baseName}callback`,
   responseType: 'id_token token',
-  scope: 'openid profile email',
+  scope: 'openid profile email'
 })
 
 export function getAuthProvider(overrides: Partial<typeof authOptions> = {}) {
@@ -129,8 +129,12 @@ export function clearNonce() {
 
 export function hasRole(role: string): boolean {
   const token = getPersistedAuthFromStorage()?.token
-  if (!token) return false
+  if (!token) {
+    return false
+  }
   const decoded = decodeToken(token)
-  if (!decoded) return false
+  if (!decoded) {
+    return false
+  }
   return decoded.roles?.includes(role) || false
 }

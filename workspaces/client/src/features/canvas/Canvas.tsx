@@ -8,7 +8,7 @@ import { config } from '../../shared/config'
 export function Canvas({
   canvasRef,
   contextRef,
-  record,
+  record
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
   contextRef: React.MutableRefObject<CanvasRenderingContext2D | null>
@@ -29,7 +29,7 @@ export function Canvas({
         record(ActionType.Stroke, offsetX, offsetY)
       }
     },
-    [contextRef, record],
+    [contextRef, record]
   )
 
   const startDrawing = (offsetX: number, offsetY: number) => {
@@ -79,14 +79,18 @@ export function Canvas({
   }
 
   const touchStart = (e: React.TouchEvent) => {
-    if (e.touches?.length > 1) return
+    if (e.touches?.length > 1) {
+      return
+    }
     const offsetX = e.touches[0].clientX
     const offsetY = e.touches[0].clientY
     startDrawing(offsetX, offsetY)
   }
 
   const touchMove = (e: React.TouchEvent) => {
-    if (e.touches?.length > 1) return
+    if (e.touches?.length > 1) {
+      return
+    }
     const offsetX = e.touches[0].clientX
     const offsetY = e.touches[0].clientY
     draw(offsetX, offsetY)

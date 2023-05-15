@@ -7,7 +7,9 @@ export type IntlProviderProps = React.ComponentProps<typeof IntlProvider>
 const cache: Record<string, Record<string, string>> = {}
 
 async function loadLocale(locale: string): Promise<Record<string, string>> {
-  if (cache[locale]) return cache[locale]
+  if (cache[locale]) {
+    return cache[locale]
+  }
   cache[locale] = await import(`../languages/${locale}.json`)
   return cache[locale]
 }

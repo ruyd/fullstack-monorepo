@@ -18,7 +18,7 @@ export const initOptions: OneTapParams = {
     googleCredentialsLogin(ok.credential as string)
     /* response.credential should be enough for google cloud backends,
     using Callback.tsx for auth0 */
-  },
+  }
 }
 export interface OneTapParams extends OneTapBase {
   client_id?: string
@@ -36,7 +36,7 @@ export type OneTapAPI = {
         callback?: (notification: {
           isNotDisplayed: () => void
           isSkippedMoment: () => void
-        }) => void,
+        }) => void
       ) => void
       setLogLevel: (l: 'info' | 'none') => void
       renderButton: (
@@ -47,7 +47,7 @@ export type OneTapAPI = {
           theme?: 'outline' | 'filled_blue' | 'filled_black'
           size?: 'small' | 'medium' | 'large'
           shape?: 'rectangular' | 'pill'
-        },
+        }
       ) => void
     }
   }
@@ -75,7 +75,7 @@ export async function googlePopupLogin(email?: string, userId?: string): Promise
     loginHint: email,
     state: session.state,
     nonce: session.nonce,
-    appUserId: userId,
+    appUserId: userId
   }
   const auth = new authProvider.WebAuth(options)
   auth.popup.authorize(options, (err, result) => {
@@ -120,10 +120,10 @@ export function loadScriptAndInit({
           auto_select: autoSelect,
           cancel_on_tap_outside: cancelOnTapOutside,
           context: contextValue,
-          ...otherOptions,
+          ...otherOptions
         })
         google.accounts.id.prompt(notification =>
-          console.log('Google One Tap prompt', notification),
+          console.log('Google One Tap prompt', notification)
         )
       }
     }
@@ -148,7 +148,7 @@ export const renderButton = (el: HTMLElement) => {
     shape: 'pill',
     text: 'continue_with',
     theme: store.getState().app.darkMode ? 'filled_black' : 'outline',
-    size: 'large',
+    size: 'large'
   })
 }
 
@@ -178,10 +178,12 @@ export function GoogleOneTapButton({
       loaded.current = true
       tap?.initialize({
         ...initOptions,
-        client_id: clientId,
+        client_id: clientId
       })
       const button = document.getElementById(id)
-      if (button) renderButton(button)
+      if (button) {
+        renderButton(button)
+      }
     }
   }, [tap, id, ref, token, enabled, clientId])
   return <div id={id} ref={ref} {...props} />
@@ -200,7 +202,7 @@ export function GoogleOneTap(): JSX.Element {
     if (!loaded.current && !token) {
       loadScriptAndInit({
         ...initOptions,
-        clientId,
+        clientId
       })
       loaded.current = true
     }
