@@ -26,7 +26,7 @@ export const intentAsync = createAsyncThunk(
 )
 export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, getState }) => {
   const state = getState() as RootState
-  const { data: cart } = await get<PagedResult<Cart>>('cart?include=drawing')
+  const { data: cart } = await get<PagedResult<Cart>>('cart?include=drawing,product')
   const { data: orders } = await get<PagedResult<Order>>('order')
   const { data: address } = await get<PagedResult<Address>>('address')
 
@@ -37,28 +37,23 @@ export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, get
 
 export const cartAsync = createAsyncThunk(
   'shop/cart',
-  async (
-    {
-      drawing,
-      product,
-      quantity
-    }: { drawing?: Drawing; product?: Partial<Product & Price>; quantity: number },
-    { dispatch, getState }
-  ) => {
+  async ({ drawing, product, quantity, ...item }: Partial<Cart>, { dispatch, getState }) => {
     const state = getState() as RootState
     const method = quantity === 0 ? Method.DELETE : Method.POST
     const cart: Partial<Cart> = {
+      ...item,
       drawingId: drawing?.drawingId,
       productId: product?.productId,
       priceId: product?.id,
       quantity
     }
-    const existing = state.shop.items.find(i =>
-      i.priceId ? i.priceId === product?.id : i.drawingId === drawing?.drawingId
+    const existing = state.shop.items.find(
+      i =>
+        i.cartId === item.cartId || i.priceId === product?.id || i.drawingId === drawing?.drawingId
     )
     if (existing != null) {
       cart.cartId = existing.cartId
-      cart.quantity = quantity + existing.quantity
+      cart.quantity = existing.quantity + (quantity ?? 0)
     }
     const response = await request<Cart>(
       'cart',

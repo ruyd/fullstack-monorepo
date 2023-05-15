@@ -46,11 +46,16 @@ const QuantityBox = styled(ButtonGroup)`
   border: 1px solid rgba(106, 122, 138, 0.32);
 `
 
-export function ShopCart ({ readOnly, ...props }: BoxProps & { readOnly?: boolean }) {
+export function ShopCart({ readOnly, ...props }: BoxProps & { readOnly?: boolean }) {
   const dispatch = useAppDispatch()
-  const deleteHandler = (cart: Cart) => { void dispatch(cartAsync({ ...cart, quantity: 0 })) }
+  const deleteHandler = (cart: Cart) => {
+    void dispatch(cartAsync({ ...cart, quantity: 0 }))
+  }
   const items = useAppSelector(store => store.shop.items || [])
-  const subtotal = items.reduce((a, b) => a + b.quantity * (b.drawing?.price ?? 0), 0)
+  const subtotal = items.reduce(
+    (a, b) => a + b.quantity * (b.drawing?.price ?? b.product?.amount ?? 0),
+    0
+  )
   const format = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format
   const formatted = (value?: number) => (value ? format(value) : '')
 
@@ -83,15 +88,19 @@ export function ShopCart ({ readOnly, ...props }: BoxProps & { readOnly?: boolea
                       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                         <Box>
                           <img
-                            src={item.drawing?.thumbnail}
-                            alt={item.drawing?.name}
+                            src={item.drawing?.thumbnail ?? item.product?.imageUrl}
+                            alt={item.drawing?.name ?? item.product?.title}
                             height={100}
                             loading="lazy"
                           />
                         </Box>
-                        <Typography variant="h6">{item.drawing?.name}</Typography>
+                        <Typography variant="h6">
+                          {item.drawing?.name ?? item.product?.title}
+                        </Typography>
                       </TableCell>
-                      <TableCell>{formatted(item.drawing?.price)}</TableCell>
+                      <TableCell>
+                        {formatted(item.drawing?.price ?? item.product?.amount)}
+                      </TableCell>
                       <TableCell sx={{ width: '14rem' }}>
                         <QuantityBox>
                           <IconButton
@@ -121,9 +130,18 @@ export function ShopCart ({ readOnly, ...props }: BoxProps & { readOnly?: boolea
                           </IconButton>
                         </QuantityBox>
                       </TableCell>
-                      <TableCell>{formatted(item.quantity * (item.drawing?.price ?? 0))}</TableCell>
                       <TableCell>
-                        <IconButton onClick={() => { deleteHandler(item) }} title="Delete">
+                        {formatted(
+                          item.quantity * (item.drawing?.price ?? item.product?.amount ?? 0)
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <IconButton
+                          onClick={() => {
+                            deleteHandler(item)
+                          }}
+                          title="Delete"
+                        >
                           <DeleteForeverOutlined />
                         </IconButton>
                       </TableCell>

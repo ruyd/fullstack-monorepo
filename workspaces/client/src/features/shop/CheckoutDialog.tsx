@@ -10,7 +10,7 @@ import {
   Slide,
   Step,
   StepLabel,
-  Stepper,
+  Stepper
 } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
@@ -28,7 +28,7 @@ const Transition = React.forwardRef(function Transition(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: React.ReactElement<any, any>
   },
-  ref: React.Ref<unknown>,
+  ref: React.Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />
 })
@@ -38,7 +38,7 @@ const stepsBase: { title: string; component: JSX.Element; next: string; key: str
   { title: 'Shipping', component: <AddressStep />, next: 'Continue', key: 'address' },
   { title: 'Identification', component: <></>, next: 'Continue', key: 'identity' },
   { title: 'Payment', component: <PaymentStep />, next: 'Continue', key: 'payment' },
-  { title: 'Receipt', component: <ReceiptStep />, next: 'Close', key: 'receipt' },
+  { title: 'Receipt', component: <ReceiptStep />, next: 'Close', key: 'receipt' }
 ]
 
 export default function CheckoutDialog() {
@@ -49,10 +49,10 @@ export default function CheckoutDialog() {
   const loaded = useAppSelector(state => state.shop.loaded)
   const items = useAppSelector(state => state.shop.items)
   const enableShippingAddress = useAppSelector(
-    state => state.app.settings?.system?.enableShippingAddress,
+    state => state.app.settings?.system?.enableShippingAddress
   )
   const enableIdentity = useAppSelector(
-    state => state.app.settings?.system?.paymentMethods?.stripe?.identityEnabled,
+    state => state.app.settings?.system?.paymentMethods?.stripe?.identityEnabled
   )
   const steps = stepsBase
     .filter(a => enableShippingAddress || a.key !== 'address')
@@ -91,7 +91,7 @@ export default function CheckoutDialog() {
   }, [dispatch, loaded, token])
 
   if (!open) {
-    return null
+    return <></>
   }
 
   return (
@@ -112,7 +112,7 @@ export default function CheckoutDialog() {
             sx={{
               display: 'flex',
               flex: 1,
-              flexWrap: 'wrap',
+              flexWrap: 'wrap'
             }}
           >
             {steps.map((step, index) => (

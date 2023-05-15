@@ -19,14 +19,14 @@ export interface AppRoute {
 export const Paths = {
   Login: `/login`,
   Register: `/register`,
-  Draw: `/draw`,
+  Draw: `/draw`
 }
 
 export const routes: Readonly<AppRoute>[] = [
   {
     title: 'Home',
     path: '/',
-    component: React.lazy(() => import('../features/home')),
+    component: React.lazy(() => import('../features/home'))
   },
   {
     title: 'Admin',
@@ -34,7 +34,7 @@ export const routes: Readonly<AppRoute>[] = [
     component: React.lazy(() => import('../features/admin')),
     roles: ['admin'],
     secure: true,
-    profile: true,
+    profile: true
   },
   {
     title: 'Login',
@@ -42,7 +42,7 @@ export const routes: Readonly<AppRoute>[] = [
     component: React.lazy(() => import('../features/profile/Login')),
     profile: true,
     anon: true,
-    dialog: 'onboard',
+    dialog: 'onboard'
   },
   {
     title: 'Register',
@@ -50,14 +50,14 @@ export const routes: Readonly<AppRoute>[] = [
     component: React.lazy(() => import('../features/profile/Register')),
     profile: true,
     anon: true,
-    dialog: 'onboard.register',
+    dialog: 'onboard.register'
   },
   {
     title: 'Profile',
     path: '/profile',
     component: React.lazy(() => import('../features/profile')),
     profile: true,
-    secure: true,
+    secure: true
   },
   {
     title: 'Your Canvas',
@@ -66,51 +66,57 @@ export const routes: Readonly<AppRoute>[] = [
     secure: false,
     hideFooter: true,
     link: true,
-    params: ['/:id'],
+    params: ['/:id']
+  },
+  {
+    title: 'Checkout',
+    path: '/checkout',
+    component: React.lazy(() => import('../features/shop/CheckoutDialog')),
+    dialog: 'checkout'
   },
   {
     title: 'Subscribe',
     path: '/subscribe',
     component: React.lazy(() => import('../features/shop/SubscribeDialog')),
     link: true,
-    dialog: 'subscribe',
+    dialog: 'subscribe'
   },
   {
     title: 'Tokens',
     path: '/tokens',
     component: React.lazy(() => import('../features/shop/Tokens')),
     link: true,
-    dialog: 'tokens',
+    dialog: 'tokens'
   },
   {
     title: 'Authenticating...',
     path: '/callback',
     cleanLayout: true,
-    component: React.lazy(() => import('../features/profile/Callback')),
+    component: React.lazy(() => import('../features/profile/Callback'))
   },
   {
     title: 'Terms of Service',
     path: '/terms',
-    component: React.lazy(() => import('../features/pages/Terms1')),
+    component: React.lazy(() => import('../features/pages/Terms1'))
   },
 
   {
     title: 'Not Found',
     path: '*',
-    component: React.lazy(() => import('../features/pages/404')),
+    component: React.lazy(() => import('../features/pages/404'))
   },
   {
     title: 'Offline',
     path: '/maintenance',
     cleanLayout: true,
-    component: React.lazy(() => import('../features/pages/Maintenance')),
+    component: React.lazy(() => import('../features/pages/Maintenance'))
   },
   {
     title: 'Start',
     path: '/start',
     cleanLayout: true,
-    component: React.lazy(() => import('../features/pages/Start')),
-  },
+    component: React.lazy(() => import('../features/pages/Start'))
+  }
 ]
 
 export const currentRoute = () => routes.find(r => r.path === window.location.pathname)

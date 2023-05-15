@@ -156,7 +156,7 @@ export async function listHandler(
     }
   }
 
-  const include = req.query.include || []
+  const include = req.query.include?.toString().split(',') || []
 
   //userId filtering from authentication token
   const authId = modelApiConfig.getAuthUserId(req)

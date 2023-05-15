@@ -7,7 +7,7 @@ import logger from '../logger'
 import sequelize from 'sequelize'
 import Connection from '../db'
 
-export async function list<T extends {}>(
+export async function list<T extends object>(
   model: ModelStatic<Model<T>>,
   options: FindOptions = { limit: 100, offset: 0, include: [] }
 ): Promise<PagedResult<T>> {
@@ -27,7 +27,7 @@ export async function list<T extends {}>(
   }
 }
 
-export async function getIfExists<T extends {}>(
+export async function getIfExists<T extends object>(
   model: ModelStatic<Model<T>>,
   id: string
 ): Promise<Model<T>> {
@@ -57,7 +57,7 @@ export async function createOrUpdate<T extends object>(
   }
 }
 
-export async function deleteIfExists<T extends {}>(
+export async function deleteIfExists<T extends object>(
   model: ModelStatic<Model<T>>,
   id: string
 ): Promise<boolean> {

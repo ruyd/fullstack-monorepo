@@ -33,7 +33,7 @@ const StyledImage = styled('img')({
   maxWidth: '90%'
 })
 
-export default function Gallery ({
+export default function Gallery({
   userId,
   onData
 }: {
@@ -59,11 +59,11 @@ export default function Gallery ({
     void navigator.clipboard.writeText(`${origin}${Paths.Draw}/${item.drawingId}`)
     void dispatch(notify('Link copied to clipboard!'))
   }
-  const buy = (item: Drawing) => {
-    void dispatch(cartAsync({ ...item, quantity: 1 }))
+  const buy = (drawing: Drawing) => {
+    void dispatch(cartAsync({ drawing, quantity: 1 }))
   }
   React.useEffect(() => {
-    if ((onData != null) && ((data?.items) != null)) {
+    if (onData != null && data?.items != null) {
       onData(data?.items)
     }
   }, [onData, data?.items])
@@ -80,17 +80,29 @@ export default function Gallery ({
           <Grid item key={item.drawingId}>
             <GalleryCard
               item={item}
-              onClick={() => { navigate(`${Paths.Draw}/${item.drawingId}`) }}
+              onClick={() => {
+                navigate(`${Paths.Draw}/${item.drawingId}`)
+              }}
               actionPane={
                 <>
                   {item.sell && (
                     <Badge badgeContent={item.price}>
-                      <IconButton onClick={() => { buy(item) }} aria-label="sharing link">
+                      <IconButton
+                        onClick={() => {
+                          buy(item)
+                        }}
+                        aria-label="sharing link"
+                      >
                         <AddShoppingCartIcon />
                       </IconButton>
                     </Badge>
                   )}
-                  <IconButton onClick={() => { copyLink(item) }} aria-label="sharing link">
+                  <IconButton
+                    onClick={() => {
+                      copyLink(item)
+                    }}
+                    aria-label="sharing link"
+                  >
                     <ShareIcon />
                   </IconButton>
                 </>
