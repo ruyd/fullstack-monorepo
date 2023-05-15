@@ -8,7 +8,8 @@ import {
   type Order,
   type PagedResult,
   PaymentMethod,
-  type Product
+  type Product,
+  Price
 } from '@lib'
 import { type RootState } from '../../shared/store'
 import { get, Method, notify, request } from '../app'
@@ -37,7 +38,7 @@ export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, get
 export const cartAsync = createAsyncThunk(
   'shop/cart',
   async (
-    { drawing, product, quantity }: { drawing?: Drawing, product?: Product, quantity: number },
+    { drawing, product, quantity }: { drawing?: Drawing, product?: Partial<Product & Price>, quantity: number },
     { dispatch, getState }
   ) => {
     const state = getState() as RootState
@@ -58,7 +59,7 @@ export const cartAsync = createAsyncThunk(
       method
     )
     const name = drawing?.name ?? product?.description
-    const price = drawing?.price ?? product?.prices?.[0]?.amount
+    const price = drawing?.price ?? product?.amount
     const others = state.shop.items.filter(i => i.cartId !== cart.cartId)
     if (method === Method.DELETE) {
       dispatch(notify(`Removed ${name}`))

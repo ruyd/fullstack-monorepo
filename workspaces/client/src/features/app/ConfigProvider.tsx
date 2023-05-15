@@ -19,7 +19,9 @@ export function ConfigProvider({ children }: { children: React.ReactElement }): 
 
   React.useEffect(() => {
     const run = async () => {
-      if ((loaded && ready) || isLoading.current) return
+      if ((loaded && ready) || isLoading.current) {
+        return
+      }
       isLoading.current = true
       await loadConfig()
       isLoading.current = false

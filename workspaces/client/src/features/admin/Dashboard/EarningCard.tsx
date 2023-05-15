@@ -27,8 +27,8 @@ const CardWrapper = styled(Card)(({ theme }) => ({
     right: -95,
     [theme.breakpoints.down('sm')]: {
       top: -105,
-      right: -140,
-    },
+      right: -140
+    }
   },
   '&:before': {
     content: '""',
@@ -42,9 +42,9 @@ const CardWrapper = styled(Card)(({ theme }) => ({
     opacity: 0.5,
     [theme.breakpoints.down('sm')]: {
       top: -155,
-      right: -70,
-    },
-  },
+      right: -70
+    }
+  }
 }))
 
 export function EarningCard({ isLoading }: { isLoading: boolean }) {
@@ -77,7 +77,7 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                         ...theme.typography.commonAvatar,
                         ...theme.typography.largeAvatar,
                         backgroundColor: theme.palette.secondary.main[800],
-                        mt: 1,
+                        mt: 1
                       }}
                     >
                       <img src={EarningIcon} alt="Notification" />
@@ -91,7 +91,7 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                         ...theme.typography.mediumAvatar,
                         backgroundColor: theme.palette.secondary.dark,
                         color: theme.palette.secondary.main[200],
-                        zIndex: 1,
+                        zIndex: 1
                       }}
                       aria-controls="menu-earning-card"
                       aria-haspopup="true"
@@ -108,11 +108,11 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                       variant="selectedMenu"
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'right',
+                        horizontal: 'right'
                       }}
                       transformOrigin={{
                         vertical: 'top',
-                        horizontal: 'right',
+                        horizontal: 'right'
                       }}
                     >
                       <MenuItem onClick={handleClose}>
@@ -146,7 +146,7 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                         cursor: 'pointer',
                         ...theme.typography.smallAvatar,
                         backgroundColor: theme.palette.secondary.main[200],
-                        color: theme.palette.secondary.dark,
+                        color: theme.palette.secondary.dark
                       }}
                     >
                       <ArrowUpwardIcon
@@ -162,7 +162,7 @@ export function EarningCard({ isLoading }: { isLoading: boolean }) {
                   sx={{
                     fontSize: '1rem',
                     fontWeight: 500,
-                    color: theme.palette.secondary.main[200],
+                    color: theme.palette.secondary.main[200]
                   }}
                 >
                   Total Earning

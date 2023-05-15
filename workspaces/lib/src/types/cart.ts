@@ -1,5 +1,5 @@
 import { Drawing } from './drawing'
-import { Product } from './product'
+import { Price, Product } from './product'
 
 export const CartType = {
   PRODUCT: 'product',
@@ -18,5 +18,5 @@ export interface Cart {
   cartType?: CartType
   quantity: number
   drawing?: Drawing
-  product?: Product
+  product?: Partial<Product & Price>
 }

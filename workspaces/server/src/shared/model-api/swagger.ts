@@ -18,13 +18,13 @@ const conversions: Record<string, string> = {
   DATE: 'string',
   DATETIME: 'string',
   TIMESTAMP: 'string',
-  TIME: 'string',
+  TIME: 'string'
 }
 
 export function getSchema(model: ModelStatic<Model>) {
   const excluded = ['createdAt', 'updatedAt', 'deletedAt']
   const columns = Object.entries(model.getAttributes()).filter(
-    ([name]) => !excluded.includes(name),
+    ([name]) => !excluded.includes(name)
   ) as [[string, { type: string; allowNull: boolean }]]
   const properties: { [key: string]: Schema } = {}
   for (const [name, attribute] of columns) {
@@ -34,7 +34,7 @@ export function getSchema(model: ModelStatic<Model>) {
   }
   return {
     type: 'object',
-    properties,
+    properties
   }
 }
 
@@ -54,14 +54,14 @@ export function getPaths(model: typeof Model) {
                 schema: {
                   type: 'array',
                   items: {
-                    $ref,
-                  },
-                },
-              },
-            },
-          },
+                    $ref
+                  }
+                }
+              }
+            }
+          }
         },
-        tags,
+        tags
       },
       post: {
         summary: 'Create or update an item',
@@ -71,24 +71,24 @@ export function getPaths(model: typeof Model) {
           content: {
             'application/json': {
               schema: {
-                $ref,
-              },
-            },
-          },
+                $ref
+              }
+            }
+          }
         },
         responses: {
           '200': {
             content: {
               'application/json': {
                 schema: {
-                  $ref,
-                },
-              },
-            },
-          },
+                  $ref
+                }
+              }
+            }
+          }
         },
-        tags,
-      },
+        tags
+      }
     },
     [`/${tagName}/{id}`]: {
       get: {
@@ -101,22 +101,22 @@ export function getPaths(model: typeof Model) {
             description: 'ID of the item to retrieve',
             required: true,
             schema: {
-              type: 'string',
-            },
-          },
+              type: 'string'
+            }
+          }
         ],
         responses: {
           '200': {
             content: {
               'application/json': {
                 schema: {
-                  $ref,
-                },
-              },
-            },
-          },
+                  $ref
+                }
+              }
+            }
+          }
         },
-        tags,
+        tags
       },
       delete: {
         summary: 'Delete one',
@@ -128,24 +128,24 @@ export function getPaths(model: typeof Model) {
             description: 'ID of the item to delete',
             required: true,
             schema: {
-              type: 'string',
-            },
-          },
+              type: 'string'
+            }
+          }
         ],
         responses: {
           '200': {
             content: {
               'application/json': {
                 schema: {
-                  success: { type: 'boolean' },
-                },
-              },
-            },
-          },
+                  success: { type: 'boolean' }
+                }
+              }
+            }
+          }
         },
-        tags,
-      },
-    },
+        tags
+      }
+    }
   }
   return paths
 }
@@ -194,15 +194,56 @@ export function applyEntitiesToSwaggerDoc(entities: EntityConfig[], swaggerDoc: 
   }
 }
 
+export function getParameters(method: string, path: string) {
+  if (method === 'get') {
+    const params = [...path.matchAll(/{\w+}/g)]
+    const parameters = params.map(([name]) => ({
+      name: name.replace(/[{}]/g, ''),
+      in: 'path',
+      schema: {
+        type: 'string'
+      }
+    }))
+    return parameters
+  }
+  return ['post', 'put', 'patch', 'delete'].includes(method)
+    ? {
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {}
+            }
+          }
+        }
+      }
+    : {}
+}
+
 export function applyRoutes(app: express.Application, swaggerDoc: OAS3Definition) {
   const paths = swaggerDoc.paths || {}
+
   const routes = getRoutesFromApp(app).filter(r => r.from === 'controller')
   for (const route of routes) {
-    if (!paths[route.path]) paths[route.path] = {}
-    const def = paths[route.path]
-    for (const method of route.methods) {
-      if (!def[method]) {
-        def[method] = { summary: 'Detected' }
+    const rawPaths = Array.isArray(route.path) ? route.path : [route.path]
+    const convertedPaths = rawPaths.map(p =>
+      p.replace(/:\w+/g, (match: string) => `{${match.substring(1)}}`)
+    )
+    for (const path of convertedPaths) {
+      if (!paths[path]) {
+        paths[path] = {}
+      }
+      const def = paths[path]
+      const tags = path.split('/')[1] ? [path.split('/')[1]] : []
+      const security = [{ BearerAuth: [] }]
+      for (const method of route.methods) {
+        if (!def[method]) {
+          def[method] = {
+            summary: 'Detected',
+            parameters: getParameters(method, path),
+            tags,
+            security
+          }
+        }
       }
     }
   }
@@ -211,7 +252,7 @@ export function applyRoutes(app: express.Application, swaggerDoc: OAS3Definition
 export function prepareSwagger(app: express.Application, entities: EntityConfig[]): OAS3Definition {
   const swaggerDev = swaggerJsdoc({
     swaggerDefinition: config.swaggerSetup as OAS3Definition,
-    apis: ['**/*/swagger.yaml', '**/*/index.ts'],
+    apis: ['**/*/swagger.yaml', '**/*/index.ts']
   }) as OAS3Definition
 
   const swaggerProd = fs.existsSync('swagger.json')

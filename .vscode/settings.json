@@ -1,4 +1,6 @@
 {
+  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  "eslint.useESLintClass": true,
   "files.exclude": {
     "amplify/.config": true,
     "amplify/**/*-parameters.json": true,
