@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Stripe from 'stripe'
 import { Cart, CheckoutRequest, OrderStatus, Price, Product, User } from '@lib'
 import express from 'express'
 import logger from 'src/shared/logger'
-import { CartModel, DrawingModel, EnrichedRequest, UserModel } from '../../shared/types'
+import { CartModel, EnrichedRequest, UserModel } from '../../shared/types'
 import { OrderModel } from '../../shared/types/models/order'
 import config from 'src/shared/config'
 import { ProductModel } from 'src/shared/types/models/product'
@@ -13,11 +14,16 @@ import { Model } from 'sequelize'
 async function getTotalCharge(userId: string) {
   const items = (await CartModel.findAll({
     where: { userId },
-    include: ['drawing'],
+    include: ['drawing', 'product'],
     raw: true,
-    nest: true,
+    nest: true
   })) as unknown as Cart[]
-  const subtotal = items.reduce((acc, item) => acc + Number(item?.drawing?.price || 0), 0)
+  const subtotal = items.reduce((acc, item) => {
+    const price = item.priceId
+      ? item.product?.prices?.find(p => p.id === item.priceId)?.amount ?? 0
+      : item.drawing?.price ?? 0
+    return acc + price * item.quantity
+  }, 0)
   // TODO: Add shipping and tax
   // TODO: Return metadata with tuple?
   return subtotal
@@ -33,7 +39,7 @@ export async function checkout(_req: express.Request, res: express.Response) {
       userId: req.auth?.userId,
       status: OrderStatus.Pending,
       shippingAddressId,
-      total,
+      total
     })
   ).get()
 
@@ -48,7 +54,7 @@ function getStripe() {
     throw new Error('Stripe API Key not configured')
   }
   return new Stripe(apiKey, {
-    apiVersion: '2022-11-15',
+    apiVersion: '2022-11-15'
   })
 }
 
@@ -62,7 +68,7 @@ export async function stripeCreatePaymentIntent(req: express.Request, res: expre
     const paymentIntent = await stripe.paymentIntents.create({
       amount: total,
       currency: 'USD',
-      receipt_email: user.email || '',
+      receipt_email: user.email || ''
     })
     res.json({ paymentIntent })
   } catch (e) {
@@ -148,15 +154,15 @@ export function stripeWebHook(request: express.Request, response: express.Respon
 
 export async function stripeCreateVerifyIdentitySession(
   req: express.Request,
-  res: express.Response,
+  res: express.Response
 ) {
   const stripe = getStripe()
   try {
     const verificationSession = await stripe.identity.verificationSessions.create({
       type: 'document',
       metadata: {
-        user_id: '{{USER_ID}}',
-      },
+        user_id: '{{USER_ID}}'
+      }
       // Additional options for configuring the verification session:
       // options: {
       //   document: {
@@ -180,15 +186,15 @@ export async function stripeCreateVerifyIdentitySession(
 
     // Send publishable key and PaymentIntent details to client
     res.send({
-      client_secret: verificationSession.client_secret,
+      client_secret: verificationSession.client_secret
     })
   } catch (e) {
     const err = e as Error
     logger.error(e)
     return res.status(400).send({
       error: {
-        message: err.message,
-      },
+        message: err.message
+      }
     })
   }
 }
@@ -204,7 +210,7 @@ export async function syncProductsHandler(req: express.Request, res: express.Res
   const products = await stripe.products.list({ limit: 100, active: true })
   const prices = await stripe.prices.list({ limit: 100 })
   const existing = await ProductModel.findAndCountAll({
-    where: {},
+    where: {}
   })
 
   const result = []
@@ -224,9 +230,9 @@ export async function syncProductsHandler(req: express.Request, res: express.Res
             currency: p.currency,
             interval: p.recurring?.interval,
             intervalCount: p.recurring?.interval_count,
-            freeTrialDays: p.recurring?.trial_period_days,
-          } as Price),
-      ),
+            freeTrialDays: p.recurring?.trial_period_days
+          } as Price)
+      )
   }))
 
   for (const product of productsCache) {
@@ -244,7 +250,7 @@ export async function cleanProducts(
     rows: Model<Product, Product>[]
     count: number
   },
-  productsCache: Product[],
+  productsCache: Product[]
 ) {
   const toRemove = existing.rows
     .filter(p => !productsCache.find(c => c.productId === p.getDataValue('productId')))
@@ -253,7 +259,7 @@ export async function cleanProducts(
   if (toRemove.length > 0) {
     try {
       const resu = (await Connection.db.getQueryInterface().bulkDelete('products', {
-        product_id: toRemove,
+        product_id: toRemove
       })) as { rowCount: number }[]
       logger.info(`Removed ${resu[1].rowCount} products`)
     } catch (e) {

@@ -38,7 +38,11 @@ export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, get
 export const cartAsync = createAsyncThunk(
   'shop/cart',
   async (
-    { drawing, product, quantity }: { drawing?: Drawing, product?: Partial<Product & Price>, quantity: number },
+    {
+      drawing,
+      product,
+      quantity
+    }: { drawing?: Drawing; product?: Partial<Product & Price>; quantity: number },
     { dispatch, getState }
   ) => {
     const state = getState() as RootState
@@ -46,9 +50,12 @@ export const cartAsync = createAsyncThunk(
     const cart: Partial<Cart> = {
       drawingId: drawing?.drawingId,
       productId: product?.productId,
+      priceId: product?.id,
       quantity
     }
-    const existing = state.shop.items.find(i => i.drawingId === drawing?.drawingId)
+    const existing = state.shop.items.find(i =>
+      i.priceId ? i.priceId === product?.id : i.drawingId === drawing?.drawingId
+    )
     if (existing != null) {
       cart.cartId = existing.cartId
       cart.quantity = quantity + existing.quantity
@@ -58,7 +65,7 @@ export const cartAsync = createAsyncThunk(
       method === Method.DELETE ? { ids: [cart.cartId] } : { ...cart },
       method
     )
-    const name = drawing?.name ?? product?.description
+    const name = drawing?.name ?? product?.title
     const price = drawing?.price ?? product?.amount
     const others = state.shop.items.filter(i => i.cartId !== cart.cartId)
     if (method === Method.DELETE) {
@@ -79,7 +86,12 @@ export const checkoutAsync = createAsyncThunk(
   async (payload: PaymentIntentResult, { dispatch, getState }) => {
     const state = getState() as RootState
     const checkout: CheckoutRequest = {
-      ids: state.shop.items.map(i => [i.cartId, i.drawingId, i.productId]),
+      ids: state.shop.items.map(i => ({
+        cartId: i.cartId,
+        drawingId: i.drawingId,
+        productId: i.productId,
+        priceId: i.priceId
+      })),
       intent: payload.paymentIntent,
       shippingAddressId: state.shop.shippingAddressId
     }

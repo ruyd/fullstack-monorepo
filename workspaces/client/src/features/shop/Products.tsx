@@ -17,6 +17,7 @@ import { useGet } from '../app'
 import { patch } from './slice'
 import StarIcon from '@mui/icons-material/StarBorder'
 import { useAppDispatch } from 'src/shared/store'
+import { cartAsync } from './thunks'
 
 type ProductWithPrice = Product & Price
 
@@ -56,7 +57,8 @@ export default function Products({
   }
 
   const onSelectProduct = (item: ProductWithPrice) => {
-    // dispatch(patch({ items: [{ ...item }], activeStep: 1 }))
+    dispatch(cartAsync({ product: item, quantity: 1 }))
+    dispatch(patch({ activeStep: 1 }))
     onSelect?.(item)
   }
 

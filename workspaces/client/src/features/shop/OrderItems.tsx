@@ -9,7 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
+  Typography
 } from '@mui/material'
 
 import { useAppSelector } from '../../shared/store'
@@ -17,7 +17,10 @@ import ExpandMore from '@mui/icons-material/ExpandMore'
 
 export function OrderItems() {
   const items = useAppSelector(store => store.shop.items || [])
-  const subtotal = items.reduce((a, b) => a + b.quantity * (b.drawing?.price || 0), 0)
+  const subtotal = items.reduce(
+    (a, b) => a + b.quantity * (b.drawing?.price ?? b.product?.amount ?? 0),
+    0
+  )
   const format = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format
   const formatted = (value?: number) => (value ? format(value) : '')
 
@@ -48,19 +51,23 @@ export function OrderItems() {
                   <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
                     <Box>
                       <img
-                        src={item.drawing?.thumbnail}
-                        alt={item.drawing?.name}
+                        src={item.drawing?.thumbnail ?? item.product?.imageUrl}
+                        alt={item.drawing?.name ?? item?.product?.title}
                         height={100}
                         loading="lazy"
                       />
                     </Box>
-                    <Typography variant="h6">{item.drawing?.name}</Typography>
+                    <Typography variant="h6">
+                      {item.drawing?.name ?? item.product?.title}
+                    </Typography>
                   </TableCell>
-                  <TableCell>{formatted(item.drawing?.price)}</TableCell>
+                  <TableCell>{formatted(item.drawing?.price ?? item.product?.amount)}</TableCell>
                   <TableCell sx={{ width: '14rem', textAlign: 'center' }}>
                     <Typography>{item.quantity}</Typography>
                   </TableCell>
-                  <TableCell>{formatted(item.quantity * (item.drawing?.price || 0))}</TableCell>
+                  <TableCell>
+                    {formatted(item.quantity * (item.drawing?.price || item.product?.amount || 0))}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
