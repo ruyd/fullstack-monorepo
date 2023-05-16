@@ -39,7 +39,6 @@ export const cartAsync = createAsyncThunk(
   'shop/cart',
   async ({ drawing, product, quantity, ...item }: Partial<Cart>, { dispatch, getState }) => {
     const state = getState() as RootState
-    const method = !quantity || quantity < 1 ? Method.DELETE : Method.POST
     const cart: Partial<Cart> = {
       ...item,
       drawingId: drawing?.drawingId,
@@ -55,6 +54,7 @@ export const cartAsync = createAsyncThunk(
       cart.cartId = existing.cartId
       cart.quantity = existing.quantity + (quantity ?? 0)
     }
+    const method = !cart.quantity || cart.quantity < 1 ? Method.DELETE : Method.POST
     const response = await request<Cart>(
       'cart',
       method === Method.DELETE ? { ids: [cart.cartId] } : { ...cart },

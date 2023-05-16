@@ -29,7 +29,18 @@ export default function Tokens(): JSX.Element {
       product.prices?.find(p => p.divide_by === selectedIndex)
     )
     const price = product?.prices?.find(price => price.divide_by === selectedIndex)
-    dispatch(cartAsync({ product: { ...product, ...price }, quantity: 1, cartType: 'tokens' }))
+    dispatch(
+      cartAsync({
+        product: {
+          ...product,
+          ...price,
+          title: `${product?.title}: ${price?.divide_by}`,
+          amount: price?.amount ? price?.amount / 100 : price?.amount
+        },
+        quantity: 1,
+        cartType: 'tokens'
+      })
+    )
   }
 
   if (isLoading) {

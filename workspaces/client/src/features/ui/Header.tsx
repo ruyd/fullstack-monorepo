@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from 'react'
+import React from 'react'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
@@ -16,12 +15,13 @@ import AdbIcon from '@mui/icons-material/Adb'
 import { config } from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from '../app/slice'
+import { patch as patchShop } from '../shop/slice'
 import { Link as RouterLink } from 'react-router-dom'
 import routes, { AppRoute } from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
 import { Badge, FormControlLabel, Link, Radio, RadioGroup } from '@mui/material'
-import { prompt } from '../profile/GoogleOneTap'
-import { ShoppingBag, ShoppingCart, ShoppingCartCheckout, Warning } from '@mui/icons-material'
+// import { prompt } from '../profile/GoogleOneTap'
+import { ShoppingCartCheckout, Warning } from '@mui/icons-material'
 import { hasRole } from '../../shared/auth'
 
 const links = routes.filter(route => route.link)
@@ -34,7 +34,7 @@ export default function HeaderNavBar() {
   const items = useAppSelector(state => state.shop.items)
   const enableAuth = useAppSelector(state => state.app.settings?.system?.enableAuth)
   const enableRegistrations = useAppSelector(
-    state => state.app.settings?.system?.enableRegistration,
+    state => state.app.settings?.system?.enableRegistration
   )
   const enableStore = useAppSelector(state => state.app.settings?.system?.enableStore)
 
@@ -68,9 +68,8 @@ export default function HeaderNavBar() {
   }
 
   const handleDialog = (dialog: string) => {
-    // eslint-disable-next-line no-console
-    console.log('handleDialog', dialog)
     dispatch(patch({ dialog }))
+    dispatch(patchShop({ activeStep: 0 }))
   }
 
   const handleThemeToggle = () => {
@@ -111,7 +110,7 @@ export default function HeaderNavBar() {
               fontWeight: 700,
               letterSpacing: '.1rem',
               color: 'inherit',
-              textDecoration: 'none',
+              textDecoration: 'none'
             }}
           >
             {config.defaultTitle}
@@ -132,17 +131,17 @@ export default function HeaderNavBar() {
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'left',
+                horizontal: 'left'
               }}
               open={Boolean(anchorElNav)}
               onClose={() => handleCloseNavMenu()}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: 'block', md: 'none' }
               }}
             >
               {links.map(route => (
@@ -173,7 +172,7 @@ export default function HeaderNavBar() {
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
-              textDecoration: 'none',
+              textDecoration: 'none'
             }}
           >
             {config.defaultTitle}
@@ -227,12 +226,12 @@ export default function HeaderNavBar() {
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right',
+                horizontal: 'right'
               }}
               open={Boolean(anchorElUser)}
               onClose={() => handleCloseUserMenu()}
@@ -241,7 +240,7 @@ export default function HeaderNavBar() {
                 .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
                 .filter(route => (route.roles ? route.roles.every(r => hasRole(r)) : true))
                 .filter(r =>
-                  !enableAuth || !enableRegistrations ? !['/register'].includes(r.path) : true,
+                  !enableAuth || !enableRegistrations ? !['/register'].includes(r.path) : true
                 )
                 .map(setting => (
                   <MenuItem

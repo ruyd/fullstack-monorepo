@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import {
   Box,
   type BoxProps,
-  Button,
   ButtonGroup,
   Card,
   CardContent,
   CardHeader,
-  FormControlLabel,
   Grid,
   IconButton,
   Table,
@@ -17,24 +14,16 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextField,
-  Typography
+  Typography,
+  Link
 } from '@mui/material'
-import { type Cart, type Drawing } from '@lib'
+import { type Cart } from '@lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { patch, stepStatus } from './slice'
-import { cartAsync, loadAsync } from './thunks'
-import {
-  Add,
-  Delete,
-  DeleteForever,
-  DeleteForeverOutlined,
-  DeleteOutlined,
-  PlusOne,
-  Remove
-} from '@mui/icons-material'
+import { stepStatus } from './slice'
+import { cartAsync } from './thunks'
+import { Add, DeleteForeverOutlined, MonetizationOnRounded, Remove } from '@mui/icons-material'
 import { styled } from '@mui/system'
-import { number } from 'prop-types'
+import { Paths } from 'src/shared/routes'
 
 const QuantityBox = styled(ButtonGroup)`
   display: flex;
@@ -46,7 +35,7 @@ const QuantityBox = styled(ButtonGroup)`
   border: 1px solid rgba(106, 122, 138, 0.32);
 `
 
-export function ShopCart({ readOnly, ...props }: BoxProps & { readOnly?: boolean }) {
+export function ShopCart({ ...props }: BoxProps & { readOnly?: boolean }) {
   const dispatch = useAppDispatch()
   const deleteHandler = (cart: Cart) => {
     void dispatch(cartAsync({ ...cart, quantity: 0 }))
@@ -75,7 +64,7 @@ export function ShopCart({ readOnly, ...props }: BoxProps & { readOnly?: boolean
               <Table size="small">
                 <TableHead sx={{ backgroundColor: 'background.paper' }}>
                   <TableRow>
-                    <TableCell>Product</TableCell>
+                    <TableCell colSpan={2}>Product</TableCell>
                     <TableCell>Price</TableCell>
                     <TableCell sx={{ textAlign: 'center', width: '14rem' }}>Quantity</TableCell>
                     <TableCell>Total Price</TableCell>
@@ -85,15 +74,26 @@ export function ShopCart({ readOnly, ...props }: BoxProps & { readOnly?: boolean
                 <TableBody>
                   {items?.map(item => (
                     <TableRow key={item.cartId}>
-                      <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+                      <TableCell sx={{ textAlign: 'center' }}>
                         <Box>
-                          <img
-                            src={item.drawing?.thumbnail ?? item.product?.imageUrl}
-                            alt={item.drawing?.name ?? item.product?.title}
-                            height={100}
-                            loading="lazy"
-                          />
+                          <Link
+                            href={item.drawingId ? Paths.Draw + '/' + item.drawingId : undefined}
+                          >
+                            {item.cartType === 'tokens' && (
+                              <MonetizationOnRounded fontSize="large" />
+                            )}
+                            {item.cartType !== 'tokens' && (
+                              <img
+                                src={item.drawing?.thumbnail ?? item.product?.imageUrl}
+                                alt={item.drawing?.name ?? item.product?.title}
+                                height={100}
+                                loading="lazy"
+                              />
+                            )}
+                          </Link>
                         </Box>
+                      </TableCell>
+                      <TableCell>
                         <Typography variant="h6">
                           {item.drawing?.name ?? item.product?.title}
                         </Typography>
