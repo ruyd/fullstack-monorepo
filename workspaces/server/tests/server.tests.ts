@@ -15,8 +15,4 @@ describe('server route checks', () => {
     const response = await request(app).get('/')
     expect(response.status).toBe(200)
   })
-  test('should return a 404 status code', async () => {
-    const response = await request(app).get('/not-found')
-    expect(response.status).toBe(404)
-  })
 })

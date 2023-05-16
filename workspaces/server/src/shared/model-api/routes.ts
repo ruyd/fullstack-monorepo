@@ -1,5 +1,5 @@
 import express from 'express'
-import { Model, ModelStatic, Order } from 'sequelize/types'
+import { Model, ModelStatic, Op, Order } from 'sequelize'
 import Connection, { EntityConfig } from '../db'
 import { EnrichedRequest } from '../types'
 import { createOrUpdate, getIfExists, gridPatch, gridDelete, list } from './controller'
@@ -121,6 +121,27 @@ export async function getHandler(this: typeof Model, req: express.Request, res: 
   res.json(result)
 }
 
+const operatorMap: Record<string, symbol> = {
+  '!': Op.notLike,
+  '%': Op.like,
+  '>': Op.gt,
+  '<': Op.lt,
+  '[': Op.between
+}
+
+function checkForOperators(where: Record<string, string | object>, field: string, value: string) {
+  if (value && Object.keys(operatorMap).some(o => value.includes(o))) {
+    const operator = Object.keys(operatorMap).find(o => value.includes(o)) as string
+    const val = operator !== '%' ? value.replace(operator, '') : value
+    if (operator === '[') {
+      const [from, to] = val.split(',')
+      where[field] = { [operatorMap[operator]]: [from, to] }
+    } else {
+      where[field] = { [operatorMap[operator]]: val }
+    }
+  }
+}
+
 /**
  * Get Listing
  *
@@ -137,14 +158,16 @@ export async function listHandler(
   if (!this) {
     throw new Error('this is not defined')
   }
-  const where: Record<string, string> = {}
+  const where: Record<string, string | object> = {}
   const order: Order = []
   const model = this as ModelStatic<Model>
   const fields = model.getAttributes()
   //filter by query params 1-1 to model attributes
   for (const field in req.query) {
     if (fields[field]) {
-      where[field] = req.query[field] as string
+      const value = req.query[field] as string
+      where[field] = value
+      checkForOperators(where, field, value)
     }
   }
   //sorting

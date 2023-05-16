@@ -13,7 +13,6 @@ import { Connection } from './shared/db'
 import { checkDatabase } from './shared/db/check'
 import { modelAuthMiddleware } from './shared/auth'
 import { loadSettingsAsync } from './shared/settings'
-import { homepage } from './shared/server'
 
 export interface BackendApp extends express.Express {
   onStartupCompletePromise: Promise<boolean[]>
@@ -63,7 +62,7 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
 
   const swaggerDoc = prepareSwagger(app, Connection.entities)
   app.use(
-    config.swaggerSetup.basePath,
+    '/',
     swaggerUi.serve,
     swaggerUi.setup(swaggerDoc, {
       customSiteTitle: config.swaggerSetup.info?.title,
@@ -76,8 +75,6 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
   app.onStartupCompletePromise = Promise.all(promises)
 
   printRouteSummary(app)
-
-  app.get('/', homepage)
 
   app.use(errorHandler)
 

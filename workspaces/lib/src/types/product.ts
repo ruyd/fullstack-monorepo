@@ -5,6 +5,7 @@ export interface Price {
   interval?: string
   intervalCount?: number
   freeTrialDays?: number
+  divide_by?: number
 }
 
 export interface Product {

@@ -85,8 +85,7 @@ export const routes: Readonly<AppRoute>[] = [
     title: 'Tokens',
     path: '/tokens',
     component: React.lazy(() => import('../features/shop/Tokens')),
-    link: true,
-    dialog: 'tokens'
+    link: true
   },
   {
     title: 'Authenticating...',

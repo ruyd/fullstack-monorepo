@@ -4182,23 +4182,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/react-stripe-js@npm:^1.15.0":
-  version: 1.15.0
-  resolution: "@stripe/react-stripe-js@npm:1.15.0"
+"@stripe/react-stripe-js@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@stripe/react-stripe-js@npm:2.1.0"
   dependencies:
     prop-types: ^15.7.2
   peerDependencies:
     "@stripe/stripe-js": ^1.44.1
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 29ac46419b7aa3ed44bcfd7f9333e41e83d1bc1ed3e25792a95b88b760b60fb952d44eb5f6b17799f835f275344132dc2f67610a9d48afc4a48f4be35657808c
+  checksum: ae5a26e44bd43bcb36ea7d578a2fe0920e75eb46f6f942eae88c3758cb8328a70f891d3a492760d3e6021e7dd93b0d4e4e279ffe169cfa671049c690c210fba0
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:^1.44.1":
-  version: 1.44.1
-  resolution: "@stripe/stripe-js@npm:1.44.1"
-  checksum: f65476472ac7952c0c7c7c321ae64ace89e09fc13c4979f98f58db7be98a5e88e47cb2ef00f038402fd99c417706f0331cde2e1f4b131bd3a8c879dd1ab0e79d
+"@stripe/stripe-js@npm:^1.53.0":
+  version: 1.53.0
+  resolution: "@stripe/stripe-js@npm:1.53.0"
+  checksum: a554f71f605705662c30cbccebf41f2ed522ef68ddc31fca5822fec1105ccd62e987161dbcaecbe18e26f3e128b9facf3fc795848a34583a418d44c889069484
   languageName: node
   linkType: hard
 
@@ -7516,8 +7516,8 @@ __metadata:
     "@mui/x-data-grid": ^5.17.13
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.3
     "@reduxjs/toolkit": ^1.8.1
-    "@stripe/react-stripe-js": ^1.15.0
-    "@stripe/stripe-js": ^1.44.1
+    "@stripe/react-stripe-js": ^2.1.0
+    "@stripe/stripe-js": ^1.53.0
     "@svgr/webpack": ^6.5.1
     "@testing-library/dom": ^8.19.0
     "@testing-library/jest-dom": ^5.16.5

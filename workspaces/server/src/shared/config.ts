@@ -9,7 +9,7 @@ import { SettingData, SettingType } from '@lib'
 // Anti-webpack sorcery
 const env = process['env']
 
-export interface DBUrl { 
+export interface DBUrl {
   dialect?: string
   username?: string
   password?: string
@@ -20,12 +20,12 @@ export interface DBUrl {
 }
 
 export interface DBConfig extends DBUrl {
-    trace: boolean
-    url: string
-    sync: boolean
-    force: boolean
-    alter: boolean
-    models: string[]
+  trace: boolean
+  url: string
+  sync: boolean
+  force: boolean
+  alter: boolean
+  models: string[]
 }
 
 export interface Config {
@@ -70,7 +70,7 @@ export interface Config {
 
 export function parseDatabaseConfig(
   production: boolean,
-  db: { url: string | null; ssl: boolean; schema: string },
+  db: { url: string | null; ssl: boolean; schema: string }
 ) {
   if (!production) {
     return db as unknown as DBUrl
@@ -94,7 +94,7 @@ export function parseDatabaseConfig(
     password,
     dialect,
     ssl: db.ssl,
-    schema: db.schema,
+    schema: db.schema
   } as DBUrl
 }
 
@@ -105,7 +105,7 @@ export function getConfig(): Config {
   const serviceConfig = production ? appConfig.production : appConfig.development
   const { database, host, username, password, ssl, schema, dialect } = parseDatabaseConfig(
     production,
-    serviceConfig.db,
+    serviceConfig.db
   )
 
   const DB_URL = `${dialect}://${username}:${password}@${host}/${database}`
@@ -129,10 +129,10 @@ export function getConfig(): Config {
     port,
     jsonLimit: env.JSON_LIMIT || '1mb',
     cors: {
-      origin: env.CORS_ORIGIN || '*',
+      origin: env.CORS_ORIGIN || '*'
     },
     db: {
-      trace: false,
+      trace: true,
       sync: true,
       force: false,
       alter: true,
@@ -141,7 +141,7 @@ export function getConfig(): Config {
       url: DB_URL as string,
       schema: schema as string,
       ssl: env.DB_SSL === 'true' || (ssl as boolean),
-      models: [],
+      models: []
     },
     auth: {
       enabled: false,
@@ -159,23 +159,23 @@ export function getConfig(): Config {
       clientId: env.AUTH_CLIENT_ID || '',
       clientSecret: env.AUTH_CLIENT_SECRET || '',
       ruleNamespace: 'https://',
-      algorithm: 'RS256',
+      algorithm: 'RS256'
     },
     swaggerSetup: {
       openapi: '3.0.0',
       info: {
         title: packageJson.name,
         description: packageJson.description,
-        version: packageJson.version,
+        version: packageJson.version
       },
       servers: [
         {
-          url: `/`,
-        },
+          url: `/`
+        }
       ],
-      basePath: '/docs',
+      basePath: '/docs'
     },
-    settings: {},
+    settings: {}
   }
 }
 
@@ -199,7 +199,7 @@ export function canStart() {
   logger.info(`URL: ${config.backendBaseUrl}`)
   logger.info(`${p ? '✅' : '❌'} PORT: ${p ? p : 'ERROR - Missing'}`)
   logger.info(
-    `${d ? '✅' : '❌'} DB: ${d ? `${config.db.database}@${config.db.host}` : 'ERROR - Missing'}`,
+    `${d ? '✅' : '❌'} DB: ${d ? `${config.db.database}@${config.db.host}` : 'ERROR - Missing'}`
   )
   logger.info(`**: ${result ? 'READY!' : 'HALT'}`)
   logger.info(`env.PORT: ${env.PORT} ⚡️`)

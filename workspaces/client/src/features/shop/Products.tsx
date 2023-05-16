@@ -27,7 +27,14 @@ export default function Products({
   onSelect?: (item: ProductWithPrice) => void
 }): JSX.Element {
   const dispatch = useAppDispatch()
-  const { data, isLoading: isLoadingProducts } = useGet<PagedResult<Product>>('product', 'product')
+  const { data, isLoading: isLoadingProducts } = useGet<PagedResult<Product>>(
+    'products.subscription',
+    'product',
+    undefined,
+    {
+      title: '!Tokens%'
+    }
+  )
   const products = data?.items
     ?.filter(p => p.prices?.some(a => !(a.interval?.length === 0)))
     .reduce((acc: ProductWithPrice[], product: Product) => {

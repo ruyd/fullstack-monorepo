@@ -230,7 +230,8 @@ export async function syncProductsHandler(req: express.Request, res: express.Res
             currency: p.currency,
             interval: p.recurring?.interval,
             intervalCount: p.recurring?.interval_count,
-            freeTrialDays: p.recurring?.trial_period_days
+            freeTrialDays: p.recurring?.trial_period_days,
+            divide_by: p.transform_quantity?.divide_by
           } as Price)
       )
   }))
