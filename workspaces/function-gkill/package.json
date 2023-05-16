@@ -22,6 +22,10 @@
   "scripts": {
     "lint": "gts lint",
     "clean": "gts clean",
-    "build": "yarn tsc --build"
+    "build": "yarn tsc --build",
+    "gcp-build": ""
+  },
+  "engines": {
+    "yarn": ">=3.30.0"
   }
 }
