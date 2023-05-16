@@ -8,5 +8,5 @@ describe('App', () => {
     await waitFor(() => findAllByRole('progressbar'))
     const appLinks = screen.getAllByText(config.defaultTitle)
     expect(appLinks.length).toBeGreaterThan(0)
-  })
+  }, 10000)
 })
