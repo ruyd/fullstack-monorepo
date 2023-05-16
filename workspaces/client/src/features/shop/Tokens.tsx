@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   CardActions,
@@ -15,17 +14,13 @@ import { PagedResult, Product } from '@lib'
 import { useAppDispatch } from 'src/shared/store'
 import { cartAsync } from './thunks'
 import React from 'react'
+import LoadingLine from '../ui/LoadingLine'
 
 export default function Tokens(): JSX.Element {
   const dispatch = useAppDispatch()
-  const { data, isLoading: isLoadingProducts } = useGet<PagedResult<Product>>(
-    'tokens',
-    'product',
-    undefined,
-    {
-      title: 'Tokens%'
-    }
-  )
+  const { data, isLoading } = useGet<PagedResult<Product>>('tokens', 'product', undefined, {
+    title: 'Tokens%'
+  })
   const [selectedIndex, setSelectedIndex] = React.useState(200)
   const format = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format
   const formatted = (value?: number) => (value ? format(value / 100) : '')
@@ -35,6 +30,10 @@ export default function Tokens(): JSX.Element {
     )
     const price = product?.prices?.find(price => price.divide_by === selectedIndex)
     dispatch(cartAsync({ product: { ...product, ...price }, quantity: 1, cartType: 'tokens' }))
+  }
+
+  if (isLoading) {
+    return <LoadingLine />
   }
 
   return (
