@@ -52,7 +52,7 @@ export const cartAsync = createAsyncThunk(
     )
     if (existing != null) {
       cart.cartId = existing.cartId
-      cart.quantity = existing.quantity + (quantity ?? 0)
+      cart.quantity = quantity ? existing.quantity + quantity : undefined
     }
     const method = !cart.quantity || cart.quantity < 1 ? Method.DELETE : Method.POST
     const response = await request<Cart>(
@@ -70,6 +70,43 @@ export const cartAsync = createAsyncThunk(
     }
 
     const fromServer = { ...response.data, drawing, product }
+    dispatch(patch({ items: [...others, fromServer] }))
+    dispatch(notify(`Added ${name} ${price}`))
+    return response.data
+  }
+)
+
+/**
+ * Subscriptions are a bit different from regular cart items.
+ * You cannot buy different ones at the same time.
+ */
+export const subscribeAsync = createAsyncThunk(
+  'shop/subscribe',
+  async ({ product, quantity, ...item }: Partial<Cart>, { dispatch, getState }) => {
+    const state = getState() as RootState
+    const cart: Partial<Cart> = {
+      ...item,
+      productId: product?.productId,
+      priceId: product?.id,
+      quantity,
+      cartType: 'subscription'
+    }
+    const existing = state.shop.items.find(
+      i => i.cartId === item.cartId || i.priceId === product?.id
+    )
+    if (existing != null) {
+      cart.cartId = existing.cartId
+      cart.quantity = quantity ? existing.quantity + quantity : undefined
+    }
+
+    const response = await request<Cart>('shop/subscribe', { ...cart }, Method.POST)
+    const name = product?.title
+    const price = product?.amount
+    const others = state.shop.items.filter(
+      i => i.cartId !== cart.cartId && i.cartType !== 'subscription'
+    )
+
+    const fromServer = { ...response.data, product }
     dispatch(patch({ items: [...others, fromServer] }))
     dispatch(notify(`Added ${name} ${price}`))
     return response.data

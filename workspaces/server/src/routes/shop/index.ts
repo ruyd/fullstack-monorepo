@@ -1,16 +1,19 @@
 import express from 'express'
 import {
+  addSubscriptionToCart,
   checkout,
   stripeCreatePaymentIntent,
   stripeCreateVerifyIdentitySession,
   stripeWebHook,
-  syncProductsHandler,
+  syncProductsHandler
 } from './controller'
 import { capturePaymentHandler, createOrderHandler } from './paypal'
 
 const router = express.Router()
 
 router.post('/shop/checkout', checkout)
+
+router.post('/shop/subscribe', addSubscriptionToCart)
 
 router.post('/stripe/payment/intent', stripeCreatePaymentIntent)
 

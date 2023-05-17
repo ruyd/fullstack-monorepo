@@ -1,15 +1,15 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Stripe from 'stripe'
-import { Cart, CheckoutRequest, OrderStatus, Price, Product, User } from '@lib'
+import { Cart, CheckoutRequest, Order, OrderStatus, Price, Product, Subscription, User } from '@lib'
 import express from 'express'
 import logger from 'src/shared/logger'
-import { CartModel, EnrichedRequest, UserModel } from '../../shared/types'
-import { OrderModel } from '../../shared/types/models/order'
+import { CartModel, EnrichedRequest, SubscriptionModel, UserModel } from '../../shared/types'
+import { OrderItemModel, OrderModel } from '../../shared/types/models/order'
 import config from 'src/shared/config'
 import { ProductModel } from 'src/shared/types/models/product'
 import Connection from 'src/shared/db'
 import { Model } from 'sequelize'
+import { createOrUpdate } from 'src/shared/model-api/controller'
 
 async function getTotalCharge(userId: string) {
   const items = (await CartModel.findAll({
@@ -43,9 +43,91 @@ export async function checkout(_req: express.Request, res: express.Response) {
     })
   ).get()
 
+  order.OrderItems = []
+  for (const id of ids) {
+    const cart = (await CartModel.findByPk(id as string, {
+      raw: true,
+      include: ['drawing', 'product'],
+      nest: true
+    })) as unknown as Cart
+    const { drawingId, productId, priceId, quantity, cartType } = cart
+    const orderItem = await OrderItemModel.create({
+      orderId: order.orderId,
+      type: cartType,
+      drawingId,
+      productId,
+      priceId,
+      quantity,
+      paid: cart.product?.prices?.find(p => p.id === priceId)?.amount ?? cart.drawing?.price ?? 0
+    })
+    order.OrderItems.push(orderItem.get())
+  }
+
+  if (order.OrderItems.some(i => i.type === 'subscription')) {
+    await createOrChangeSubscription(order)
+  }
+
+  if (order.OrderItems.some(i => i.type === 'tokens')) {
+    await creditWallet(order)
+  }
+
   await CartModel.destroy({ where: { userId: req.auth.userId } })
 
   res.json({ ...order })
+}
+
+export async function creditWallet(order: Order) {
+  logger.error('creditWallet not implemented')
+}
+
+export async function createOrChangeSubscription(order: Order) {
+  const userId = order.userId as string
+  const rows = await SubscriptionModel.findAll({
+    where: { userId, status: 'active' }
+  })
+  const existing = rows.find(
+    s => order.OrderItems?.length && order.OrderItems[0].priceId === s.getDataValue('priceId')
+  )
+  order.subscription = existing?.get()
+  const others = rows.filter(
+    s => s.getDataValue('subscriptionId') !== order.subscription?.subscriptionId
+  )
+  for (const subscription of others) {
+    await subscription.update({
+      status: 'canceled',
+      canceledAt: new Date(),
+      cancelationReason: 'subscription.change'
+    })
+  }
+
+  // TODO: existing, maybe renew?
+
+  if (!order.subscription) {
+    order.subscription = (
+      await SubscriptionModel.create({
+        subscriptionId: order.orderId,
+        userId,
+        orderId: order.orderId,
+        priceId: order.OrderItems?.length ? order.OrderItems[0].priceId : undefined,
+        status: 'active'
+      })
+    ).get()
+  }
+}
+
+export async function addSubscriptionToCart(req: express.Request, res: express.Response) {
+  const { userId } = (req as EnrichedRequest).auth
+  const cart = { ...req.body, userId } as unknown as Cart
+  const { productId, priceId } = cart
+  const product = (await ProductModel.findByPk(productId, { raw: true })) as unknown as Product
+  const price = product.prices?.find(p => p.id === priceId) as Price
+  if (!product || !price) {
+    throw new Error(`Price ${priceId} not found for product ${productId}`)
+  }
+  await CartModel.destroy({ where: { userId, cartType: 'subscription' } })
+  const saved = await createOrUpdate(CartModel, cart)
+  saved.product = { ...product, ...price }
+  res.json({ ...saved })
 }
 
 function getStripe() {

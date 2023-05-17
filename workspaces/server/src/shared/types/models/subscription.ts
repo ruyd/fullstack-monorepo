@@ -6,12 +6,24 @@ export const SubscriptionModel = addModel<Subscription>('subscription', {
   subscriptionId: {
     type: DataTypes.UUID,
     primaryKey: true,
-    defaultValue: DataTypes.UUIDV4,
+    defaultValue: DataTypes.UUIDV4
   },
   userId: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUID
   },
   orderId: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUID
   },
+  priceId: {
+    type: DataTypes.STRING
+  },
+  status: {
+    type: DataTypes.STRING
+  },
+  canceledAt: {
+    type: DataTypes.DATE
+  },
+  cancelationReason: {
+    type: DataTypes.STRING
+  }
 })

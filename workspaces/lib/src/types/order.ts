@@ -1,4 +1,4 @@
-import { Entity } from '.'
+import { CartType, Entity, Subscription } from '.'
 import { User } from './user'
 import { Drawing } from './drawing'
 
@@ -7,7 +7,7 @@ export const OrderStatus = {
   Paid: 'paid',
   Shipped: 'shipped',
   Delivered: 'delivered',
-  Cancelled: 'cancelled',
+  Cancelled: 'cancelled'
 } as const
 
 export type OrderStatus = typeof OrderStatus[keyof typeof OrderStatus]
@@ -16,9 +16,12 @@ export interface OrderItem extends Entity {
   orderItemId?: string
   orderId?: string
   drawingId?: string
-  price?: number
+  productId?: string
+  priceId?: string
+  paid?: number
   quantity?: number
   drawing?: Drawing
+  type?: CartType
 }
 
 export interface Order extends Entity {
@@ -36,11 +39,12 @@ export interface Order extends Entity {
   status?: OrderStatus
   OrderItems?: OrderItem[]
   user?: User
+  subscription?: Subscription
 }
 
 export const PaymentTypes = {
   Subscription: 'subscription',
-  OneTime: 'onetime',
+  OneTime: 'onetime'
 } as const
 
 export type PaymentType = typeof PaymentTypes[keyof typeof PaymentTypes]
@@ -58,7 +62,7 @@ export const CaptureStatus = {
   Successful: 'completed',
   Pending: 'pending',
   Failed: 'failed',
-  Created: 'created',
+  Created: 'created'
 } as const
 
 export const StripeToCaptureStatusMap = {
@@ -69,5 +73,5 @@ export const StripeToCaptureStatusMap = {
   requires_capture: CaptureStatus.Pending,
   requires_confirmation: CaptureStatus.Pending,
   requires_payment_method: CaptureStatus.Pending,
-  unknown: CaptureStatus.Failed,
+  unknown: CaptureStatus.Failed
 } as const

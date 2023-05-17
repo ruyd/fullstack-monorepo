@@ -4,7 +4,7 @@ export const PlanIntervals = {
   Day: 'day',
   Week: 'week',
   Month: 'month',
-  Year: 'year',
+  Year: 'year'
 } as const
 
 export type PlanInterval = typeof PlanIntervals[keyof typeof PlanIntervals]
@@ -12,7 +12,7 @@ export type PlanInterval = typeof PlanIntervals[keyof typeof PlanIntervals]
 export const PlanStatus = {
   Active: 'active',
   Expired: 'expired',
-  Canceled: 'canceled',
+  Canceled: 'canceled'
 } as const
 
 export type PlanStatus = typeof PlanStatus[keyof typeof PlanStatus]
@@ -30,10 +30,12 @@ export interface SubscriptionPlan extends Entity {
 }
 
 export interface Subscription extends Entity {
-  subscriptionId: string
-  userId: string
-  orderId: string
+  subscriptionId?: string
+  userId?: string
+  orderId?: string
+  priceId?: string
   status?: PlanStatus
   canceledAt?: Date
+  cancelationReason?: string
   order?: Order
 }

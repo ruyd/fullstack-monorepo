@@ -6,6 +6,9 @@ on:
     paths:
       - rem
 
+env:
+  HOMEPAGE: ''
+
 jobs:
   publish:
     runs-on: ubuntu-latest

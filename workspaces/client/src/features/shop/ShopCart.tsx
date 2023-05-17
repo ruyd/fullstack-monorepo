@@ -38,7 +38,7 @@ const QuantityBox = styled(ButtonGroup)`
 export function ShopCart({ ...props }: BoxProps & { readOnly?: boolean }) {
   const dispatch = useAppDispatch()
   const deleteHandler = (cart: Cart) => {
-    void dispatch(cartAsync({ ...cart, quantity: 0 }))
+    void dispatch(cartAsync({ ...cart, quantity: undefined }))
   }
   const items = useAppSelector(store => store.shop.items || [])
   const subtotal = items.reduce(
