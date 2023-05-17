@@ -195,28 +195,31 @@ export function applyEntitiesToSwaggerDoc(entities: EntityConfig[], swaggerDoc: 
 }
 
 export function getParameters(method: string, path: string) {
-  if (method === 'get') {
-    const params = [...path.matchAll(/{\w+}/g)]
-    const parameters = params.map(([name]) => ({
-      name: name.replace(/[{}]/g, ''),
-      in: 'path',
-      schema: {
-        type: 'string'
-      }
-    }))
-    return parameters
-  }
+  const params = [...path.matchAll(/{\w+}/g)]
+  const parameters = params.map(([name]) => ({
+    name: name.replace(/[{}]/g, ''),
+    in: 'path',
+    schema: {
+      type: 'string'
+    }
+  }))
+
   return ['post', 'put', 'patch', 'delete'].includes(method)
     ? {
         requestBody: {
           content: {
             'application/json': {
-              schema: {}
+              schema: {
+                type: 'object'
+              }
             }
           }
-        }
+        },
+        parameters
       }
-    : {}
+    : {
+        parameters
+      }
 }
 
 export function applyRoutes(app: express.Application, swaggerDoc: OAS3Definition) {
@@ -238,8 +241,8 @@ export function applyRoutes(app: express.Application, swaggerDoc: OAS3Definition
       for (const method of route.methods) {
         if (!def[method]) {
           def[method] = {
+            ...getParameters(method, path),
             summary: 'Detected',
-            parameters: getParameters(method, path),
             tags,
             security
           }

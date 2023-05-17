@@ -24,6 +24,6 @@ router.get('/stripe/products/sync', syncProductsHandler)
 
 router.post('/paypal/order', createOrderHandler)
 
-router.post('/api/orders/:orderID/capture', capturePaymentHandler)
+router.post('/paypal/orders/:orderID/capture', capturePaymentHandler)
 
 export default router
