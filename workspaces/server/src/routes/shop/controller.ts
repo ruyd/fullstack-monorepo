@@ -8,8 +8,9 @@ import { OrderItemModel, OrderModel } from '../../shared/types/models/order'
 import config from 'src/shared/config'
 import { ProductModel } from 'src/shared/types/models/product'
 import Connection from 'src/shared/db'
-import { Model } from 'sequelize'
+import { Model, Op } from 'sequelize'
 import { createOrUpdate } from 'src/shared/model-api/controller'
+import { WalletModel } from 'src/shared/types/models/wallet'
 
 async function getTotalCharge(userId: string) {
   const items = (await CartModel.findAll({
@@ -44,13 +45,20 @@ export async function checkout(_req: express.Request, res: express.Response) {
   ).get()
 
   order.OrderItems = []
-  for (const id of ids) {
-    const cart = (await CartModel.findByPk(id as string, {
-      raw: true,
-      include: ['drawing', 'product'],
-      nest: true
-    })) as unknown as Cart
+  const carts = (await CartModel.findAll({
+    raw: true,
+    include: ['drawing', 'product'],
+    nest: true,
+    where: {
+      cartId: {
+        [Op.in]: ids.map(id => id.cartId as string)
+      }
+    }
+  })) as unknown as Cart[]
+
+  for (const cart of carts) {
     const { drawingId, productId, priceId, quantity, cartType } = cart
+    const price = cart.product?.prices?.find(p => p.id === priceId)
     const orderItem = await OrderItemModel.create({
       orderId: order.orderId,
       type: cartType,
@@ -58,7 +66,8 @@ export async function checkout(_req: express.Request, res: express.Response) {
       productId,
       priceId,
       quantity,
-      paid: cart.product?.prices?.find(p => p.id === priceId)?.amount ?? cart.drawing?.price ?? 0
+      paid: cart.product?.prices?.find(p => p.id === priceId)?.amount ?? cart.drawing?.price ?? 0,
+      product: { ...cart.product, ...price }
     })
     order.OrderItems.push(orderItem.get())
   }
@@ -77,7 +86,18 @@ export async function checkout(_req: express.Request, res: express.Response) {
 }
 
 export async function creditWallet(order: Order) {
-  logger.error('creditWallet not implemented')
+  const { userId } = order
+  const creditAmount = (order.OrderItems ?? []).reduce(
+    (acc, item) => (item.type === 'tokens' ? acc + (item.product?.divide_by ?? 0) : acc),
+    0
+  )
+  const existingWallet = (await WalletModel.findOne({ where: { userId } }))?.get()
+  const balance = existingWallet?.balance ?? 0
+  const [item] = await WalletModel.upsert({
+    userId,
+    balance: balance + creditAmount
+  })
+  return item.get()
 }
 
 export async function createOrChangeSubscription(order: Order) {

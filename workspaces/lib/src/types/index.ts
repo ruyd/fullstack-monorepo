@@ -5,6 +5,7 @@ export * from './setting'
 export * from './user'
 export * from './subscription'
 export * from './product'
+export * from './wallet'
 
 export interface Jwt {
   [key: string]: unknown

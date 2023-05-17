@@ -1,4 +1,4 @@
-import { CartType, Entity, Subscription } from '.'
+import { CartType, Entity, Price, Product, Subscription } from '.'
 import { User } from './user'
 import { Drawing } from './drawing'
 
@@ -22,6 +22,7 @@ export interface OrderItem extends Entity {
   quantity?: number
   drawing?: Drawing
   type?: CartType
+  product?: Partial<Product & Price>
 }
 
 export interface Order extends Entity {
