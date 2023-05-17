@@ -5,14 +5,14 @@ import {
   ModelAttributes,
   ModelOptions,
   ModelStatic,
-  Sequelize,
+  Sequelize
 } from 'sequelize'
 import { config } from '../config'
 import logger from '../logger'
 
 export const commonOptions: ModelOptions = {
   timestamps: true,
-  underscored: true,
+  underscored: true
 }
 export interface Join {
   relation: 'belongsTo' | 'hasOne' | 'hasMany' | 'belongsToMany'
@@ -34,10 +34,10 @@ export interface EntityConfig<M extends Model = Model> {
 
 export function sortEntities(a: EntityConfig, b: EntityConfig): number {
   const primaryKeysA = Object.keys(a.attributes).filter(
-    key => (a.attributes[key] as ModelAttributeColumnOptions).primaryKey,
+    key => (a.attributes[key] as ModelAttributeColumnOptions).primaryKey
   )
   const primaryKeysB = Object.keys(b.attributes).filter(
-    key => (b.attributes[key] as ModelAttributeColumnOptions).primaryKey,
+    key => (b.attributes[key] as ModelAttributeColumnOptions).primaryKey
   )
   if (primaryKeysA.some(key => b.attributes[key])) {
     return -1
@@ -56,7 +56,7 @@ export class Connection {
     const checkRuntime = config
     if (!checkRuntime) {
       throw new Error(
-        'Connection Class cannot read config, undefined variable - check for cyclic dependency',
+        'Connection Class cannot read config, undefined variable - check for cyclic dependency'
       )
     }
     if (!config.db.url || !config.db.database) {
@@ -74,10 +74,10 @@ export class Connection {
           ? {
               ssl: {
                 require: true,
-                rejectUnauthorized: false,
-              },
+                rejectUnauthorized: false
+              }
             }
-          : {},
+          : {}
       })
     } catch (error) {
       logger.error('Error initializing DB', error)
@@ -93,7 +93,7 @@ export class Connection {
       throw new Error(`Entity ${name} not found`)
     }
     const primaryKeys = Object.keys(entity.attributes).filter(
-      key => (entity.attributes[key] as ModelAttributeColumnOptions).primaryKey,
+      key => (entity.attributes[key] as ModelAttributeColumnOptions).primaryKey
     )
     const others = Connection.entities.filter(e => e.name !== name)
     const associations = others.filter(related => primaryKeys.some(key => related.attributes[key]))
@@ -122,7 +122,7 @@ export class Connection {
       entity.model[join.relation](join.model, {
         through: join.model,
         as: join.as as string,
-        foreignKey: join.foreignKey as string,
+        foreignKey: join.foreignKey as string
       })
     }
     // Detect joins based on column names
@@ -132,18 +132,18 @@ export class Connection {
         throw new Error('model not initialized for' + related.name)
       }
       const relatedColumns = Object.keys(related.attributes).filter(
-        key => (related.attributes[key] as ModelAttributeColumnOptions).primaryKey,
+        key => (related.attributes[key] as ModelAttributeColumnOptions).primaryKey
       )
       for (const relatedColumnPk of relatedColumns) {
         if (relatedColumnPk.endsWith('Id') && entity.attributes[relatedColumnPk]) {
           entity.model.belongsTo(related.model as ModelStatic<Model>, {
             foreignKey: relatedColumnPk,
-            onDelete: 'CASCADE',
+            onDelete: 'CASCADE'
           })
           const propName = entity.model.tableName.replace(related.model?.name + '_', '')
           related.model?.hasMany(entity.model, {
             foreignKey: relatedColumnPk,
-            as: propName,
+            as: propName
           })
         }
       }
@@ -169,7 +169,7 @@ export function addModel<T extends object>(
   roles?: string[],
   publicRead?: boolean,
   publicWrite?: boolean,
-  onChanges?: (source?: string, model?: Model<T>) => Promise<void> | void,
+  onChanges?: (source?: string, model?: Model<T>) => Promise<void> | void
 ): ModelStatic<Model<T, T>> {
   const model = class extends Model {}
   const cfg: EntityConfig = {
@@ -180,7 +180,7 @@ export function addModel<T extends object>(
     model,
     publicRead,
     publicWrite,
-    onChanges,
+    onChanges
   }
   Connection.entities.push(cfg)
   if (config.db.trace) {

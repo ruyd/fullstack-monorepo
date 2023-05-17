@@ -43,6 +43,9 @@ export const OrderItemModel = addModel<OrderItem>('orderItem', {
   quantity: {
     type: DataTypes.INTEGER
   },
+  tokens: {
+    type: DataTypes.INTEGER
+  },
   type: {
     type: DataTypes.STRING
   }

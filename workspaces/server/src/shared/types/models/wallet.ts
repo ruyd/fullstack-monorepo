@@ -3,12 +3,12 @@ import { DataTypes } from 'sequelize'
 import { addModel } from 'src/shared/db'
 
 export const WalletModel = addModel<Wallet>('wallet', {
-  userId: {
+  walletId: {
     type: DataTypes.UUID,
     primaryKey: true
   },
   balance: {
-    type: DataTypes.NUMBER
+    type: DataTypes.DECIMAL(10, 2)
   },
   currency: {
     type: DataTypes.STRING
@@ -18,7 +18,7 @@ export const WalletModel = addModel<Wallet>('wallet', {
   }
 })
 
-export const WalletTransactionModel = addModel<WalletTransaction>('wallet_transaction', {
+export const WalletTransactionModel = addModel<WalletTransaction>('walletTransaction', {
   transactionId: {
     type: DataTypes.UUID,
     primaryKey: true

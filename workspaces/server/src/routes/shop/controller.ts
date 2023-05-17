@@ -44,7 +44,6 @@ export async function checkout(_req: express.Request, res: express.Response) {
     })
   ).get()
 
-  order.OrderItems = []
   const carts = (await CartModel.findAll({
     raw: true,
     include: ['drawing', 'product'],
@@ -56,6 +55,30 @@ export async function checkout(_req: express.Request, res: express.Response) {
     }
   })) as unknown as Cart[]
 
+  await processCartItems(order, carts)
+
+  if (order.OrderItems?.some(i => i.type === 'subscription')) {
+    await createOrChangeSubscription(order)
+  }
+
+  if (order.OrderItems?.some(i => i.type === 'tokens')) {
+    const creditAmount = (order.OrderItems ?? []).reduce(
+      (acc, item) =>
+        item.type === 'tokens' ? acc + Number(item.tokens) * Number(item.quantity) : acc,
+      0
+    )
+    if (creditAmount > 0) {
+      await creditWallet(creditAmount, order.userId as string)
+    }
+  }
+
+  await CartModel.destroy({ where: { userId: req.auth.userId } })
+
+  res.json({ ...order })
+}
+
+export async function processCartItems(order: Order, carts: Cart[]) {
+  order.OrderItems = []
   for (const cart of carts) {
     const { drawingId, productId, priceId, quantity, cartType } = cart
     const price = cart.product?.prices?.find(p => p.id === priceId)
@@ -66,38 +89,23 @@ export async function checkout(_req: express.Request, res: express.Response) {
       productId,
       priceId,
       quantity,
-      paid: cart.product?.prices?.find(p => p.id === priceId)?.amount ?? cart.drawing?.price ?? 0,
-      product: { ...cart.product, ...price }
+      paid: price?.amount ?? cart.drawing?.price ?? 0,
+      tokens: cartType === 'tokens' ? price?.divide_by ?? 0 : 0
     })
-    order.OrderItems.push(orderItem.get())
+    order.OrderItems.push({ ...orderItem.get(), product: { ...cart.product, ...price } })
   }
-
-  if (order.OrderItems.some(i => i.type === 'subscription')) {
-    await createOrChangeSubscription(order)
-  }
-
-  if (order.OrderItems.some(i => i.type === 'tokens')) {
-    await creditWallet(order)
-  }
-
-  await CartModel.destroy({ where: { userId: req.auth.userId } })
-
-  res.json({ ...order })
 }
 
-export async function creditWallet(order: Order) {
-  const { userId } = order
-  const creditAmount = (order.OrderItems ?? []).reduce(
-    (acc, item) => (item.type === 'tokens' ? acc + (item.product?.divide_by ?? 0) : acc),
-    0
-  )
-  const existingWallet = (await WalletModel.findOne({ where: { userId } }))?.get()
-  const balance = existingWallet?.balance ?? 0
+export async function creditWallet(creditAmount: number, userId: string) {
+  const existingWallet = (await WalletModel.findOne({ where: { walletId: userId } }))?.get()
+  const existingBalance = parseFloat(existingWallet?.balance as unknown as string) || 0
+  const balance = creditAmount + existingBalance
   const [item] = await WalletModel.upsert({
-    userId,
-    balance: balance + creditAmount
+    walletId: userId,
+    balance
   })
-  return item.get()
+  const result = item.get()
+  return result
 }
 
 export async function createOrChangeSubscription(order: Order) {

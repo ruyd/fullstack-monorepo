@@ -20,6 +20,7 @@ export interface OrderItem extends Entity {
   priceId?: string
   paid?: number
   quantity?: number
+  tokens?: number
   drawing?: Drawing
   type?: CartType
   product?: Partial<Product & Price>

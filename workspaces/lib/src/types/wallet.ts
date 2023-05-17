@@ -17,7 +17,7 @@ export const WalletStatus = {
 export type WalletStatus = typeof WalletStatus[keyof typeof WalletStatus]
 
 export interface Wallet extends Entity {
-  userId?: string
+  walletId?: string
   balance?: number
   currency?: string
   status?: WalletStatus
