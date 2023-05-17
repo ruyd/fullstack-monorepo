@@ -19,7 +19,7 @@ const conversions: Record<string, string> = {
   DATETIME: 'date',
   TIMESTAMP: 'date',
   TIME: 'date',
-  ['TIMESTAMP WITH TIME ZONE']: 'date',
+  ['TIMESTAMP WITH TIME ZONE']: 'date'
 }
 
 const excluded = ['createdAt', 'updatedAt', 'deletedAt', 'audienceIds']
@@ -35,7 +35,7 @@ export function getMockValue(
   mock: { [key: string]: unknown },
   columnName: string,
   columnType: string,
-  randomize = false,
+  randomize = false
 ) {
   const type = conversions[columnType] || columnType
   const suffix = randomize ? Math.random() : ''
@@ -58,7 +58,7 @@ export function getMockValue(
     case 'BOOLEAN':
       return true
     case 'date':
-      return new Date().toISOString()
+      return new Date()
     case 'array':
       return [1, 2, 3]
     case 'JSONB':
@@ -66,7 +66,9 @@ export function getMockValue(
       return { test: 'test' }
     case 'VIRTUAL': {
       const column = model.getAttributes()[columnName]
-      if (!column.get) return undefined
+      if (!column.get) {
+        return undefined
+      }
       const getter = column.get.bind(mock as unknown as Model)
       const bound = getter()
       return bound
@@ -79,9 +81,8 @@ export function getMockValue(
 }
 
 export function getPopulatedModel(model: ModelStatic<Model>, cachedKeys: Record<string, unknown>) {
-  console.log(cachedKeys)
   const columns = Object.entries(model.getAttributes()).filter(
-    ([name]) => !excluded.includes(name),
+    ([name]) => !excluded.includes(name)
   ) as [[string, { type: string; allowNull: boolean }]]
   const mock: { [key: string]: unknown } = {}
   for (const [name, attribute] of columns) {
@@ -97,7 +98,7 @@ export function getPopulatedModel(model: ModelStatic<Model>, cachedKeys: Record<
 
 export function toMatchObjectExceptTimestamps(
   expected: { [key: string]: unknown },
-  actual: { [key: string]: unknown },
+  actual: { [key: string]: unknown }
 ) {
   for (const key in expected) {
     if (!excluded.includes(key)) {
@@ -131,7 +132,6 @@ describe('Entity CRUD', () => {
       throw new Error('Model init() not yet run' + entity.name)
     }
     const mock = getPopulatedModel(model, keys)
-    console.log('Generated Mock Data for: ', model.name)
     mocks[model.name] = mock
     const primaryKeyId = mock[model.primaryKeyAttribute] as string
     test(`mock ${model.name}`, async () => {
@@ -143,7 +143,7 @@ describe('Entity CRUD', () => {
     'ready: ',
     sorted.map(e => e.name),
     keys,
-    mocks,
+    mocks
   )
 
   for (const entity of sorted) {
@@ -168,11 +168,11 @@ describe('Entity CRUD', () => {
 
     test(`update ${model.name}`, async () => {
       const foreignKeys = Object.keys(model.associations).map(
-        key => model.associations[key].foreignKey,
+        key => model.associations[key].foreignKey
       )
       const attributes = model.getAttributes()
       const propName = Object.keys(attributes).find(
-        key => key !== model.primaryKeyAttribute && !foreignKeys.includes(key),
+        key => key !== model.primaryKeyAttribute && !foreignKeys.includes(key)
       )
       if (!propName) {
         console.error('No updateable properties found - skipping')
@@ -183,7 +183,7 @@ describe('Entity CRUD', () => {
         mock,
         propName,
         attributes[propName].type.toString({}),
-        true,
+        true
       )
       const updatedMock = { ...mock, [propName]: newValue }
       const result = await createOrUpdate(model, updatedMock)
