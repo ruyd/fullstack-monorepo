@@ -1,12 +1,11 @@
 import express from 'express'
+import { addSubscriptionToCart, checkout } from './controller'
 import {
-  addSubscriptionToCart,
-  checkout,
   stripeCreatePaymentIntent,
   stripeCreateVerifyIdentitySession,
   stripeWebHook,
   syncProductsHandler
-} from './controller'
+} from './stripe'
 import { capturePaymentHandler, createOrderHandler } from './paypal'
 
 const router = express.Router()
@@ -21,10 +20,10 @@ router.post('/stripe/identity/start', stripeCreateVerifyIdentitySession)
 
 router.post('/stripe/webhook', express.raw({ type: 'application/json' }), stripeWebHook)
 
+router.get('/stripe/products/sync', syncProductsHandler)
+
 router.post('/paypal/order', createOrderHandler)
 
 router.post('/api/orders/:orderID/capture', capturePaymentHandler)
-
-router.get('/products/sync', syncProductsHandler)
 
 export default router
