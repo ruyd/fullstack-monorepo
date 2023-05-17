@@ -15,7 +15,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
+  DialogTitle
 } from '@mui/material'
 import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid'
 import { PagedResult, User } from '@lib'
@@ -30,7 +30,7 @@ import {
   NotInterested,
   OnlinePrediction,
   Person,
-  Search as SearchIcon,
+  Search as SearchIcon
 } from '@mui/icons-material'
 import UserDetail from './Detail'
 import { title } from 'process'
@@ -47,10 +47,10 @@ export default function Users() {
   const [selectedItems, setSelectedItems] = React.useState<(string | number)[]>([])
   const [paging, setPaging] = React.useState<PagingProps>({ limit: 100, page: 0 })
   const [alert, setAlert] = React.useState<ShowDialogProps>({
-    open: false,
+    open: false
   })
   const [showDetails, setShowDetails] = React.useState<ShowDialogProps>({
-    open: false,
+    open: false
   })
   const { data, isLoading, error, refetch } = useGet<PagedResult<User>>(
     'users',
@@ -58,8 +58,8 @@ export default function Users() {
     {},
     {
       ...paging,
-      search: searchText,
-    },
+      search: searchText
+    }
   )
   const refresh = React.useMemo(() => debounce(refetch, 500), [refetch])
 
@@ -69,37 +69,37 @@ export default function Users() {
       headerName: 'Picture',
       renderCell: params => {
         return <img src={params.value} style={{ width: 50, height: 50 }} alt="avatar" />
-      },
+      }
     },
     {
       field: 'sessions',
-      headerName: 'Active',
+      headerName: 'Active'
     },
     {
       field: 'email',
       headerName: 'Email',
-      editable: true,
+      editable: true
     },
     {
       field: 'firstName',
-      headerName: 'First Name',
+      headerName: 'First Name'
     },
     {
       field: 'lastName',
-      headerName: 'Last Name',
+      headerName: 'Last Name'
     },
     {
       field: 'banned',
-      headerName: 'Banned',
+      headerName: 'Banned'
     },
     {
       field: 'logins',
-      headerName: 'Logins',
+      headerName: 'Logins'
     },
     {
       field: 'lastLogin',
-      headerName: 'Last Login',
-    },
+      headerName: 'Last Login'
+    }
   ]
 
   const handleChangePage = (newPage: number, details: unknown): void => {
@@ -122,11 +122,11 @@ export default function Users() {
   }
 
   const handleViewDetails = () => {
-    const first = data?.items.find(i => i.userId === selectedItems[0])
+    const first = data?.items?.find(i => i.userId === selectedItems[0])
     setShowDetails({
       open: true,
       title: 'User Details',
-      payload: first,
+      payload: first
     })
   }
 
@@ -174,7 +174,7 @@ export default function Users() {
                 <InputAdornment position="start">
                   <SearchIcon />
                 </InputAdornment>
-              ),
+              )
             }}
           />
         </Box>
@@ -212,8 +212,8 @@ export default function Users() {
               width: '100%',
               maxWidth: '100%',
               minHeight: '70%',
-              borderRadius: '16px',
-            },
+              borderRadius: '16px'
+            }
           }}
         >
           <UserDetail user={showDetails.payload as unknown as User} />

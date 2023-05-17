@@ -17,7 +17,7 @@ export default function DataTable(
     paging,
     onPaging,
     onEdit,
-    onSelectionChange,
+    onSelectionChange
   }: {
     loading?: boolean
     data?: PagedResult
@@ -25,22 +25,22 @@ export default function DataTable(
     onPaging?: (newValues: Partial<PagingProps>) => void
     onEdit?: (params: GridPatchProps) => void
     onSelectionChange?: (selectedItems: (string | number)[]) => void
-  } = { paging: { limit: 100, page: 1 } },
+  } = { paging: { limit: 100, page: 1 } }
 ) {
   const theme = useTheme()
-  const rows = data?.items.map(o => _.omit(o, excluded)) || []
-  const columns: GridColDef[] = Object.keys(data?.items[0] || {}).map(key => ({
+  const rows = data?.items?.map(o => _.omit(o, excluded)) || []
+  const columns: GridColDef[] = Object.keys(data?.items?.[0] || {}).map(key => ({
     field: key,
     headerName: key,
     width: 170,
-    editable: true,
+    editable: true
   }))
 
   const handleChangePage = (newPage: number, details: unknown): void => {
     console.log('handleChangePage', newPage)
     if (onPaging) {
       onPaging({
-        page: newPage,
+        page: newPage
       })
     }
   }
@@ -49,7 +49,7 @@ export default function DataTable(
     console.log('handleChangeRowsPerPage', pageSize)
     if (onPaging) {
       onPaging({
-        limit: pageSize,
+        limit: pageSize
       })
     }
   }
@@ -71,14 +71,14 @@ export default function DataTable(
     <Paper
       sx={{
         flexGrow: 1,
-        overflow: 'hidden',
+        overflow: 'hidden'
       }}
     >
       <DataGrid
         sx={{
           '& .MuiDataGrid-footerContainer': {
-            backgroundColor: theme.palette.background.paper,
-          },
+            backgroundColor: theme.palette.background.paper
+          }
         }}
         rows={rows}
         columns={columns}

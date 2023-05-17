@@ -17,7 +17,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   AccordionActions,
-  Divider,
+  Divider
 } from '@mui/material'
 import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid'
 import { PagedResult, Subscription, SubscriptionPlan } from '@lib'
@@ -36,13 +36,13 @@ export default function Subscriptions() {
   const [selectedItems, setSelectedItems] = React.useState<(string | number)[]>([])
   const [paging, setPaging] = React.useState<PagingProps>({ limit: 100, page: 0 })
   const [alert, setAlert] = React.useState<ShowDialogProps>({
-    open: false,
+    open: false
   })
   const [showPlan, setShowPlan] = React.useState<ShowDialogProps>({
-    open: false,
+    open: false
   })
   const [showSubscription, setShowSubscription] = React.useState<ShowDialogProps>({
-    open: false,
+    open: false
   })
   const { data, isLoading, error, refetch } = useGet<PagedResult<Subscription>>(
     'subscriptions',
@@ -50,8 +50,8 @@ export default function Subscriptions() {
     {},
     {
       ...paging,
-      search: searchText,
-    },
+      search: searchText
+    }
   )
 
   const { data: plans } = useGet<PagedResult<SubscriptionPlan>>('plans', `subscriptionplan`)
@@ -63,29 +63,29 @@ export default function Subscriptions() {
     {
       field: 'user.email',
       headerName: 'name',
-      editable: true,
+      editable: true
     },
     {
       field: 'description',
       headerName: 'Description',
-      editable: true,
+      editable: true
     },
     {
       field: 'amount',
-      headerName: 'Price',
+      headerName: 'Price'
     },
     {
       field: 'interval',
-      headerName: 'Interval',
+      headerName: 'Interval'
     },
     {
       field: 'intervalCount',
-      headerName: 'Count',
+      headerName: 'Count'
     },
     {
       field: 'enabled',
-      headerName: 'enabled',
-    },
+      headerName: 'enabled'
+    }
   ]
 
   const handleChangePage = (newPage: number, details: unknown): void => {
@@ -108,11 +108,11 @@ export default function Subscriptions() {
   }
 
   const handleViewDetails = () => {
-    const first = data?.items.find(i => i.userId === selectedItems[0])
+    const first = data?.items?.find(i => i.userId === selectedItems[0])
     setShowPlan({
       open: true,
       title: 'User Details',
-      payload: first,
+      payload: first
     })
   }
 
@@ -176,7 +176,7 @@ export default function Subscriptions() {
                 <InputAdornment position="start">
                   <SearchIcon />
                 </InputAdornment>
-              ),
+              )
             }}
           />
         </Box>
@@ -214,8 +214,8 @@ export default function Subscriptions() {
               width: '100%',
               maxWidth: '100%',
               minHeight: '70%',
-              borderRadius: '16px',
-            },
+              borderRadius: '16px'
+            }
           }}
         >
           <PlanEdit

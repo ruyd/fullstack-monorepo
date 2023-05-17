@@ -42,7 +42,7 @@ export interface Entity {
 }
 
 export interface PagedResult<T = { [key: string]: string | number }> {
-  items: T[]
+  items?: T[]
   offset: number
   limit: number
   hasMore: boolean

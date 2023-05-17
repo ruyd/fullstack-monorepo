@@ -25,7 +25,7 @@ export default function Tokens(): JSX.Element {
   const format = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format
   const formatted = (value?: number) => (value ? format(value / 100) : '')
   const addToCartHandler = () => {
-    const product = data?.items.find(product =>
+    const product = data?.items?.find(product =>
       product.prices?.find(p => p.divide_by === selectedIndex)
     )
     const price = product?.prices?.find(price => price.divide_by === selectedIndex)
@@ -52,7 +52,7 @@ export default function Tokens(): JSX.Element {
       <Card sx={{ m: 5, textAlign: 'center' }}>
         <CardHeader title="Tokens" subheader="Purchasing Options" />
         <CardContent sx={{ justifyContent: 'center', display: 'flex' }}>
-          {data?.items.map(product => (
+          {data?.items?.map(product => (
             <RadioGroup
               key={product.productId}
               defaultValue={product.prices?.[0].divide_by}
