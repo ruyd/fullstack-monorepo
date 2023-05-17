@@ -5,6 +5,7 @@ import StripeCheckout from './StripeCheckout'
 import { useAppSelector } from 'src/shared/store'
 import OrderAddress from './OrderAddress'
 import OrderItems from './OrderItems'
+import FakeCheckout from './FakeCheckout'
 
 export default function PaymentStep() {
   const settings = useAppSelector(state => state.app.settings?.system?.paymentMethods)
@@ -22,20 +23,20 @@ export default function PaymentStep() {
       name: 'stripe',
       component: <StripeCheckout />,
       label: 'Card',
-      enabled: settings?.stripe?.enabled,
+      enabled: settings?.stripe?.enabled
     },
     {
       name: 'paypal',
       component: <></>,
       label: 'PayPal',
-      enabled: settings?.paypal?.enabled,
+      enabled: settings?.paypal?.enabled
     },
     {
       name: 'fake',
-      component: <></>,
+      component: <FakeCheckout />,
       label: 'Just Fake Payment',
-      enabled: process.env.NODE_ENV === 'development',
-    },
+      enabled: process.env.NODE_ENV === 'development'
+    }
   ]
 
   return (
@@ -44,7 +45,7 @@ export default function PaymentStep() {
         flex: 1,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
       }}
     >
       <Stack>
