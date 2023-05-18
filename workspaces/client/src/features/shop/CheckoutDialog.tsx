@@ -84,7 +84,6 @@ export default function CheckoutDialog() {
   }, [dispatch])
 
   React.useEffect(() => {
-    console.log('loadAsync', loaded, token)
     if (!loaded && token) {
       dispatch(loadAsync())
     }

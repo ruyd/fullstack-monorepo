@@ -19,10 +19,11 @@ import { patch as patchShop } from '../shop/slice'
 import { Link as RouterLink } from 'react-router-dom'
 import routes, { AppRoute } from '../../shared/routes'
 import { logoutAsync } from '../app/thunks'
-import { Badge, FormControlLabel, Link, Radio, RadioGroup } from '@mui/material'
+import { Badge, Card, FormControlLabel, Link, Paper, Radio, RadioGroup } from '@mui/material'
 // import { prompt } from '../profile/GoogleOneTap'
 import { ShoppingCartCheckout, Warning } from '@mui/icons-material'
 import { hasRole } from '../../shared/auth'
+import { toMoney } from '../../../../lib/src/util'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
@@ -32,6 +33,8 @@ export default function HeaderNavBar() {
   const maintenance = useAppSelector(state => state.app.settings?.system?.disable)
   const backgroundColor = maintenance ? 'error.dark' : 'primary.main'
   const items = useAppSelector(state => state.shop.items)
+  const activeSubscription = useAppSelector(state => state.shop.activeSubscription)
+  const wallet = useAppSelector(state => state.shop.wallet)
   const enableAuth = useAppSelector(state => state.app.settings?.system?.enableAuth)
   const enableRegistrations = useAppSelector(
     state => state.app.settings?.system?.enableRegistration
@@ -236,6 +239,23 @@ export default function HeaderNavBar() {
               open={Boolean(anchorElUser)}
               onClose={() => handleCloseUserMenu()}
             >
+              <Paper
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  margin: '.1rem .5rem',
+                  padding: '.5rem',
+                  minWidth: '200px'
+                }}
+              >
+                <Card>
+                  <Typography>Balance: {toMoney(wallet?.balance)}</Typography>
+                </Card>
+                <Card>
+                  <Typography>Membership: {activeSubscription?.title || 'None'}</Typography>
+                </Card>
+              </Paper>
               {profileLinks
                 .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
                 .filter(route => (route.roles ? route.roles.every(r => hasRole(r)) : true))

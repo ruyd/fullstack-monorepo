@@ -9,7 +9,10 @@ import {
   type PagedResult,
   PaymentMethod,
   type Product,
-  Price
+  Price,
+  Subscription,
+  Wallet,
+  CheckoutResponse
 } from '@lib'
 import { type RootState } from '../../shared/store'
 import { get, Method, notify, request } from '../app'
@@ -26,13 +29,34 @@ export const intentAsync = createAsyncThunk(
 )
 export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, getState }) => {
   const state = getState() as RootState
-  const { data: cart } = await get<PagedResult<Cart>>('cart?include=drawing,product')
-  const { data: orders } = await get<PagedResult<Order>>('order')
-  const { data: address } = await get<PagedResult<Address>>('address')
+  // const { data: cart } = await get<PagedResult<Cart>>('cart?include=drawing,product')
+  // const { data: orders } = await get<PagedResult<Order>>('order')
+  // const { data: address } = await get<PagedResult<Address>>('address')
+  // const { data: wallets } = await get<PagedResult<Wallet>>('wallet')
+  // const { data: subscriptions } = await get<PagedResult<Subscription>>('subscription')
 
-  dispatch(
-    patch({ items: cart.items, addresses: address.items, orders: orders.items, loaded: true })
+  const p1 = get<PagedResult<Cart>>('cart?include=drawing,product').then(({ data }) =>
+    dispatch(patch({ items: data.items }))
   )
+  const p2 = await get<PagedResult<Order>>('order').then(({ data }) =>
+    dispatch(patch({ orders: data.items }))
+  )
+  const p3 = await get<PagedResult<Address>>('address').then(({ data }) =>
+    dispatch(patch({ addresses: data.items }))
+  )
+  const p4 = await get<PagedResult<Wallet>>('wallet').then(({ data }) =>
+    dispatch(patch({ wallet: data.items?.at(0) }))
+  )
+  const p5 = await get<PagedResult<Subscription>>('subscription').then(({ data }) =>
+    dispatch(
+      patch({
+        subscriptions: data.items,
+        activeSubscription: data.items?.find(s => s.status === 'active')
+      })
+    )
+  )
+
+  await Promise.all([p1, p2, p3, p4, p5]).then(() => dispatch(patch({ loaded: true })))
 })
 
 export const cartAsync = createAsyncThunk(
@@ -127,11 +151,29 @@ export const checkoutAsync = createAsyncThunk(
       intent: payload.paymentIntent,
       shippingAddressId: state.shop.shippingAddressId
     }
-    const response = await request<Order, CheckoutRequest>('shop/checkout', checkout)
-    const orders = [...state.shop.orders, response.data]
+    const response = await request<CheckoutResponse, CheckoutRequest>('shop/checkout', checkout)
+    const orders = [...state.shop.orders, response.data.order]
+    const activeSubscription =
+      (response.data.order.subscription as Subscription) || state.shop.activeSubscription
+    const subscriptions = [
+      ...(state.shop.subscriptions?.filter(
+        s => s.subscriptionId !== activeSubscription.subscriptionId
+      ) || []),
+      activeSubscription
+    ]
+    const wallet = response.data.wallet
     const activeStep = state.shop.activeStep + 1
     dispatch(
-      patch({ items: [], orders, receipt: response.data, activeStep, steps: { receipt: true } })
+      patch({
+        items: [],
+        orders,
+        receipt: response.data.order,
+        activeStep,
+        steps: { receipt: true },
+        activeSubscription,
+        subscriptions,
+        wallet
+      })
     )
     return response.data
   }

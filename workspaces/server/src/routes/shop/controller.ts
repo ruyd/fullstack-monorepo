@@ -56,20 +56,23 @@ export async function checkout(_req: express.Request, res: express.Response) {
     await createOrChangeSubscription(order)
   }
 
+  let wallet = undefined
   if (order.OrderItems?.some(i => i.type === 'tokens')) {
     const creditAmount = (order.OrderItems ?? []).reduce(
       (acc, item) =>
         item.type === 'tokens' ? acc + Number(item.tokens) * Number(item.quantity) : acc,
       0
     )
-    if (creditAmount > 0) {
-      await creditWallet(creditAmount, order.userId as string)
-    }
+    wallet = await creditWallet(creditAmount, order.userId as string)
   }
 
   await CartModel.destroy({ where: { userId: req.auth.userId } })
 
-  res.json({ ...order })
+  if (!wallet) {
+    wallet = (await WalletModel.findOne({ where: { walletId: req.auth.userId } }))?.get()
+  }
+
+  res.json({ order, wallet })
 }
 
 export async function processCartItems(order: Order, carts: Cart[]) {
@@ -132,7 +135,8 @@ export async function createOrChangeSubscription(order: Order) {
         userId,
         orderId: order.orderId,
         priceId: order.OrderItems?.length ? order.OrderItems[0].priceId : undefined,
-        status: 'active'
+        status: 'active',
+        title: order.OrderItems?.length ? order.OrderItems[0].product?.title : undefined
       })
     ).get()
   }

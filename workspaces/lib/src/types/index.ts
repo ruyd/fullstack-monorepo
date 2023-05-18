@@ -1,3 +1,6 @@
+import { Order } from './order'
+import { Wallet } from './wallet'
+
 export * from './cart'
 export * from './drawing'
 export * from './order'
@@ -61,4 +64,10 @@ export interface CheckoutRequest {
   confirmation?: string
   shippingAddressId?: string
   paymentSource?: string
+}
+
+export interface CheckoutResponse {
+  order: Order
+  error: string
+  wallet?: Wallet
 }

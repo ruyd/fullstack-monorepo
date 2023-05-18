@@ -3,7 +3,6 @@ import { Model, ModelStatic } from 'sequelize'
 import swaggerJsdoc, { OAS3Definition, Schema } from 'swagger-jsdoc'
 import config from '../config'
 import Connection, { EntityConfig } from '../db'
-import logger from '../logger'
 import { getRoutesFromApp } from '../server'
 import fs from 'fs'
 
@@ -265,12 +264,6 @@ export function prepareSwagger(app: express.Application, entities: EntityConfig[
   const swaggerDoc = { ...swaggerDev, ...swaggerProd }
 
   applyRoutes(app, swaggerDoc)
-
-  if (config.trace) {
-    logger.info('***** Swagger Paths *****')
-    // eslint-disable-next-line no-console
-    console.table(Object.keys(swaggerDoc?.paths || {}))
-  }
 
   applyEntitiesToSwaggerDoc(entities, swaggerDoc)
 

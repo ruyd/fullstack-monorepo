@@ -35,3 +35,9 @@ export function getPictureMock(payload: Record<string, string>): string {
 }
 
 export type $ValuesOf<T> = T[keyof T]
+
+export const MoneyFormat = Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+}).format
+export const toMoney = (value?: number) => (value ? MoneyFormat(value) : '')

@@ -20,6 +20,9 @@ export const SubscriptionModel = addModel<Subscription>('subscription', {
   status: {
     type: DataTypes.STRING
   },
+  title: {
+    type: DataTypes.STRING
+  },
   canceledAt: {
     type: DataTypes.DATE
   },

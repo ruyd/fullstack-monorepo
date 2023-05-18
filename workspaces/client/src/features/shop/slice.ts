@@ -1,12 +1,24 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { type Address, type Cart, type Drawing, type Order, type PaymentMethod, type Price, type Product, type Subscription } from '@lib'
+import {
+  Wallet,
+  type Address,
+  type Cart,
+  type Drawing,
+  type Order,
+  type PaymentMethod,
+  type Price,
+  type Product,
+  type Subscription
+} from '@lib'
 
 export interface ShopState {
   products?: Product[]
   loaded?: boolean
   items: Cart[]
+  wallet?: Wallet
   orders: Order[]
   subscriptions?: Subscription[]
+  activeSubscription?: Subscription
   selectedSubscriptionProduct?: Partial<Product & Price>
   addresses?: Address[]
   paymentMethods?: PaymentMethod[]
@@ -32,10 +44,10 @@ export const shopSlice = createSlice({
   name: 'shop',
   initialState,
   reducers: {
-    patch (state, action: PayloadAction<Partial<ShopState>>) {
+    patch(state, action: PayloadAction<Partial<ShopState>>) {
       return { ...state, ...action.payload }
     },
-    stepStatus (state, payload: PayloadAction<Record<string, boolean>>) {
+    stepStatus(state, payload: PayloadAction<Record<string, boolean>>) {
       state.steps = { ...state.steps, ...payload.payload }
     }
   }

@@ -34,6 +34,7 @@ export interface Subscription extends Entity {
   userId?: string
   orderId?: string
   priceId?: string
+  title?: string
   status?: PlanStatus
   canceledAt?: Date
   cancelationReason?: string
