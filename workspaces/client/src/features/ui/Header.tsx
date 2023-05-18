@@ -23,7 +23,6 @@ import { Badge, Card, FormControlLabel, Link, Paper, Radio, RadioGroup } from '@
 // import { prompt } from '../profile/GoogleOneTap'
 import { ShoppingCartCheckout, Warning } from '@mui/icons-material'
 import { hasRole } from '../../shared/auth'
-import { toMoney } from '../../../../lib/src/util'
 
 const links = routes.filter(route => route.link)
 const profileLinks = routes.filter(route => route.profile)
@@ -250,7 +249,9 @@ export default function HeaderNavBar() {
                 }}
               >
                 <Card>
-                  <Typography>Balance: {toMoney(wallet?.balance)}</Typography>
+                  <Typography>
+                    Coins: {parseInt((wallet?.balance ?? 0) as unknown as string)}
+                  </Typography>
                 </Card>
                 <Card>
                   <Typography>Membership: {activeSubscription?.title || 'None'}</Typography>

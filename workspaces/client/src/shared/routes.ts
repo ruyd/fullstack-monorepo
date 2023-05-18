@@ -82,9 +82,9 @@ export const routes: Readonly<AppRoute>[] = [
     dialog: 'subscribe'
   },
   {
-    title: 'Tokens',
-    path: '/tokens',
-    component: React.lazy(() => import('../features/shop/Tokens')),
+    title: 'Coins',
+    path: '/coins',
+    component: React.lazy(() => import('../features/shop/Coins')),
     link: true
   },
   {

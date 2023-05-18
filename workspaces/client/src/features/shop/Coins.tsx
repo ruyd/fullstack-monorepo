@@ -16,7 +16,7 @@ import { cartAsync } from './thunks'
 import React from 'react'
 import LoadingLine from '../ui/LoadingLine'
 
-export default function Tokens(): JSX.Element {
+export default function Coins(): JSX.Element {
   const dispatch = useAppDispatch()
   const { data, isLoading } = useGet<PagedResult<Product>>('tokens', 'product', undefined, {
     title: 'Tokens%'
@@ -50,7 +50,7 @@ export default function Tokens(): JSX.Element {
   return (
     <Container maxWidth="sm">
       <Card sx={{ m: 5, textAlign: 'center' }}>
-        <CardHeader title="Tokens" subheader="Purchasing Options" />
+        <CardHeader title="Coins" subheader="Purchasing Options" />
         <CardContent sx={{ justifyContent: 'center', display: 'flex' }}>
           {data?.items?.map(product => (
             <RadioGroup
@@ -65,7 +65,7 @@ export default function Tokens(): JSX.Element {
                     key={price.id}
                     value={price.divide_by}
                     control={<Radio />}
-                    label={`${price.divide_by} tokens for ${formatted(price.amount)}`}
+                    label={`${price.divide_by} coins for ${formatted(price.amount)}`}
                   />
                 ))}
             </RadioGroup>
