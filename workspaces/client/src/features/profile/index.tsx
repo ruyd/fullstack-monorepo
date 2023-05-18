@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+  AttachMoney,
+  CurrencyExchange,
   GifBoxTwoTone,
   Image,
+  MailOutline,
+  Money,
+  MoneyOff,
+  OutletRounded,
   Person2,
   Person3,
   Person4,
-  SupervisedUserCircle,
+  SupervisedUserCircle
 } from '@mui/icons-material'
 import {
   Avatar,
@@ -16,11 +22,12 @@ import {
   CardContent,
   CardHeader,
   Container,
+  Grid,
   Paper,
   Tab,
   Tabs,
   Typography,
-  useTheme,
+  useTheme
 } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { Drawing, User } from '@lib'
@@ -33,9 +40,12 @@ import { useAppSelector } from '../../shared/store'
 import AddressForm from '../shop/Address'
 import UserEdit from './Edit'
 import Orders from './Orders'
+import Subscription from './Subscription'
 
 export function Profile(): JSX.Element {
   const user = useAppSelector(state => state.app.user)
+  const activeSubscription = useAppSelector(state => state.shop.activeSubscription)
+  const wallet = useAppSelector(state => state.shop.wallet)
   const theme = useTheme()
   const [tab, setTab] = React.useState(0)
   const [background, setBackground] = React.useState('')
@@ -61,8 +71,8 @@ export function Profile(): JSX.Element {
             [theme.breakpoints.down('sm')]: {
               alignItems: 'center',
               textAlign: 'center',
-              padding: '.7rem',
-            },
+              padding: '.7rem'
+            }
           }}
         >
           <Box
@@ -76,7 +86,7 @@ export function Profile(): JSX.Element {
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center center',
               backgroundSize: '200% 200%',
-              filter: 'blur(5px)',
+              filter: 'blur(5px)'
             }}
           ></Box>
           <Avatar
@@ -95,16 +105,28 @@ export function Profile(): JSX.Element {
               [theme.breakpoints.down('sm')]: {
                 height: '5rem',
                 width: '5rem',
-                bottom: '-50%',
-              },
+                bottom: '-50%'
+              }
             }}
           />
-          <Box>
-            <Typography variant="h4">
-              {user?.firstName} {user?.lastName}
-            </Typography>
-            <Typography variant="body1">{user?.email}</Typography>
-          </Box>
+          <Typography variant="h4">
+            {user?.firstName} {user?.lastName}
+          </Typography>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="body1">{user?.email}</Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body2">
+                Coins: {parseInt((wallet?.balance ?? 0) as unknown as string)}
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="body2">
+                Subscription: {activeSubscription?.title || 'None'}
+              </Typography>
+            </Grid>
+          </Grid>
         </CardContent>
         <Box sx={{ height: '50px' }}>
           <Tabs
@@ -112,12 +134,13 @@ export function Profile(): JSX.Element {
             onChange={(e, v) => setTab(v as number)}
             centered
             sx={{
-              alignItems: 'end',
+              alignItems: 'end'
             }}
           >
-            <Tab label="Profile" icon={<Person3 />} iconPosition="start" />
-            <Tab label="Address" icon={<GifBoxTwoTone />} iconPosition="start" />
-            <Tab label="Orders" icon={<Person4 />} iconPosition="start" />
+            <Tab label="Modify" icon={<Person3 />} iconPosition="start" />
+            <Tab label="Subscription" icon={<CurrencyExchange />} iconPosition="start" />
+            <Tab label="Addresses" icon={<MailOutline />} iconPosition="start" />
+            <Tab label="Orders" icon={<AttachMoney />} iconPosition="start" />
             <Tab label="Gallery" icon={<Image />} iconPosition="start" />
           </Tabs>
         </Box>
@@ -127,12 +150,15 @@ export function Profile(): JSX.Element {
           <UserEdit />
         </TabPanel>
         <TabPanel value={tab} index={1} keepMounted>
+          <Subscription />
+        </TabPanel>
+        <TabPanel value={tab} index={2} keepMounted>
           <AddressForm />
         </TabPanel>
-        <TabPanel value={tab} index={2}>
+        <TabPanel value={tab} index={3}>
           <Orders />
         </TabPanel>
-        <TabPanel value={tab} index={3} keepMounted>
+        <TabPanel value={tab} index={4} keepMounted>
           <Gallery userId={user?.userId} onData={onGalleryData} />
         </TabPanel>
       </Box>

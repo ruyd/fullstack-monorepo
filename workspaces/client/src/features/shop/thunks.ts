@@ -29,11 +29,6 @@ export const intentAsync = createAsyncThunk(
 )
 export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, getState }) => {
   const state = getState() as RootState
-  // const { data: cart } = await get<PagedResult<Cart>>('cart?include=drawing,product')
-  // const { data: orders } = await get<PagedResult<Order>>('order')
-  // const { data: address } = await get<PagedResult<Address>>('address')
-  // const { data: wallets } = await get<PagedResult<Wallet>>('wallet')
-  // const { data: subscriptions } = await get<PagedResult<Subscription>>('subscription')
 
   const p1 = get<PagedResult<Cart>>('cart?include=drawing,product').then(({ data }) =>
     dispatch(patch({ items: data.items }))
@@ -47,7 +42,7 @@ export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, get
   const p4 = await get<PagedResult<Wallet>>('wallet').then(({ data }) =>
     dispatch(patch({ wallet: data.items?.at(0) }))
   )
-  const p5 = await get<PagedResult<Subscription>>('subscription').then(({ data }) =>
+  const p5 = await get<PagedResult<Subscription>>('subscription?include=order').then(({ data }) =>
     dispatch(
       patch({
         subscriptions: data.items,
