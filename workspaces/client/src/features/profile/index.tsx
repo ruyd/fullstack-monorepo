@@ -56,7 +56,7 @@ export function Profile(): JSX.Element {
 
   return (
     <Container sx={{ marginTop: '2.5vw' }}>
-      <Card>
+      <Card sx={{ borderRadius: '20px' }}>
         <CardContent
           sx={{
             backgroundColor: theme.palette.primary.main,

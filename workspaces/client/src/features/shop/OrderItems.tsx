@@ -14,6 +14,7 @@ import {
 
 import { useAppSelector } from '../../shared/store'
 import ExpandMore from '@mui/icons-material/ExpandMore'
+import { MonetizationOnRounded } from '@mui/icons-material'
 
 export function OrderItems() {
   const items = useAppSelector(store => store.shop.items || [])
@@ -48,14 +49,21 @@ export function OrderItems() {
             <TableBody sx={{ backgroundColor: 'transparent' }}>
               {items?.map(item => (
                 <TableRow key={item.cartId}>
-                  <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+                  <TableCell
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
                     <Box>
-                      <img
-                        src={item.drawing?.thumbnail ?? item.product?.imageUrl}
-                        alt={item.drawing?.name ?? item?.product?.title}
-                        height={100}
-                        loading="lazy"
-                      />
+                      {item.cartType === 'tokens' && (
+                        <MonetizationOnRounded sx={{ m: '5px 5px 0 2px' }} />
+                      )}
+                      {item.cartType !== 'tokens' && (
+                        <img
+                          src={item.drawing?.thumbnail ?? item.product?.imageUrl}
+                          alt={item.drawing?.name ?? item.product?.title}
+                          height={100}
+                          loading="lazy"
+                        />
+                      )}
                     </Box>
                     <Typography variant="h6">
                       {item.drawing?.name ?? item.product?.title}
