@@ -14,9 +14,9 @@ export const PaymentSources = {
 export type PaymentSource = typeof PaymentSources[keyof typeof PaymentSources]
 
 export const AuthProviders = {
+  Development: 'fake',
   Firebase: 'firebase',
-  Auth0: 'auth0',
-  Development: 'fake'
+  Auth0: 'auth0'
 } as const
 export type AuthProviders = typeof AuthProviders[keyof typeof AuthProviders]
 

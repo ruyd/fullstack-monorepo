@@ -175,14 +175,17 @@ export default function Settings() {
                   <FormControl>
                     <RadioGroup
                       row
-                      aria-labelledby="demo-row-radio-buttons-group-label"
-                      name="row-radio-buttons-group"
                       value={data?.internal?.authProvider || AuthProviders.Development}
                       onChange={e => save('internal', 'authProvider', e.target.value)}
                     >
-                      <FormControlLabel value="fake" control={<Radio />} label="Development" />
-                      <FormControlLabel value="firebase" control={<Radio />} label="Firebase" />
-                      <FormControlLabel value="auth0" control={<Radio />} label="Auth0" />
+                      {Object.keys(AuthProviders).map((key: string) => (
+                        <FormControlLabel
+                          key={key}
+                          control={<Radio />}
+                          label={key}
+                          value={AuthProviders[key as keyof typeof AuthProviders]}
+                        />
+                      ))}
                     </RadioGroup>
                   </FormControl>
                 </Grid>
@@ -193,14 +196,14 @@ export default function Settings() {
                   <Typography>Firebase</Typography>
                 )}
                 {data?.internal?.authProvider === AuthProviders.Auth0 && (
-                  <SettingsForAuth0 data={data as SettingState} save={save} />
+                  <SettingsForAuth0 data={data} save={save} />
                 )}
               </Grid>
             </CardContent>
           </Card>
         </Grid>
         <Grid item md={6}>
-          <SettingsForGoogle data={data as SettingState} save={save} />
+          <SettingsForGoogle data={data} save={save} />
         </Grid>
         <Grid item md={6}>
           <Card>

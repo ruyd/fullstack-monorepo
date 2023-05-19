@@ -14,7 +14,7 @@ export default function SettingsForGoogle({
   data,
   save
 }: {
-  data: SettingState
+  data?: SettingState
   save: (name: SettingType, prop: string, value: unknown) => void
 }) {
   return (
