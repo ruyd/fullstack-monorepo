@@ -1,15 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import {
   type Address,
   type Cart,
   type CheckoutRequest,
-  type Drawing,
   type Order,
   type PagedResult,
-  PaymentMethod,
-  type Product,
-  Price,
   Subscription,
   Wallet,
   CheckoutResponse
@@ -21,15 +16,13 @@ import { type PaymentIntentResult } from '@stripe/stripe-js'
 
 export const intentAsync = createAsyncThunk(
   'shop/intent',
-  async (payload: Record<string, unknown>, { dispatch }) => {
+  async (payload: Record<string, unknown>, {}) => {
     const response = await request<{ intent: string }>('shop/intent', payload)
     // dispatch(patch({ receipt: response.data.intent }))
     return response.data?.intent
   }
 )
-export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch, getState }) => {
-  const state = getState() as RootState
-
+export const loadAsync = createAsyncThunk('shop/load', async (_, { dispatch }) => {
   const p1 = get<PagedResult<Cart>>('cart?include=drawing,product').then(({ data }) =>
     dispatch(patch({ items: data.items }))
   )
@@ -171,5 +164,26 @@ export const checkoutAsync = createAsyncThunk(
       })
     )
     return response.data
+  }
+)
+
+export const cancelSubscriptionAsync = createAsyncThunk(
+  'shop/subscription/cancel',
+  async (_, { dispatch, getState }) => {
+    const state = getState() as RootState
+
+    const payload = {
+      ...state.shop.activeSubscription,
+      status: 'canceled',
+      canceledAt: new Date(),
+      cancelationReason: 'user manually'
+    }
+    const response = await request<boolean | { error: string }>('subscription', payload)
+    if (response.status === 200) {
+      dispatch(notify(`Cancelled subscription ${state.shop.activeSubscription?.title}`))
+      dispatch(patch({ activeSubscription: undefined }))
+    } else {
+      dispatch(notify(`Failed to cancel subscription ${state.shop.activeSubscription?.title}`))
+    }
   }
 )

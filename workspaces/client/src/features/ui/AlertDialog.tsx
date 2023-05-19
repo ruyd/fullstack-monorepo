@@ -4,7 +4,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button,
+  Button
 } from '@mui/material'
 
 export interface ShowDialogProps {
@@ -23,7 +23,7 @@ export default function ConfirmDialog({
   open,
   onCancel,
   onConfirm,
-  alert,
+  alert
 }: ShowDialogProps) {
   return (
     <Dialog
@@ -39,7 +39,7 @@ export default function ConfirmDialog({
       <DialogActions>
         {!alert && <Button onClick={onCancel}>No</Button>}
         <Button onClick={onConfirm} autoFocus>
-          {alert ? 'OK' : 'Agree'}
+          {alert ? 'OK' : 'Agree - Yes'}
         </Button>
       </DialogActions>
     </Dialog>
