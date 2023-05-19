@@ -2,16 +2,23 @@ export const SettingTypes = {
   System: 'system',
   Google: 'google',
   Auth0: 'auth0',
-  Internal: 'internal',
+  Internal: 'internal'
 } as const
 export type SettingType = typeof SettingTypes[keyof typeof SettingTypes]
 
 export const PaymentSources = {
   Stripe: 'stripe',
   Paypal: 'paypal',
-  Fake: 'fake',
+  Fake: 'fake'
 } as const
 export type PaymentSource = typeof PaymentSources[keyof typeof PaymentSources]
+
+export const AuthProviders = {
+  Firebase: 'firebase',
+  Auth0: 'auth0',
+  Development: 'fake'
+} as const
+export type AuthProviders = typeof AuthProviders[keyof typeof AuthProviders]
 
 export interface SecretKeys {
   token?: string
@@ -23,6 +30,7 @@ export interface SecretKeys {
 
 export interface InternalSettings {
   startAdminEmail: string
+  authProvider?: AuthProviders
   secretManager?: {
     enabled: boolean
     endpoint: string
@@ -82,6 +90,8 @@ export interface SettingData {
   [SettingTypes.Google]: GoogleSettings
   [SettingTypes.Auth0]: Auth0Settings
 }
+
+export type SettingState = { [k in SettingType]: SettingData[k] }
 
 export type ClientSettings = Partial<Omit<SettingData, 'internal'>>
 

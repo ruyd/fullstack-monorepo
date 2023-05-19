@@ -1,25 +1,29 @@
-import * as React from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
 import {
   Card,
   CardContent,
+  FormControl,
   FormControlLabel,
   FormGroup,
   Grid,
-  Link,
+  Radio,
+  RadioGroup,
   Switch,
   TextField,
-  Typography,
+  Typography
 } from '@mui/material'
-import { useAppDispatch } from '../../shared/store'
-import { Setting, PagedResult, SettingData, SettingType } from '@lib'
-import { get, notify, notifyError, request } from '../app'
-import debouncer from '../../shared/debouncer'
+import { useAppDispatch } from '../../../shared/store'
+import { Setting, PagedResult, SettingData, SettingType, SettingState, AuthProviders } from '@lib'
+import { get, notify, notifyError, request } from '../../app'
+import debouncer from '../../../shared/debouncer'
 import _ from 'lodash'
+import SettingsForAuth0 from './SettingsForAuth0'
+import SettingsForGoogle from './SettingsForGoogle'
 
 export default function Settings() {
   const dispatch = useAppDispatch()
-  const [data, setData] = React.useState<{ [k in SettingType]: SettingData[k] }>()
+  const [data, setData] = React.useState<SettingState>()
   const saveAsync = async (setting: Setting) => {
     const response = await request<Setting>('setting', { ...setting })
     if (response.status === 200) {
@@ -81,7 +85,7 @@ export default function Settings() {
                             save(
                               'system',
                               'enableCookieConsent',
-                              !data?.system?.enableCookieConsent,
+                              !data?.system?.enableCookieConsent
                             )
                           }
                         />
@@ -109,7 +113,7 @@ export default function Settings() {
                             save(
                               'system',
                               'enableShippingAddress',
-                              !data?.system?.enableShippingAddress,
+                              !data?.system?.enableShippingAddress
                             )
                           }
                         />
@@ -129,7 +133,7 @@ export default function Settings() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     transition: 'all 0.1s ease-out',
-                    filter: 'brightness(0.8)',
+                    filter: 'brightness(0.8)'
                   }}
                 >
                   <Typography variant="h5">
@@ -149,7 +153,6 @@ export default function Settings() {
                     Authentication
                   </Typography>
                 </Grid>
-
                 <Grid item xs={8}>
                   <Typography variant="h6" component="h3">
                     New User Registrations
@@ -168,193 +171,36 @@ export default function Settings() {
                     label="Enable"
                   />
                 </Grid>
-                <Grid item xs={8}>
-                  <Typography variant="h6" component="h3">
-                    Auth0
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={!!data?.auth0?.enabled}
-                        onChange={() => save('auth0', 'enabled', !data?.auth0?.enabled)}
-                      />
-                    }
-                    label="Enable"
-                  />
-                </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    label="Tenant"
-                    fullWidth
-                    value={data?.auth0?.tenant || ''}
-                    required
-                    onChange={e => save('auth0', 'tenant', e.target.value)}
-                  />
+                  <FormControl>
+                    <RadioGroup
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                      value={data?.internal?.authProvider || AuthProviders.Development}
+                      onChange={e => save('internal', 'authProvider', e.target.value)}
+                    >
+                      <FormControlLabel value="fake" control={<Radio />} label="Development" />
+                      <FormControlLabel value="firebase" control={<Radio />} label="Firebase" />
+                      <FormControlLabel value="auth0" control={<Radio />} label="Auth0" />
+                    </RadioGroup>
+                  </FormControl>
                 </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Client ID"
-                    fullWidth
-                    value={data?.auth0?.clientId || ''}
-                    onChange={e => save('auth0', 'clientId', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Client Secret"
-                    fullWidth
-                    value={data?.internal?.secrets?.auth0?.clientSecret || ''}
-                    onChange={e => save('internal', 'secrets.auth0.clientSecret', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Audience"
-                    fullWidth
-                    value={data?.auth0?.clientAudience || ''}
-                    onChange={e => save('auth0', 'clientAudience', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={8}>
-                  <Typography variant="h6" component="h3">
-                    Automatically Configure Auth0
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={!!data?.auth0?.sync}
-                        onChange={() => save('auth0', 'sync', !data?.auth0?.sync)}
-                      />
-                    }
-                    label="Enable"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" component="p" mb={1}>
-                    Auto configure application and create resources in Auth0. Only needs the `Client
-                    ID` and `Client Secret` from the API Explorer Application:{' '}
-                    <Link href="https://manage.auth0.com/dashboard" target="_blank">
-                      Open Auth0 dashboard
-                    </Link>{' '}
-                    and go to API Explorer Application - Settings - copy Client ID and Secret
-                  </Typography>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                    label="Explorer Client ID"
-                    fullWidth
-                    value={data?.auth0?.explorerId || ''}
-                    onChange={e => save('auth0', 'explorerId', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Explorer Client Secret"
-                    fullWidth
-                    value={data?.internal?.secrets?.auth0?.managerSecret || ''}
-                    onChange={e => save('internal', 'secrets.auth0.managerSecret', e.target.value)}
-                  />
-                </Grid>
+                {data?.internal?.authProvider === AuthProviders.Development && (
+                  <Typography>Dev</Typography>
+                )}
+                {data?.internal?.authProvider === AuthProviders.Firebase && (
+                  <Typography>Firebase</Typography>
+                )}
+                {data?.internal?.authProvider === AuthProviders.Auth0 && (
+                  <SettingsForAuth0 data={data as SettingState} save={save} />
+                )}
               </Grid>
             </CardContent>
           </Card>
         </Grid>
         <Grid item md={6}>
-          <Card>
-            <CardContent>
-              <Grid container spacing={1}>
-                <Grid item xs={12}>
-                  <Typography variant="h5" component="h2">
-                    Google
-                  </Typography>
-                </Grid>
-                <Grid item xs={9}>
-                  <Typography variant="h6" component="h3">
-                    Signin with Google
-                  </Typography>
-                </Grid>
-                <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={!!data?.google?.enabled}
-                        onChange={() => save('google', 'enabled', !data?.google?.enabled)}
-                      />
-                    }
-                    label="Enable"
-                  />
-                </Grid>
-                <Grid item xs={9}>
-                  <Typography variant="h6" component="h5">
-                    OneTap Onboarding
-                  </Typography>
-                </Grid>
-                <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={!!data?.system?.enableOneTapLogin}
-                        onChange={() =>
-                          save('system', 'enableOneTapLogin', !data?.system?.enableOneTapLogin)
-                        }
-                      />
-                    }
-                    label="Enable"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="body2" component="p">
-                    <Link href="https://console.cloud.google.com/apis/credentials" target="_blank">
-                      Project OAuth 2.0 Client ID and Secret (Click Create Credentials then OAuth
-                      client ID)
-                    </Link>
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Client ID"
-                    fullWidth
-                    value={data?.google?.clientId || ''}
-                    onChange={e => save('google', 'clientId', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Client Secret"
-                    fullWidth
-                    value={data?.internal?.secrets?.google?.clientSecret || ''}
-                    onChange={e => save('internal', 'secrets.google.clientSecret', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h6" component="h4">
-                    Cloud
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Project ID"
-                    fullWidth
-                    value={data?.google?.projectId || ''}
-                    onChange={e => save('google', 'projectId', e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Analytics ID"
-                    fullWidth
-                    value={data?.google?.analyticsId || ''}
-                    onChange={e => save('google', 'analyticsId', e.target.value)}
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
+          <SettingsForGoogle data={data as SettingState} save={save} />
         </Grid>
         <Grid item md={6}>
           <Card>
@@ -379,7 +225,7 @@ export default function Settings() {
                           save(
                             'system',
                             'paymentMethods.stripe.enabled',
-                            !data?.system?.paymentMethods?.stripe?.enabled,
+                            !data?.system?.paymentMethods?.stripe?.enabled
                           )
                         }
                       />
@@ -401,7 +247,7 @@ export default function Settings() {
                           save(
                             'system',
                             'paymentMethods.stripe.subscriptionsEnabled',
-                            !data?.system?.paymentMethods?.stripe?.subscriptionsEnabled,
+                            !data?.system?.paymentMethods?.stripe?.subscriptionsEnabled
                           )
                         }
                       />
@@ -423,7 +269,7 @@ export default function Settings() {
                           save(
                             'system',
                             'paymentMethods.stripe.identityEnabled',
-                            !data?.system?.paymentMethods?.stripe?.identityEnabled,
+                            !data?.system?.paymentMethods?.stripe?.identityEnabled
                           )
                         }
                       />
@@ -476,7 +322,7 @@ export default function Settings() {
                           save(
                             'system',
                             'paymentMethods.paypal.enabled',
-                            !data?.system?.paymentMethods?.paypal?.enabled,
+                            !data?.system?.paymentMethods?.paypal?.enabled
                           )
                         }
                       />
@@ -498,7 +344,7 @@ export default function Settings() {
                           save(
                             'system',
                             'paymentMethods.paypal.subscriptionsEnabled',
-                            !data?.system?.paymentMethods?.paypal?.subscriptionsEnabled,
+                            !data?.system?.paymentMethods?.paypal?.subscriptionsEnabled
                           )
                         }
                       />

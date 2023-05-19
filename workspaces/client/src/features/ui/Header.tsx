@@ -238,25 +238,27 @@ export default function HeaderNavBar() {
               open={Boolean(anchorElUser)}
               onClose={() => handleCloseUserMenu()}
             >
-              <Paper
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  margin: '.1rem .5rem',
-                  padding: '.5rem',
-                  minWidth: '200px'
-                }}
-              >
-                <Card>
-                  <Typography>
-                    Coins: {parseInt((wallet?.balance ?? 0) as unknown as string)}
-                  </Typography>
-                </Card>
-                <Card>
-                  <Typography>Membership: {activeSubscription?.title || 'None'}</Typography>
-                </Card>
-              </Paper>
+              {user && (
+                <Paper
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    margin: '.1rem .5rem',
+                    padding: '.5rem',
+                    minWidth: '200px'
+                  }}
+                >
+                  <Card>
+                    <Typography>
+                      Coins: {parseInt((wallet?.balance ?? 0) as unknown as string)}
+                    </Typography>
+                  </Card>
+                  <Card>
+                    <Typography>Membership: {activeSubscription?.title || 'None'}</Typography>
+                  </Card>
+                </Paper>
+              )}
               {profileLinks
                 .filter(r => (r.secure ? authenticated : authenticated ? !r.anon : true))
                 .filter(route => (route.roles ? route.roles.every(r => hasRole(r)) : true))

@@ -25,7 +25,7 @@ export default function Admin(): JSX.Element {
         style={{
           flexGrow: 1,
           margin: '1rem .5rem -2rem .5rem',
-          display: 'flex',
+          display: 'flex'
         }}
       >
         <Routes>

@@ -144,7 +144,7 @@ export function getConfig(): Config {
       models: []
     },
     auth: {
-      enabled: false,
+      enabled: true,
       sync: true,
       trace: true,
       tokenSecret: env.TOKEN_SECRET || 'blank',
