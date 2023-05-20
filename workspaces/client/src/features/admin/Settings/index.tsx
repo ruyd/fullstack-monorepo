@@ -193,7 +193,9 @@ export default function Settings() {
                   <Typography>Dev</Typography>
                 )}
                 {data?.internal?.authProvider === AuthProviders.Firebase && (
-                  <Typography>Firebase</Typography>
+                  <>
+                    <Typography sx={{}}>Firebase</Typography>
+                  </>
                 )}
                 {data?.internal?.authProvider === AuthProviders.Auth0 && (
                   <SettingsForAuth0 data={data} save={save} />

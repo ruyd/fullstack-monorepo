@@ -2,19 +2,23 @@ import React from 'react'
 import { Box, Button, Container, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
-import { FormattedMessage, defineMessage } from 'react-intl'
+import { FormattedMessage, defineMessages } from 'react-intl'
+
+const messages = defineMessages({
+  buttonCaption: {
+    id: 'home.button',
+    description: 'Hero Button Caption',
+    defaultMessage: 'Take it for a spin'
+  }
+})
 
 export default function HeroSection({
   subtitle = 'Foundation template for your projects and startups',
-  caption = defineMessage({
-    id: 'home.button',
-    description: 'Hero Button Caption',
-    defaultMessage: 'Take it for a spin',
-  }).defaultMessage,
-  children,
+  caption = <FormattedMessage {...messages.buttonCaption} />,
+  children
 }: {
   subtitle?: string
-  caption?: string
+  caption?: React.ReactNode
   children?: React.ReactNode
 }) {
   return (
