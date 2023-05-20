@@ -18697,6 +18697,7 @@ __metadata:
     express-async-errors: ^3.1.1
     express-basic-auth: ^1.2.1
     express-jwt: ^8.2.1
+    firebase: ^9.22.0
     fork-ts-checker-webpack-plugin: ^8.0.0
     generate-package-json-webpack-plugin: ^2.6.0
     http-status: ^1.5.2

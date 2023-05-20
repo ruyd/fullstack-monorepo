@@ -60,6 +60,11 @@ export interface GoogleSettings {
   projectId?: string
   analyticsId?: string
   enabled?: boolean
+  apiKey?: string
+  databaseUrl?: string
+  senderId?: string
+  appId?: string
+  serviceAccountId?: string
 }
 
 export interface Auth0Settings {

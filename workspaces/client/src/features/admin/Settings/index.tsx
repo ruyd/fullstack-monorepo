@@ -14,12 +14,13 @@ import {
   Typography
 } from '@mui/material'
 import { useAppDispatch } from '../../../shared/store'
-import { Setting, PagedResult, SettingData, SettingType, SettingState, AuthProviders } from '@lib'
+import { Setting, PagedResult, SettingType, SettingState, AuthProviders } from '@lib'
 import { get, notify, notifyError, request } from '../../app'
 import debouncer from '../../../shared/debouncer'
 import _ from 'lodash'
 import SettingsForAuth0 from './SettingsForAuth0'
 import SettingsForGoogle from './SettingsForGoogle'
+import SettingsForFirebase from './SettingsForFirebaseAuth'
 
 export default function Settings() {
   const dispatch = useAppDispatch()
@@ -36,7 +37,7 @@ export default function Settings() {
   const save = (name: SettingType, prop: string, value: unknown) => {
     const existing = data ? data[name] || {} : {}
     const newValue = _.set(existing, prop, value)
-    const newData = { ...data, [name]: newValue } as { [k in SettingType]: SettingData[k] }
+    const newData = { ...data, [name]: newValue } as SettingState
     const setting = { name, data: newValue } as Setting
     setData(newData)
     debouncer(setting.name, () => saveAsync(setting))
@@ -49,7 +50,7 @@ export default function Settings() {
     for (const s of result) {
       temp[s.name] = s.data
     }
-    setData(temp as { [k in SettingType]: SettingData[k] })
+    setData(temp as SettingState)
   }
 
   React.useEffect(() => {
@@ -194,7 +195,7 @@ export default function Settings() {
                 )}
                 {data?.internal?.authProvider === AuthProviders.Firebase && (
                   <>
-                    <Typography sx={{}}>Firebase</Typography>
+                    <SettingsForFirebase data={data} save={save} />
                   </>
                 )}
                 {data?.internal?.authProvider === AuthProviders.Auth0 && (

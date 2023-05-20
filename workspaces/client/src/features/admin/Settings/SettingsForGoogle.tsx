@@ -87,8 +87,32 @@ export default function SettingsForGoogle({
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h6" component="h4">
-                Cloud
+                GCP and Firebase
               </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Service Account ID"
+                fullWidth
+                value={data?.google?.apiKey || ''}
+                onChange={e => save('google', 'serviceAccountId', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="API Key"
+                fullWidth
+                value={data?.google?.apiKey || ''}
+                onChange={e => save('google', 'apiKey', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="App ID"
+                fullWidth
+                value={data?.google?.projectId || ''}
+                onChange={e => save('google', 'appId', e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -104,6 +128,22 @@ export default function SettingsForGoogle({
                 fullWidth
                 value={data?.google?.analyticsId || ''}
                 onChange={e => save('google', 'analyticsId', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Database URL"
+                fullWidth
+                value={data?.google?.databaseUrl || ''}
+                onChange={e => save('google', 'databaseUrl', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Sender ID"
+                fullWidth
+                value={data?.google?.senderId || ''}
+                onChange={e => save('google', 'senderId', e.target.value)}
               />
             </Grid>
           </Grid>
