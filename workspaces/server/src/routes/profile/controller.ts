@@ -6,11 +6,11 @@ import {
   authProviderChangePassword,
   lazyLoadManagementToken,
   authProviderPatch,
-  decodeToken,
+  decodeToken
 } from '../../shared/auth'
 import { createOrUpdate } from '../../shared/model-api/controller'
 import { UserModel } from '../../shared/types/models/user'
-import { AppAccessToken, getPictureMock, IdentityToken } from '@lib'
+import { AppAccessToken, AuthProviders, getPictureMock, IdentityToken } from '@lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 import logger from '../../shared/logger'
@@ -38,7 +38,7 @@ export async function register(req: express.Request, res: express.Response) {
   const user = await createOrUpdate(UserModel, payload)
   const token = createToken({
     userId: user.userId,
-    roles: [],
+    roles: []
   })
   res.json({ token })
 }
@@ -58,25 +58,30 @@ export async function login(req: express.Request, res: express.Response) {
 
   let user = (
     await UserModel.findOne({
-      where: { email },
+      where: { email }
     })
   )?.get()
 
-  const ready = authReady()
-  if (!ready && user) {
-    logger.warn('Auth not enabled - dev mode no password login: ' + user?.email)
+  const settings = config.settings
+  const authProvider = settings.system?.authProvider || AuthProviders.None
+  const isDevelopment = authProvider === AuthProviders.Development
+  const isNone = authProvider === AuthProviders.None
+  const isStartAdmin = settings.internal?.startAdminEmail === email
+
+  if ((isDevelopment && (user || isStartAdmin)) || (isNone && isStartAdmin)) {
+    logger.warn('Mocking loging without pass for: ' + user?.email)
     res.json({
       token: createToken({
         userId: user?.userId,
-        roles: config.settings?.internal?.startAdminEmail === user.email ? ['admin'] : [],
+        roles: isStartAdmin ? ['admin'] : []
       }),
-      user,
+      user
     })
     return
   }
 
-  if (!ready) {
-    throw new Error('Auth not enabled')
+  if (isNone) {
+    throw new Error('User logins have been disabled - Please contact administrator')
   }
 
   const response = await authProviderLogin(email, password)
@@ -95,7 +100,7 @@ export async function login(req: express.Request, res: express.Response) {
 
   res.json({
     token: response.access_token,
-    user,
+    user
   })
 }
 
@@ -119,7 +124,7 @@ export async function social(req: express.Request, res: express.Response) {
   }
 
   const instance = await UserModel.findOne({
-    where: { email },
+    where: { email }
   })
   let user = instance?.get()
   if (user) {
@@ -141,7 +146,7 @@ export async function social(req: express.Request, res: express.Response) {
       userId: uuid(),
       firstName: given_name,
       lastName: family_name,
-      picture,
+      picture
     })
   }
 
@@ -161,8 +166,8 @@ export async function social(req: express.Request, res: express.Response) {
       const response = await authProviderPatch(access.sub, {
         connection: 'google-oauth2',
         user_metadata: {
-          id: user.userId,
-        },
+          id: user.userId
+        }
       })
       logger.info('success' + JSON.stringify(response))
       renew = true
@@ -172,7 +177,7 @@ export async function social(req: express.Request, res: express.Response) {
   res.json({
     user,
     token: accessToken,
-    renew,
+    renew
   })
 }
 
@@ -183,11 +188,11 @@ export async function socialCheck(req: express.Request, res: express.Response) {
   const { email } = decoded
   const user = (
     await UserModel.findOne({
-      where: { email },
+      where: { email }
     })
   )?.get()
   res.json({
-    userId: user?.userId,
+    userId: user?.userId
   })
 }
 

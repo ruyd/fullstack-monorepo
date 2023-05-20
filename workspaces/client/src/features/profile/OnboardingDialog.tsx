@@ -8,7 +8,7 @@ import {
   Grid,
   Grow,
   Slide,
-  Typography,
+  Typography
 } from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
@@ -18,13 +18,14 @@ import Login from './Login'
 import Register from './Register'
 import { GoogleOneTapButton } from './GoogleOneTap'
 import Spacer from '../ui/Spacer'
+import AuthProviders from './AuthProviders'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     children: React.ReactElement<any, any>
   },
-  ref: React.Ref<unknown>,
+  ref: React.Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />
 })
@@ -60,18 +61,18 @@ export default function OnboardingDialog() {
           <Typography>To save drawings you need an account</Typography>
           <Typography variant="body2">*By using this site you agree to it&apos;s terms</Typography>
         </Grid>
-        <DialogActions>
-          <GoogleOneTapButton style={{ marginBottom: '-5px' }} />
-          <Spacer />
-          <Button variant="outlined" onClick={() => setShow('login')}>
-            Sign in
-          </Button>
-          {enableRegistration && (
+        {enableRegistration && (
+          <DialogActions>
+            <GoogleOneTapButton style={{ marginBottom: '-5px' }} />
+            <Spacer />
+            <Button variant="outlined" onClick={() => setShow('login')}>
+              Sign in
+            </Button>
             <Button variant="outlined" onClick={() => setShow('register')}>
               Sign up
             </Button>
-          )}
-        </DialogActions>
+          </DialogActions>
+        )}
       </DialogContent>
     </Dialog>
   )

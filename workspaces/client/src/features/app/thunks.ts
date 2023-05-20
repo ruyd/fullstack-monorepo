@@ -9,7 +9,7 @@ export const Method = {
   GET: 'get',
   POST: 'post',
   DELETE: 'delete',
-  PATCH: 'patch',
+  PATCH: 'patch'
 } as const
 
 export type Method = typeof Method[keyof typeof Method]
@@ -19,12 +19,12 @@ export type Method = typeof Method[keyof typeof Method]
  */
 export async function request<
   R = { success: boolean; message: string },
-  T = Record<string, unknown>,
+  T = Record<string, unknown>
 >(
   url: string,
   data?: T,
   method: Method = Method.POST,
-  options?: AxiosRequestConfig<R>,
+  options?: AxiosRequestConfig<R>
 ): Promise<AxiosResponse<R>> {
   let response: AxiosResponse<R>
   const dispatch = store.dispatch
@@ -35,7 +35,7 @@ export async function request<
       // headers:{ Authorization: `Bearer ${token}` },
       url,
       data,
-      method,
+      method
     })
   } catch (err: unknown) {
     const error = err as Error
@@ -77,7 +77,7 @@ export const useGet = <T>(
   cacheKey: string,
   url: string,
   options?: UseQueryOptions<T>,
-  queryParams?: unknown,
+  queryParams?: unknown
 ) =>
   useQuery<T>(
     cacheKey,
@@ -89,7 +89,7 @@ export const useGet = <T>(
       const resp = await get<T>(url + params)
       return resp.data
     },
-    options,
+    options
   )
 
 export function convertToQueryParams(obj: unknown | undefined) {
@@ -104,25 +104,35 @@ export function convertToQueryParams(obj: unknown | undefined) {
 function setLogin(
   dispatch: ThunkDispatch<unknown, unknown, AnyAction>,
   token: string,
-  user: AppUser,
+  user: AppUser
 ) {
   onLogin({ token, user })
   dispatch(
     patch({
       token,
       user,
-      loaded: !!token,
-      dialog: undefined,
-    }),
+      loaded: !!token
+    })
   )
 }
 
 export const loginAsync = createAsyncThunk(
   'app/login',
-  async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request<{ token: string; user: AppUser }>('profile/login', payload)
-    setLogin(dispatch, response.data.token, response.data.user)
-  },
+  async (payload: Record<string, unknown>, { dispatch, getState }) => {
+    const state = getState() as RootState
+    const response = await request<{ token: string; user: AppUser; message?: string }>(
+      'profile/login',
+      payload
+    )
+    if (response.status === 200) {
+      setLogin(dispatch, response.data.token, response.data.user)
+      if (state.app.dialog === 'onboard') {
+        dispatch(patch({ dialog: undefined }))
+      }
+    } else {
+      dispatch(notifyError('Login error' + response.data.message))
+    }
+  }
 )
 
 /**
@@ -133,7 +143,7 @@ export const socialLoginAsync = createAsyncThunk(
   async (payload: Record<string, unknown>, { dispatch }) => {
     const response = await request<{ token: string; user: AppUser; renew: boolean }>(
       'profile/social',
-      payload,
+      payload
     )
     const { token, user, renew } = response.data
     if (renew) {
@@ -148,7 +158,7 @@ export const socialLoginAsync = createAsyncThunk(
     } else {
       setLogin(dispatch, token, user)
     }
-  },
+  }
 )
 
 export const registerAsync = createAsyncThunk(
@@ -157,7 +167,7 @@ export const registerAsync = createAsyncThunk(
     const response = await request<{ token: string; user: AppUser }>('profile/register', payload)
     //For email validation rework this
     setLogin(dispatch, response.data.token, response.data.user)
-  },
+  }
 )
 
 export const logoutAsync = createAsyncThunk('app/logout', async (_, { dispatch }) => {
@@ -177,7 +187,7 @@ export const editProfileAsync = createAsyncThunk(
       dispatch(patch({ user }))
       onLogin({ token, user })
     }
-  },
+  }
 )
 
 export const forgotAsync = createAsyncThunk(
@@ -185,5 +195,5 @@ export const forgotAsync = createAsyncThunk(
   async (payload: { email: string }, { dispatch }) => {
     const response = await request('profile/forgot', payload)
     dispatch(notify(response.data?.message || 'Recovery could not be sent'))
-  },
+  }
 )

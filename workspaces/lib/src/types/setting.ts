@@ -16,7 +16,8 @@ export type PaymentSource = typeof PaymentSources[keyof typeof PaymentSources]
 export const AuthProviders = {
   Development: 'fake',
   Firebase: 'firebase',
-  Auth0: 'auth0'
+  Auth0: 'auth0',
+  None: 'none'
 } as const
 export type AuthProviders = typeof AuthProviders[keyof typeof AuthProviders]
 
@@ -30,7 +31,6 @@ export interface SecretKeys {
 
 export interface InternalSettings {
   startAdminEmail: string
-  authProvider?: AuthProviders
   secretManager?: {
     enabled: boolean
     endpoint: string
@@ -45,7 +45,8 @@ export interface InternalSettings {
 export interface SystemSettings {
   disable: boolean
   enableStore: boolean
-  enableAuth?: boolean
+  enableCoins?: boolean
+  authProvider?: AuthProviders
   enableShippingAddress?: boolean
   enableCookieConsent?: boolean
   enableOneTapLogin?: boolean
@@ -64,7 +65,7 @@ export interface GoogleSettings {
   databaseUrl?: string
   senderId?: string
   appId?: string
-  serviceAccountId?: string
+  serviceAccountKeyJson?: string
 }
 
 export interface Auth0Settings {

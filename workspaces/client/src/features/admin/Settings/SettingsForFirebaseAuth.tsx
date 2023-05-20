@@ -1,5 +1,5 @@
 import { SettingState, SettingType } from '@lib'
-import { Card, CardContent, Grid, TextField } from '@mui/material'
+import { Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material'
 
 export default function SettingsForFirebase({
   data,
@@ -13,6 +13,14 @@ export default function SettingsForFirebase({
       <Card>
         <CardContent>
           <Grid container spacing={1}>
+            <Grid item xs={6}>
+              <Typography variant="h6" component="h3">
+                Firebase
+              </Typography>
+            </Grid>
+            <Grid item xs={6} sx={{ textAlign: 'right' }}>
+              <Button fullWidth>Check Settings</Button>
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 label="API Key"

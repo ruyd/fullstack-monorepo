@@ -8,7 +8,7 @@ import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
 import { activateAxiosTrace, endpointTracingMiddleware, printRouteSummary } from './shared/trace'
-import { authProviderAutoConfigure } from './shared/auth/sync'
+import { auth0AutoConfigure } from './shared/auth/auth0.configure'
 import { Connection } from './shared/db'
 import { checkDatabase } from './shared/db/check'
 import { modelAuthMiddleware } from './shared/auth'
@@ -42,7 +42,7 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
     checks
       ? checkDatabase()
           .then(async ok => (ok ? await loadSettingsAsync() : ok))
-          .then(async ok => (ok ? await authProviderAutoConfigure() : ok))
+          .then(async ok => (ok ? await auth0AutoConfigure() : ok))
       : Promise.resolve(true)
   ]
 

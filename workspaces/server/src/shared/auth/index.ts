@@ -8,6 +8,9 @@ import { AppAccessToken, EnrichedRequest } from '../types'
 import { Connection, EntityConfig } from '../db'
 import logger from '../logger'
 import { HttpUnauthorizedError } from '../errorHandler'
+import { AuthProviders } from '@lib'
+import { auth0Login, auth0Register } from './auth0'
+import { firebaseLogin, firebaseRegister } from 'src/shared/auth/firebase'
 
 export interface oAuthError {
   error?: string
@@ -37,7 +40,7 @@ export function getJwkClient() {
     jwkClient = jwksRsa({
       jwksUri: `${config.auth?.baseUrl}/.well-known/jwks.json`,
       cache: true,
-      rateLimit: true,
+      rateLimit: true
     })
   }
   return jwkClient
@@ -48,7 +51,7 @@ export function getJwtVerify() {
   if (!jwtVerify) {
     jwtVerify = expressjwt({
       secret: config.auth.tokenSecret || 'off',
-      algorithms: ['HS256'],
+      algorithms: ['HS256']
     })
   }
   return jwtVerify
@@ -70,7 +73,7 @@ export async function checkToken(header: jwt.JwtHeader | undefined, token: strin
     const result = await getJwkClient().getSigningKey(header.kid)
     const key = result.getPublicKey()
     accessToken = jwt.verify(token, key, {
-      algorithms: ['RS256'],
+      algorithms: ['RS256']
     }) as AppAccessToken
   } else if (token) {
     accessToken = jwt.verify(token, config.auth.tokenSecret as string) as AppAccessToken
@@ -81,7 +84,7 @@ export async function checkToken(header: jwt.JwtHeader | undefined, token: strin
 export async function tokenCheckWare(
   req: express.Request,
   _res: express.Response,
-  next: express.NextFunction,
+  next: express.NextFunction
 ) {
   try {
     const { header, token } = setRequest(req)
@@ -102,7 +105,7 @@ export async function tokenCheckWare(
 export async function modelAuthMiddleware(
   req: express.Request,
   _res: express.Response,
-  next: express.NextFunction,
+  next: express.NextFunction
 ) {
   try {
     const entity = Connection.entities.find(e => e.name === req.originalUrl.replace('/', ''))
@@ -141,7 +144,7 @@ export async function modelAuthMiddleware(
 
 export function setRequest(
   r: express.Request,
-  cfg?: EntityConfig,
+  cfg?: EntityConfig
 ): {
   header?: jwt.JwtHeader
   token?: string
@@ -191,40 +194,31 @@ export function decodeToken(token: string) {
   return authInfo
 }
 
+const loginMethods: Record<string, (u: string, p: string) => Promise<AxiosResponse> | unknown> = {
+  [AuthProviders.Auth0]: auth0Login,
+  [AuthProviders.Firebase]: firebaseLogin
+}
+
 export async function authProviderLogin(
   username: string,
-  password: string,
+  password: string
 ): Promise<oAuthResponse> {
-  const response = await axios.post(
-    `${config.auth?.baseUrl}/oauth/token`,
-    {
-      client_id: config.auth?.clientId,
-      client_secret: config.auth?.clientSecret,
-      audience: `${config.auth?.baseUrl}/api/v2/`,
-      grant_type: 'password',
-      username,
-      password,
-    },
-    {
-      validateStatus: () => true,
-    },
-  )
+  const response = (await loginMethods[AuthProviders.Auth0](username, password)) as AxiosResponse
   return response.data
 }
 
+const registerMethods: Record<string, (details: Record<string, string>) => unknown> = {
+  [AuthProviders.Auth0]: auth0Register,
+  [AuthProviders.Firebase]: firebaseRegister
+}
+
 export async function authProviderRegister(
-  payload: Record<string, string>,
+  payload: Record<string, string>
 ): Promise<Partial<oAuthRegistered>> {
   try {
-    const response = await axios.post(`${config.auth?.baseUrl}/dbconnections/signup`, {
-      connection: 'Username-Password-Authentication',
-      client_id: config.auth?.clientId,
-      email: payload.email,
-      password: payload.password,
-      user_metadata: {
-        id: payload.userId,
-      },
-    })
+    const authProvider =
+      (config.settings.system?.authProvider as keyof typeof AuthProviders) || AuthProviders.None
+    const response = (await registerMethods[authProvider](payload)) as AxiosResponse
     return response.data
   } catch (err: unknown) {
     const error = err as Error & {
@@ -232,26 +226,26 @@ export async function authProviderRegister(
     }
     return {
       error: error.response?.data?.name,
-      error_description: error.response?.data?.description,
+      error_description: error.response?.data?.description
     }
   }
 }
 
 export async function authProviderChangePassword(
-  payload: Record<string, string>,
+  payload: Record<string, string>
 ): Promise<oAuthError | string> {
   try {
     const response = await axios.post(`${config.auth?.baseUrl}/dbconnections/change_password`, {
       connection: 'Username-Password-Authentication',
       client_id: config.auth?.clientId,
-      email: payload.email,
+      email: payload.email
     })
     return response.data
   } catch (err: unknown) {
     const error = err as Error & { response: AxiosResponse }
     return {
       error: error.response?.data?.name,
-      error_description: error.response?.data?.description,
+      error_description: error.response?.data?.description
     }
   }
 }
@@ -262,27 +256,27 @@ export async function authProviderPatch(
     connection: string
     user_metadata: Record<string, string>
     [key: string]: unknown
-  },
+  }
 ): Promise<oAuthError | string> {
   try {
     const token = config.auth?.manageToken
     const response = await axios.patch(
       `${config.auth?.baseUrl}/api/v2/users/${sub}`,
       {
-        ...payload,
+        ...payload
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
+          Authorization: `Bearer ${token}`
+        }
+      }
     )
     return response.data
   } catch (err: unknown) {
     const error = err as Error & { response: AxiosResponse }
     return {
       error: error.response?.data?.error,
-      error_description: error.response?.data?.message,
+      error_description: error.response?.data?.message
     }
   }
 }
@@ -309,11 +303,11 @@ export async function lazyLoadManagementToken(): Promise<boolean> {
       client_id: config.auth.explorerId,
       client_secret: config.auth.explorerSecret,
       audience: config.auth.explorerAudience,
-      grant_type: 'client_credentials',
+      grant_type: 'client_credentials'
     },
     {
-      validateStatus: () => true,
-    },
+      validateStatus: () => true
+    }
   )
 
   if (config.trace) {

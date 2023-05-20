@@ -1,6 +1,8 @@
 import React from 'react'
 import Box from '@mui/material/Box'
 import {
+  Alert,
+  AlertTitle,
   Card,
   CardContent,
   FormControl,
@@ -25,6 +27,7 @@ import SettingsForFirebase from './SettingsForFirebaseAuth'
 export default function Settings() {
   const dispatch = useAppDispatch()
   const [data, setData] = React.useState<SettingState>()
+  const authProvider = data?.system?.authProvider || AuthProviders.None
   const saveAsync = async (setting: Setting) => {
     const response = await request<Setting>('setting', { ...setting })
     if (response.status === 200) {
@@ -154,30 +157,12 @@ export default function Settings() {
                     Authentication
                   </Typography>
                 </Grid>
-                <Grid item xs={8}>
-                  <Typography variant="h6" component="h3">
-                    New User Registrations
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} sx={{ textAlign: 'right' }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={!!data?.system?.enableRegistration}
-                        onChange={() =>
-                          save('system', 'enableRegistration', !data?.system?.enableRegistration)
-                        }
-                      />
-                    }
-                    label="Enable"
-                  />
-                </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ textAlign: 'center' }}>
                   <FormControl>
                     <RadioGroup
                       row
-                      value={data?.internal?.authProvider || AuthProviders.Development}
-                      onChange={e => save('internal', 'authProvider', e.target.value)}
+                      value={authProvider}
+                      onChange={e => save('system', 'authProvider', e.target.value)}
                     >
                       {Object.keys(AuthProviders).map((key: string) => (
                         <FormControlLabel
@@ -190,15 +175,53 @@ export default function Settings() {
                     </RadioGroup>
                   </FormControl>
                 </Grid>
-                {data?.internal?.authProvider === AuthProviders.Development && (
-                  <Typography>Dev</Typography>
-                )}
-                {data?.internal?.authProvider === AuthProviders.Firebase && (
+                {data?.system?.authProvider !== AuthProviders.None && (
                   <>
-                    <SettingsForFirebase data={data} save={save} />
+                    <Grid item xs={8}>
+                      <Typography variant="h6" component="h3">
+                        New User Registrations
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4} sx={{ textAlign: 'right' }}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={!!data?.system?.enableRegistration}
+                            onChange={() =>
+                              save(
+                                'system',
+                                'enableRegistration',
+                                !data?.system?.enableRegistration
+                              )
+                            }
+                          />
+                        }
+                        label="Enable"
+                      />
+                    </Grid>
                   </>
                 )}
-                {data?.internal?.authProvider === AuthProviders.Auth0 && (
+                {authProvider === AuthProviders.Development && (
+                  <Grid item xs={12}>
+                    <Alert color="info">
+                      <AlertTitle>Local Mocking</AlertTitle>
+                      Skip password check (enter anything) with mocked authentication for email
+                      login
+                    </Alert>
+                  </Grid>
+                )}
+                {authProvider === AuthProviders.None && (
+                  <Grid item xs={12}>
+                    <Alert color="warning">
+                      <AlertTitle>Turned Off</AlertTitle>
+                      Hide login links and only allow access to admin users via /login route
+                    </Alert>
+                  </Grid>
+                )}
+                {authProvider === AuthProviders.Firebase && (
+                  <SettingsForFirebase data={data} save={save} />
+                )}
+                {authProvider === AuthProviders.Auth0 && (
                   <SettingsForAuth0 data={data} save={save} />
                 )}
               </Grid>

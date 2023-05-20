@@ -20,8 +20,8 @@ export default function SettingsForAuth0({
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body2" component="p" mb={1}>
-          Input your `Tenant`, `Client ID` and `Client Secret` from the API Explorer App to
-          configure automatically or manually enter settings below:{' '}
+          Input your `Tenant` and API Explorer&apos;s `Client ID` and `Client Secret` from the
+          dashboard to configure automatically or manually enter settings below:{' '}
           <Link href="https://manage.auth0.com/dashboard" target="_blank">
             Open Auth0 dashboard
           </Link>{' '}

@@ -5,9 +5,9 @@ import logger from '../logger'
 
 const readOptions = () => ({
   headers: {
-    Authorization: `Bearer ${config.auth.manageToken || 'error not set'}`,
+    Authorization: `Bearer ${config.auth.manageToken || 'error not set'}`
   },
-  validateStatus: () => true,
+  validateStatus: () => true
 })
 
 const log = (s: string, o?: unknown) =>
@@ -28,7 +28,7 @@ const post = <T>(url: string, data: unknown) =>
  * - Check for Client Grants
  * - Check for Rules
  */
-export async function authProviderAutoConfigure(): Promise<boolean> {
+export async function auth0AutoConfigure(): Promise<boolean> {
   logger.info('Auth0: Sync()')
   if (process.env.NODE_ENV === 'test') {
     logger.info('Auth0: Skipped for Tests')
@@ -46,7 +46,7 @@ export async function authProviderAutoConfigure(): Promise<boolean> {
     log('Auth0: explorer credentials not set - skipping sync')
     // eslint-disable-next-line no-console
     console.warn(
-      '\x1b[33m*****************************\n\x1b[33m*** AUTH_TENANT AUTH_EXPLORER_ID AND AUTH_EXPLORER_SECRET ARE NOT SET - AUTH0 SYNC TURNED OFF ***\n\x1b[33m***************************** \x1b[0m',
+      '\x1b[33m*****************************\n\x1b[33m*** AUTH_TENANT AUTH_EXPLORER_ID AND AUTH_EXPLORER_SECRET ARE NOT SET - AUTH0 SYNC TURNED OFF ***\n\x1b[33m***************************** \x1b[0m'
     )
     return false
   }
@@ -64,7 +64,7 @@ export async function authProviderAutoConfigure(): Promise<boolean> {
   await ensureRules()
   if (config.auth.clientId) {
     log(
-      `Auth0 Check Complete > AUTH_CLIENT_ID: ${config.auth.clientId} > For clients use GET /config`,
+      `Auth0 Check Complete > AUTH_CLIENT_ID: ${config.auth.clientId} > For clients use GET /config`
     )
   }
   return true
@@ -97,15 +97,15 @@ async function ensureClients() {
       'http://localhost:3000',
       'http://localhost:3000/callback',
       'http://localhost:3001',
-      'https://accounts.google.com/gsi/client',
+      'https://accounts.google.com/gsi/client'
     ],
     native_social_login: {
       apple: {
-        enabled: false,
+        enabled: false
       },
       facebook: {
-        enabled: false,
-      },
+        enabled: false
+      }
     },
     allowed_origins: ['http://localhost:3000'],
     client_aliases: [],
@@ -121,10 +121,10 @@ async function ensureClients() {
       'http://auth0.com/oauth/grant-type/passwordless/otp',
       'http://auth0.com/oauth/grant-type/mfa-oob',
       'http://auth0.com/oauth/grant-type/mfa-otp',
-      'http://auth0.com/oauth/grant-type/mfa-recovery-code',
+      'http://auth0.com/oauth/grant-type/mfa-recovery-code'
     ],
     web_origins: ['http://localhost:3000'],
-    custom_login_page_on: true,
+    custom_login_page_on: true
   }
 
   const backendClient = {
@@ -132,7 +132,7 @@ async function ensureClients() {
     token_endpoint_auth_method: 'client_secret_post',
     app_type: 'non_interactive',
     grant_types: ['client_credentials'],
-    custom_login_page_on: true,
+    custom_login_page_on: true
   }
 
   const grants = (await get<Grant[]>('client-grants'))?.data
@@ -141,14 +141,14 @@ async function ensureClients() {
     const grantResult = await post<Grant>(`client-grants`, {
       client_id: client.client_id,
       audience,
-      scope: [],
+      scope: []
     })
     if (grantResult.data?.id) {
       log(`Created client grant`, grantResult.data)
       grants.push(grantResult.data)
     } else {
       logger.error(
-        `Failed to create client grant for ${client.name}` + JSON.stringify(grantResult.data),
+        `Failed to create client grant for ${client.name}` + JSON.stringify(grantResult.data)
       )
     }
   }
@@ -181,7 +181,7 @@ async function ensureClients() {
     existingBackend &&
     authManager?.identifier &&
     !grants.find(
-      g => g.client_id === existingBackend?.client_id && g.audience === authManager.identifier,
+      g => g.client_id === existingBackend?.client_id && g.audience === authManager.identifier
     )
   ) {
     await grant(existingBackend, authManager?.identifier)
@@ -190,7 +190,7 @@ async function ensureClients() {
   if (
     existingClient &&
     !grants.find(
-      g => g.client_id === existingClient?.client_id && g.audience === config.auth.clientAudience,
+      g => g.client_id === existingClient?.client_id && g.audience === config.auth.clientAudience
     )
   ) {
     grant(existingClient, config.auth.clientAudience)
@@ -209,8 +209,8 @@ async function ensureResourceServers() {
   const resourceServers = [
     {
       name: 'backend',
-      identifier: config.auth.clientAudience,
-    },
+      identifier: config.auth.clientAudience
+    }
   ]
 
   interface ResourceServer {
@@ -223,7 +223,7 @@ async function ensureResourceServers() {
 
   const existing = await get<ResourceServer[]>(`resource-servers`)
   const missing = resourceServers.filter(
-    rs => !existing.data.find(e => e.identifier === rs.identifier),
+    rs => !existing.data.find(e => e.identifier === rs.identifier)
   )
   if (missing.length) {
     log(`Creating missing resource servers: ${missing.map(m => m.name).join(', ')}`)
@@ -253,8 +253,8 @@ async function ensureRules() {
         '  return callback(null, user, context);\n' +
         '}',
       order: 1,
-      enabled: true,
-    },
+      enabled: true
+    }
   ]
 
   interface Rule {

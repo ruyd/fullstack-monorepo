@@ -92,10 +92,20 @@ export default function SettingsForGoogle({
             </Grid>
             <Grid item xs={12}>
               <TextField
-                label="Service Account ID"
+                label="serviceAccountKey.json File Contents"
                 fullWidth
-                value={data?.google?.apiKey || ''}
-                onChange={e => save('google', 'serviceAccountId', e.target.value)}
+                value={data?.google?.serviceAccountKeyJson || ''}
+                multiline
+                rows={4}
+                onChange={e => save('google', 'serviceAccountKeyJson', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Project ID"
+                fullWidth
+                value={data?.google?.projectId || ''}
+                onChange={e => save('google', 'projectId', e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -110,24 +120,8 @@ export default function SettingsForGoogle({
               <TextField
                 label="App ID"
                 fullWidth
-                value={data?.google?.projectId || ''}
+                value={data?.google?.appId || ''}
                 onChange={e => save('google', 'appId', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Project ID"
-                fullWidth
-                value={data?.google?.projectId || ''}
-                onChange={e => save('google', 'projectId', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Analytics ID"
-                fullWidth
-                value={data?.google?.analyticsId || ''}
-                onChange={e => save('google', 'analyticsId', e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -144,6 +138,14 @@ export default function SettingsForGoogle({
                 fullWidth
                 value={data?.google?.senderId || ''}
                 onChange={e => save('google', 'senderId', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Analytics ID"
+                fullWidth
+                value={data?.google?.analyticsId || ''}
+                onChange={e => save('google', 'analyticsId', e.target.value)}
               />
             </Grid>
           </Grid>

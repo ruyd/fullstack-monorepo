@@ -34,7 +34,7 @@ export default function HeaderNavBar() {
   const items = useAppSelector(state => state.shop.items)
   const activeSubscription = useAppSelector(state => state.shop.activeSubscription)
   const wallet = useAppSelector(state => state.shop.wallet)
-  const enableAuth = useAppSelector(state => state.app.settings?.system?.enableAuth)
+  const enableAuth = useAppSelector(state => state.app.settings?.system?.authProvider)
   const enableRegistrations = useAppSelector(
     state => state.app.settings?.system?.enableRegistration
   )
