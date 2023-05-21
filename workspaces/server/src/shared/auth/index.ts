@@ -34,6 +34,16 @@ export interface oAuthRegistered extends oAuthError {
   email_verified: boolean
 }
 
+export const getAuthSettings = () => {
+  const settings = config.settings
+  const authProvider = settings.system?.authProvider || AuthProviders.None
+  const isDevelopment = authProvider === AuthProviders.Development
+  const isNone = authProvider === AuthProviders.None
+  const startAdminEmail = settings.internal?.startAdminEmail
+  const enableRegistration = !isNone && settings.system?.enableRegistration
+  return { settings, authProvider, isDevelopment, isNone, startAdminEmail, enableRegistration }
+}
+
 let jwkClient: jwksRsa.JwksClient
 export function getJwkClient() {
   if (!jwkClient) {
@@ -203,29 +213,41 @@ export async function authProviderLogin(
   username: string,
   password: string
 ): Promise<oAuthResponse> {
-  const response = (await loginMethods[AuthProviders.Auth0](username, password)) as AxiosResponse
+  const { authProvider } = getAuthSettings()
+  const response = (await loginMethods[authProvider](username, password)) as AxiosResponse
   return response.data
 }
 
-const registerMethods: Record<string, (details: Record<string, string>) => unknown> = {
+export async function fakeMockRegister(payload: Record<string, string>) {
+  const result = await new Promise(
+    resolve =>
+      setTimeout(() => {
+        return resolve({ data: { ...payload, provider: 'mockRegister' } })
+      }, 1000) as unknown as Record<string, string>
+  )
+  return result
+}
+
+const registerMethods: Record<string, (details: Record<string, string>) => Promise<unknown>> = {
   [AuthProviders.Auth0]: auth0Register,
-  [AuthProviders.Firebase]: firebaseRegister
+  [AuthProviders.Firebase]: firebaseRegister,
+  [AuthProviders.Development]: fakeMockRegister
 }
 
 export async function authProviderRegister(
   payload: Record<string, string>
 ): Promise<Partial<oAuthRegistered>> {
   try {
-    const authProvider =
-      (config.settings.system?.authProvider as keyof typeof AuthProviders) || AuthProviders.None
-    const response = (await registerMethods[authProvider](payload)) as AxiosResponse
+    const { authProvider } = getAuthSettings()
+    const method = registerMethods[authProvider]
+    const response = (await method(payload)) as AxiosResponse
     return response.data
   } catch (err: unknown) {
     const error = err as Error & {
       response: AxiosResponse
     }
     return {
-      error: error.response?.data?.name,
+      error: error.response?.data?.name ?? error.message,
       error_description: error.response?.data?.description
     }
   }

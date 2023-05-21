@@ -145,7 +145,7 @@ export const socialLoginAsync = createAsyncThunk(
       'profile/social',
       payload
     )
-    const { token, user, renew } = response.data
+    const { token, renew } = response.data
     if (renew) {
       const auth = getAuthProvider()
       auth.checkSession({}, (err, result) => {
@@ -153,20 +153,31 @@ export const socialLoginAsync = createAsyncThunk(
           dispatch(notifyError(JSON.stringify(err)))
           return
         }
-        setLogin(dispatch, result.accessToken, user)
+        setLogin(dispatch, result.accessToken, response.data.user)
       })
     } else {
-      setLogin(dispatch, token, user)
+      setLogin(dispatch, token, response.data.user)
     }
   }
 )
 
 export const registerAsync = createAsyncThunk(
   'app/register',
-  async (payload: Record<string, unknown>, { dispatch }) => {
-    const response = await request<{ token: string; user: AppUser }>('profile/register', payload)
+  async (payload: Record<string, unknown>, { dispatch, getState }) => {
+    const state = getState() as RootState
+    const response = await request<{ token: string; user: AppUser; message?: string }>(
+      'profile/register',
+      payload
+    )
+    if (response.status !== 200) {
+      dispatch(notifyError('Register error' + response.data.message))
+      return
+    }
     //For email validation rework this
     setLogin(dispatch, response.data.token, response.data.user)
+    if (state.app.dialog === 'onboard.register') {
+      dispatch(patch({ dialog: undefined }))
+    }
   }
 )
 

@@ -1,44 +1,41 @@
-import { initializeApp } from 'firebase/app'
+import { initializeApp, credential as util, auth } from 'firebase-admin'
 import {
-  getAuth,
+  createUserWithEmailAndPassword,
   signInWithCredential,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
+  signOut
 } from 'firebase/auth'
 import config from '../config'
 
 export const getFirebaseApp = () => {
   const google = config.settings?.google
   const projectId = google?.projectId
-  const authDomain = `${projectId}.firebaseapp.com`
   const storageBucket = `${projectId}.appspot.com`
+  const databaseURL = `https://${projectId}.firebaseio.com`
+  const serviceAccount = google?.serviceAccountKeyJson
+  const credential = serviceAccount ? util.cert(serviceAccount) : undefined
   const app = initializeApp({
-    apiKey: google?.apiKey,
-    projectId,
-    authDomain,
+    credential,
     storageBucket,
-    messagingSenderId: google?.senderId,
-    appId: google?.appId,
-    measurementId: google?.analyticsId
+    databaseURL
   })
-
   return app
 }
 
-export const getFirebaseAuth = () => getAuth(getFirebaseApp())
+export const getFirebaseAuth = () => auth(getFirebaseApp())
 
 export const firebaseCredentialLogin = (credential: any) => {
-  return signInWithCredential(getFirebaseAuth(), credential)
+  return signInWithCredential(getFirebaseAuth() as any, credential)
 }
 
 export const firebaseLogin = (email: string, password: string) => {
-  return signInWithEmailAndPassword(getFirebaseAuth(), email, password)
+  return signInWithEmailAndPassword(getFirebaseAuth() as any, email, password)
 }
 
 export const firebaseLogout = () => {
-  return getFirebaseAuth().signOut()
+  return signOut(getFirebaseAuth() as any)
 }
 
 export const firebaseRegister = ({ email, password }: Record<string, string>) => {
-  return createUserWithEmailAndPassword(getFirebaseAuth(), email, password)
+  return createUserWithEmailAndPassword(getFirebaseAuth() as any, email, password)
 }

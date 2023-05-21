@@ -6,15 +6,16 @@ import {
   TextField,
   Typography,
   Container,
-  ContainerProps,
+  ContainerProps
 } from '@mui/material'
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../../shared/store'
+import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { registerAsync } from '../app/thunks'
 import { Paths } from '../../shared/routes'
 import { googlePopupLogin } from './GoogleOneTap'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 export default function Register(props?: ContainerProps) {
   const dispatch = useAppDispatch()
@@ -22,6 +23,7 @@ export default function Register(props?: ContainerProps) {
   const returnPath = new URLSearchParams(window.location.search).get('returnTo')
   const returnTo = returnPath ? `?returnTo=${returnPath}` : ''
   const isRoutedPage = window.location.pathname.toLowerCase().includes('register')
+  const isLoading = useAppSelector(state => state.app.loading)
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -42,7 +44,7 @@ export default function Register(props?: ContainerProps) {
           minHeight: '44vh',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'center'
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -102,9 +104,16 @@ export default function Register(props?: ContainerProps) {
               />
             </Grid>
           </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 1.5 }}>
+          <LoadingButton
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 1.5 }}
+            loading={isLoading}
+          >
             Sign Up
-          </Button>
+          </LoadingButton>
           {isRoutedPage && (
             <Button
               component={Link}

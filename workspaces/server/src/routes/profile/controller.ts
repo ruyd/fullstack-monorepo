@@ -6,11 +6,12 @@ import {
   authProviderChangePassword,
   lazyLoadManagementToken,
   authProviderPatch,
-  decodeToken
+  decodeToken,
+  getAuthSettings
 } from '../../shared/auth'
 import { createOrUpdate } from '../../shared/model-api/controller'
 import { UserModel } from '../../shared/types/models/user'
-import { AppAccessToken, AuthProviders, getPictureMock, IdentityToken } from '@lib'
+import { AppAccessToken, getPictureMock, IdentityToken } from '@lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 import logger from '../../shared/logger'
@@ -22,10 +23,15 @@ export async function register(req: express.Request, res: express.Response) {
   if (!payload) {
     throw new Error('Missing payload')
   }
+  const { enableRegistration } = getAuthSettings()
+
+  if (!enableRegistration) {
+    throw new Error('Registration is disabled')
+  }
 
   const existing = await UserModel.findOne({ where: { email: payload.email } })
   if (existing) {
-    throw new Error('Email already exists')
+    throw new Error('Email already registered, try Sign-in')
   }
 
   payload.userId = uuid()
@@ -40,7 +46,7 @@ export async function register(req: express.Request, res: express.Response) {
     userId: user.userId,
     roles: []
   })
-  res.json({ token })
+  res.json({ token, user })
 }
 
 export function authReady() {
@@ -55,6 +61,8 @@ export function authReady() {
  */
 export async function login(req: express.Request, res: express.Response) {
   const { email, password } = req.body
+  const { startAdminEmail, isDevelopment, isNone } = getAuthSettings()
+  const isStartAdmin = email === startAdminEmail
 
   let user = (
     await UserModel.findOne({
@@ -62,13 +70,7 @@ export async function login(req: express.Request, res: express.Response) {
     })
   )?.get()
 
-  const settings = config.settings
-  const authProvider = settings.system?.authProvider || AuthProviders.None
-  const isDevelopment = authProvider === AuthProviders.Development
-  const isNone = authProvider === AuthProviders.None
-  const isStartAdmin = settings.internal?.startAdminEmail === email
-
-  if ((isDevelopment && (user || isStartAdmin)) || (isNone && isStartAdmin)) {
+  if ((isDevelopment && user) || (isNone && isStartAdmin)) {
     logger.warn('Mocking loging without pass for: ' + user?.email)
     res.json({
       token: createToken({
