@@ -222,7 +222,12 @@ export async function fakeMockRegister(payload: Record<string, string>) {
   const result = await new Promise(
     resolve =>
       setTimeout(() => {
-        return resolve({ data: { ...payload, provider: 'mockRegister' } })
+        return resolve({
+          data: {
+            ...payload,
+            provider: 'mockRegister'
+          }
+        })
       }, 1000) as unknown as Record<string, string>
   )
   return result

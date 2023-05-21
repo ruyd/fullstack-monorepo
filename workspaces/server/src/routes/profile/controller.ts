@@ -23,7 +23,8 @@ export async function register(req: express.Request, res: express.Response) {
   if (!payload) {
     throw new Error('Missing payload')
   }
-  const { enableRegistration } = getAuthSettings()
+  const { enableRegistration, startAdminEmail } = getAuthSettings()
+  const isStartAdmin = payload.email === startAdminEmail
 
   if (!enableRegistration) {
     throw new Error('Registration is disabled')
@@ -44,7 +45,7 @@ export async function register(req: express.Request, res: express.Response) {
   const user = await createOrUpdate(UserModel, payload)
   const token = createToken({
     userId: user.userId,
-    roles: []
+    roles: isStartAdmin ? ['admin'] : []
   })
   res.json({ token, user })
 }
