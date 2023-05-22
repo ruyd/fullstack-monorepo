@@ -36,11 +36,11 @@ export interface oAuthRegistered extends oAuthError {
 
 export const getAuthSettings = () => {
   const settings = config.settings
-  const authProvider = settings.system?.authProvider || AuthProviders.None
+  const authProvider = settings?.system?.authProvider || AuthProviders.None
   const isDevelopment = authProvider === AuthProviders.Development
   const isNone = authProvider === AuthProviders.None
-  const startAdminEmail = settings.internal?.startAdminEmail
-  const enableRegistration = !isNone && settings.system?.enableRegistration
+  const startAdminEmail = settings?.internal?.startAdminEmail
+  const enableRegistration = !isNone && settings?.system?.enableRegistration
   return { settings, authProvider, isDevelopment, isNone, startAdminEmail, enableRegistration }
 }
 
@@ -253,7 +253,7 @@ export async function authProviderRegister(
     }
     return {
       error: error.response?.data?.name ?? error.message,
-      error_description: error.response?.data?.description
+      error_description: error.response?.data?.description ?? error.message
     }
   }
 }

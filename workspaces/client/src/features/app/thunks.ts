@@ -1,7 +1,7 @@
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
-import { AppUser, onLogin, getAuthProvider } from '../../shared/auth'
+import { AppUser, onLogin, getAuth0 } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
 
@@ -147,7 +147,7 @@ export const socialLoginAsync = createAsyncThunk(
     )
     const { token, renew } = response.data
     if (renew) {
-      const auth = getAuthProvider()
+      const auth = getAuth0()
       auth.checkSession({}, (err, result) => {
         if (err) {
           dispatch(notifyError(JSON.stringify(err)))
@@ -165,6 +165,7 @@ export const registerAsync = createAsyncThunk(
   'app/register',
   async (payload: Record<string, unknown>, { dispatch, getState }) => {
     const state = getState() as RootState
+
     const response = await request<{ token: string; user: AppUser; message?: string }>(
       'profile/register',
       payload

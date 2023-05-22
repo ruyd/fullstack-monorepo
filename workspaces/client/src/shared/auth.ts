@@ -3,7 +3,7 @@ import axios from 'axios'
 import { AppAccessToken, Jwt, User } from '@lib'
 import { Paths } from './routes'
 import { config } from './config'
-import authProvider from 'auth0-js'
+import auth0 from 'auth0-js'
 import { v4 } from 'uuid'
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppUser extends User {
@@ -108,8 +108,8 @@ export const authOptions = () => ({
   scope: 'openid profile email'
 })
 
-export function getAuthProvider(overrides: Partial<typeof authOptions> = {}) {
-  return new authProvider.WebAuth({ ...authOptions(), ...overrides })
+export function getAuth0(overrides: Partial<typeof authOptions> = {}) {
+  return new auth0.WebAuth({ ...authOptions(), ...overrides })
 }
 
 export function generateNonce(userId?: string) {

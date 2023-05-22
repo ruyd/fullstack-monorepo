@@ -136,7 +136,7 @@ export default function SettingsForGoogle({
               <TextField
                 label="Sender ID"
                 fullWidth
-                value={data?.google?.senderId || ''}
+                value={data?.google?.messagingSenderId || ''}
                 onChange={e => save('google', 'senderId', e.target.value)}
               />
             </Grid>

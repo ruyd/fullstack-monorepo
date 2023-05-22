@@ -8,11 +8,9 @@ import { errorHandler } from './shared/errorHandler'
 import cors from 'cors'
 import api from './routes'
 import { activateAxiosTrace, endpointTracingMiddleware, printRouteSummary } from './shared/trace'
-import { auth0AutoConfigure } from './shared/auth/auth0.configure'
 import { Connection } from './shared/db'
 import { checkDatabase } from './shared/db/check'
 import { modelAuthMiddleware } from './shared/auth'
-import { loadSettingsAsync } from './shared/settings'
 import { homepage } from './shared/server'
 
 export interface BackendApp extends express.Express {
@@ -38,15 +36,9 @@ export function createBackendApp({ checks, trace }: BackendOptions = { checks: t
 
   // Startup
   Connection.init()
-  const promises = [
-    checks
-      ? checkDatabase()
-          .then(async ok => (ok ? await loadSettingsAsync() : ok))
-          .then(async ok => (ok ? await auth0AutoConfigure() : ok))
-      : Promise.resolve(true)
-  ]
+  const promises = [checks ? checkDatabase() : Promise.resolve(true)]
 
-  // Add Middlewares - Order matters
+  // Add Middlewares
   app.use(cors())
   app.use(express.json({ limit: config.jsonLimit }))
   app.use(

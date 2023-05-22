@@ -36,12 +36,12 @@ export async function register(req: express.Request, res: express.Response) {
   }
 
   payload.userId = uuid()
+  setPictureIfEmpty(payload)
   const providerResult = await authProviderRegister(payload)
   if (providerResult.error) {
     throw new Error(providerResult.error_description)
   }
 
-  setPictureIfEmpty(payload)
   const user = await createOrUpdate(UserModel, payload)
   const token = createToken({
     userId: user.userId,

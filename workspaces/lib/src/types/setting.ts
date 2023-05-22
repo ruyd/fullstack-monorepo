@@ -63,7 +63,7 @@ export interface GoogleSettings {
   enabled?: boolean
   apiKey?: string
   databaseUrl?: string
-  senderId?: string
+  messagingSenderId?: string
   appId?: string
   serviceAccountKeyJson?: string
 }

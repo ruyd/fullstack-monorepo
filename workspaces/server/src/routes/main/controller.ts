@@ -6,7 +6,7 @@ import { DrawingModel, EnrichedRequest, SettingModel, UserModel } from '../../sh
 import { v4 as uuid } from 'uuid'
 import { createToken } from '../../shared/auth'
 import config from '../../shared/config'
-import { getClientConfigSettings } from '../../shared/settings'
+import { getClientSettings } from '../../shared/settings'
 import { SystemSettings } from '@lib'
 
 export async function start(req: express.Request, res: express.Response) {
@@ -24,8 +24,8 @@ export async function start(req: express.Request, res: express.Response) {
       await SettingModel.create({
         name: 'internal',
         data: {
-          startAdminEmail: req.body.email,
-        },
+          startAdminEmail: req.body.email
+        }
       })
     ).get()
   } catch (e) {
@@ -43,8 +43,8 @@ export async function start(req: express.Request, res: express.Response) {
     await SettingModel.create({
       name: 'system',
       data: {
-        disable: true,
-      } as SystemSettings,
+        disable: true
+      } as SystemSettings
     })
   )?.get()
   if (!systemSetting) {
@@ -62,14 +62,14 @@ export async function start(req: express.Request, res: express.Response) {
       await UserModel.create({
         userId: uuid(),
         email: req.body.email,
-        firstName: 'Admin',
+        firstName: 'Admin'
       })
     ).get()
   }
 
   const token = createToken({
     ...user,
-    roles: ['admin'],
+    roles: ['admin']
   })
 
   res.json({ ok: true, token, user })
@@ -81,9 +81,9 @@ export async function gallery(req: express.Request, res: express.Response) {
     where: {
       ...conditional,
       private: {
-        [sequelize.Op.not]: true,
-      },
-    },
+        [sequelize.Op.not]: true
+      }
+    }
   })
   res.json(items)
 }
@@ -91,7 +91,7 @@ export async function gallery(req: express.Request, res: express.Response) {
 export async function sendClientConfigSettings(req?: express.Request, res?: express.Response) {
   const user = (req as EnrichedRequest).auth
   const isAdmin = user?.roles?.includes('admin')
-  const payload = await getClientConfigSettings(isAdmin)
+  const payload = await getClientSettings(isAdmin)
   res?.json(payload)
   return payload
 }

@@ -7,7 +7,7 @@ import { createOrUpdate } from '../model-api/controller'
 import { UserActiveModel } from '../types'
 import handlers from './handlers'
 import { config } from '../config'
-import { getClientConfigSettings } from '../settings'
+import { getClientSettings } from '../settings'
 
 export type SocketHandler = (io: SocketService, socket: Socket) => void
 
@@ -18,8 +18,8 @@ function onDisconnect(socket: Socket) {
   try {
     UserActiveModel.destroy({
       where: {
-        socketId: socket.id,
-      },
+        socketId: socket.id
+      }
     })
   } catch (error) {
     logger.error(error)
@@ -35,7 +35,7 @@ function onConnect(socket: Socket) {
       socketId: socket.id,
       userId: decoded?.userId,
       ip: socket.handshake.address,
-      userAgent: socket.handshake.headers['user-agent'],
+      userAgent: socket.handshake.headers['user-agent']
     })
   } catch (error) {
     logger.error(error)
@@ -44,13 +44,13 @@ function onConnect(socket: Socket) {
 
 export function registerSocket(server: Server | ServerHttps): void {
   io = new SocketService(server, {
-    cors: config.cors,
+    cors: config.cors
   })
   const onConnection = (socket: Socket) => {
     handlers.forEach((handler: SocketHandler) => handler(io, socket))
 
     socket.send('Helo', {
-      notifications: ['Hi!'],
+      notifications: ['Hi!']
     })
 
     onConnect(socket)
@@ -71,6 +71,6 @@ export async function notifyChange(eventName: string): Promise<void> {
 }
 
 export async function sendConfig(): Promise<void> {
-  const payload = await getClientConfigSettings()
+  const payload = await getClientSettings()
   io.emit('config', { ...payload })
 }
