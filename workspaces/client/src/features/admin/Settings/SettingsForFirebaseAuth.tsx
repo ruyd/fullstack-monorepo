@@ -23,10 +23,11 @@ export default function SettingsForFirebase({
             </Grid>
             <Grid item xs={12}>
               <TextField
-                label="API Key"
+                label="Web API Key"
                 fullWidth
-                value={data?.internal?.secrets?.google.apiKey || ''}
-                onChange={e => save('internal', 'secrets.google.apiKey', e.target.value)}
+                value={data?.google?.apiKey || ''}
+                onChange={e => save('google', 'apiKey', e.target.value)}
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -35,6 +36,7 @@ export default function SettingsForFirebase({
                 fullWidth
                 value={data?.google?.appId || ''}
                 onChange={e => save('google', 'appId', e.target.value)}
+                required
               />
             </Grid>
             <Grid item xs={12}>
@@ -43,6 +45,7 @@ export default function SettingsForFirebase({
                 fullWidth
                 value={data?.google?.projectId || ''}
                 onChange={e => save('google', 'projectId', e.target.value)}
+                required
               />
             </Grid>
           </Grid>

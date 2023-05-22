@@ -9,9 +9,11 @@ import { ProductModel } from 'src/shared/types/models/product'
 import Connection from 'src/shared/db'
 import { Model } from 'sequelize'
 import { getTotalCharge } from '../shop/controller'
+import { getSettingsAsync } from 'src/shared/settings'
 
-function getStripe() {
-  const apiKey = config.settings.internal?.secrets?.stripe?.apiKey
+async function getStripe() {
+  const settings = await getSettingsAsync()
+  const apiKey = settings?.internal?.secrets?.stripe?.apiKey
   if (!apiKey) {
     throw new Error('Stripe API Key not configured')
   }
@@ -21,7 +23,7 @@ function getStripe() {
 }
 
 export async function stripeCreatePaymentIntent(req: express.Request, res: express.Response) {
-  const stripe = getStripe()
+  const stripe = await getStripe()
   try {
     const { userId } = (req as EnrichedRequest).auth
     const user = (await UserModel.findByPk(userId, { raw: true })) as unknown as User
@@ -41,9 +43,10 @@ export async function stripeCreatePaymentIntent(req: express.Request, res: expre
   }
 }
 
-export function stripeWebHook(request: express.Request, response: express.Response) {
-  const stripe = getStripe()
-  const endpointSecret = config.settings.internal?.secrets?.stripe?.webhookKey
+export async function stripeWebHook(request: express.Request, response: express.Response) {
+  const stripe = await getStripe()
+  const settings = await getSettingsAsync()
+  const endpointSecret = settings.internal?.secrets?.stripe?.webhookKey
 
   let event = request.body
   // Only verify the event if you have an endpoint secret defined.
@@ -118,7 +121,7 @@ export async function stripeCreateVerifyIdentitySession(
   req: express.Request,
   res: express.Response
 ) {
-  const stripe = getStripe()
+  const stripe = await getStripe()
   try {
     const verificationSession = await stripe.identity.verificationSessions.create({
       type: 'document',
@@ -168,7 +171,7 @@ export async function stripeCreateVerifyIdentitySession(
  */
 
 export async function syncProductsHandler(req: express.Request, res: express.Response) {
-  const stripe = getStripe()
+  const stripe = await getStripe()
   const products = await stripe.products.list({ limit: 100, active: true })
   const prices = await stripe.prices.list({ limit: 100 })
   const existing = await ProductModel.findAndCountAll({

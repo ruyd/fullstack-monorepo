@@ -27,6 +27,7 @@ export interface SecretKeys {
   clientSecret?: string
   managerSecret?: string
   webhookKey?: string
+  serviceAccountJson?: string
 }
 
 export interface InternalSettings {
@@ -65,7 +66,6 @@ export interface GoogleSettings {
   databaseUrl?: string
   messagingSenderId?: string
   appId?: string
-  serviceAccountKeyJson?: string
 }
 
 export interface Auth0Settings {

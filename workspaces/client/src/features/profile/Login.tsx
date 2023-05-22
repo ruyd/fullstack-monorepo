@@ -9,12 +9,13 @@ import {
   TextField,
   Typography,
   Link as MuiLink,
-  ContainerProps,
+  ContainerProps
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
+import PasswordField from '../ui/PasswordField'
 
 export default function Login(props?: ContainerProps & Partial<React.Component>): JSX.Element {
   const enableRegistration = useAppSelector(state => state.app.settings?.system?.enableRegistration)
@@ -32,6 +33,7 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
     const data = new FormData(event.currentTarget)
     const payload = {} as Record<string, unknown>
     data.forEach((value, key) => (payload[key] = value))
+
     dispatch(loginAsync(payload)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled' && (returnTo || isRoutedPage)) {
         navigate(returnTo || '/')
@@ -62,7 +64,7 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          mb: 5,
+          mb: 5
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -88,13 +90,12 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <PasswordField
                 autoComplete="current-password"
                 required
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
                 variant="filled"
               />
             </Grid>

@@ -25,7 +25,7 @@ export const firebaseRegister = async ({ email, ...payload }: Record<string, str
     ...payload,
     email,
     emailVerified: false,
-    photoURL: 'http://www.example.com/12345678/photo.png',
+    // photoURL: 'http://www.example.com/12345678/photo.png',
     disabled: false
   })
   return result

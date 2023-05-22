@@ -22,9 +22,17 @@ export function getAuth0Settings(data: unknown) {
   config.auth = merged
 }
 
+function setGoogle(result: SettingState) {
+  const json = JSON.parse(result.internal?.secrets?.google?.serviceAccountJson || '{}')
+  const projectId = json?.project_id
+  if (result.google && !result.google.projectId) {
+    result.google.projectId = projectId
+  }
+}
+
 export async function getSettingsAsync(freshNotCached = false): Promise<SettingState> {
   const cache = SettingsCache.get('settings')
-  if (!cache && !freshNotCached) {
+  if (cache && !freshNotCached) {
     logger.info(`Skipping settings load, cache hit...`)
     return cache as SettingState
   }
@@ -37,11 +45,15 @@ export async function getSettingsAsync(freshNotCached = false): Promise<SettingS
   try {
     const settings = (await SettingModel.findAll({ raw: true })) as unknown as Setting[]
     for (const setting of settings) {
-      result[setting.name] = (setting as unknown as { value: SettingDataType }).value
+      result[setting.name] = (setting as unknown as { data: SettingDataType }).data
     }
   } catch (e) {
     logger.error(e)
   }
+
+  setGoogle(result)
+
+  SettingsCache.set('settings', result)
 
   return result
 }

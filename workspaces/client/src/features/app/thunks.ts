@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, onLogin, getAuth0 } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
+import { firebasePasswordLogin } from 'src/shared/firebase'
 
 export const Method = {
   GET: 'get',
@@ -120,18 +122,28 @@ export const loginAsync = createAsyncThunk(
   'app/login',
   async (payload: Record<string, unknown>, { dispatch, getState }) => {
     const state = getState() as RootState
-    const response = await request<{ token: string; user: AppUser; message?: string }>(
-      'profile/login',
-      payload
-    )
-    if (response.status === 200) {
-      setLogin(dispatch, response.data.token, response.data.user)
-      if (state.app.dialog === 'onboard') {
-        dispatch(patch({ dialog: undefined }))
-      }
-    } else {
-      dispatch(notifyError('Login error' + response.data.message))
+    let credential
+
+    try {
+      credential = await firebasePasswordLogin(payload.email as string, payload.password as string)
+    } catch (err) {
+      const error = err as Error
+      dispatch(notifyError(error.message))
+      return
     }
+
+    // const response = await request<{ token: string; user: AppUser; message?: string }>(
+    //   'profile/login',
+    //   payload
+    // )
+    // if (response.status === 200) {
+    //   setLogin(dispatch, response.data.token, response.data.user)
+    //   if (state.app.dialog === 'onboard') {
+    //     dispatch(patch({ dialog: undefined }))
+    //   }
+    // } else {
+    //   dispatch(notifyError('Login error' + response.data.message))
+    // }
   }
 )
 

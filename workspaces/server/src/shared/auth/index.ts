@@ -11,6 +11,7 @@ import { HttpUnauthorizedError } from '../errorHandler'
 import { AuthProviders } from '@lib'
 import { auth0Login, auth0Register } from './auth0'
 import { firebaseLogin, firebaseRegister } from 'src/shared/auth/firebase'
+import { getSettingsAsync } from '../settings'
 
 export interface oAuthError {
   error?: string
@@ -34,8 +35,8 @@ export interface oAuthRegistered extends oAuthError {
   email_verified: boolean
 }
 
-export const getAuthSettings = () => {
-  const settings = config.settings
+export const getAuthSettingsAsync = async () => {
+  const settings = await getSettingsAsync()
   const authProvider = settings?.system?.authProvider || AuthProviders.None
   const isDevelopment = authProvider === AuthProviders.Development
   const isNone = authProvider === AuthProviders.None
@@ -213,7 +214,7 @@ export async function authProviderLogin(
   username: string,
   password: string
 ): Promise<oAuthResponse> {
-  const { authProvider } = getAuthSettings()
+  const { authProvider } = await getAuthSettingsAsync()
   const response = (await loginMethods[authProvider](username, password)) as AxiosResponse
   return response.data
 }
@@ -243,7 +244,7 @@ export async function authProviderRegister(
   payload: Record<string, string>
 ): Promise<Partial<oAuthRegistered>> {
   try {
-    const { authProvider } = getAuthSettings()
+    const { authProvider } = await getAuthSettingsAsync()
     const method = registerMethods[authProvider]
     const response = (await method(payload)) as AxiosResponse
     return response.data

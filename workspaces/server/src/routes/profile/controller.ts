@@ -7,7 +7,7 @@ import {
   lazyLoadManagementToken,
   authProviderPatch,
   decodeToken,
-  getAuthSettings
+  getAuthSettingsAsync
 } from '../../shared/auth'
 import { createOrUpdate } from '../../shared/model-api/controller'
 import { UserModel } from '../../shared/types/models/user'
@@ -15,7 +15,6 @@ import { AppAccessToken, getPictureMock, IdentityToken } from '@lib'
 import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 import logger from '../../shared/logger'
-import { config } from '../../shared/config'
 import { EnrichedRequest } from '../../shared/types'
 
 export async function register(req: express.Request, res: express.Response) {
@@ -23,7 +22,7 @@ export async function register(req: express.Request, res: express.Response) {
   if (!payload) {
     throw new Error('Missing payload')
   }
-  const { enableRegistration, startAdminEmail } = getAuthSettings()
+  const { enableRegistration, startAdminEmail } = await getAuthSettingsAsync()
   const isStartAdmin = payload.email === startAdminEmail
 
   if (!enableRegistration) {
@@ -51,9 +50,8 @@ export async function register(req: express.Request, res: express.Response) {
 }
 
 export function authReady() {
-  const cfg = config.settings.auth0
-  const enabled = !!cfg?.enabled && !!cfg?.tenant && !!cfg.clientId
-  return enabled
+  // const enabled = !!cfg?.enabled && !!cfg?.tenant && !!cfg.clientId
+  return false
 }
 
 /**
@@ -62,7 +60,7 @@ export function authReady() {
  */
 export async function login(req: express.Request, res: express.Response) {
   const { email, password } = req.body
-  const { startAdminEmail, isDevelopment, isNone } = getAuthSettings()
+  const { startAdminEmail, isDevelopment, isNone } = await getAuthSettingsAsync()
   const isStartAdmin = email === startAdminEmail
 
   let user = (

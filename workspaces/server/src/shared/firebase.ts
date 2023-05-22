@@ -7,16 +7,15 @@ export const getFirebaseApp = async (): Promise<App> => {
     return firebaseApp
   }
 
-  const settings = await getSettingsAsync()
+  const settings = await getSettingsAsync(true)
+  const serviceAccountKeyJson = settings.internal?.secrets?.google.serviceAccountJson
 
-  const google = settings?.google
-
-  if (!google?.serviceAccountKeyJson) {
+  if (!serviceAccountKeyJson) {
     throw new Error('To use firebase authentication you need to input your serviceAccountKey.json')
   }
 
-  const serviceAccountObject = JSON.parse(google?.serviceAccountKeyJson || '{}')
-  const projectId = serviceAccountObject?.projectId
+  const serviceAccountObject = JSON.parse(serviceAccountKeyJson || '{}')
+  const projectId = serviceAccountObject?.project_id
   const storageBucket = `${projectId}.appspot.com`
   const databaseURL = `https://${projectId}.firebaseio.com`
   const credential = serviceAccountObject ? cert(serviceAccountObject) : undefined

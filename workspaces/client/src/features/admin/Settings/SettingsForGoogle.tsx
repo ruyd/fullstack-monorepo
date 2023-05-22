@@ -94,10 +94,12 @@ export default function SettingsForGoogle({
               <TextField
                 label="serviceAccountKey.json File Contents"
                 fullWidth
-                value={data?.google?.serviceAccountKeyJson || ''}
+                value={data?.internal?.secrets?.google?.serviceAccountJson || ''}
                 multiline
                 rows={4}
-                onChange={e => save('google', 'serviceAccountKeyJson', e.target.value)}
+                onChange={e =>
+                  save('internal', 'secrets.google.serviceAccountJson', e.target.value)
+                }
               />
             </Grid>
             <Grid item xs={12}>
@@ -110,7 +112,7 @@ export default function SettingsForGoogle({
             </Grid>
             <Grid item xs={12}>
               <TextField
-                label="API Key"
+                label="Web API Key"
                 fullWidth
                 value={data?.google?.apiKey || ''}
                 onChange={e => save('google', 'apiKey', e.target.value)}
@@ -126,18 +128,10 @@ export default function SettingsForGoogle({
             </Grid>
             <Grid item xs={12}>
               <TextField
-                label="Database URL"
-                fullWidth
-                value={data?.google?.databaseUrl || ''}
-                onChange={e => save('google', 'databaseUrl', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Sender ID"
+                label="Messaging Sender ID"
                 fullWidth
                 value={data?.google?.messagingSenderId || ''}
-                onChange={e => save('google', 'senderId', e.target.value)}
+                onChange={e => save('google', 'messagingSenderId', e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>

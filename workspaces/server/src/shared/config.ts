@@ -4,7 +4,6 @@ import packageJson from '../../package.json'
 import appConfig from '../../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
-import { SettingData, SettingType } from '@lib'
 
 // Anti-webpack sorcery
 const env = process['env']
@@ -63,9 +62,6 @@ export interface Config {
     manageToken?: string
   }
   swaggerSetup: Partial<OAS3Definition>
-  settings: {
-    [K in SettingType]?: SettingData[K]
-  }
 }
 
 export function parseDatabaseConfig(
@@ -174,8 +170,7 @@ export function getConfig(): Config {
         }
       ],
       basePath: '/docs'
-    },
-    settings: {}
+    }
   }
 }
 

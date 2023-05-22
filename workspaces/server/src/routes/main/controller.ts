@@ -5,7 +5,6 @@ import { list } from '../../shared/model-api/controller'
 import { DrawingModel, EnrichedRequest, SettingModel, UserModel } from '../../shared/types'
 import { v4 as uuid } from 'uuid'
 import { createToken } from '../../shared/auth'
-import config from '../../shared/config'
 import { getClientSettings } from '../../shared/settings'
 import { SystemSettings } from '@lib'
 
@@ -52,9 +51,6 @@ export async function start(req: express.Request, res: express.Response) {
     res.json({ ok: false, error: 'Failed to create system setting' })
     return
   }
-
-  //if statefull
-  config.settings.system = systemSetting.data as SystemSettings
 
   let user = (await UserModel.findOne({ where: { email: req.body.email } }))?.get()
   if (!user) {
