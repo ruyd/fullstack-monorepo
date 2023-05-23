@@ -40,7 +40,7 @@ export async function getIfExists<T extends object>(
 
 export async function createOrUpdate<T extends object>(
   model: ModelStatic<Model<T>>,
-  payload: T
+  payload: object
 ): Promise<T> {
   const casted = payload as unknown as MakeNullishOptional<T>
   try {
@@ -49,7 +49,7 @@ export async function createOrUpdate<T extends object>(
     if (entity?.onChanges) {
       entity.onChanges(`${entity.name}`, item)
     }
-    return item.get()
+    return item.get() as unknown as T
   } catch (e: unknown) {
     const err = e as Error
     logger.error(`${model.name}.createOrUpdate(): ${err.message}`, err)

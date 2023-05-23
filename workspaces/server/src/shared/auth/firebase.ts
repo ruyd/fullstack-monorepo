@@ -28,7 +28,7 @@ export const firebaseCredentialLogin = async ({ idToken }: oAuthInputs): Promise
       })
     )?.get()
     const access_token = await auth.createCustomToken(result.uid, {
-      roles: user?.roles?.length ? [user?.roles] : []
+      roles: user?.roles?.length ? user.roles : []
     })
 
     return {

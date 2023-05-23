@@ -22,7 +22,7 @@ export interface User extends Entity {
   preferences?: UserPreferences
   loginCount?: number
   lastLogin?: Date
-  roles?: UserRoleType[]
+  roles?: string[]
 }
 
 export interface Address extends Entity {

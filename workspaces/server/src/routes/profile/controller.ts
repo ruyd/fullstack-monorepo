@@ -103,13 +103,6 @@ export async function login(req: express.Request, res: express.Response) {
   })
 }
 
-/**
- * Create Email DB record if it doesn't exist
- * Update profile metadata with userId
- * Reissue access_token with userId (or client?)
- * auth0-node.socialLogin() better?
- * @param req access_token, id_token
- */
 export async function social(req: express.Request, res: express.Response) {
   logger.info('Social login', req.body)
   const { idToken, accessToken } = req.body

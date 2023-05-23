@@ -138,8 +138,7 @@ export const loginAsync = createAsyncThunk(
 
       if (response.status === 200) {
         if (state?.app?.settings?.system?.authProvider === AuthProviders.Firebase) {
-          const result = await firebaseCustomTokenLogin(response.data.token)
-          console.log('compare', response.data.token, result.user.accessToken)
+          await firebaseCustomTokenLogin(response.data.token)
         }
         setLogin(dispatch, response.data.token, response.data.user)
         if (state.app.dialog === 'onboard') {

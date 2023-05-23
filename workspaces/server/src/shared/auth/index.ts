@@ -152,12 +152,13 @@ export async function modelAuthMiddleware(
     if (entity && !accessToken) {
       throw Error('Not logged in')
     }
-    // Valid, but let's heck if user has access role
+    // Valid, but let's check if user has access role
+    const roles = accessToken?.claims?.roles || accessToken?.roles || []
     if (
       entity &&
       accessToken &&
       entity.roles?.length &&
-      !entity.roles?.every(r => accessToken?.roles.includes(r))
+      !entity.roles?.every(r => roles.includes(r))
     ) {
       throw Error('Needs user access role for request')
     }
