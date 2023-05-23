@@ -12,7 +12,7 @@ export interface ModelApiConfig {
 
 export const modelApiConfig: ModelApiConfig = {
   userIdColumn: 'userId',
-  getAuthUserId: req => (req as EnrichedRequest).auth?.userId
+  getAuthUserId: req => (req as EnrichedRequest).auth?.uid
 }
 
 /**

@@ -4,7 +4,7 @@ import Dashboard from './Dashboard'
 import Data from './Data'
 import Menu from './Menu'
 import Orders from './Orders'
-import Settings from './Settings'
+import Settings from './Settings/index'
 import Subscriptions from './Subscriptions'
 import Users from './Users'
 

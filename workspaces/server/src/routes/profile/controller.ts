@@ -90,7 +90,7 @@ export async function login(req: express.Request, res: express.Response) {
 
   if (!user) {
     const decoded = decode(response.access_token as string) as AppAccessToken
-    user = await createOrUpdate(UserModel, { email, userId: decoded.userId })
+    user = await createOrUpdate(UserModel, { email, userId: decoded.uid })
   }
 
   if (!user) {
@@ -107,7 +107,7 @@ export async function social(req: express.Request, res: express.Response) {
   logger.info('Social login', req.body)
   const { idToken, accessToken } = req.body
   //validate tocket instead of just decode?
-  const access = decodeToken(accessToken)
+  const access = decodeToken(accessToken) as AppAccessToken
   const decoded = decode(idToken) as IdentityToken
   const { email, given_name, family_name, picture } = decoded
 
@@ -151,10 +151,10 @@ export async function social(req: express.Request, res: express.Response) {
   }
 
   let renew = false
-  if (access.userId !== user.userId) {
+  if (access.uid !== user.userId) {
     const ok = await lazyLoadManagementToken()
     if (ok) {
-      logger.info('Updating metadata userId', access.userId, user.userId)
+      logger.info('Updating metadata userId', access.uid, user.userId)
       const response = await authProviderPatch(access.sub, {
         connection: 'google-oauth2',
         user_metadata: {
@@ -208,7 +208,7 @@ export async function edit(req: express.Request, res: express.Response) {
     throw new Error('Missing payload')
   }
   const auth = (req as EnrichedRequest).auth as AppAccessToken
-  payload.userId = auth.userId
+  payload.userId = auth.uid
   const user = await createOrUpdate(UserModel, payload)
   res.json({ user })
 }

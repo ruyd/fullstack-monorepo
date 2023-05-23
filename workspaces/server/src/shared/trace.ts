@@ -9,7 +9,7 @@ import logger from './logger'
 export function endpointTracingMiddleware(
   req: express.Request,
   res: express.Response,
-  next: express.NextFunction,
+  next: express.NextFunction
 ) {
   const methods = ['POST', 'PUT', 'PATCH', 'DELETE']
   const endpoints = ['/cart']
@@ -26,7 +26,7 @@ export function endpointTracingMiddleware(
     method: req.method,
     endpoint: req.originalUrl,
     tokenOk: !!decoded,
-    userId: decoded?.userId,
+    userId: decoded?.uid
   })
   if (req.body) {
     console.table(req.body)
@@ -42,7 +42,7 @@ export function activateAxiosTrace() {
       '> OUTBOUND TRACE ** ',
       req.method?.toUpperCase() || 'Request',
       req.url,
-      config.trace ? req.data : '',
+      config.trace ? req.data : ''
     )
     return req
   })

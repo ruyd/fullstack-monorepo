@@ -10,7 +10,7 @@ import { JwtPayload } from 'jsonwebtoken'
 import { EntityConfig } from '../db'
 
 export interface AppAccessToken extends JwtPayload {
-  userId: string
+  uid: string
   roles: string[]
 }
 

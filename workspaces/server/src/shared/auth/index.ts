@@ -206,7 +206,7 @@ export function createToken(obj: object): string {
   return token
 }
 
-export function decodeToken(token: string) {
+export function decodeToken(token: string): AppAccessToken | undefined {
   if (!token) {
     return undefined
   }
@@ -220,7 +220,7 @@ export function decodeToken(token: string) {
     authInfo[key.replace(prefix, '')] = authInfo[key]
     delete authInfo[key]
   }
-  return authInfo
+  return authInfo as AppAccessToken
 }
 
 const loginMethods: Record<string, (args: oAuthInputs) => Promise<oAuthResponse>> = {
