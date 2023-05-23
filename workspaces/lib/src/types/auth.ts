@@ -9,8 +9,8 @@ export interface Jwt {
   jti?: string | undefined
 }
 
-export interface AppAccessToken extends Jwt {
-  userId: string
+export type AppAccessToken = Jwt & {
+  uid: string
   roles: string[]
   claims: {
     [key: string]: unknown

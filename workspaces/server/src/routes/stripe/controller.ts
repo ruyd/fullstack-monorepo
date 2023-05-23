@@ -25,7 +25,7 @@ async function getStripe() {
 export async function stripeCreatePaymentIntent(req: express.Request, res: express.Response) {
   const stripe = await getStripe()
   try {
-    const { userId } = (req as EnrichedRequest).auth
+    const { uid: userId } = (req as EnrichedRequest).auth
     const user = (await UserModel.findByPk(userId, { raw: true })) as unknown as User
     const total = await getTotalCharge(userId)
 

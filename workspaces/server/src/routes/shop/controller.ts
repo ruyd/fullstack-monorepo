@@ -32,7 +32,7 @@ export async function checkout(_req: express.Request, res: express.Response) {
   const total = intent?.amount
   const order = (
     await OrderModel.create({
-      userId: req.auth?.userId,
+      userId: req.auth?.uid,
       status: OrderStatus.Pending,
       shippingAddressId,
       total
@@ -66,10 +66,10 @@ export async function checkout(_req: express.Request, res: express.Response) {
     wallet = await creditWallet(creditAmount, order.userId as string)
   }
 
-  await CartModel.destroy({ where: { userId: req.auth.userId } })
+  await CartModel.destroy({ where: { userId: req.auth.uid } })
 
   if (!wallet) {
-    wallet = (await WalletModel.findOne({ where: { walletId: req.auth.userId } }))?.get()
+    wallet = (await WalletModel.findOne({ where: { walletId: req.auth.uid } }))?.get()
   }
 
   res.json({ order, wallet })
@@ -143,7 +143,7 @@ export async function createOrChangeSubscription(order: Order) {
 }
 
 export async function addSubscriptionToCart(req: express.Request, res: express.Response) {
-  const { userId } = (req as EnrichedRequest).auth
+  const { uid: userId } = (req as EnrichedRequest).auth
   const cart = { ...req.body, userId } as unknown as Cart
   const { productId, priceId } = cart
   const product = (await ProductModel.findByPk(productId, { raw: true })) as unknown as Product

@@ -33,7 +33,7 @@ function onConnect(socket: Socket) {
     logger.info('decoded' + JSON.stringify(decoded))
     createOrUpdate(UserActiveModel, {
       socketId: socket.id,
-      userId: decoded?.userId,
+      userId: decoded?.uid,
       ip: socket.handshake.address,
       userAgent: socket.handshake.headers['user-agent']
     })
