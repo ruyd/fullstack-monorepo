@@ -5,7 +5,7 @@ import Routing, { RouteElement } from './Routing'
 import Notifications from './Notifications'
 import Footer from './Footer'
 import LoadingLine from './LoadingLine'
-import AuthProviders from '../profile/AuthProviders'
+import AuthProviderInjections from '../profile/AuthProviders'
 import { currentRoute } from '../../shared/routes'
 import Dialogs from './Dialogs'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -29,7 +29,7 @@ export function MainLayout() {
       <DrawerRight />
       <Footer />
       <Dialogs />
-      <AuthProviders />
+      <AuthProviderInjections />
       <SocketListener />
     </React.Fragment>
   )

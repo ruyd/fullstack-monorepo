@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import config from '../config'
-import { oAuthInputs, oAuthResponse } from '.'
+import { oAuthInputs, oAuthResponse } from '@lib'
 
 export async function auth0Register(payload: oAuthInputs): Promise<oAuthResponse> {
   try {

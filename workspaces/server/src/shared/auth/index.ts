@@ -8,41 +8,10 @@ import { AppAccessToken, EnrichedRequest } from '../types'
 import { Connection, EntityConfig } from '../db'
 import logger from '../logger'
 import { HttpUnauthorizedError } from '../errorHandler'
-import { AuthProviders } from '@lib'
+import { AuthProviders, oAuthError, oAuthInputs, oAuthRegistered, oAuthResponse } from '@lib'
 import { auth0Login, auth0Register } from './auth0'
 import { firebaseCredentialLogin, firebaseRegister } from 'src/shared/auth/firebase'
 import { getSettingsAsync } from '../settings'
-
-export interface oAuthError {
-  error?: string
-  error_description?: string
-  status?: number
-}
-
-export interface oAuthResponse extends oAuthError {
-  access_token?: string
-  id_token?: string
-  scope?: string
-  expires_in?: number
-  token_type?: string
-}
-
-export interface oAuthRegistered extends oAuthError {
-  _id?: string
-  email?: string
-  family_name?: string
-  given_name?: string
-  email_verified?: boolean
-}
-
-export interface oAuthInputs {
-  email?: string
-  password?: string
-  idToken?: string
-  firstName?: string
-  lastName?: string
-  uid?: string
-}
 
 export const getAuthSettingsAsync = async () => {
   const settings = await getSettingsAsync()
@@ -219,9 +188,9 @@ const loginMethods: Record<string, (args: oAuthInputs) => Promise<oAuthResponse>
   [AuthProviders.Firebase]: firebaseCredentialLogin
 }
 
-export async function authProviderLogin(email: string, password: string): Promise<oAuthResponse> {
+export async function authProviderLogin(args: oAuthInputs): Promise<oAuthResponse> {
   const { authProvider } = await getAuthSettingsAsync()
-  const response = await loginMethods[authProvider]({ email, password })
+  const response = await loginMethods[authProvider](args)
   return response
 }
 

@@ -60,7 +60,7 @@ export function authReady() {
  * allow offline mode
  */
 export async function login(req: express.Request, res: express.Response) {
-  const { email, password } = req.body
+  const { email, password, idToken } = req.body
   const { startAdminEmail, isDevelopment, isNone } = await getAuthSettingsAsync()
   const isStartAdmin = email === startAdminEmail
 
@@ -86,7 +86,7 @@ export async function login(req: express.Request, res: express.Response) {
     throw new Error('User logins have been disabled - Please contact administrator')
   }
 
-  const response = await authProviderLogin(email, password)
+  const response = await authProviderLogin({ email, password, idToken })
   if (response.error) {
     throw new Error(response.error_description)
   }

@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase-admin/auth'
 import { getFirebaseApp } from '../firebase'
-import { oAuthInputs, oAuthRegistered, oAuthResponse } from '.'
 import { UserModel } from '../types'
+import { oAuthInputs, oAuthRegistered, oAuthResponse } from '@lib'
 
 export interface FirebaseAuthResponse {
   kind: string
@@ -28,7 +28,7 @@ export const firebaseCredentialLogin = async ({ idToken }: oAuthInputs): Promise
       })
     )?.get()
     const access_token = await auth.createCustomToken(result.uid, {
-      roles: user ? [user?.roles] : []
+      roles: user?.roles?.length ? [user?.roles] : []
     })
 
     return {

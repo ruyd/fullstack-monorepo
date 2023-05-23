@@ -9,30 +9,7 @@ export * from './user'
 export * from './subscription'
 export * from './product'
 export * from './wallet'
-
-export interface Jwt {
-  [key: string]: unknown
-  iss?: string | undefined
-  sub?: string | undefined
-  aud?: string | string[] | undefined
-  exp?: number | undefined
-  nbf?: number | undefined
-  iat?: number | undefined
-  jti?: string | undefined
-}
-
-export interface AppAccessToken extends Jwt {
-  userId: string
-  roles: string[]
-}
-
-export interface IdentityToken extends Jwt {
-  picture?: string | undefined
-  email: string
-  name: string
-  given_name: string
-  family_name: string
-}
+export * from './auth'
 
 /**
  * Common Model Options

@@ -18,7 +18,7 @@ import Login from './Login'
 import Register from './Register'
 import { GoogleOneTapButton } from './GoogleOneTap'
 import Spacer from '../ui/Spacer'
-import AuthProviders from './AuthProviders'
+import AuthProviderInjections from './AuthProviders'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

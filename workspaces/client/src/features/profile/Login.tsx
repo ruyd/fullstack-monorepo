@@ -16,6 +16,7 @@ import { Paths } from '../../shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import PasswordField from '../ui/PasswordField'
+import { oAuthInputs } from '../../../../lib/src/types'
 
 export default function Login(props?: ContainerProps & Partial<React.Component>): JSX.Element {
   const enableRegistration = useAppSelector(state => state.app.settings?.system?.enableRegistration)
@@ -31,8 +32,8 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const payload = {} as Record<string, unknown>
-    data.forEach((value, key) => (payload[key] = value))
+    const payload = {} as oAuthInputs
+    data.forEach((value, key) => (payload[key] = value as string))
 
     dispatch(loginAsync(payload)).then(({ meta }) => {
       if (meta.requestStatus === 'fulfilled' && (returnTo || isRoutedPage)) {

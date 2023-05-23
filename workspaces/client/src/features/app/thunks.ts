@@ -5,7 +5,9 @@ import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, onLogin, getAuth0 } from '../../shared/auth'
 import { RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
-import { firebasePasswordLogin } from 'src/shared/firebase'
+import { firebaseCustomTokenLogin, firebasePasswordLogin } from 'src/shared/firebase'
+import { UserCredential } from 'firebase/auth'
+import { AuthProviders } from '@lib'
 
 export const Method = {
   GET: 'get',
@@ -21,7 +23,7 @@ export type Method = typeof Method[keyof typeof Method]
  */
 export async function request<
   R = { success: boolean; message: string },
-  T = Record<string, unknown>
+  T = Record<string, unknown> | object
 >(
   url: string,
   data?: T,
@@ -120,30 +122,38 @@ function setLogin(
 
 export const loginAsync = createAsyncThunk(
   'app/login',
-  async (payload: Record<string, unknown>, { dispatch, getState }) => {
-    const state = getState() as RootState
-    let credential
-
+  async (payload: Record<string, string>, { dispatch, getState }) => {
     try {
-      credential = await firebasePasswordLogin(payload.email as string, payload.password as string)
+      const state = getState() as RootState
+      dispatch(patch({ loading: true }))
+      const { idToken } = (await firebasePasswordLogin(
+        payload.email as string,
+        payload.password as string
+      )) as { idToken: string } & UserCredential['user']
+
+      const response = await request<{
+        token: string
+        user: AppUser
+        message?: string
+      }>('profile/login', { ...payload, idToken })
+
+      if (response.status === 200) {
+        if (state?.app?.settings?.system?.authProvider === AuthProviders.Firebase) {
+          const result = await firebaseCustomTokenLogin(response.data.token)
+          console.log('compare', response.data.token, result.user.accessToken)
+        }
+        setLogin(dispatch, response.data.token, response.data.user)
+        if (state.app.dialog === 'onboard') {
+          dispatch(patch({ dialog: undefined }))
+        }
+      } else {
+        dispatch(notifyError('Login error' + response.data.message))
+      }
     } catch (err) {
       const error = err as Error
       dispatch(notifyError(error.message))
       return
     }
-
-    // const response = await request<{ token: string; user: AppUser; message?: string }>(
-    //   'profile/login',
-    //   payload
-    // )
-    // if (response.status === 200) {
-    //   setLogin(dispatch, response.data.token, response.data.user)
-    //   if (state.app.dialog === 'onboard') {
-    //     dispatch(patch({ dialog: undefined }))
-    //   }
-    // } else {
-    //   dispatch(notifyError('Login error' + response.data.message))
-    // }
   }
 )
 

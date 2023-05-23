@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { initializeApp, FirebaseApp } from 'firebase/app'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import {
+  UserCredential,
+  getAuth,
+  signInWithCustomToken,
+  signInWithEmailAndPassword
+} from 'firebase/auth'
 import config from './config'
+import { request } from 'src/features/app'
+import { AppUser } from './auth'
 
 let firebaseApp: FirebaseApp | null = null
 export function getFirebaseApp() {
@@ -21,24 +28,40 @@ export function getFirebaseApp() {
 
   // Initialize Firebase
   // const app = initializeApp(firebaseConfig)
-
-  const projectId = config.settings?.google?.projectId
+  const settings = config.settings
+  const projectId = settings?.google?.projectId
   const params = {
-    apiKey: config.settings?.google?.apiKey,
+    apiKey: settings?.google?.apiKey,
     authDomain: `${projectId}.firebaseapp.com`,
     projectId,
     storageBucket: `${projectId}.appspot.com`,
-    messagingSenderId: config.settings?.google?.messagingSenderId,
-    appId: config.settings?.google?.appId,
-    measurementId: config.settings?.google?.analyticsId
+    messagingSenderId: settings?.google?.messagingSenderId,
+    appId: settings?.google?.appId,
+    measurementId: settings?.google?.analyticsId
   }
   firebaseApp = initializeApp(firebaseConfig)
   return firebaseApp
 }
 
-export async function firebasePasswordLogin(email: string, password: string) {
+export async function firebasePasswordLogin(
+  email: string,
+  password: string
+): Promise<Partial<UserCredential> & { idToken: string }> {
   const app = getFirebaseApp()
   const auth = getAuth(app)
   const credential = await signInWithEmailAndPassword(auth, email, password)
-  return credential
+  const idToken = await credential.user.getIdToken()
+  return {
+    ...credential.user,
+    idToken
+  }
+}
+
+export async function firebaseCustomTokenLogin(
+  token: string
+): Promise<UserCredential & { user: { accessToken: string } }> {
+  const app = getFirebaseApp()
+  const auth = getAuth(app)
+  const credential = await signInWithCustomToken(auth, token)
+  return credential as UserCredential & { user: { accessToken: string } }
 }
