@@ -2,7 +2,7 @@ import React from 'react'
 import Alert from '@mui/material/Alert'
 import { AlertTitle, Box, Grid, LinearProgress, Paper, Typography } from '@mui/material'
 import authProvider from 'auth0-js'
-import { authOptions, getNonce } from '../../shared/auth'
+import { getAuth0Settings, getNonce } from '../../shared/auth'
 import loginImage from './images/login.svg'
 import { useAppSelector } from '../../shared/store'
 
@@ -16,12 +16,12 @@ export default function Callback(): JSX.Element {
   React.useEffect(() => {
     const parseCallback = async () => {
       const { state, nonce } = getNonce()
-      const options = { ...authOptions(), state, nonce, clientId }
+      const options = { ...getAuth0Settings(), state, nonce, clientId }
       const webAuth = new authProvider.WebAuth(options)
       webAuth.popup.callback({
         hash: window.location.hash,
         state,
-        nonce,
+        nonce
       })
     }
     if (access_token && id_token) {

@@ -98,18 +98,22 @@ export async function checkSocialToken(token: string): Promise<string | undefine
 }
 
 // store
-export const authOptions = () => ({
-  domain: `${config.settings?.auth0?.tenant}.auth0.com`,
-  baseUrl: `https://${config.settings?.auth0?.tenant}.auth0.com`,
-  clientID: config.settings?.auth0?.clientId as string,
-  audience: config.settings?.auth0?.clientAudience as string,
-  redirectUri: `${window.location.origin}${config.baseName}callback`,
-  responseType: 'id_token token',
-  scope: 'openid profile email'
-})
+export const getAuth0Settings = () => {
+  const tenant = config.settings?.auth0?.tenant
+  const baseUrl = `https://${tenant}.auth0.com`
+  return {
+    domain: `${tenant}.auth0.com`,
+    baseUrl,
+    clientID: config.settings?.auth0?.clientId as string,
+    audience: config.settings?.auth0?.clientAudience as string,
+    redirectUri: `${window.location.origin}${config.baseName}callback`,
+    responseType: 'id_token token',
+    scope: 'openid profile email'
+  }
+}
 
-export function getAuth0(overrides: Partial<typeof authOptions> = {}) {
-  return new auth0.WebAuth({ ...authOptions(), ...overrides })
+export function getAuth0(overrides: Partial<typeof getAuth0Settings> = {}) {
+  return new auth0.WebAuth({ ...getAuth0Settings(), ...overrides })
 }
 
 export function generateNonce(userId?: string) {

@@ -7,7 +7,7 @@ import { RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
 import { firebaseCustomTokenLogin, firebasePasswordLogin } from 'src/shared/firebase'
 import { UserCredential } from 'firebase/auth'
-import { AuthProviders } from '@lib'
+import { AuthProviders, oAuthInputs } from '@lib'
 
 export const Method = {
   GET: 'get',
@@ -122,20 +122,19 @@ function setLogin(
 
 export const loginAsync = createAsyncThunk(
   'app/login',
-  async (payload: Record<string, string>, { dispatch, getState }) => {
+  async ({ email, password }: oAuthInputs, { dispatch, getState }) => {
     try {
       const state = getState() as RootState
       dispatch(patch({ loading: true }))
-      const { idToken } = (await firebasePasswordLogin(
-        payload.email as string,
-        payload.password as string
-      )) as { idToken: string } & UserCredential['user']
+      const { idToken } = (await firebasePasswordLogin(email as string, password as string)) as {
+        idToken: string
+      } & UserCredential['user']
 
       const response = await request<{
         token: string
         user: AppUser
         message?: string
-      }>('profile/login', { ...payload, idToken })
+      }>('profile/login', { email, password, idToken })
 
       if (response.status === 200) {
         if (state?.app?.settings?.system?.authProvider === AuthProviders.Firebase) {

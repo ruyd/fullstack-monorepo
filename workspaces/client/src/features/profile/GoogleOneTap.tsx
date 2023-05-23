@@ -4,7 +4,7 @@ import store, { useAppDispatch, useAppSelector } from '../../shared/store'
 import { IdentityToken } from '../../../../lib/src/types'
 import decode from 'jwt-decode'
 import authProvider from 'auth0-js'
-import { authOptions, checkSocialToken, generateNonce } from '../../shared/auth'
+import { getAuth0Settings, checkSocialToken, generateNonce } from '../../shared/auth'
 import { notifyError, socialLoginAsync } from '../app'
 
 type OneTapBase = {
@@ -70,7 +70,7 @@ export async function googleCredentialsLogin(credential: string) {
 export async function googlePopupLogin(email?: string, userId?: string): Promise<void> {
   const session = generateNonce(userId)
   const options = {
-    ...authOptions(),
+    ...getAuth0Settings(),
     connection: 'google-oauth2',
     loginHint: email,
     state: session.state,

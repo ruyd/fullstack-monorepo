@@ -24,10 +24,22 @@ export const getAuthSettingsAsync = async () => {
 }
 
 let jwkClient: jwksRsa.JwksClient
-export function getJwkClient() {
+export async function getJwkClient() {
+  const settings = await getSettingsAsync()
+  const authProvider = settings?.system?.authProvider || AuthProviders.None
+  if ([AuthProviders.None, AuthProviders.Development].some(p => p === authProvider)) {
+    return null
+  }
+
+  const urls = {
+    [AuthProviders.Auth0]: `https://${settings?.auth0?.tenant}.auth0.com/.well-known/jwks.json`,
+    [AuthProviders.Firebase]:
+      'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com'
+  }
+
   if (!jwkClient) {
     jwkClient = jwksRsa({
-      jwksUri: `${config.auth?.baseUrl}/.well-known/jwks.json`,
+      jwksUri: urls[authProvider as keyof typeof urls],
       cache: true,
       rateLimit: true
     })
@@ -55,12 +67,24 @@ const readMethods = ['GET', 'HEAD', 'OPTIONS']
 const writeMethods = ['POST', 'PUT', 'PATCH', 'DELETE']
 
 export async function checkToken(header: jwt.JwtHeader | undefined, token: string | undefined) {
+  const settings = await getSettingsAsync()
+  const authProvider = settings?.system?.authProvider || AuthProviders.None
+  const readyMap = {
+    [AuthProviders.None]: false,
+    [AuthProviders.Development]: false,
+    [AuthProviders.Auth0]:
+      !!settings?.auth0?.clientId && !!settings?.internal?.secrets?.auth0?.clientSecret,
+    [AuthProviders.Firebase]: !!settings?.internal?.secrets?.google?.serviceAccountJson
+  }
   let accessToken: AppAccessToken | undefined
-  const hasAuthProvider =
-    config.auth.baseUrl && config.auth.clientId && config.auth.clientSecret && config.auth.enabled
-  if (hasAuthProvider && header?.alg === 'RS256' && header && token) {
-    const result = await getJwkClient().getSigningKey(header.kid)
-    const key = result.getPublicKey()
+  if (readyMap[authProvider] && header?.alg === 'RS256' && header && token) {
+    // const client = await getJwkClient()
+    // if (!client) {
+    //   throw Error('No JWK client')
+    // }
+    // const result = await client.getSigningKey()
+    const json = JSON.parse(settings?.internal?.secrets?.google?.serviceAccountJson || '{}')
+    const key = json.private_key
     accessToken = jwt.verify(token, key, {
       algorithms: ['RS256']
     }) as AppAccessToken
@@ -141,7 +165,7 @@ export function setRequest(
   const req = r as EnrichedRequest
   req.config = cfg
 
-  if (!req.headers.authorization?.includes('Bearer ')) {
+  if (!req.headers?.authorization?.includes('Bearer ')) {
     return {}
   }
   const token = req.headers.authorization.split(' ')[1]
