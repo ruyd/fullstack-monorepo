@@ -12,6 +12,9 @@ export interface Jwt {
 export interface AppAccessToken extends Jwt {
   userId: string
   roles: string[]
+  claims: {
+    [key: string]: unknown
+  }
 }
 
 export interface IdentityToken extends Jwt {

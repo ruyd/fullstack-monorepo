@@ -43,6 +43,7 @@ export function decodeToken(token: string): AppAccessToken | null {
       accessToken[key.replace(RULE_PREFIX, '')] = accessToken[key]
       delete accessToken[key]
     }
+
     return accessToken as AppAccessToken
   } catch {
     return null
@@ -140,5 +141,7 @@ export function hasRole(role: string): boolean {
   if (!decoded) {
     return false
   }
-  return decoded.roles?.includes(role) || false
+  const roles = (decoded.claims?.roles as string[]) || decoded.roles || []
+  const result = roles.includes(role)
+  return result
 }

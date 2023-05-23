@@ -17,11 +17,13 @@ import { forgotAsync, loginAsync } from '../app/thunks'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import PasswordField from '../ui/PasswordField'
 import { oAuthInputs } from '../../../../lib/src/types'
+import LoadingButton from '@mui/lab/LoadingButton'
 
 export default function Login(props?: ContainerProps & Partial<React.Component>): JSX.Element {
   const enableRegistration = useAppSelector(state => state.app.settings?.system?.enableRegistration)
   const enableAuth = useAppSelector(state => state.app.settings?.auth0?.enabled)
   const token = useAppSelector(state => state.app.token)
+  const loading = useAppSelector(state => state.app.loading)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const returnPath = new URLSearchParams(window.location.search).get('returnTo')
@@ -101,9 +103,16 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
               />
             </Grid>
           </Grid>
-          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3 }}>
+          <LoadingButton
+            loading={loading}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3 }}
+          >
             Sign In
-          </Button>
+          </LoadingButton>
           {enableAuth && (
             <Button
               type="submit"

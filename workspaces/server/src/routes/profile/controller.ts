@@ -16,6 +16,7 @@ import { v4 as uuid } from 'uuid'
 import { decode } from 'jsonwebtoken'
 import logger from '../../shared/logger'
 import { EnrichedRequest } from '../../shared/types'
+import { firebaseCreateToken } from 'src/shared/auth/firebase'
 
 export async function register(req: express.Request, res: express.Response) {
   const payload = req.body
@@ -42,17 +43,13 @@ export async function register(req: express.Request, res: express.Response) {
   }
 
   payload.userId = userId
+  payload.roles = isStartAdmin ? ['admin'] : []
   const user = await createOrUpdate(UserModel, payload)
-  const token = createToken({
-    userId: user.userId,
-    roles: isStartAdmin ? ['admin'] : []
+  const token = await firebaseCreateToken(user.userId, {
+    roles: user.roles || []
   })
-  res.json({ token, user })
-}
 
-export function authReady() {
-  // const enabled = !!cfg?.enabled && !!cfg?.tenant && !!cfg.clientId
-  return false
+  res.json({ token, user })
 }
 
 /**

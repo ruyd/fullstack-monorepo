@@ -1,7 +1,7 @@
 import { getAuth } from 'firebase-admin/auth'
 import { getFirebaseApp } from '../firebase'
 import { UserModel } from '../types'
-import { oAuthInputs, oAuthRegistered, oAuthResponse } from '@lib'
+import { oAuthError, oAuthInputs, oAuthRegistered, oAuthResponse } from '@lib'
 
 export interface FirebaseAuthResponse {
   kind: string
@@ -61,6 +61,23 @@ export const firebaseRegister = async ({
     // })
 
     return { ...result } as unknown as oAuthRegistered
+  } catch (err) {
+    const error = err as Error
+    return {
+      error: error.message
+    }
+  }
+}
+
+export const firebaseCreateToken = async (
+  uid: string,
+  claims: { roles: string[] }
+): Promise<string | oAuthError> => {
+  try {
+    const app = await getFirebaseApp()
+    const auth = getAuth(app)
+    const access_token = await auth.createCustomToken(uid, claims)
+    return access_token
   } catch (err) {
     const error = err as Error
     return {
