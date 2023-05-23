@@ -33,14 +33,15 @@ export async function register(req: express.Request, res: express.Response) {
   if (existing) {
     throw new Error('Email already registered, try Sign-in')
   }
-
-  payload.userId = uuid()
+  const userId = uuid()
   setPictureIfEmpty(payload)
-  const providerResult = await authProviderRegister(payload)
+  const providerData = { ...payload, uid: userId }
+  const providerResult = await authProviderRegister(providerData)
   if (providerResult.error) {
     throw new Error(providerResult.error_description)
   }
 
+  payload.userId = userId
   const user = await createOrUpdate(UserModel, payload)
   const token = createToken({
     userId: user.userId,
@@ -91,7 +92,7 @@ export async function login(req: express.Request, res: express.Response) {
   }
 
   if (!user) {
-    const decoded = decode(response.access_token) as AppAccessToken
+    const decoded = decode(response.access_token as string) as AppAccessToken
     user = await createOrUpdate(UserModel, { email, userId: decoded.userId })
   }
 

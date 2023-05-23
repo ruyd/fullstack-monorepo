@@ -10,7 +10,7 @@ import logger from '../logger'
 import { HttpUnauthorizedError } from '../errorHandler'
 import { AuthProviders } from '@lib'
 import { auth0Login, auth0Register } from './auth0'
-import { firebaseLogin, firebaseRegister } from 'src/shared/auth/firebase'
+import { firebaseCredentialLogin, firebaseRegister } from 'src/shared/auth/firebase'
 import { getSettingsAsync } from '../settings'
 
 export interface oAuthError {
@@ -20,19 +20,28 @@ export interface oAuthError {
 }
 
 export interface oAuthResponse extends oAuthError {
-  access_token: string
-  id_token: string
-  scope: string
-  expires_in: number
-  token_type: string
+  access_token?: string
+  id_token?: string
+  scope?: string
+  expires_in?: number
+  token_type?: string
 }
 
 export interface oAuthRegistered extends oAuthError {
-  _id: string
-  email: string
-  family_name: string
-  given_name: string
-  email_verified: boolean
+  _id?: string
+  email?: string
+  family_name?: string
+  given_name?: string
+  email_verified?: boolean
+}
+
+export interface oAuthInputs {
+  email?: string
+  password?: string
+  idToken?: string
+  firstName?: string
+  lastName?: string
+  uid?: string
 }
 
 export const getAuthSettingsAsync = async () => {
@@ -205,21 +214,18 @@ export function decodeToken(token: string) {
   return authInfo
 }
 
-const loginMethods: Record<string, (u: string, p: string) => Promise<AxiosResponse> | unknown> = {
+const loginMethods: Record<string, (args: oAuthInputs) => Promise<oAuthResponse>> = {
   [AuthProviders.Auth0]: auth0Login,
-  [AuthProviders.Firebase]: firebaseLogin
+  [AuthProviders.Firebase]: firebaseCredentialLogin
 }
 
-export async function authProviderLogin(
-  username: string,
-  password: string
-): Promise<oAuthResponse> {
+export async function authProviderLogin(email: string, password: string): Promise<oAuthResponse> {
   const { authProvider } = await getAuthSettingsAsync()
-  const response = (await loginMethods[authProvider](username, password)) as AxiosResponse
-  return response.data
+  const response = await loginMethods[authProvider]({ email, password })
+  return response
 }
 
-export async function fakeMockRegister(payload: Record<string, string>) {
+export async function fakeMockRegister(payload: oAuthInputs): Promise<oAuthRegistered> {
   const result = await new Promise(
     resolve =>
       setTimeout(() => {
@@ -229,25 +235,23 @@ export async function fakeMockRegister(payload: Record<string, string>) {
             provider: 'mockRegister'
           }
         })
-      }, 1000) as unknown as Record<string, string>
+      }, 1000) as unknown as oAuthRegistered
   )
-  return result
+  return result as oAuthRegistered
 }
 
-const registerMethods: Record<string, (details: Record<string, string>) => Promise<unknown>> = {
+const registerMethods: Record<string, (details: oAuthInputs) => Promise<oAuthRegistered>> = {
   [AuthProviders.Auth0]: auth0Register,
   [AuthProviders.Firebase]: firebaseRegister,
   [AuthProviders.Development]: fakeMockRegister
 }
 
-export async function authProviderRegister(
-  payload: Record<string, string>
-): Promise<Partial<oAuthRegistered>> {
+export async function authProviderRegister(payload: oAuthInputs): Promise<oAuthRegistered> {
   try {
     const { authProvider } = await getAuthSettingsAsync()
     const method = registerMethods[authProvider]
-    const response = (await method(payload)) as AxiosResponse
-    return response.data
+    const response = await method(payload)
+    return response
   } catch (err: unknown) {
     const error = err as Error & {
       response: AxiosResponse

@@ -6,20 +6,23 @@ export const UserAttributes = {
   userId: {
     type: DataTypes.UUID,
     primaryKey: true,
-    defaultValue: DataTypes.UUIDV4,
+    defaultValue: DataTypes.UUIDV4
   },
   firstName: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   lastName: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   email: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   picture: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
+  roles: {
+    type: DataTypes.ARRAY(DataTypes.STRING)
+  }
 }
 
 export const UserModel = addModel<User>('user', UserAttributes)
@@ -27,53 +30,53 @@ export const UserModel = addModel<User>('user', UserAttributes)
 export const UserActiveModel = addModel<UserActive>('user_active', {
   socketId: {
     type: DataTypes.STRING,
-    primaryKey: true,
+    primaryKey: true
   },
   userId: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUID
   },
   ip: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   userAgent: {
-    type: DataTypes.STRING,
-  },
+    type: DataTypes.STRING
+  }
 })
 
 export const AddressModel = addModel<Address>('address', {
   addressId: {
     type: DataTypes.UUID,
     primaryKey: true,
-    defaultValue: DataTypes.UUIDV4,
+    defaultValue: DataTypes.UUIDV4
   },
   userId: {
-    type: DataTypes.UUID,
+    type: DataTypes.UUID
   },
   name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   address1: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   address2: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   city: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   state: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   zip: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   country: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   phone: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   favorite: {
-    type: DataTypes.BOOLEAN,
-  },
+    type: DataTypes.BOOLEAN
+  }
 })

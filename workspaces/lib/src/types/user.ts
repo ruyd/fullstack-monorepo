@@ -1,5 +1,12 @@
 import { Entity } from '.'
 
+export const UserRoles = {
+  ADMIN: 'admin',
+  MANAGER: 'manager'
+} as const
+
+export type UserRoleType = typeof UserRoles[keyof typeof UserRoles]
+
 export interface UserPreferences {
   [key: string]: unknown
 }
@@ -15,7 +22,7 @@ export interface User extends Entity {
   preferences?: UserPreferences
   loginCount?: number
   lastLogin?: Date
-  roles?: string[]
+  roles?: UserRoleType[]
 }
 
 export interface Address extends Entity {

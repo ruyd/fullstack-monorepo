@@ -16,6 +16,7 @@ import { registerAsync } from '../app/thunks'
 import { Paths } from '../../shared/routes'
 import { googlePopupLogin } from './GoogleOneTap'
 import LoadingButton from '@mui/lab/LoadingButton'
+import PasswordField from '../ui/PasswordField'
 
 export default function Register(props?: ContainerProps) {
   const dispatch = useAppDispatch()
@@ -92,13 +93,12 @@ export default function Register(props?: ContainerProps) {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
+              <PasswordField
                 required
                 fullWidth
                 id="password"
                 name="password"
                 label="Password"
-                type="password"
                 autoComplete="new-password"
                 variant="filled"
               />
