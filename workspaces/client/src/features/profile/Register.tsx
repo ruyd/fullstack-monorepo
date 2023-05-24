@@ -14,7 +14,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { registerAsync } from '../app/thunks'
 import { Paths } from '../../shared/routes'
-import { googlePopupLogin } from './GoogleOneTap'
+import { loginWithGoogle } from './GoogleOneTap'
 import LoadingButton from '@mui/lab/LoadingButton'
 import PasswordField from '../ui/PasswordField'
 
@@ -118,7 +118,7 @@ export default function Register(props?: ContainerProps) {
             <Button
               component={Link}
               to={`${Paths.Login}${returnTo}`}
-              onClick={() => googlePopupLogin()}
+              onClick={() => loginWithGoogle()}
               fullWidth
             >
               Already have an account? Sign in

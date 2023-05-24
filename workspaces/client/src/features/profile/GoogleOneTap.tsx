@@ -1,24 +1,15 @@
 /* eslint-disable no-console */
 import React from 'react'
-import store, { useAppDispatch, useAppSelector } from '../../shared/store'
-import { IdentityToken } from '../../../../lib/src/types'
+import { getStore, useAppDispatch, useAppSelector } from '../../shared/store'
+import { AuthProviders, IdentityToken, oAuthInputs } from '../../../../lib/src/types'
 import decode from 'jwt-decode'
 import authProvider from 'auth0-js'
 import { getAuth0Settings, checkSocialToken, generateNonce } from '../../shared/auth'
-import { notifyError, socialLoginAsync } from '../app'
+import { notifyError, tapLoginAsync } from '../app'
 
 type OneTapBase = {
   context?: 'use' | 'signin' | 'signup'
   callback?: (response: { credential?: string }) => void
-}
-
-export const initOptions: OneTapParams = {
-  callback: async ok => {
-    console.log('Google One Tap callback', ok)
-    googleCredentialsLogin(ok.credential as string)
-    /* response.credential should be enough for google cloud backends,
-    using Callback.tsx for auth0 */
-  }
 }
 export interface OneTapParams extends OneTapBase {
   client_id?: string
@@ -61,13 +52,32 @@ export interface OneTapHookOptions extends OneTapBase {
   ref?: React.MutableRefObject<OneTapAPI | null>
 }
 
-export async function googleCredentialsLogin(credential: string) {
-  const email = (decode(credential) as IdentityToken)?.email
-  const userId = await checkSocialToken(credential)
-  googlePopupLogin(email, userId)
+export const initOptions: OneTapParams = {
+  callback: async ok => {
+    console.log('Google One Tap callback', ok)
+    onTapClickAsync(ok.credential as string)
+  }
 }
 
-export async function googlePopupLogin(email?: string, userId?: string): Promise<void> {
+export async function onTapClickAsync(idToken: string): Promise<void> {
+  const email = (decode(idToken) as IdentityToken)?.email
+  const authProvider =
+    getStore()?.getState()?.app?.settings?.system?.authProvider || AuthProviders.None
+
+  switch (authProvider) {
+    case AuthProviders.Auth0:
+      auth0GooglePopupLogin({ email, idToken })
+      break
+    default:
+      const store = getStore()
+      await store.dispatch(tapLoginAsync({ idToken }))
+      break
+  }
+}
+
+export async function auth0GooglePopupLogin(payload?: oAuthInputs): Promise<void> {
+  const { idToken, email } = payload || {}
+  const userId = idToken ? await checkSocialToken(idToken as string) : undefined
   const session = generateNonce(userId)
   const options = {
     ...getAuth0Settings(),
@@ -77,15 +87,30 @@ export async function googlePopupLogin(email?: string, userId?: string): Promise
     nonce: session.nonce,
     appUserId: userId
   }
+
   const auth = new authProvider.WebAuth(options)
   auth.popup.authorize(options, (err, result) => {
     if (err) {
-      store.dispatch(notifyError(err.description as string))
+      getStore().dispatch(notifyError(err.description as string))
       return
     }
-    const { accessToken, idToken } = result
-    store.dispatch(socialLoginAsync({ accessToken, idToken }))
+    const { idToken } = result
+    getStore().dispatch(tapLoginAsync({ idToken: idToken as string }))
   })
+}
+
+export async function loginWithGoogle() {
+  const authProvider =
+    getStore()?.getState()?.app?.settings?.system?.authProvider || AuthProviders.None
+
+  switch (authProvider) {
+    case AuthProviders.Auth0:
+      auth0GooglePopupLogin()
+      break
+    default:
+      prompt()
+      break
+  }
 }
 
 export function loadScriptAndInit({
@@ -147,7 +172,7 @@ export const renderButton = (el: HTMLElement) => {
     type: 'standard',
     shape: 'pill',
     text: 'continue_with',
-    theme: store.getState().app.darkMode ? 'filled_black' : 'outline',
+    theme: getStore().getState().app.darkMode ? 'filled_black' : 'outline',
     size: 'large'
   })
 }

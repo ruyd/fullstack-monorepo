@@ -6,9 +6,18 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { configureStore } from '@reduxjs/toolkit'
-import { RootState, reducers } from 'src/shared/store'
+import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
 import { signInWithEmailAndPassword, signInWithCustomToken } from 'firebase/auth'
 import { STORAGE_KEY } from 'src/shared/auth'
+import { onTapClickAsync } from './GoogleOneTap'
+import { type RootState, getStore, useAppDispatch, useAppSelector } from 'src/shared/store'
+const { reducers } = jest.requireActual('src/shared/store')
+
+jest.mock('src/shared/store', () => ({
+  getStore: jest.fn(),
+  useAppSelector: jest.fn(),
+  useAppDispatch: jest.fn()
+}))
 
 jest.mock('@firebase/app', () => ({
   initializeApp: jest.fn().mockReturnValue({ mocked: true }),
@@ -24,7 +33,8 @@ jest.mock('@firebase/auth', () => ({
       getIdToken: jest.fn().mockResolvedValue('id token mock')
     }
   }),
-  signInWithCustomToken: jest.fn().mockResolvedValue('custom token mock')
+  signInWithCustomToken: jest.fn().mockResolvedValue('custom token mock'),
+  signInWithCredential: jest.fn().mockResolvedValue('custom token mock')
 }))
 
 const mocks = {
@@ -37,6 +47,35 @@ const mocks = {
 const mockResponse = {
   token: mocks.customToken,
   user: { email: mocks.email, userId: mocks.uid, firstName: 'Mock' }
+}
+
+const mockIdToken =
+  'eyJhbGciOiJIUz I1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJ1aWQiOiIxMjMiLCJyb2xlcyI6WyJyb2xlMSJdLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.-D2G3gAsVzhpAJ7VByrqBoH29Nw_8fIuuEotH69EAQU'
+
+export const mockStore = (state?: Partial<RootState>) => {
+  const preloadedState = {
+    app: {
+      locale: 'en',
+      dialog: 'onboard',
+      settings: {
+        system: {
+          authProvider: 'firebase'
+        }
+      }
+    },
+    ...state
+  } as RootState
+
+  const testStore = configureStore({
+    reducer: reducers,
+    preloadedState
+  }) as ToolkitStore<RootState>
+
+  jest.mocked(getStore).mockReturnValue(testStore)
+  jest.mocked(useAppDispatch).mockImplementation(() => testStore.dispatch)
+  jest.mocked(useAppSelector).mockImplementation(selector => selector(testStore.getState()))
+
+  return testStore
 }
 
 export const renderWithContext = async (
@@ -55,31 +94,27 @@ export const renderWithContext = async (
     },
     ...state
   } as RootState
-
-  const testStore = configureStore({
-    reducer: reducers,
-    preloadedState
-  })
-
-  const queryClient = new QueryClient({})
+  const testStore = mockStore(preloadedState)
+  const testQueryClient = new QueryClient({})
   return {
     ...render(
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={testQueryClient}>
         <Provider store={testStore}>
           <BrowserRouter>{element}</BrowserRouter>
         </Provider>
       </QueryClientProvider>
     ),
-    testStore
+    testStore,
+    testQueryClient
   }
 }
 
 describe('Firebase Login', () => {
-  const mockLoginFlow = async () => {
+  const mockLoginFlow = async (state?: Partial<RootState>) => {
     const axiosMock = new MockAdapter(axios)
     axiosMock.onPost('/profile/login').reply(200, mockResponse)
 
-    const returns = await renderWithContext(<LoginForm />)
+    const returns = await renderWithContext(<LoginForm />, state)
     const { getByPlaceholderText, getByText } = returns
 
     const emailInput = getByPlaceholderText('Email')
@@ -100,8 +135,17 @@ describe('Firebase Login', () => {
     }
   }
 
-  test('Firebase SDK', async () => {
-    await mockLoginFlow()
+  test('Firebase User and Pass', async () => {
+    const state = {
+      app: {
+        settings: {
+          system: {
+            authProvider: 'firebase'
+          }
+        }
+      }
+    } as RootState
+    await mockLoginFlow(state)
     expect(signInWithCustomToken).toHaveBeenCalledWith({ mocked: true }, mocks.customToken)
     expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
       { mocked: true },
@@ -141,4 +185,40 @@ describe('Firebase Login', () => {
     await mockLoginFlow()
     expect(axios.defaults.headers.common['Authorization']).toEqual(`Bearer ${mocks.customToken}`)
   })
+
+  test('GoogleOneTap', async () => {
+    const axiosMock = new MockAdapter(axios)
+    axiosMock.onPost('/profile/social/check').reply(200, {
+      userId: mocks.uid
+    })
+    axiosMock.onPost('/profile/login').reply(200, mockResponse)
+    const preState = {
+      app: {
+        settings: {
+          system: {
+            authProvider: 'firebase',
+            enableOneTapLogin: true
+          },
+          google: {
+            clientId: '123'
+          }
+        }
+      }
+    } as RootState
+    const testStore = mockStore(preState)
+    await onTapClickAsync(mockIdToken)
+    const postState = testStore.getState()
+    expect(postState.app.user?.email).toEqual(mocks.email)
+
+    expect(axiosMock.history.post[0].url).toBe('profile/login')
+    expect(axiosMock.history.post[0].data).toBe(
+      JSON.stringify({
+        idToken: mockIdToken
+      })
+    )
+  })
+
+  // test('Should show error message', async () => {
+  // test('Onetap login', async () => {
+  // test('auth0 login', async () => {
 })

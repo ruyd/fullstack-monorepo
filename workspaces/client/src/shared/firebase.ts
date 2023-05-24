@@ -1,10 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { initializeApp, type FirebaseApp } from 'firebase/app'
 import {
+  AuthCredential,
+  OAuthCredential,
+  User,
   UserCredential,
   getAuth,
+  signInWithCredential,
   signInWithCustomToken,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signInWithRedirect
 } from 'firebase/auth'
 import config from './config'
 import { request } from 'src/features/app'
@@ -64,5 +69,19 @@ export async function firebaseCustomTokenLogin(
   const app = getFirebaseApp()
   const auth = getAuth(app)
   const credential = await signInWithCustomToken(auth, token)
+  return credential as UserCredential & { user: { accessToken: string } }
+}
+
+export async function firebaseCredentialLogin(accessToken: string): Promise<UserCredential> {
+  const app = getFirebaseApp()
+  const auth = getAuth(app)
+  const credential = await signInWithCredential(auth, { accessToken } as OAuthCredential)
+  return credential as UserCredential & { user: { accessToken: string } }
+}
+
+export async function firebaseRedirectLogin() {
+  const app = getFirebaseApp()
+  const auth = getAuth(app)
+  const credential = await signInWithRedirect(auth, { providerId: 'google.com' } as AuthCredential)
   return credential as UserCredential & { user: { accessToken: string } }
 }

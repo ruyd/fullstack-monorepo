@@ -3,7 +3,7 @@ import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, onLogin, getAuth0 } from '../../shared/auth'
-import { RootState, store } from '../../shared/store'
+import { getStore, RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
 import { firebaseCustomTokenLogin, firebasePasswordLogin } from 'src/shared/firebase'
 import { UserCredential } from 'firebase/auth'
@@ -31,7 +31,7 @@ export async function request<
   options?: AxiosRequestConfig<R>
 ): Promise<AxiosResponse<R>> {
   let response: AxiosResponse<R>
-  const dispatch = store.dispatch
+  const dispatch = getStore().dispatch
   try {
     dispatch(patch({ loading: true }))
     response = await axios({
@@ -120,6 +120,13 @@ function setLogin(
   )
 }
 
+async function setCustomToken(authProvider?: string, token?: string) {
+  if (authProvider !== AuthProviders.Firebase) {
+    return
+  }
+  await firebaseCustomTokenLogin(token as string)
+}
+
 export const loginAsync = createAsyncThunk(
   'app/login',
   async ({ email, password }: oAuthInputs, { dispatch, getState }) => {
@@ -137,9 +144,7 @@ export const loginAsync = createAsyncThunk(
       }>('profile/login', { email, password, idToken })
 
       if (response.status === 200) {
-        if (state?.app?.settings?.system?.authProvider === AuthProviders.Firebase) {
-          await firebaseCustomTokenLogin(response.data.token)
-        }
+        await setCustomToken(state?.app?.settings?.system?.authProvider, response.data.token)
         setLogin(dispatch, response.data.token, response.data.user)
         if (state.app.dialog === 'onboard') {
           dispatch(patch({ dialog: undefined }))
@@ -155,12 +160,9 @@ export const loginAsync = createAsyncThunk(
   }
 )
 
-/**
- * Link with local backend, update metadata
- */
 export const socialLoginAsync = createAsyncThunk(
   'app/login/social',
-  async (payload: Record<string, unknown>, { dispatch }) => {
+  async (payload: oAuthInputs, { dispatch }) => {
     const response = await request<{ token: string; user: AppUser; renew: boolean }>(
       'profile/social',
       payload
@@ -177,6 +179,33 @@ export const socialLoginAsync = createAsyncThunk(
       })
     } else {
       setLogin(dispatch, token, response.data.user)
+    }
+  }
+)
+
+export const tapLoginAsync = createAsyncThunk(
+  'app/login/tap',
+  async (payload: oAuthInputs, { dispatch, getState }) => {
+    try {
+      const response = await request<{
+        token: string
+        user: AppUser
+        message?: string
+      }>('profile/login', payload)
+      if (response.status === 200) {
+        const state = getState() as RootState
+        await setCustomToken(state?.app?.settings?.system?.authProvider, response.data.token)
+        setLogin(dispatch, response.data.token, response.data.user)
+        if (state.app.dialog === 'onboard') {
+          dispatch(patch({ dialog: undefined }))
+        }
+      } else {
+        dispatch(notifyError('Login error' + response.data.message))
+      }
+    } catch (err) {
+      const error = err as Error
+      dispatch(notifyError(error.message))
+      return
     }
   }
 )
