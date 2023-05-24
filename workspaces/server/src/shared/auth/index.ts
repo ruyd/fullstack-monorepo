@@ -206,13 +206,13 @@ export function createToken(obj: object): string {
   return token
 }
 
-export function decodeToken(token: string): AppAccessToken | undefined {
+export function decodeToken(token: string): AppAccessToken {
   if (!token) {
-    return undefined
+    return undefined as unknown as AppAccessToken
   }
   const authInfo = jwt.decode(token) as jwt.JwtPayload
   if (!authInfo) {
-    return undefined
+    return undefined as unknown as AppAccessToken
   }
   const prefix = config.auth?.ruleNamespace || 'https://'
   const keys = Object.keys(authInfo).filter(key => key.includes(prefix))
