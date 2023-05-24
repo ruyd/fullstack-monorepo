@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { initializeApp, FirebaseApp } from 'firebase/app'
+import { initializeApp, type FirebaseApp } from 'firebase/app'
 import {
   UserCredential,
   getAuth,
@@ -51,6 +51,7 @@ export async function firebasePasswordLogin(
   const auth = getAuth(app)
   const credential = await signInWithEmailAndPassword(auth, email, password)
   const idToken = await credential.user.getIdToken()
+  // const idToken = (credential.user as unknown as { accessToken: string }).accessToken
   return {
     ...credential.user,
     idToken

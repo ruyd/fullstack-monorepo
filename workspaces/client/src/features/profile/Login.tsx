@@ -90,6 +90,7 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
                 label="Email"
                 type="email"
                 variant="filled"
+                placeholder="Email"
               />
             </Grid>
             <Grid item xs={12}>
@@ -100,6 +101,7 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
                 name="password"
                 label="Password"
                 variant="filled"
+                placeholder="Password"
               />
             </Grid>
           </Grid>

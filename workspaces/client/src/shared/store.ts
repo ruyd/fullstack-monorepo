@@ -11,21 +11,23 @@ export const customMiddleware: Middleware = () => next => action => {
   return result
 }
 
+export const reducers = {
+  app: appReducer,
+  canvas: canvasReducer,
+  admin: adminReducer,
+  shop: shopReducer
+}
+
 export const store = configureStore({
-  reducer: {
-    app: appReducer,
-    canvas: canvasReducer,
-    admin: adminReducer,
-    shop: shopReducer,
-  },
+  reducer: reducers,
   preloadedState: load(),
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat([
-      customMiddleware,
+      customMiddleware
       // save({
       //   ignoreStates: ['canvas', 'shop'],
       // }),
-    ]),
+    ])
 })
 
 export type AppDispatch = typeof store.dispatch

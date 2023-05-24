@@ -27,7 +27,7 @@
       "type": "node-terminal"
     },
     {
-      "command": "yarn jest ${fileBasename}",
+      "command": "yarn jest ${fileBasename} --watchAll=false --watch",
       "name": "jest: $file",
       "request": "launch",
       "type": "node-terminal",
