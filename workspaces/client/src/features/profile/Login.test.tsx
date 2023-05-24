@@ -75,11 +75,12 @@ export const renderWithContext = async (
 }
 
 describe('Firebase Login', () => {
-  test('Firebase SDK', async () => {
-    const mock = new MockAdapter(axios)
-    mock.onPost('/profile/login').reply(200, mockResponse)
+  const mockLoginFlow = async () => {
+    const axiosMock = new MockAdapter(axios)
+    axiosMock.onPost('/profile/login').reply(200, mockResponse)
 
-    const { getByPlaceholderText, getByText } = await renderWithContext(<LoginForm />)
+    const returns = await renderWithContext(<LoginForm />)
+    const { getByPlaceholderText, getByText } = returns
 
     const emailInput = getByPlaceholderText('Email')
     const passwordInput = getByPlaceholderText('Password')
@@ -93,6 +94,14 @@ describe('Firebase Login', () => {
       await Promise.resolve()
     })
 
+    return {
+      ...returns,
+      axiosMock
+    }
+  }
+
+  test('Firebase SDK', async () => {
+    await mockLoginFlow()
     expect(signInWithCustomToken).toHaveBeenCalledWith({ mocked: true }, mocks.customToken)
     expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
       { mocked: true },
@@ -102,24 +111,9 @@ describe('Firebase Login', () => {
   })
 
   test('Should call login endpoint with inputs', async () => {
-    const mock = new MockAdapter(axios)
-    mock.onPost('/profile/login').reply(200, mockResponse)
-    const { getByPlaceholderText, getByText } = await renderWithContext(<LoginForm />)
-
-    const emailInput = getByPlaceholderText('Email')
-    const passwordInput = getByPlaceholderText('Password')
-    fireEvent.change(emailInput, { target: { value: mocks.email } })
-    fireEvent.change(passwordInput, { target: { value: mocks.password } })
-
-    const submitButton = getByText('Sign In', { selector: 'button' })
-    fireEvent.click(submitButton)
-
-    await act(async () => {
-      await Promise.resolve()
-    })
-
-    expect(mock.history.post[0].url).toBe('profile/login')
-    expect(mock.history.post[0].data).toBe(
+    const { axiosMock } = await mockLoginFlow()
+    expect(axiosMock.history.post[0].url).toBe('profile/login')
+    expect(axiosMock.history.post[0].data).toBe(
       JSON.stringify({
         email: mocks.email,
         password: mocks.password,
@@ -129,22 +123,7 @@ describe('Firebase Login', () => {
   })
 
   test('Should update store with user and token', async () => {
-    const mock = new MockAdapter(axios)
-    mock.onPost('/profile/login').reply(200, mockResponse)
-    const { getByPlaceholderText, getByText, testStore } = await renderWithContext(<LoginForm />)
-
-    const emailInput = getByPlaceholderText('Email')
-    const passwordInput = getByPlaceholderText('Password')
-    fireEvent.change(emailInput, { target: { value: mocks.email } })
-    fireEvent.change(passwordInput, { target: { value: mocks.password } })
-
-    const submitButton = getByText('Sign In', { selector: 'button' })
-    fireEvent.click(submitButton)
-
-    await act(async () => {
-      await Promise.resolve()
-    })
-
+    const { testStore } = await mockLoginFlow()
     const state = testStore.getState()
     expect(state.app.user?.email).toEqual(mocks.email)
     expect(state.app.user?.userId).toEqual(mocks.uid)
@@ -153,43 +132,13 @@ describe('Firebase Login', () => {
   })
 
   test('Should set token to local storage', async () => {
-    const mock = new MockAdapter(axios)
-    mock.onPost('/profile/login').reply(200, mockResponse)
-    const { getByPlaceholderText, getByText } = await renderWithContext(<LoginForm />)
-
-    const emailInput = getByPlaceholderText('Email')
-    const passwordInput = getByPlaceholderText('Password')
-    fireEvent.change(emailInput, { target: { value: mocks.email } })
-    fireEvent.change(passwordInput, { target: { value: mocks.password } })
-
-    const submitButton = getByText('Sign In', { selector: 'button' })
-    fireEvent.click(submitButton)
-
-    await act(async () => {
-      await Promise.resolve()
-    })
-
+    await mockLoginFlow()
     const local = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')
     expect(local.token).toEqual(mocks.customToken)
   })
 
   test('Should set axios default headers', async () => {
-    const mock = new MockAdapter(axios)
-    mock.onPost('/profile/login').reply(200, mockResponse)
-    const { getByPlaceholderText, getByText } = await renderWithContext(<LoginForm />)
-
-    const emailInput = getByPlaceholderText('Email')
-    const passwordInput = getByPlaceholderText('Password')
-    fireEvent.change(emailInput, { target: { value: mocks.email } })
-    fireEvent.change(passwordInput, { target: { value: mocks.password } })
-
-    const submitButton = getByText('Sign In', { selector: 'button' })
-    fireEvent.click(submitButton)
-
-    await act(async () => {
-      await Promise.resolve()
-    })
-
+    await mockLoginFlow()
     expect(axios.defaults.headers.common['Authorization']).toEqual(`Bearer ${mocks.customToken}`)
   })
 })
