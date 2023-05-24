@@ -68,7 +68,7 @@ export async function login(req: express.Request, res: express.Response) {
   )?.get()
 
   if ((isDevelopment && user) || (isNone && isStartAdmin)) {
-    logger.warn('Mocking loging without pass for: ' + user?.email)
+    logger.warn('Mocking login without pass for: ' + user?.email)
     res.json({
       token: createToken({
         userId: user?.userId,
