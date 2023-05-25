@@ -67,8 +67,8 @@ export async function getSettingsAsync(freshNotCached = false): Promise<SettingS
 
   return result
 }
-export async function getClientSettings(isAdmin = false): Promise<ClientConfig> {
-  const allSettings = await getSettingsAsync()
+export async function getClientSettings(isAdmin = false, force?: boolean): Promise<ClientConfig> {
+  const allSettings = await getSettingsAsync(force)
   const admin =
     !config.production || isAdmin
       ? {

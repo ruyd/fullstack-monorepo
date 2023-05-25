@@ -71,6 +71,6 @@ export async function notifyChange(eventName: string): Promise<void> {
 }
 
 export async function sendConfig(): Promise<void> {
-  const payload = await getClientSettings()
+  const payload = await getClientSettings(false, true)
   io.emit('config', { ...payload })
 }
