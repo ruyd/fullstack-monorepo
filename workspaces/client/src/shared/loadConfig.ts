@@ -11,9 +11,14 @@ export default async function loadConfig() {
     return
   }
   setConfig(serverConfig)
+  return serverConfig
 }
 
 export function setConfig(payload: ClientConfig) {
+  if (!payload || Object.keys(payload).length === 0) {
+    return
+  }
+
   const fromServer = payload as unknown as { [key: string]: unknown }
   // update config - TODO, reduce or remove config
   const indexed = config as unknown as { [key: string]: unknown }
@@ -21,7 +26,7 @@ export function setConfig(payload: ClientConfig) {
     if (typeof fromServer[key] === 'object') {
       indexed[key] = {
         ...(indexed[key] as { [key: string]: unknown }),
-        ...(fromServer[key] as object),
+        ...(fromServer[key] as object)
       }
     } else {
       indexed[key] = fromServer[key]
@@ -31,8 +36,8 @@ export function setConfig(payload: ClientConfig) {
   store.dispatch(
     patch({
       ...fromServer,
-      loaded: true,
-    }),
+      loaded: true
+    })
   )
   return fromServer
 }

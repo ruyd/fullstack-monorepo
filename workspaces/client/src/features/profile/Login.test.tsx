@@ -115,7 +115,11 @@ export const renderWithContext = async (
   }
 }
 
-describe('Firebase Login', () => {
+afterEach(() => {
+  jest.restoreAllMocks()
+})
+
+describe('Login Flows', () => {
   const mockLoginFlow = async (state?: Partial<RootState>) => {
     const axiosMock = new MockAdapter(axios)
     axiosMock.onPost('/profile/login').reply(200, mockOkResponse)
@@ -152,12 +156,12 @@ describe('Firebase Login', () => {
       }
     } as RootState
     await mockLoginFlow(state)
-    expect(signInWithCustomToken).toHaveBeenCalledWith({ mocked: true }, mocks.customToken)
     expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
       { mocked: true },
       mocks.email,
       mocks.password
     )
+    expect(signInWithCustomToken).toHaveBeenCalledWith({ mocked: true }, mocks.customToken)
   })
 
   test('Should call login endpoint with inputs', async () => {
@@ -192,11 +196,8 @@ describe('Firebase Login', () => {
     expect(axios.defaults.headers.common['Authorization']).toEqual(`Bearer ${mocks.customToken}`)
   })
 
-  test('Check GoogleOneTap idToken login flow', async () => {
+  test('Check GoogleOneTap firebase login flow', async () => {
     const axiosMock = new MockAdapter(axios)
-    axiosMock.onPost('/profile/social/check').reply(200, {
-      userId: mocks.uid
-    })
     axiosMock.onPost('/profile/login').reply(200, mockOkResponse)
     const preState = {
       app: {
@@ -222,9 +223,10 @@ describe('Firebase Login', () => {
         idToken: mockIdTokenWithEmail
       })
     )
+
+    expect(signInWithCustomToken).toHaveBeenCalledWith({ mocked: true }, mocks.customToken)
   })
 
   // test('Should show error message', async () => {
-  // test('Onetap login', async () => {
   // test('auth0 login', async () => {
 })

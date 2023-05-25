@@ -108,10 +108,14 @@ export async function login(req: express.Request, res: express.Response) {
   })
 }
 
+/**
+ * reviewing, auth0 only
+ * @param req
+ * @param res
+ */
 export async function social(req: express.Request, res: express.Response) {
   logger.info('Social login', req.body)
   const { idToken, accessToken } = req.body
-  //validate tocket instead of just decode?
   const access = decodeToken(accessToken)
   const decoded = decode(idToken) as IdentityToken
   const { email, given_name, family_name, picture } = decoded
