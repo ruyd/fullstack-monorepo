@@ -44,13 +44,19 @@ const mocks = {
   idToken: 'id token mock',
   customToken: 'custom token mock'
 }
-const mockResponse = {
+const mockOkResponse = {
   token: mocks.customToken,
   user: { email: mocks.email, userId: mocks.uid, firstName: 'Mock' }
 }
 
-const mockIdToken =
-  'eyJhbGciOiJIUz I1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJ1aWQiOiIxMjMiLCJyb2xlcyI6WyJyb2xlMSJdLCJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.-D2G3gAsVzhpAJ7VByrqBoH29Nw_8fIuuEotH69EAQU'
+export const mockErrorResponse = {
+  error: {
+    message: 'error message'
+  }
+}
+
+const mockIdTokenWithEmail =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.-6o-_8nZ_VCetTXmRS5cqkrhJVausvEyzWFbiM58lys'
 
 export const mockStore = (state?: Partial<RootState>) => {
   const preloadedState = {
@@ -112,7 +118,7 @@ export const renderWithContext = async (
 describe('Firebase Login', () => {
   const mockLoginFlow = async (state?: Partial<RootState>) => {
     const axiosMock = new MockAdapter(axios)
-    axiosMock.onPost('/profile/login').reply(200, mockResponse)
+    axiosMock.onPost('/profile/login').reply(200, mockOkResponse)
 
     const returns = await renderWithContext(<LoginForm />, state)
     const { getByPlaceholderText, getByText } = returns
@@ -186,12 +192,12 @@ describe('Firebase Login', () => {
     expect(axios.defaults.headers.common['Authorization']).toEqual(`Bearer ${mocks.customToken}`)
   })
 
-  test('GoogleOneTap', async () => {
+  test('Check GoogleOneTap idToken login flow', async () => {
     const axiosMock = new MockAdapter(axios)
     axiosMock.onPost('/profile/social/check').reply(200, {
       userId: mocks.uid
     })
-    axiosMock.onPost('/profile/login').reply(200, mockResponse)
+    axiosMock.onPost('/profile/login').reply(200, mockOkResponse)
     const preState = {
       app: {
         settings: {
@@ -206,14 +212,14 @@ describe('Firebase Login', () => {
       }
     } as RootState
     const testStore = mockStore(preState)
-    await onTapClickAsync(mockIdToken)
+    await onTapClickAsync(mockIdTokenWithEmail)
     const postState = testStore.getState()
     expect(postState.app.user?.email).toEqual(mocks.email)
 
     expect(axiosMock.history.post[0].url).toBe('profile/login')
     expect(axiosMock.history.post[0].data).toBe(
       JSON.stringify({
-        idToken: mockIdToken
+        idToken: mockIdTokenWithEmail
       })
     )
   })

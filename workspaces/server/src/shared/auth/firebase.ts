@@ -1,7 +1,11 @@
-import { getAuth } from 'firebase-admin/auth'
+import { DecodedIdToken, getAuth } from 'firebase-admin/auth'
 import { getFirebaseApp } from '../firebase'
 import { UserModel } from '../types'
 import { oAuthError, oAuthInputs, oAuthRegistered, oAuthResponse } from '@lib'
+import { decode } from 'jsonwebtoken'
+import { OAuth2Client } from 'google-auth-library'
+import { getSettingsAsync } from '../settings'
+import { randomUUID } from 'crypto'
 
 export interface FirebaseAuthResponse {
   kind: string
@@ -14,20 +18,50 @@ export interface FirebaseAuthResponse {
   expiresIn: string
 }
 
+/**
+ * Client SDK does the signin and signup calls with this idToken as a result
+ * @param param0
+ * @returns
+ */
 export const firebaseCredentialLogin = async ({ idToken }: oAuthInputs): Promise<oAuthResponse> => {
-  const app = await getFirebaseApp()
-  const auth = getAuth(app)
-
   try {
-    const result = await auth.verifyIdToken(idToken as string, true)
-    const user = (
+    const app = await getFirebaseApp()
+    const auth = getAuth(app)
+    const settings = await getSettingsAsync()
+    const clientId = settings?.google?.clientId
+    const projectId = settings?.google?.projectId
+    const aud = (decode(idToken as string) as { aud: string })?.aud as string
+    let result: DecodedIdToken
+    if (aud === projectId) {
+      result = await auth.verifyIdToken(idToken as string, true)
+    } else {
+      result = (
+        await new OAuth2Client(clientId).verifyIdToken({
+          idToken: idToken as string,
+          audience: clientId
+        })
+      ).getPayload() as DecodedIdToken
+    }
+    let user = (
       await UserModel.findOne({
         where: {
           email: result.email
         }
       })
     )?.get()
-    const access_token = await auth.createCustomToken(result.uid, {
+
+    if (!user) {
+      user = (
+        await UserModel.create({
+          email: result.email as string,
+          userId: randomUUID(),
+          picture: result.picture,
+          firstName: result.given_name || result.display_name
+        })
+      )?.get()
+    }
+
+    const access_token = await auth.createCustomToken(user.userId, {
       roles: user?.roles?.length ? user.roles : []
     })
 
@@ -52,13 +86,8 @@ export const firebaseRegister = async ({
     const auth = getAuth(app)
     const result = await auth.createUser({
       ...payload,
-      email,
-      emailVerified: false
+      email
     })
-
-    // await auth.setCustomUserClaims(result.uid, {
-    //   roles: ['user']
-    // })
 
     return { ...result } as unknown as oAuthRegistered
   } catch (err) {

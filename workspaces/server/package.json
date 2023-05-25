@@ -28,6 +28,7 @@
     "express-basic-auth": "^1.2.1",
     "express-jwt": "^8.2.1",
     "firebase-admin": "^11.8.0",
+    "google-auth-library": "^8.8.0",
     "http-status": "^1.5.2",
     "jsonwebtoken": "^9.0.0",
     "jwks-rsa": "^3.0.0",

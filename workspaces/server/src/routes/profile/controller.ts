@@ -57,7 +57,12 @@ export async function register(req: express.Request, res: express.Response) {
  * allow offline mode
  */
 export async function login(req: express.Request, res: express.Response) {
-  const { email, password, idToken } = req.body
+  const { email: bodyEmail, password, idToken } = req.body
+  if (!password && !idToken) {
+    throw new Error('Missing inputs invalid login request')
+  }
+  const tokenEmail = decodeToken(idToken)?.email
+  const email = bodyEmail || tokenEmail
   const { startAdminEmail, isDevelopment, isNone } = await getAuthSettingsAsync()
   const isStartAdmin = email === startAdminEmail
 
@@ -68,7 +73,7 @@ export async function login(req: express.Request, res: express.Response) {
   )?.get()
 
   if ((isDevelopment && user) || (isNone && isStartAdmin)) {
-    logger.warn('Mocking login without pass for: ' + user?.email)
+    logger.warn('Mocking login without pass for: ' + email)
     res.json({
       token: createToken({
         userId: user?.userId,
