@@ -115,6 +115,14 @@ export const routes: Readonly<AppRoute>[] = [
     path: '/start',
     cleanLayout: true,
     component: React.lazy(() => import('../features/pages/Start'))
+  },
+  {
+    title: 'Featured Titles',
+    path: '/t',
+    link: true,
+    hideFooter: true,
+    params: ['/:id'],
+    component: React.lazy(() => import('../features/items'))
   }
 ]
 

@@ -6,13 +6,8 @@ export * from './models/order'
 export * from './models/subscription'
 
 import express from 'express'
-import { JwtPayload } from 'jsonwebtoken'
 import { EntityConfig } from '../db'
-
-export interface AppAccessToken extends JwtPayload {
-  uid: string
-  roles: string[]
-}
+import { AppAccessToken } from '@lib'
 
 export type EnrichedRequest = express.Request & {
   auth: AppAccessToken

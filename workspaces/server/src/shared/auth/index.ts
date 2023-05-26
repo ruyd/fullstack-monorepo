@@ -4,11 +4,12 @@ import { expressjwt } from 'express-jwt'
 import jwksRsa from 'jwks-rsa'
 import jwt from 'jsonwebtoken'
 import { config } from '../config'
-import { AppAccessToken, EnrichedRequest } from '../types'
+import { EnrichedRequest } from '../types'
 import { Connection, EntityConfig } from '../db'
 import logger from '../logger'
 import { HttpUnauthorizedError } from '../errorHandler'
 import {
+  AppAccessToken,
   AuthProviders,
   SettingState,
   oAuthError,
@@ -153,7 +154,7 @@ export async function modelAuthMiddleware(
       throw Error('Not logged in')
     }
     // Valid, but let's check if user has access role
-    const roles = accessToken?.claims?.roles || accessToken?.roles || []
+    const roles = (accessToken?.claims?.roles as string[]) || accessToken?.roles || []
     if (
       entity &&
       accessToken &&

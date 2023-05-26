@@ -3,6 +3,7 @@ import { patch } from '../app/slice'
 import { Box, Card, SwipeableDrawer } from '@mui/material'
 import Cart from '../shop/ShopCart'
 
+// Clipped items listing
 export default function DrawerRight() {
   const dispatch = useAppDispatch()
   const open = useAppSelector(store => store.app.drawerRightOpen)
@@ -16,7 +17,7 @@ export default function DrawerRight() {
       onClose={toggleOpen}
       onOpen={() => ''}
       ModalProps={{
-        keepMounted: true,
+        keepMounted: true
       }}
     >
       <Box
