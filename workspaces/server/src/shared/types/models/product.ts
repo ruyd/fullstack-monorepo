@@ -6,35 +6,31 @@ import { addModel } from 'src/shared/db'
 export const ProductDefinition = {
   productId: {
     type: DataTypes.STRING,
-    primaryKey: true,
+    primaryKey: true
   },
   title: {
     type: DataTypes.STRING,
-    required: true,
+    required: true
   },
   description: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   imageUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   images: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.ARRAY(DataTypes.STRING)
   },
   keywords: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING
   },
   prices: {
-    type: DataTypes.JSONB,
+    type: DataTypes.JSONB
   },
   shippable: {
     type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
+    defaultValue: false
+  }
 }
 
-export const ProductModel = addModel<Product>('product', ProductDefinition)
-
-// ProductModel.hasMany(CategoryModel, { foreignKey: 'categoryId' })
-
-// CategoryModel.belongsToMany(ProductModel, { through: 'product_category' })
+export const ProductModel = addModel<Product>({ name: 'product', attributes: ProductDefinition })

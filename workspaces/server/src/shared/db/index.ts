@@ -21,6 +21,10 @@ export interface Join {
   foreignKey: string
 }
 
+export type EntityDefinition<T extends object> = {
+  [key in keyof T]: ModelAttributeColumnOptions<Model<T>>
+}
+
 export interface EntityConfig<M extends Model = Model> {
   name: string
   attributes: ModelAttributes<M, Attributes<M>>
@@ -162,15 +166,15 @@ export class Connection {
  * @param publicWrite - POST, PUT, PATCH (no token needed)
  * @returns Typed model class reference with methods/utilities
  */
-export function addModel<T extends object>(
-  name: string,
-  attributes: ModelAttributes<Model<T>, Attributes<Model<T>>>,
-  joins?: Join[],
-  roles?: string[],
-  publicRead?: boolean,
-  publicWrite?: boolean,
-  onChanges?: (source?: string, model?: Model<T>) => Promise<void> | void
-): ModelStatic<Model<T, T>> {
+export function addModel<T extends object>({
+  name,
+  attributes,
+  joins,
+  roles,
+  publicRead,
+  publicWrite,
+  onChanges
+}: EntityConfig<Model<T>>): ModelStatic<Model<T, T>> {
   const model = class extends Model {}
   const cfg: EntityConfig = {
     name,

@@ -1,34 +1,21 @@
-import { addModel } from 'src/shared/db'
+import { Category } from '@lib'
+import { DataTypes } from 'sequelize'
+import { EntityDefinition, addModel } from 'src/shared/db'
 
-export interface Category {
-  CategoryId: string
-  title: string
-  description: string
-  imageUrl: string
-}
-
-export const CategoryDefinition = {
-  CategoryId: {
-    type: 'string',
-    required: true,
-    unique: true,
+export const CategoryDefinition: EntityDefinition<Category> = {
+  categoryId: {
+    type: DataTypes.UUID,
+    primaryKey: true
   },
   title: {
-    type: 'string',
-    required: true,
-  },
-  description: {
-    type: 'string',
-    required: true,
+    type: DataTypes.STRING
   },
   imageUrl: {
-    type: 'string',
-    required: true,
-  },
-  keywords: {
-    type: 'string',
-    required: false,
-  },
+    type: DataTypes.STRING
+  }
 }
 
-export const CategoryModel = addModel<Category>('Category', CategoryDefinition)
+export const CategoryModel = addModel<Category>({
+  name: 'Category',
+  attributes: CategoryDefinition
+})

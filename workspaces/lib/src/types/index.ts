@@ -10,6 +10,8 @@ export * from './subscription'
 export * from './product'
 export * from './wallet'
 export * from './auth'
+export * from './item'
+export * from './category'
 
 /**
  * Common Model Options

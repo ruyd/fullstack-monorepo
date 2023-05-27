@@ -30,19 +30,23 @@ export const CartAttributes = {
   }
 }
 
-export const CartModel = addModel<Cart>('cart', CartAttributes, [
-  {
-    relation: 'belongsTo',
-    model: DrawingModel,
-    foreignKey: 'drawingId',
-    as: 'drawing'
-  },
-  {
-    relation: 'belongsTo',
-    model: ProductModel,
-    foreignKey: 'productId',
-    as: 'product'
-  }
-])
+export const CartModel = addModel<Cart>({
+  name: 'cart',
+  attributes: CartAttributes,
+  joins: [
+    {
+      relation: 'belongsTo',
+      model: DrawingModel,
+      foreignKey: 'drawingId',
+      as: 'drawing'
+    },
+    {
+      relation: 'belongsTo',
+      model: ProductModel,
+      foreignKey: 'productId',
+      as: 'product'
+    }
+  ]
+})
 
 export default CartModel
