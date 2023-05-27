@@ -27,32 +27,31 @@ import {
   PersonSearch,
   Settings,
   StarBorder,
-  VerifiedUserSharp,
+  VerifiedUserSharp
 } from '@mui/icons-material'
 import MenuItem, { MenuModel } from './MenuItem'
-import { Button } from '@mui/material'
-
+import Button from '@mui/material/Button'
 const drawerWidth = 250
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
+    duration: theme.transitions.duration.enteringScreen
   }),
-  overflowX: 'hidden',
+  overflowX: 'hidden'
 })
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.easeOut,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen
   }),
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
+    width: `calc(${theme.spacing(8)} + 1px)`
+  }
 })
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -61,7 +60,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
+  ...theme.mixins.toolbar
 }))
 
 interface AppBarProps extends MuiAppBarProps {
@@ -69,21 +68,21 @@ interface AppBarProps extends MuiAppBarProps {
 }
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: prop => prop !== 'open',
+  shouldForwardProp: prop => prop !== 'open'
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
+      duration: theme.transitions.duration.enteringScreen
+    })
+  })
 }))
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })(
@@ -94,13 +93,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
     boxSizing: 'border-box',
     ...(open && {
       ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme)
     }),
     ...(!open && {
       ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
-  }),
+      '& .MuiDrawer-paper': closedMixin(theme)
+    })
+  })
 )
 /**
  * - 1 level deep
@@ -140,9 +139,9 @@ export default function Menu(): JSX.Element {
       children: config.admin.models?.map(model => ({
         text: model,
         path: `/data?model=${model}`,
-        icon: getIcon(model),
-      })),
-    },
+        icon: getIcon(model)
+      }))
+    }
   ]
 
   return (
@@ -158,7 +157,7 @@ export default function Menu(): JSX.Element {
               color: 'inherit',
               textDecoration: 'none',
               justifyContent: 'center',
-              marginRight: '-1.5rem',
+              marginRight: '-1.5rem'
             }}
           >
             <Button fullWidth onClick={handleOpenClose}>

@@ -1,16 +1,5 @@
 import React from 'react'
-import { LockOutlined } from '@mui/icons-material'
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-  Link as MuiLink,
-  ContainerProps
-} from '@mui/material'
+import LockOutlined from '@mui/icons-material/LockOutlined'
 import { Link, useNavigate } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
 import { forgotAsync, loginAsync } from '../app/thunks'
@@ -18,6 +7,14 @@ import { useAppDispatch, useAppSelector } from '../../shared/store'
 import PasswordField from '../ui/PasswordField'
 import { oAuthInputs } from '../../../../lib/src/types'
 import LoadingButton from '@mui/lab/LoadingButton'
+import Container, { ContainerProps } from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import LinkMUI from '@mui/material/Link'
 
 export default function Login(props?: ContainerProps & Partial<React.Component>): JSX.Element {
   const enableRegistration = useAppSelector(state => state.app.settings?.system?.enableRegistration)
@@ -131,9 +128,9 @@ export default function Login(props?: ContainerProps & Partial<React.Component>)
             <Grid container justifyContent="flex-end" spacing={1}>
               {isRoutedPage && (
                 <Grid item>
-                  <MuiLink variant="body2" component={Link} to={`${Paths.Register}${returnTo}`}>
+                  <LinkMUI variant="body2" component={Link} to={`${Paths.Register}${returnTo}`}>
                     or Register if new
-                  </MuiLink>
+                  </LinkMUI>
                 </Grid>
               )}
             </Grid>

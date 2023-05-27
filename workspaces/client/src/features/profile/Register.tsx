@@ -1,13 +1,3 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Grid,
-  TextField,
-  Typography,
-  Container,
-  ContainerProps
-} from '@mui/material'
 import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -17,6 +7,13 @@ import { Paths } from '../../shared/routes'
 import { loginWithGoogle } from './GoogleOneTap'
 import LoadingButton from '@mui/lab/LoadingButton'
 import PasswordField from '../ui/PasswordField'
+import Container, { ContainerProps } from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import Avatar from '@mui/material/Avatar'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 
 export default function Register(props?: ContainerProps) {
   const dispatch = useAppDispatch()

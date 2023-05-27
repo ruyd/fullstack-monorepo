@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Avatar, Box, Button, Grid, TextField, Typography, Container } from '@mui/material'
-import { LockOutlined } from '@mui/icons-material'
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { editProfileAsync } from '../app/thunks'
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 
 export default function Profile() {
   const dispatch = useAppDispatch()
@@ -22,7 +24,7 @@ export default function Profile() {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'center'
         }}
       >
         <Box component="form" sx={{ mt: 3 }} onSubmit={submitHandler}>

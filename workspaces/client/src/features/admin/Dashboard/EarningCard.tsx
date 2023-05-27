@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles'
-import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material'
 import EarningIcon from './images/earning.svg'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
@@ -10,6 +9,12 @@ import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined'
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined'
 import Card from '../../ui/Card'
 import Skeleton from '../../ui/Card/Skeleton/EarningCard'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar'
+import MenuItem from '@mui/material/MenuItem'
+import Menu from '@mui/material/Menu'
 
 const CardWrapper = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.dark,

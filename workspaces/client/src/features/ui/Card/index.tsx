@@ -1,12 +1,15 @@
 import React from 'react'
 
-// material-ui
-import { useTheme } from '@mui/material/styles'
-import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material'
+import useTheme from '@mui/material/styles/useTheme'
+import CardContent from '@mui/material/CardContent'
+import Divider from '@mui/material/Divider'
+import Typography from '@mui/material/Typography'
+import CardHeader from '@mui/material/CardHeader'
+import Card from '@mui/material/Card'
 
 // constant
 const headerSX = {
-  '& .MuiCardHeader-action': { mr: 0 },
+  '& .MuiCardHeader-action': { mr: 0 }
 }
 
 export interface CardProps {
@@ -47,9 +50,9 @@ export function MainCard({
         border: border ? '1px solid' : 'none',
         borderColor: theme.palette.primary.main[200] + 75,
         ':hover': {
-          boxShadow: boxShadow ? shadow || '0 2px 14px 0 rgb(32 40 45 / 8%)' : 'inherit',
+          boxShadow: boxShadow ? shadow || '0 2px 14px 0 rgb(32 40 45 / 8%)' : 'inherit'
         },
-        ...sx,
+        ...sx
       }}
     >
       <>

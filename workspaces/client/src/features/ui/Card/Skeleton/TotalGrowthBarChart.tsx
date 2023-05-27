@@ -1,6 +1,8 @@
-import { Card, CardContent, Grid } from '@mui/material'
 import Skeleton from '@mui/material/Skeleton'
 import { gridSpacing } from '../../../../shared/constant'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid'
 
 const TotalGrowthBarChart = () => (
   <Card>

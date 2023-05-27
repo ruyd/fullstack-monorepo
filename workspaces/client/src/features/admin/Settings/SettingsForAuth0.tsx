@@ -1,5 +1,9 @@
 import { SettingState, SettingType } from '@lib'
-import { Button, Grid, Link, TextField, Typography } from '@mui/material'
+import Button from '@mui/material/Button'
+import Grid from '@mui/material/Grid'
+import Link from '@mui/material/Link'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 
 export default function SettingsForAuth0({
   data,

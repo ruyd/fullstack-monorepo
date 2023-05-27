@@ -1,8 +1,12 @@
 import React from 'react'
-import { Box, Button, Container, Typography } from '@mui/material'
+
 import { Link } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
 import { FormattedMessage, defineMessages } from 'react-intl'
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 
 const messages = defineMessages({
   buttonCaption: {

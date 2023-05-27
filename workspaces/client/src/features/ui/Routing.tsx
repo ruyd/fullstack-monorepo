@@ -1,10 +1,10 @@
-import { CircularProgress } from '@mui/material'
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Route, Routes } from 'react-router-dom'
 import { config } from '../../shared/config'
 import routes, { AppRoute } from '../../shared/routes'
 import AuthCheck from '../profile/AuthCheck'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export const RouteElement = ({ route }: { route: AppRoute }) => (
   <AuthCheck secure={route.secure}>
@@ -32,7 +32,7 @@ export default function Routing() {
               path={route.path + pathParam}
               element={<RouteElement route={route} />}
             />
-          )),
+          ))
         )}
     </Routes>
   )

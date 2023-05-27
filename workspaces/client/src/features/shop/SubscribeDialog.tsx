@@ -1,34 +1,27 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
-import {
-  Box,
-  Button,
-  DialogActions,
-  DialogContent,
-  Grid,
-  Slide,
-  Step,
-  StepLabel,
-  Stepper,
-} from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import type { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from './slice'
-import { patch as patchApp, useGet } from '../app'
-import ShopCart from './ShopCart'
-import { loadAsync } from './thunks'
+import { patch as patchApp } from '../app'
 import PaymentStep from './Payment'
-import AddressStep from './Address'
 import ReceiptStep from './Receipt'
 import Products from './Products'
+import Slide from '@mui/material/Slide'
+import Grid from '@mui/material/Grid'
+import DialogActions from '@mui/material/DialogActions'
+import Button from '@mui/material/Button'
+import DialogContent from '@mui/material/DialogContent'
+import Box from '@mui/material/Box'
+import Stepper from '@mui/material/Stepper'
+import StepLabel from '@mui/material/StepLabel'
+import Step from '@mui/material/Step'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement
   },
-  ref: React.Ref<unknown>,
+  ref: React.Ref<unknown>
 ) {
   return <Slide direction="up" ref={ref} {...props} />
 })
@@ -36,21 +29,19 @@ const Transition = React.forwardRef(function Transition(
 const stepsBase: Array<{ title: string; component: JSX.Element; next: string; key: string }> = [
   { title: 'Subscription', component: <Products />, next: 'Checkout', key: 'plan' },
   { title: 'Payment', component: <PaymentStep />, next: 'Continue', key: 'payment' },
-  { title: 'Receipt', component: <ReceiptStep />, next: 'Close', key: 'receipt' },
+  { title: 'Receipt', component: <ReceiptStep />, next: 'Close', key: 'receipt' }
 ]
 
 export default function SubscribeDialog() {
-  const token = useAppSelector(state => state.app.token)
   const activeStep = useAppSelector(state => state.shop.activeStep)
   const stepsStatus = useAppSelector(state => state.shop.steps)
   const dispatch = useAppDispatch()
-  const loaded = useAppSelector(state => state.shop.loaded)
 
   const enableShippingAddress = useAppSelector(
-    state => state.app.settings?.system?.enableShippingAddress,
+    state => state.app.settings?.system?.enableShippingAddress
   )
   const enableIdentity = useAppSelector(
-    state => state.app.settings?.system?.paymentMethods?.stripe?.identityEnabled,
+    state => state.app.settings?.system?.paymentMethods?.stripe?.identityEnabled
   )
   const steps = stepsBase
     .filter(a => enableShippingAddress || a.key !== 'address')
@@ -103,7 +94,7 @@ export default function SubscribeDialog() {
               sx={{
                 display: 'flex',
                 flex: 1,
-                flexWrap: 'wrap',
+                flexWrap: 'wrap'
               }}
             >
               {steps.map((step, index) => (

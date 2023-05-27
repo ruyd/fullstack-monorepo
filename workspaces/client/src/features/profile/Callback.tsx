@@ -1,10 +1,15 @@
 import React from 'react'
 import Alert from '@mui/material/Alert'
-import { AlertTitle, Box, Grid, LinearProgress, Paper, Typography } from '@mui/material'
 import authProvider from 'auth0-js'
 import { getAuth0Settings, getNonce } from '../../shared/auth'
 import loginImage from './images/login.svg'
 import { useAppSelector } from '../../shared/store'
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
+import AlertTitle from '@mui/material/AlertTitle'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import LinearProgress from '@mui/material/LinearProgress'
 
 export default function Callback(): JSX.Element {
   const clientId = useAppSelector(state => state.app.settings?.auth0?.clientId)

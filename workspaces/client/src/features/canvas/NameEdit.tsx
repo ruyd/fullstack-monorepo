@@ -1,17 +1,18 @@
 import React from 'react'
-import { styled, TextField } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
+import { styled } from '@mui/material/styles'
+import TextField from '@mui/material/TextField'
 
 const FieldStyled = styled(TextField)({
   position: 'absolute',
   top: '10%',
-  left: '20%',
+  left: '20%'
 })
 
 export default function NameEdit({
   inputRef,
-  save,
+  save
 }: {
   inputRef: React.RefObject<HTMLInputElement>
   save: () => void
@@ -22,7 +23,7 @@ export default function NameEdit({
     (e: { target: { value: string } }) => {
       dispatch(actions.patchActive({ name: e.target.value }))
     },
-    [dispatch],
+    [dispatch]
   )
   const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {

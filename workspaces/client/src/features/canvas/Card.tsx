@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
-import { Grid, Paper, PaperProps, Typography } from '@mui/material'
 import { Drawing } from '@lib'
 import { config } from '../../shared/config'
 import Moment from 'react-moment'
 import { BlurBackdrop } from '../ui/BlurBackdrop'
+import Paper, { PaperProps } from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 
 export function GalleryCard({
   item,
@@ -23,7 +24,7 @@ export function GalleryCard({
         marginRight: '0.5rem',
         display: 'flex',
         position: 'relative',
-        maxWidth: '47vw',
+        maxWidth: '47vw'
       }}
       {...props}
     >
@@ -36,7 +37,7 @@ export function GalleryCard({
           cursor: 'pointer',
           height: config.thumbnails.height,
           width: config.thumbnails.width,
-          borderRadius: '16px',
+          borderRadius: '16px'
         }}
         width={config.thumbnails.width}
         height={config.thumbnails.height}
@@ -50,7 +51,7 @@ export function GalleryCard({
           left: 0,
           right: 0,
           position: 'absolute',
-          display: 'flex',
+          display: 'flex'
         }}
       >
         <Grid
@@ -58,14 +59,14 @@ export function GalleryCard({
           sx={{
             justifyContent: 'space-between',
             alignItems: 'center',
-            margin: '0 1rem',
+            margin: '0 1rem'
           }}
         >
           <Grid item>
             <Typography
               sx={{
                 lineHeight: 1.5,
-                fontWeight: 600,
+                fontWeight: 600
               }}
             >
               {item?.name}
@@ -74,7 +75,7 @@ export function GalleryCard({
               sx={{
                 lineHeight: 1.5,
                 fontWeight: 400,
-                fontSize: '0.75rem',
+                fontSize: '0.75rem'
               }}
             >
               <Moment fromNow>{item.createdAt}</Moment>

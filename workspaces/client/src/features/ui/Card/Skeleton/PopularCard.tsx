@@ -1,4 +1,6 @@
-import { Card, CardContent, Grid } from '@mui/material'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid'
 import Skeleton from '@mui/material/Skeleton'
 const gridSpacing = 3
 const PopularCard = () => (

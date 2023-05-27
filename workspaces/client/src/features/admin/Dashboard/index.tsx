@@ -1,16 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react'
 
-// material-ui
-import { Grid } from '@mui/material'
-
-// project imports
 import EarningCard from './EarningCard'
 import PopularCard from './PopularCard'
 import TotalOrderLineChartCard from './TotalOrderLineChartCard'
 import TotalIncomeDarkCard from './TotalIncomeDarkCard'
 import TotalIncomeLightCard from './TotalIncomeLightCard'
 import TotalGrowthBarChart from './TotalGrowthBarChart'
+import Grid from '@mui/material/Grid'
 
 const gridSpacing = 3
 

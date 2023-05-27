@@ -5,14 +5,16 @@ import redux from './images/redux.svg'
 import query from './images/query.svg'
 import sequelize from './images/sequelize.svg'
 import nodejs from './images/nodejs.svg'
-import { Box, Grid, Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
 
 const h = 80
 const w = 80
 
 const Logo = styled('img')({
   height: h,
-  width: w,
+  width: w
 })
 
 const logos = [
@@ -21,7 +23,7 @@ const logos = [
   ['React Query', query],
   ['Redux Toolkit', redux],
   ['Sequelize', sequelize],
-  ['NodeJS', nodejs],
+  ['NodeJS', nodejs]
 ]
 
 export default function Logos() {

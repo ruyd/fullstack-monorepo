@@ -1,13 +1,4 @@
 import { Delete, Edit, Settings as SettingsIcon } from '@mui/icons-material'
-import {
-  Container,
-  ContainerProps,
-  Grid,
-  IconButton,
-  ImageList,
-  Paper,
-  Typography,
-} from '@mui/material'
 import { Drawing } from '@lib'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -16,6 +7,12 @@ import { config } from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
 import { deleteAsync, itemsAsync } from './thunks'
+import Container, { ContainerProps } from '@mui/material/Container'
+import ImageList from '@mui/material/ImageList'
+import Paper from '@mui/material/Paper'
+import IconButton from '@mui/material/IconButton'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 
 export default function Items(props: ContainerProps) {
   const token = useAppSelector(state => state.app.token)
@@ -70,7 +67,7 @@ export default function Items(props: ContainerProps) {
               marginRight: '0.5rem',
               display: 'flex',
               position: 'relative',
-              maxWidth: '47vw',
+              maxWidth: '47vw'
             }}
           >
             <img
@@ -80,7 +77,7 @@ export default function Items(props: ContainerProps) {
               style={{
                 height: config.thumbnails.height,
                 width: config.thumbnails.width,
-                borderRadius: '16px',
+                borderRadius: '16px'
               }}
               width={config.thumbnails.width}
               height={config.thumbnails.height}
@@ -93,7 +90,7 @@ export default function Items(props: ContainerProps) {
                 left: 0,
                 right: 0,
                 position: 'absolute',
-                display: 'flex',
+                display: 'flex'
               }}
             >
               <Grid
@@ -101,7 +98,7 @@ export default function Items(props: ContainerProps) {
                 sx={{
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  margin: '0 1rem',
+                  margin: '0 1rem'
                 }}
               >
                 <Grid item>

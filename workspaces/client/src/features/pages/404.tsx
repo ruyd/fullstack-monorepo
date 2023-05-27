@@ -1,5 +1,7 @@
-import { Container, Typography } from '@mui/material'
+import Container from '@mui/material/Container'
 import image from './images/404.svg'
+import Typography from '@mui/material/Typography'
+
 export default function Error404() {
   return (
     <Container>

@@ -1,27 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Grid,
-  TextField,
-  Button,
-  Box,
-  Radio,
-  ToggleButton,
-  Switch,
-  FormControlLabel,
-  FormGroup,
-  Card,
-  Paper,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemButton,
-} from '@mui/material'
 import { User } from '@lib'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormGroup from '@mui/material/FormGroup'
+import Grid from '@mui/material/Grid'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemText from '@mui/material/ListItemText'
+import Paper from '@mui/material/Paper'
+import Switch from '@mui/material/Switch'
+import TextField from '@mui/material/TextField'
 
 export function UserEdit({ user }: { user?: User }): JSX.Element {
   const submitHandler = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const data = new FormData(e.currentTarget)
+    // const data = new FormData(e.currentTarget)
   }
   return (
     <Grid container spacing={2}>

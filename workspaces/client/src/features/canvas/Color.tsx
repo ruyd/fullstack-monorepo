@@ -1,8 +1,10 @@
 import React from 'react'
 import { Backspace, Check } from '@mui/icons-material'
-import { Box, BoxProps, Fab, Stack } from '@mui/material'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { actions } from './slice'
+import Box, { BoxProps } from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import Fab from '@mui/material/Fab'
 
 const colors = ['yellow', 'red', 'blue', 'green', 'black']
 
@@ -24,7 +26,7 @@ export default function Color(props: BoxProps) {
           <Fab
             key={c}
             sx={{
-              backgroundColor: c,
+              backgroundColor: c
             }}
             onClick={() => setColor(c)}
           >
@@ -36,7 +38,7 @@ export default function Color(props: BoxProps) {
           <Backspace
             sx={{
               transform: isActive('transparent') ? 'rotate(-45deg)' : 'rotate(-90deg)',
-              transition: 'all 200ms ease-in',
+              transition: 'all 200ms ease-in'
             }}
           />
         </Fab>

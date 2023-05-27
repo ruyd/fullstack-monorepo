@@ -1,6 +1,10 @@
 import { useTheme } from '@mui/material/styles'
-import { Card, CardContent, CardHeader, Divider, Typography } from '@mui/material'
 import { CardProps } from './'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Divider from '@mui/material/Divider'
+import CardHeader from '@mui/material/CardHeader'
+import Typography from '@mui/material/Typography'
 
 export function SubCard(
   {
@@ -14,7 +18,7 @@ export function SubCard(
     title,
     ...others
   }: CardProps,
-  ref?: React.MutableRefObject<HTMLDivElement>,
+  ref?: React.MutableRefObject<HTMLDivElement>
 ) {
   const theme = useTheme()
 
@@ -25,9 +29,9 @@ export function SubCard(
         border: '1px solid',
         borderColor: theme.palette.primary.light,
         ':hover': {
-          boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)',
+          boxShadow: '0 2px 14px 0 rgb(32 40 45 / 8%)'
         },
-        ...sx,
+        ...sx
       }}
       {...others}
     >
@@ -52,7 +56,7 @@ export function SubCard(
         <Divider
           sx={{
             opacity: 1,
-            borderColor: theme.palette.primary.light,
+            borderColor: theme.palette.primary.light
           }}
         />
       )}

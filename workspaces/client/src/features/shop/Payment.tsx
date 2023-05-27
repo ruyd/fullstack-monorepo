@@ -1,11 +1,16 @@
 import React from 'react'
 import Typography from '@mui/material/Typography'
-import { Box, List, ListItem, ListItemButton, ListItemText, Stack } from '@mui/material'
 import StripeCheckout from './StripeCheckout'
 import { useAppSelector } from 'src/shared/store'
 import OrderAddress from './OrderAddress'
 import OrderItems from './OrderItems'
 import FakeCheckout from './FakeCheckout'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
 
 export default function PaymentStep() {
   const settings = useAppSelector(state => state.app.settings?.system?.paymentMethods)

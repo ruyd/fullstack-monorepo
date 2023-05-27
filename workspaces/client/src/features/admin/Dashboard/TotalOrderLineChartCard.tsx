@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useTheme, styled } from '@mui/material/styles'
-import { Avatar, Box, Button, Grid, Typography } from '@mui/material'
 import Chart from 'react-apexcharts'
 import MainCard from '../../ui/Card'
 import SkeletonTotalOrderCard from '../../ui/Card/Skeleton/EarningCard'
@@ -8,6 +7,11 @@ import ChartDataMonth from './chart-data/total-order-month-line-chart'
 import ChartDataYear from './chart-data/total-order-year-line-chart'
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import Avatar from '@mui/material/Avatar'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
@@ -16,7 +20,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
   position: 'relative',
   '&>div': {
     position: 'relative',
-    zIndex: 5,
+    zIndex: 5
   },
   '&:after': {
     content: '""',
@@ -30,8 +34,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     right: -95,
     [theme.breakpoints.down('sm')]: {
       top: -105,
-      right: -140,
-    },
+      right: -140
+    }
   },
   '&:before': {
     content: '""',
@@ -46,9 +50,9 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     opacity: 0.5,
     [theme.breakpoints.down('sm')]: {
       top: -155,
-      right: -70,
-    },
-  },
+      right: -70
+    }
+  }
 }))
 
 const TotalOrderLineChartCard = ({ isLoading }: { isLoading: boolean }) => {
@@ -77,7 +81,7 @@ const TotalOrderLineChartCard = ({ isLoading }: { isLoading: boolean }) => {
                         ...theme.typography.largeAvatar,
                         backgroundColor: theme.palette.primary.main[800],
                         color: '#fff',
-                        mt: 1,
+                        mt: 1
                       }}
                     >
                       <LocalMallOutlinedIcon fontSize="inherit" />
@@ -117,7 +121,7 @@ const TotalOrderLineChartCard = ({ isLoading }: { isLoading: boolean }) => {
                               fontWeight: 500,
                               mr: 1,
                               mt: 1.75,
-                              mb: 0.75,
+                              mb: 0.75
                             }}
                           >
                             $108
@@ -129,7 +133,7 @@ const TotalOrderLineChartCard = ({ isLoading }: { isLoading: boolean }) => {
                               fontWeight: 500,
                               mr: 1,
                               mt: 1.75,
-                              mb: 0.75,
+                              mb: 0.75
                             }}
                           >
                             $961
@@ -142,7 +146,7 @@ const TotalOrderLineChartCard = ({ isLoading }: { isLoading: boolean }) => {
                             ...theme.typography.smallAvatar,
                             cursor: 'pointer',
                             backgroundColor: theme.palette.primary.main[200],
-                            color: theme.palette.primary.dark,
+                            color: theme.palette.primary.dark
                           }}
                         >
                           <ArrowDownwardIcon
@@ -156,7 +160,7 @@ const TotalOrderLineChartCard = ({ isLoading }: { isLoading: boolean }) => {
                           sx={{
                             fontSize: '1rem',
                             fontWeight: 500,
-                            color: theme.palette.primary.main[200],
+                            color: theme.palette.primary.main[200]
                           }}
                         >
                           Total Order

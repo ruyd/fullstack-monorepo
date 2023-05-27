@@ -1,4 +1,4 @@
-import { Container } from '@mui/material'
+import Container from '@mui/material/Container'
 import Gallery from '../ui/Gallery'
 import HeroSection from './HeroSection'
 import Logos from './Logos'

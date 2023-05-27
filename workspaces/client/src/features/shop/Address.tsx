@@ -3,16 +3,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import debouncer from '../../shared/debouncer'
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-} from '@mui/material'
+
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { Address } from '../../../../lib/src/types'
 import { patch, stepStatus } from './slice'
@@ -21,6 +12,14 @@ import Favorite from '@mui/icons-material/Favorite'
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder'
 import { DeleteOutline } from '@mui/icons-material'
 import { request } from '../app'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import IconButton from '@mui/material/IconButton'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
 
 const newAddress = () => ({
   addressId: '',
@@ -31,7 +30,7 @@ const newAddress = () => ({
   city: '',
   state: '',
   zip: '',
-  country: '',
+  country: ''
 })
 
 export default function AddressForm() {
@@ -76,7 +75,7 @@ export default function AddressForm() {
       items?.map(a =>
         a.addressId === item.addressId
           ? { ...item, favorite: !item.favorite }
-          : { ...a, favorite: false },
+          : { ...a, favorite: false }
       ) || []
     dispatch(patch({ addresses }))
   }

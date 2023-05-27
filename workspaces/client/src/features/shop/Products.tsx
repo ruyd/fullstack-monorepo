@@ -1,23 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { type PagedResult, type Price, type Product } from '@lib'
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Container,
-  GlobalStyles,
-  Grid,
-  Link,
-  Typography
-} from '@mui/material'
 import { useGet } from '../app'
 import { patch } from './slice'
 import StarIcon from '@mui/icons-material/StarBorder'
 import { useAppDispatch } from 'src/shared/store'
-import { cartAsync, subscribeAsync } from './thunks'
+import { subscribeAsync } from './thunks'
+import GlobalStyles from '@mui/material/GlobalStyles'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import CardContent from '@mui/material/CardContent'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import CardActions from '@mui/material/CardActions'
+import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
 
 type ProductWithPrice = Product & Price
 
@@ -73,6 +70,7 @@ export default function Products({
     <>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
       <Container maxWidth="md">
+        {isLoadingProducts && <CircularProgress />}
         <Grid container spacing={5} alignItems="flex-end">
           {products?.map(tier => (
             <Grid item key={tier.id} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>

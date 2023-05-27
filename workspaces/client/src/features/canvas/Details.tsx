@@ -1,19 +1,18 @@
 import { AttachMoney, MonetizationOn, VisibilityOff } from '@mui/icons-material'
-import {
-  Box,
-  Dialog,
-  FormControlLabel,
-  FormGroup,
-  InputAdornment,
-  Switch,
-  TextField,
-  Typography,
-} from '@mui/material'
+
 import Moment from 'react-moment'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { Drawing } from '../../../../lib/src/types'
 import { Method, notify, request } from '../app'
 import { actions } from './slice'
+import Dialog from '@mui/material/Dialog'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import FormGroup from '@mui/material/FormGroup'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Switch from '@mui/material/Switch'
 
 export function Details() {
   const dispatch = useAppDispatch()
@@ -30,7 +29,7 @@ export function Details() {
     <Dialog open={!!show} onClose={close}>
       <Box
         sx={{
-          m: '1rem 2rem 3rem 2rem',
+          m: '1rem 2rem 3rem 2rem'
         }}
       >
         <Typography variant="h5" component="h1" sx={{ textAlign: 'center', mb: '1rem' }}>
@@ -50,7 +49,7 @@ export function Details() {
                 <InputAdornment position="start">
                   <MonetizationOn />
                 </InputAdornment>
-              ),
+              )
             }}
           />
           <FormControlLabel
@@ -82,7 +81,7 @@ export function Details() {
               lineHeight: 1.5,
               fontWeight: 400,
               fontSize: '0.75rem',
-              textAlign: 'right',
+              textAlign: 'right'
             }}
           >
             Modified:&nbsp;

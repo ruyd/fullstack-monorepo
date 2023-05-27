@@ -1,20 +1,18 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Container,
-  FormControlLabel,
-  Radio,
-  RadioGroup
-} from '@mui/material'
 import { useGet } from '../app/thunks'
 import { PagedResult, Product } from '@lib'
 import { useAppDispatch } from 'src/shared/store'
 import { cartAsync } from './thunks'
 import React from 'react'
 import LoadingLine from '../ui/LoadingLine'
+import Container from '@mui/material/Container'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import CardContent from '@mui/material/CardContent'
+import RadioGroup from '@mui/material/RadioGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Radio from '@mui/material/Radio'
+import CardActions from '@mui/material/CardActions'
+import Button from '@mui/material/Button'
 
 export default function Coins(): JSX.Element {
   const dispatch = useAppDispatch()

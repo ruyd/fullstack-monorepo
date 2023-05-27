@@ -1,4 +1,4 @@
-import { styled } from '@mui/material'
+import styled from '@mui/material/styles/styled'
 
 const StyledDiv = styled('div')`
   backdrop-filter: blur(6px);
@@ -8,7 +8,7 @@ const StyledDiv = styled('div')`
 `
 export function BlurBackdrop({
   height,
-  bottom,
+  bottom
 }: {
   height?: string | number
   bottom?: string | number
@@ -17,7 +17,7 @@ export function BlurBackdrop({
     <StyledDiv
       style={{
         height: height || '25%',
-        bottom: bottom || '5%',
+        bottom: bottom || '5%'
       }}
     />
   )

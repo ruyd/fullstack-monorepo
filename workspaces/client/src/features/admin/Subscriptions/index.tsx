@@ -1,49 +1,43 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Alert,
-  Box,
-  Button,
-  ButtonGroup,
-  IconButton,
-  InputAdornment,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-  debounce,
-  Dialog,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  AccordionActions,
-  Divider
-} from '@mui/material'
 import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid'
 import { PagedResult, Subscription, SubscriptionPlan } from '@lib'
 import React from 'react'
 import { useGet } from '../../app'
 import AlertDialog, { ShowDialogProps } from '../../ui/AlertDialog'
 import { PagingProps } from '../Data'
-import _ from 'lodash'
 import { Delete, Edit, Search as SearchIcon } from '@mui/icons-material'
 import PlanEdit from './PlanEdit'
-import SubscriptionEdit from './Subscription'
+import Box from '@mui/material/Box'
+import Dialog from '@mui/material/Dialog'
+import { debounce } from '@mui/material/utils'
+import Accordion from '@mui/material/Accordion'
+import AccordionSummary from '@mui/material/AccordionSummary'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import IconButton from '@mui/material/IconButton'
+import AccordionActions from '@mui/material/AccordionActions'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import ToggleButton from '@mui/material/ToggleButton'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import Alert from '@mui/material/Alert'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
 
 export default function Subscriptions() {
   const [tab, setTab] = React.useState('all')
   const [searchText, setSearchText] = React.useState('')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedItems, setSelectedItems] = React.useState<(string | number)[]>([])
-  const [paging, setPaging] = React.useState<PagingProps>({ limit: 100, page: 0 })
-  const [alert, setAlert] = React.useState<ShowDialogProps>({
+  const [paging] = React.useState<PagingProps>({ limit: 100, page: 0 })
+  const [alert] = React.useState<ShowDialogProps>({
     open: false
   })
   const [showPlan, setShowPlan] = React.useState<ShowDialogProps>({
     open: false
   })
-  const [showSubscription, setShowSubscription] = React.useState<ShowDialogProps>({
-    open: false
-  })
+  // const [showSubscription, setShowSubscription] = React.useState<ShowDialogProps>({
+  //   open: false
+  // })
   const { data, isLoading, error, refetch } = useGet<PagedResult<Subscription>>(
     'subscriptions',
     `subscription`,
@@ -88,13 +82,13 @@ export default function Subscriptions() {
     }
   ]
 
-  const handleChangePage = (newPage: number, details: unknown): void => {
-    console.log('handleChangePage', newPage)
-  }
+  // const handleChangePage = (newPage: number, details: unknown): void => {
+  //   console.log('handleChangePage', newPage)
+  // }
 
-  const handleChangeRowsPerPage = (pageSize: number) => {
-    console.log('handleChangeRowsPerPage', pageSize)
-  }
+  // const handleChangeRowsPerPage = (pageSize: number) => {
+  //   console.log('handleChangeRowsPerPage', pageSize)
+  // }
 
   const handleEdit: GridEventListener<'cellEditCommit'> = (params, event) => {
     const value = (event as { target: { value: unknown } }).target.value
@@ -107,14 +101,14 @@ export default function Subscriptions() {
     refresh()
   }
 
-  const handleViewDetails = () => {
-    const first = data?.items?.find(i => i.userId === selectedItems[0])
-    setShowPlan({
-      open: true,
-      title: 'User Details',
-      payload: first
-    })
-  }
+  // const handleViewDetails = () => {
+  //   const first = data?.items?.find(i => i.userId === selectedItems[0])
+  //   setShowPlan({
+  //     open: true,
+  //     title: 'User Details',
+  //     payload: first
+  //   })
+  // }
 
   return (
     <Box sx={{ flexGrow: 1 }}>

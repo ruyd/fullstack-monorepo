@@ -1,10 +1,8 @@
-// material-ui
-import { CardContent, Grid, Skeleton, Stack } from '@mui/material'
-
-// project import
+import Skeleton from '@mui/material/Skeleton'
 import MainCard from '..'
-
-// ===========================|| SKELETON TOTAL GROWTH BAR CHART ||=========================== //
+import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid'
+import Stack from '@mui/material/Stack'
 
 const ProductPlaceholder = () => (
   <MainCard content={false} boxShadow>

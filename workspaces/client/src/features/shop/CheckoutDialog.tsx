@@ -1,17 +1,5 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
-import {
-  Box,
-  Button,
-  DialogActions,
-  DialogContent,
-  Grid,
-  Slide,
-  Step,
-  StepLabel,
-  Stepper
-} from '@mui/material'
+
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
@@ -22,6 +10,15 @@ import { loadAsync } from './thunks'
 import PaymentStep from './Payment'
 import AddressStep from './Address'
 import ReceiptStep from './Receipt'
+import Slide from '@mui/material/Slide'
+import DialogContent from '@mui/material/DialogContent'
+import Grid from '@mui/material/Grid'
+import Stepper from '@mui/material/Stepper'
+import Step from '@mui/material/Step'
+import StepLabel from '@mui/material/StepLabel'
+import Box from '@mui/material/Box'
+import DialogActions from '@mui/material/DialogActions'
+import Button from '@mui/material/Button'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -47,7 +44,7 @@ export default function CheckoutDialog() {
   const stepsStatus = useAppSelector(state => state.shop.steps)
   const dispatch = useAppDispatch()
   const loaded = useAppSelector(state => state.shop.loaded)
-  const items = useAppSelector(state => state.shop.items)
+  // const items = useAppSelector(state => state.shop.items)
   const enableShippingAddress = useAppSelector(
     state => state.app.settings?.system?.enableShippingAddress
   )

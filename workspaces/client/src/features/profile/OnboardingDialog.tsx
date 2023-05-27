@@ -1,15 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  Fade,
-  Grid,
-  Grow,
-  Slide,
-  Typography
-} from '@mui/material'
 import Dialog from '@mui/material/Dialog'
 import { TransitionProps } from '@mui/material/transitions'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
@@ -18,7 +7,13 @@ import Login from './Login'
 import Register from './Register'
 import { GoogleOneTapButton } from './GoogleOneTap'
 import Spacer from '../ui/Spacer'
-import AuthProviderInjections from './AuthProviders'
+import Slide from '@mui/material/Slide'
+import DialogContent from '@mui/material/DialogContent'
+import Grow from '@mui/material/Grow'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
+import DialogActions from '@mui/material/DialogActions'
+import Button from '@mui/material/Button'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

@@ -1,20 +1,10 @@
 import React, { useState } from 'react'
 
-// material-ui
-import { useTheme } from '@mui/material/styles'
-import {
-  Avatar,
-  Button,
-  CardActions,
-  CardContent,
-  Divider,
-  Grid,
-  Menu,
-  MenuItem,
-  Typography,
-} from '@mui/material'
+import useTheme from '@mui/material/styles/useTheme'
 
-// project imports
+import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar'
+
 import BajajAreaChartCard from './BajajAreaChartCard'
 import MainCard from '../../ui/Card'
 import SkeletonPopularCard from '../../ui/Card/Skeleton/PopularCard'
@@ -25,6 +15,13 @@ import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined'
 import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined'
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined'
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined'
+import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid'
+import CardActions from '@mui/material/CardActions'
+import Button from '@mui/material/Button'
+import Divider from '@mui/material/Divider'
+import MenuItem from '@mui/material/MenuItem'
+import Menu from '@mui/material/Menu'
 
 const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
   const theme = useTheme()
@@ -57,7 +54,7 @@ const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
                       fontSize="small"
                       sx={{
                         color: theme.palette.primary.main[200],
-                        cursor: 'pointer',
+                        cursor: 'pointer'
                       }}
                       aria-controls="menu-popular-card"
                       aria-haspopup="true"
@@ -72,11 +69,11 @@ const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
                       variant="selectedMenu"
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'right',
+                        horizontal: 'right'
                       }}
                       transformOrigin={{
                         vertical: 'top',
-                        horizontal: 'right',
+                        horizontal: 'right'
                       }}
                     >
                       <MenuItem onClick={handleClose}> Today</MenuItem>
@@ -114,7 +111,7 @@ const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
                                 borderRadius: '5px',
                                 backgroundColor: theme.palette.success.light,
                                 color: theme.palette.success.dark,
-                                ml: 2,
+                                ml: 2
                               }}
                             >
                               <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
@@ -155,7 +152,7 @@ const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
                                 borderRadius: '5px',
                                 backgroundColor: theme.palette.orange?.light,
                                 color: theme.palette.orange?.dark,
-                                marginLeft: 1.875,
+                                marginLeft: 1.875
                               }}
                             >
                               <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
@@ -196,7 +193,7 @@ const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
                                 borderRadius: '5px',
                                 backgroundColor: theme.palette.success.light,
                                 color: theme.palette.success.dark,
-                                ml: 2,
+                                ml: 2
                               }}
                             >
                               <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
@@ -237,7 +234,7 @@ const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
                                 borderRadius: '5px',
                                 backgroundColor: theme.palette.orange?.light,
                                 color: theme.palette.orange?.dark,
-                                ml: 2,
+                                ml: 2
                               }}
                             >
                               <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
@@ -278,7 +275,7 @@ const PopularCard = ({ isLoading }: { isLoading: boolean }) => {
                                 borderRadius: '5px',
                                 backgroundColor: theme.palette.orange?.light,
                                 color: theme.palette.orange?.dark,
-                                ml: 2,
+                                ml: 2
                               }}
                             >
                               <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />

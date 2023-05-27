@@ -1,5 +1,7 @@
-import { Grid, Paper, Typography } from '@mui/material'
+import Paper from '@mui/material/Paper'
 import image from './images/maintenance.svg'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 export default function Maintenance() {
   return (
     <Paper sx={{ flex: 1, display: 'flex', borderRadius: 0 }}>
@@ -12,7 +14,7 @@ export default function Maintenance() {
           backgroundSize: '50%',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingBottom: 30,
+          paddingBottom: 30
         }}
       >
         <Grid item>

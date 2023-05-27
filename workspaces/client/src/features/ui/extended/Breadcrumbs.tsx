@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
-import { Box, Card, Divider, Grid, Typography } from '@mui/material'
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs'
 import HorizontalLineIcon from '@mui/icons-material/HorizontalRule'
 import { gridSpacing } from '../../../shared/constant'
@@ -10,13 +9,18 @@ import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
 import HomeIcon from '@mui/icons-material/Home'
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone'
 import { config } from '../../../shared/config'
+import Typography from '@mui/material/Typography'
+import Divider from '@mui/material/Divider'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
 
 const linkSX = {
   display: 'flex',
   color: 'grey.900',
   textDecoration: 'none',
   alignContent: 'center',
-  alignItems: 'center',
+  alignItems: 'center'
 }
 export interface BreadcrumbsProps {
   card?: boolean
@@ -51,7 +55,7 @@ const Breadcrumbs = ({
     marginTop: `-${theme.spacing(0.25)}`,
     width: '1rem',
     height: '1rem',
-    color: theme.palette.secondary.main,
+    color: theme.palette.secondary.main
   }
 
   const [main, setMain] = useState<any>()
@@ -122,7 +126,7 @@ const Breadcrumbs = ({
           textDecoration: 'none',
           alignContent: 'center',
           alignItems: 'center',
-          color: 'grey.500',
+          color: 'grey.500'
         }}
       >
         {icons && <ItemIcon style={iconStyle} />}
@@ -138,7 +142,7 @@ const Breadcrumbs = ({
             marginBottom: card === false ? 0 : theme.spacing(gridSpacing),
             border: card === false ? 'none' : '1px solid',
             borderColor: theme.palette.primary.main[200] + 75,
-            background: card === false ? 'transparent' : theme.palette.background.default,
+            background: card === false ? 'transparent' : theme.palette.background.default
           }}
           {...others}
         >

@@ -6,7 +6,7 @@ declare HAS_SERVER_CHANGE=$(git show --name-only -r --stat --oneline HEAD^^..HEA
 
 if [ -n "$HAS_CLIENT_CHANGE" ]; then
   echo "Client changed, testing client build"
-  yarn jest --selectProjects client
+  yarn jest --selectProjects client --maxWorkers=50%
 fi
 
 if [ -n "$HAS_SERVER_CHANGE" ]; then

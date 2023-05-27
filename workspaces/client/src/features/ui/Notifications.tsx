@@ -1,7 +1,8 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { AppNotification, patch } from '../app'
-import { Alert, Snackbar } from '@mui/material'
+import Snackbar from '@mui/material/Snackbar'
+import Alert from '@mui/material/Alert'
 
 export default function Notifications() {
   const notifications = useAppSelector(store => store.app.notifications)
@@ -13,7 +14,7 @@ export default function Notifications() {
     (notifications: AppNotification[]) => {
       dispatch(patch({ notifications }))
     },
-    [dispatch],
+    [dispatch]
   )
 
   const close = React.useCallback(() => {

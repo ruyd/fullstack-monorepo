@@ -1,13 +1,3 @@
-import {
-  Alert,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import StartImage from './images/start.svg'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
@@ -17,6 +7,14 @@ import { patch, request } from '../app'
 import { onLogin } from '../../shared/auth'
 import loadConfig from '../../shared/loadConfig'
 import { useNavigate } from 'react-router-dom'
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import Alert from '@mui/material/Alert'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 
 export default function Start() {
   const dispatch = useAppDispatch()
@@ -26,19 +24,19 @@ export default function Start() {
   const ready = useAppSelector(state => state.app.ready)
   const [error, setError] = React.useState<string | null>(null)
   const [form, setForm] = React.useState<{ email: string }>({
-    email: '',
+    email: ''
   })
   const submitHanlder = async (e: React.FormEvent) => {
     e.preventDefault()
     const response = await request<{ ok: boolean; token: string; user: User; error?: string }>(
       'start',
       {
-        email: form.email,
+        email: form.email
       },
       'post',
       {
-        validateStatus: () => true,
-      },
+        validateStatus: () => true
+      }
     )
     if (response.data.ok) {
       await loadConfig()
@@ -64,7 +62,7 @@ export default function Start() {
         backgroundImage: `url(${StartImage})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: '70%',
-        backgroundPosition: 'left bottom',
+        backgroundPosition: 'left bottom'
       }}
     >
       <Grid container sx={{ alignItems: 'center', justifyContent: 'center' }}>

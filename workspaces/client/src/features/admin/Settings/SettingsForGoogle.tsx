@@ -1,14 +1,12 @@
 import { SettingState, SettingType } from '@lib'
-import {
-  Card,
-  CardContent,
-  FormControlLabel,
-  Grid,
-  Link,
-  Switch,
-  TextField,
-  Typography
-} from '@mui/material'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Grid from '@mui/material/Grid'
+import Link from '@mui/material/Link'
+import Switch from '@mui/material/Switch'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 
 export default function SettingsForGoogle({
   data,

@@ -4,10 +4,12 @@ import { Elements } from '@stripe/react-stripe-js'
 import { Stripe, PaymentIntentResult } from '@stripe/stripe-js'
 import { useAppSelector } from '../../shared/store'
 import StripePay from './StripePay'
-import { CircularProgress, Stack, Typography } from '@mui/material'
 import { config } from '../../shared/config'
 import { request } from '../app'
 import StripeLogo from './images/stripe.png'
+import Stack from '@mui/material/Stack'
+import CircularProgress from '@mui/material/CircularProgress'
+import Typography from '@mui/material/Typography'
 
 let stripePromise: Promise<Stripe | null>
 function getStripe() {
@@ -30,13 +32,13 @@ function LoadingView() {
 
 export default function StripeCheckout({
   children,
-  onLoading = undefined,
+  onLoading = undefined
 }: React.PropsWithChildren<{
   onApproval?: (result: PaymentIntentResult) => void
   onLoading?: () => void
 }>): JSX.Element {
   const stripe = useMemo(getStripe, [
-    config.settings?.system?.paymentMethods?.stripe?.publishableKey,
+    config.settings?.system?.paymentMethods?.stripe?.publishableKey
   ])
   const [intent, setIntent] = React.useState<PaymentIntentResult | undefined>()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
@@ -53,7 +55,7 @@ export default function StripeCheckout({
       setIsLoading(true)
       isLoadingRef.current = true
       const result = await request<PaymentIntentResult>('/stripe/payment/intent', {}, 'post', {
-        validateStatus: () => true,
+        validateStatus: () => true
       })
       isLoadingRef.current = false
       setIsLoading(false)

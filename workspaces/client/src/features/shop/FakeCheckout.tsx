@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { PaymentIntentResult, PaymentIntent } from '@stripe/stripe-js'
 import { useAppDispatch } from '../../shared/store'
 
-import { CircularProgress } from '@mui/material'
+import CircularProgress from '@mui/material/CircularProgress'
 
 import { checkoutAsync } from './thunks'
 

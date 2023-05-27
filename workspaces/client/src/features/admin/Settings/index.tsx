@@ -1,20 +1,6 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import {
-  Alert,
-  AlertTitle,
-  Card,
-  CardContent,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  Radio,
-  RadioGroup,
-  Switch,
-  TextField,
-  Typography
-} from '@mui/material'
+
 import { useAppDispatch } from '../../../shared/store'
 import { Setting, PagedResult, SettingType, SettingState, AuthProviders } from '@lib'
 import { get, notify, notifyError, request } from '../../app'
@@ -23,6 +9,19 @@ import _ from 'lodash'
 import SettingsForAuth0 from './SettingsForAuth0'
 import SettingsForGoogle from './SettingsForGoogle'
 import SettingsForFirebase from './SettingsForFirebaseAuth'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Switch from '@mui/material/Switch'
+import TextField from '@mui/material/TextField'
+import FormControl from '@mui/material/FormControl'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
+import Alert from '@mui/material/Alert'
+import AlertTitle from '@mui/material/AlertTitle'
 
 export default function Settings() {
   const dispatch = useAppDispatch()

@@ -1,28 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Person2, SupervisedUserCircle } from '@mui/icons-material'
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Paper,
-  Tab,
-  Tabs,
-  Typography,
-  useTheme,
-} from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
+import Person2 from '@mui/icons-material/Person2'
+
 import { Drawing, User } from '@lib'
 import React from 'react'
-import { useGet } from '../../app'
-import { BlurBackdrop } from '../../ui/BlurBackdrop'
 import Gallery from '../../ui/Gallery'
 import TabPanel from '../../ui/TabPanel'
 import UserEdit from './UserEdit'
 import UserOrders from './UserOrders'
+import useTheme from '@mui/material/styles/useTheme'
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
+import CardContent from '@mui/material/CardContent'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar'
 
 export function UserDetail({ user }: { user?: User }): JSX.Element {
   const theme = useTheme()
@@ -50,8 +41,8 @@ export function UserDetail({ user }: { user?: User }): JSX.Element {
             [theme.breakpoints.down('sm')]: {
               alignItems: 'center',
               textAlign: 'center',
-              padding: '.7rem',
-            },
+              padding: '.7rem'
+            }
           }}
         >
           <Box
@@ -65,7 +56,7 @@ export function UserDetail({ user }: { user?: User }): JSX.Element {
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center center',
               backgroundSize: '200% 200%',
-              filter: 'blur(5px)',
+              filter: 'blur(5px)'
             }}
           ></Box>
           <Avatar
@@ -84,8 +75,8 @@ export function UserDetail({ user }: { user?: User }): JSX.Element {
               [theme.breakpoints.down('sm')]: {
                 height: '5rem',
                 width: '5rem',
-                bottom: '-50%',
-              },
+                bottom: '-50%'
+              }
             }}
           />
           <Box sx={{}}>
@@ -101,7 +92,7 @@ export function UserDetail({ user }: { user?: User }): JSX.Element {
             onChange={(e, v) => setTab(v as number)}
             centered
             sx={{
-              alignItems: 'end',
+              alignItems: 'end'
             }}
           >
             <Tab label="Details" icon={<Person2 />} iconPosition="start" />

@@ -1,39 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  AttachMoney,
-  CurrencyExchange,
-  GifBoxTwoTone,
-  Image,
-  MailOutline,
-  Money,
-  MoneyOff,
-  OutletRounded,
-  Person2,
-  Person3,
-  Person4,
-  SupervisedUserCircle
-} from '@mui/icons-material'
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Container,
-  Grid,
-  Paper,
-  Tab,
-  Tabs,
-  Typography,
-  useTheme
-} from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
-import { Drawing, User } from '@lib'
+import { Drawing } from '@lib'
 import React from 'react'
-import { useGet } from '../../features/app'
-import { BlurBackdrop } from '../../features/ui/BlurBackdrop'
 import Gallery from '../../features/ui/Gallery'
 import TabPanel from '../../features/ui/TabPanel'
 import { useAppSelector } from '../../shared/store'
@@ -41,6 +7,21 @@ import AddressForm from '../shop/Address'
 import UserEdit from './Edit'
 import Orders from './Orders'
 import Subscription from './Subscription'
+import Container from '@mui/material/Container'
+import useTheme from '@mui/system/useTheme'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Box from '@mui/material/Box/Box'
+import Avatar from '@mui/material/Avatar'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Grid'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Person3 from '@mui/icons-material/Person3'
+import CurrencyExchange from '@mui/icons-material/CurrencyExchange'
+import MailOutline from '@mui/icons-material/MailOutline'
+import AttachMoney from '@mui/icons-material/AttachMoney'
+import ImageIcon from '@mui/icons-material/Image'
 
 export function Profile(): JSX.Element {
   const user = useAppSelector(state => state.app.user)
@@ -141,7 +122,7 @@ export function Profile(): JSX.Element {
             <Tab label="Subscription" icon={<CurrencyExchange />} iconPosition="start" />
             <Tab label="Addresses" icon={<MailOutline />} iconPosition="start" />
             <Tab label="Orders" icon={<AttachMoney />} iconPosition="start" />
-            <Tab label="Gallery" icon={<Image />} iconPosition="start" />
+            <Tab label="Gallery" icon={<ImageIcon />} iconPosition="start" />
           </Tabs>
         </Box>
       </Card>

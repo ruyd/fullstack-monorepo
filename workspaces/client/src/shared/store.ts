@@ -21,13 +21,7 @@ export const reducers = {
 export const store = configureStore({
   reducer: reducers,
   preloadedState: load(),
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat([
-      customMiddleware
-      // save({
-      //   ignoreStates: ['canvas', 'shop'],
-      // }),
-    ])
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat([customMiddleware])
 })
 
 export type AppDispatch = typeof store.dispatch

@@ -1,19 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Avatar,
-  Badge,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Container,
-  Grid,
-  IconButton,
-  styled,
-  Typography
-} from '@mui/material'
-import { config } from '../../shared/config'
 import { type Drawing, type PagedResult } from '@lib'
 import { useGet } from '../app/thunks'
 import { Link, useNavigate } from 'react-router-dom'
@@ -25,8 +9,12 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import waiting from '../home/images/looking.svg'
 import { GalleryCard } from '../canvas/Card'
 import React from 'react'
-import { actions } from '../shop/slice'
 import { cartAsync } from '../shop/thunks'
+import { styled } from '@mui/material/styles'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import Badge from '@mui/material/Badge'
 
 const StyledImage = styled('img')({
   height: '45vh',

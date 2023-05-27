@@ -1,11 +1,12 @@
 import { useEffect } from 'react'
 
-// material-ui
-import { useTheme } from '@mui/material/styles'
-import { Card, Grid, Typography } from '@mui/material'
+import useTheme from '@mui/material/styles/useTheme'
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
 import chartData from './chart-data/bajaj-area-chart'
+import Card from '@mui/material/Card'
+import Grid from '@mui/material/Grid'
+import Typography from '@mui/material/Typography'
 
 const BajajAreaChartCard = () => {
   const theme = useTheme()
@@ -14,8 +15,8 @@ const BajajAreaChartCard = () => {
     const newSupportChart = {
       ...chartData.options,
       tooltip: {
-        theme: theme.palette.mode,
-      },
+        theme: theme.palette.mode
+      }
     }
     ApexCharts.exec(`support-chart`, 'updateOptions', newSupportChart)
   }, [theme.palette.mode])

@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useRef, startTransition } from 'react'
 import { DrawAction, ActionType, Drawing } from '@lib'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { getAsync, saveAsync } from './thunks'
-import { Box, Container, Fab } from '@mui/material'
 import LoadingCanvas from './LoadingCanvas'
 import { actions } from './slice'
 import { patch as patchApp } from '../app'
@@ -15,7 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
 import { Details } from './Details'
 import Toolbar from './Toolbar'
-import { Settings } from '@mui/icons-material'
+import Container from '@mui/material/Container'
 
 export function CanvasContainer() {
   const dispatch = useAppDispatch()
@@ -70,7 +68,7 @@ export function CanvasContainer() {
 
     const payload = {
       history: buffer.current,
-      thumbnail: await generateThumbnail(canvas),
+      thumbnail: await generateThumbnail(canvas)
     }
     await dispatch(saveAsync(payload))
   }, [authenticated, dispatch])
@@ -103,7 +101,7 @@ export function CanvasContainer() {
       buffer: buffer.current,
       width,
       height,
-      dpr: window.devicePixelRatio,
+      dpr: window.devicePixelRatio
     })
   }, [dispatch])
 

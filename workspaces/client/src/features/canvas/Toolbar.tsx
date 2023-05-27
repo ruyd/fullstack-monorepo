@@ -1,15 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { MonetizationOn, AttachMoney, Settings } from '@mui/icons-material'
-import { Stack, Fab, Box } from '@mui/material'
+import { Settings } from '@mui/icons-material'
 import { useAppDispatch } from '../../shared/store'
 import Color from './Color'
 import LineSize from './LineSize'
 import { actions } from './slice'
+import Box from '@mui/material/Box'
+import Fab from '@mui/material/Fab'
+import Stack from '@mui/material/Stack'
 
 export function Toolbar({
   newHandler,
   clearHandler,
-  saveHandler,
+  saveHandler
 }: {
   newHandler: () => void
   clearHandler: () => void

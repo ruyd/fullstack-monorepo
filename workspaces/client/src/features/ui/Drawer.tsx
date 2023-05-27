@@ -1,7 +1,9 @@
+import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 import { useAppSelector, useAppDispatch } from '../../shared/store'
 import { patch } from '../app/slice'
-import { Box, Card, SwipeableDrawer } from '@mui/material'
 import Cart from '../shop/ShopCart'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
 
 // Clipped items listing
 export default function DrawerRight() {

@@ -1,17 +1,12 @@
-import { render, fireEvent, act } from '@testing-library/react'
+import { fireEvent, act } from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import LoginForm from './Login'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
-import { configureStore } from '@reduxjs/toolkit'
-import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore'
 import { signInWithEmailAndPassword, signInWithCustomToken } from 'firebase/auth'
 import { STORAGE_KEY } from 'src/shared/auth'
 import { onTapClickAsync } from './GoogleOneTap'
-import { type RootState, getStore, useAppDispatch, useAppSelector } from 'src/shared/store'
-const { reducers } = jest.requireActual('src/shared/store')
+import { type RootState } from 'src/shared/store'
+import { renderWithContext, mockStore } from 'src/shared/testing'
 
 jest.mock('src/shared/store', () => ({
   getStore: jest.fn(),
@@ -57,63 +52,6 @@ export const mockErrorResponse = {
 
 const mockIdTokenWithEmail =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.-6o-_8nZ_VCetTXmRS5cqkrhJVausvEyzWFbiM58lys'
-
-export const mockStore = (state?: Partial<RootState>) => {
-  const preloadedState = {
-    app: {
-      locale: 'en',
-      dialog: 'onboard',
-      settings: {
-        system: {
-          authProvider: 'firebase'
-        }
-      }
-    },
-    ...state
-  } as RootState
-
-  const testStore = configureStore({
-    reducer: reducers,
-    preloadedState
-  }) as ToolkitStore<RootState>
-
-  jest.mocked(getStore).mockReturnValue(testStore)
-  jest.mocked(useAppDispatch).mockImplementation(() => testStore.dispatch)
-  jest.mocked(useAppSelector).mockImplementation(selector => selector(testStore.getState()))
-
-  return testStore
-}
-
-export const renderWithContext = async (
-  element: React.ReactElement,
-  state?: Partial<RootState>
-) => {
-  const preloadedState = {
-    app: {
-      locale: 'en',
-      dialog: 'onboard',
-      settings: {
-        system: {
-          authProvider: 'firebase'
-        }
-      }
-    },
-    ...state
-  } as RootState
-  const testStore = mockStore(preloadedState)
-  const testQueryClient = new QueryClient({})
-  return {
-    ...render(
-      <QueryClientProvider client={testQueryClient}>
-        <Provider store={testStore}>
-          <BrowserRouter>{element}</BrowserRouter>
-        </Provider>
-      </QueryClientProvider>
-    ),
-    testStore,
-    testQueryClient
-  }
-}
 
 afterEach(() => {
   jest.restoreAllMocks()

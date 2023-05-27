@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import { TypographyProps } from '@mui/system'
 import github from '../home/images/github.svg'
-import { Link } from '@mui/material'
+import Link from '@mui/material/Link'
 
 const Text = ({ children, ...rest }: TypographyProps & { children: React.ReactNode }) => (
   <Typography component="span" color="gray" fontSize={12} {...rest}>

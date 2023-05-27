@@ -1,5 +1,10 @@
 import { SettingState, SettingType } from '@lib'
-import { Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 
 export default function SettingsForFirebase({
   data,

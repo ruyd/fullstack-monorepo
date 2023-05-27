@@ -1,35 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Grid,
-  TextField,
-  Button,
-  Box,
-  Radio,
-  ToggleButton,
-  Switch,
-  FormControlLabel,
-  FormGroup,
-  Paper,
-  List,
-  ListItem,
-  Select,
-  Typography,
-  MenuItem,
-  IconButton,
-  InputLabel,
-  FormControl,
-  OutlinedInput,
-  SelectChangeEvent,
-  useTheme,
-  Theme,
-} from '@mui/material'
-import { PaymentSource, PaymentSources, SubscriptionPlan, User } from '@lib'
-import { Delete } from '@mui/icons-material'
+import { PaymentSource, PaymentSources, SubscriptionPlan } from '@lib'
 import React from 'react'
-import { useQuery } from 'react-query'
-import axios from 'axios'
-import config from '../../../shared/config'
-import { useProducts } from './hooks'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import FormControl from '@mui/material/FormControl'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import Switch from '@mui/material/Switch'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import TextField from '@mui/material/TextField'
+import useTheme from '@mui/material/styles/useTheme'
+import { Theme } from '@mui/material/styles'
+import InputLabel from '@mui/material/InputLabel'
+import OutlinedInput from '@mui/material/OutlinedInput'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -37,23 +20,23 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
+      width: 250
+    }
+  }
 }
 function getStyles(name: string, personName: readonly string[], theme: Theme) {
   return {
     fontWeight:
       personName.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
+        : theme.typography.fontWeightMedium
   }
 }
 
 const intervals = ['Daily', 'Weekly', 'Monthly', '3 months', '6 months', 'Yearly']
 export default function PlanEdit({
   item,
-  setState,
+  setState
 }: {
   item?: SubscriptionPlan
   setState?: React.SetStateAction<unknown>
@@ -61,18 +44,18 @@ export default function PlanEdit({
   const theme = useTheme()
   const submitHandler = function (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const data = new FormData(e.currentTarget)
+    // const data = new FormData(e.currentTarget)
   }
- // get products which contain prices/intervals
- 
+  // get products which contain prices/intervals
+
   const handleMapChange = function (source: string, field: string, value: unknown) {
     if (typeof setState === 'function') {
       setState({
         ...item,
         mappings: {
           ...item?.mappings,
-          [source]: { ...item?.mappings[source as PaymentSource], [field]: value },
-        },
+          [source]: { ...item?.mappings[source as PaymentSource], [field]: value }
+        }
       })
     }
   }
@@ -81,11 +64,11 @@ export default function PlanEdit({
 
   const handleMenuChange = (event: SelectChangeEvent<typeof personName>) => {
     const {
-      target: { value },
+      target: { value }
     } = event
     setPersonName(
       // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === 'string' ? value.split(',') : value
     )
   }
 

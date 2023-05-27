@@ -5,19 +5,7 @@ import { useAppDispatch } from '../../shared/store'
 import React from 'react'
 import { request, useGet, notify } from '../app'
 import _ from 'lodash'
-import {
-  Alert,
-  AppBar,
-  CircularProgress,
-  InputAdornment,
-  TextField,
-  Typography,
-  debounce,
-  ButtonGroup,
-  Button,
-  IconButton,
-  Grid,
-} from '@mui/material'
+
 import { useSearchParams } from 'react-router-dom'
 import { PagedResult, GridPatchProps } from '@lib'
 import DataTable from './DataTable'
@@ -26,6 +14,13 @@ import { Method } from '../app/thunks'
 import { DeleteForever } from '@mui/icons-material'
 import Spacer from '../ui/Spacer'
 import AlertDialog, { ShowDialogProps } from '../ui/AlertDialog'
+import Typography from '@mui/material/Typography'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import Button from '@mui/material/Button'
+import Alert from '@mui/material/Alert'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+import { debounce } from '@mui/material/utils'
 
 const excluded = ['history']
 
@@ -42,18 +37,18 @@ export default function Data() {
   const model = searchParams.get('model') || ''
   const [paging, setPaging] = React.useState<PagingProps>({ limit: 100, page: 0 })
   const [alert, setAlert] = React.useState<ShowDialogProps>({
-    open: false,
+    open: false
   })
   const { data, isLoading, error, refetch } = useGet<PagedResult>(
     model,
     `${model}`,
     {
-      enabled: !!model,
+      enabled: !!model
     },
     {
       ...paging,
-      search: searchText,
-    },
+      search: searchText
+    }
   )
   const refresh = React.useMemo(() => debounce(refetch, 500), [refetch])
   const modelPlural = !model ? '' : _.capitalize(model) + (model?.endsWith('s') ? '' : 's')
@@ -76,7 +71,7 @@ export default function Data() {
       message: `Are you sure you want to delete ${selectedItems.length} ${modelPlural}?`,
       title: 'Confirm',
       onConfirm: () => handleDeleteConfirm(),
-      onCancel: () => setAlert({ open: false }),
+      onCancel: () => setAlert({ open: false })
     })
   }
 
@@ -84,7 +79,7 @@ export default function Data() {
     const response = await request<{ deleted: number }>(
       `${model}`,
       { ids: selectedItems },
-      Method.DELETE,
+      Method.DELETE
     )
     if (response.data?.deleted > 0) {
       dispatch(notify('Deleted ' + response.data.deleted + ' item(s)'))
@@ -128,7 +123,7 @@ export default function Data() {
                 <InputAdornment position="start">
                   <SearchIcon />
                 </InputAdornment>
-              ),
+              )
             }}
           />
         </Box>

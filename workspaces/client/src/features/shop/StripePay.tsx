@@ -2,12 +2,16 @@ import React from 'react'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { PaymentIntent, PaymentIntentResult, StripePaymentElementOptions } from '@stripe/stripe-js'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
-import { Alert, Box, Button, CircularProgress, Typography } from '@mui/material'
 import { checkoutAsync } from './thunks'
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Alert from '@mui/material/Alert'
+import Button from '@mui/material/Button'
 
 export function StripePay({
   intent,
-  onLoading,
+  onLoading
 }: {
   intent?: Partial<PaymentIntent>
 
@@ -23,8 +27,8 @@ export function StripePay({
   const clientSecret = intent?.client_secret || undefined
   const elementOptions: StripePaymentElementOptions = {
     fields: {
-      billingDetails: 'never',
-    },
+      billingDetails: 'never'
+    }
   }
 
   React.useEffect(() => {
@@ -58,12 +62,12 @@ export function StripePay({
                 city: '',
                 line1: '',
                 line2: '',
-                postal_code: '',
-              },
-            },
-          },
+                postal_code: ''
+              }
+            }
+          }
         },
-        redirect: 'if_required',
+        redirect: 'if_required'
       })
       if (res?.error?.message) {
         setMessage(res?.error.message)

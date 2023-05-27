@@ -1,23 +1,19 @@
-// material-ui
-import { styled, useTheme } from '@mui/material/styles'
-import {
-  Avatar,
-  Box,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Typography,
-} from '@mui/material'
+import styled from '@mui/material/styles/styled'
+import useTheme from '@mui/material/styles/useTheme'
 
-// project imports
+import Typography from '@mui/material/Typography'
+import ListItemText from '@mui/material/ListItemText'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
+import Avatar from '@mui/material/Avatar'
+import ListItem from '@mui/material/ListItem'
+import List from '@mui/material/List'
+import Box from '@mui/material/Box'
+
 import MainCard from '../../ui/Card'
 import TotalIncomeCard from '../../ui/Card/Skeleton/TotalIncomeCard'
 
-// assets
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined'
 
-// styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
   backgroundColor: theme.palette.primary.dark,
   color: theme.palette.primary.light,
@@ -31,7 +27,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     background: `linear-gradient(210.04deg, ${theme.palette.primary.main[200]} -50.94%, rgba(144, 202, 249, 0) 83.49%)`,
     borderRadius: '50%',
     top: -30,
-    right: -180,
+    right: -180
   },
   '&:before': {
     content: '""',
@@ -41,8 +37,8 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     background: `linear-gradient(140.9deg, ${theme.palette.primary.main[200]} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
     borderRadius: '50%',
     top: -160,
-    right: -130,
-  },
+    right: -130
+  }
 }))
 
 const TotalIncomeDarkCard = ({ isLoading }: { isLoading: boolean }) => {
@@ -64,7 +60,7 @@ const TotalIncomeDarkCard = ({ isLoading }: { isLoading: boolean }) => {
                       ...theme.typography.commonAvatar,
                       ...theme.typography.largeAvatar,
                       backgroundColor: theme.palette.primary.main[800],
-                      color: '#fff',
+                      color: '#fff'
                     }}
                   >
                     <TableChartOutlinedIcon fontSize="inherit" />
@@ -74,7 +70,7 @@ const TotalIncomeDarkCard = ({ isLoading }: { isLoading: boolean }) => {
                   sx={{
                     py: 0,
                     mt: 0.45,
-                    mb: 0.45,
+                    mb: 0.45
                   }}
                   primary={
                     <Typography variant="h4" sx={{ color: '#fff' }}>

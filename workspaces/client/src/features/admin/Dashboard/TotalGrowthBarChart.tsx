@@ -1,26 +1,29 @@
 import { useState, useEffect } from 'react'
-// import { useTheme } from '@mui/material/styles'
-import { Grid, MenuItem, TextField, Typography } from '@mui/material'
+
 import ApexCharts from 'apexcharts'
 import Chart from 'react-apexcharts'
 import SkeletonTotalGrowthBarChart from '../../ui/Card/Skeleton/TotalGrowthBarChart'
 import MainCard from '../../ui/Card'
 import { gridSpacing } from '../../../shared/constant'
 import chartData from './chart-data/total-growth-bar-chart'
+import Grid from '@mui/material/Grid'
+import TextField from '@mui/material/TextField'
+import MenuItem from '@mui/material/MenuItem'
+import Typography from '@mui/material/Typography'
 
 const status = [
   {
     value: 'today',
-    label: 'Today',
+    label: 'Today'
   },
   {
     value: 'month',
-    label: 'This Month',
+    label: 'This Month'
   },
   {
     value: 'year',
-    label: 'This Year',
-  },
+    label: 'This Year'
+  }
 ]
 
 const TotalGrowthBarChart = ({ isLoading }: { isLoading: boolean }) => {
@@ -29,7 +32,7 @@ const TotalGrowthBarChart = ({ isLoading }: { isLoading: boolean }) => {
 
   useEffect(() => {
     const newChartData = {
-      ...chartData?.options,
+      ...chartData?.options
     }
 
     // do not load chart when loading

@@ -1,7 +1,8 @@
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import InputAdornment from '@mui/material/InputAdornment'
-import { TextField, TextFieldProps } from '@mui/material'
+import TextField, { TextFieldProps } from '@mui/material/TextField'
+
 import React from 'react'
 
 export default function PasswordField(props: TextFieldProps) {
