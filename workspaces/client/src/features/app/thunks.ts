@@ -8,6 +8,7 @@ import { notify, notifyError, patch } from './slice'
 import { firebaseCustomTokenLogin, firebasePasswordLogin } from 'src/shared/firebase'
 import { UserCredential } from 'firebase/auth'
 import { AuthProviders, oAuthInputs } from '@lib'
+import { Paths } from 'src/shared/routes'
 
 export const Method = {
   GET: 'get',
@@ -32,6 +33,7 @@ export async function request<
 ): Promise<AxiosResponse<R>> {
   let response: AxiosResponse<R>
   const dispatch = getStore().dispatch
+  const state = getStore().getState()?.app
   try {
     dispatch(patch({ loading: true }))
     response = await axios({
@@ -48,8 +50,9 @@ export async function request<
         response: AxiosResponse<{ message: string }>
       }
     ).response
-    if (resp?.status === 401) {
-      dispatch(patch({ dialog: 'onboard', token: undefined }))
+    if (state.user && url !== 'profile/login' && resp?.status === 401) {
+      onLogin()
+      dispatch(patch({ dialog: 'onboard', token: undefined, user: undefined }))
     }
     dispatch(notifyError(resp?.data?.message || error.message))
     throw error
@@ -153,8 +156,9 @@ export const loginAsync = createAsyncThunk(
         dispatch(notifyError('Login error' + response.data.message))
       }
     } catch (err) {
-      const error = err as Error
-      dispatch(notifyError(error.message))
+      const error = err as Error & { response?: { data?: { message?: string } } }
+      const message = error.response?.data?.message || error.message
+      dispatch(notifyError(message))
       return
     }
   }

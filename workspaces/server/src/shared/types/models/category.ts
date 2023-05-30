@@ -4,7 +4,7 @@ import { EntityDefinition, addModel } from 'src/shared/db'
 
 export const CategoryDefinition: EntityDefinition<Category> = {
   categoryId: {
-    type: DataTypes.UUID,
+    type: DataTypes.STRING,
     primaryKey: true
   },
   title: {
@@ -16,6 +16,6 @@ export const CategoryDefinition: EntityDefinition<Category> = {
 }
 
 export const CategoryModel = addModel<Category>({
-  name: 'Category',
+  name: 'category',
   attributes: CategoryDefinition
 })

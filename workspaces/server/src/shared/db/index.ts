@@ -15,7 +15,7 @@ export const commonOptions: ModelOptions = {
   underscored: true
 }
 export interface Join {
-  relation: 'belongsTo' | 'hasOne' | 'hasMany' | 'belongsToMany'
+  type: 'belongsTo' | 'hasOne' | 'hasMany' | 'belongsToMany'
   model: ModelStatic<Model>
   as: string
   foreignKey: string
@@ -123,12 +123,13 @@ export class Connection {
     }
     // Passed joins
     for (const join of entity.joins || []) {
-      entity.model[join.relation](join.model, {
+      entity.model[join.type](join.model, {
         through: join.model,
         as: join.as as string,
         foreignKey: join.foreignKey as string
       })
     }
+
     // Detect joins based on column names
     const otherModels = Connection.entities.filter(e => e.name !== entity.name)
     for (const related of otherModels) {

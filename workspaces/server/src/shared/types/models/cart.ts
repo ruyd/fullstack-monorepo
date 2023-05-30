@@ -35,13 +35,13 @@ export const CartModel = addModel<Cart>({
   attributes: CartAttributes,
   joins: [
     {
-      relation: 'belongsTo',
+      type: 'belongsTo',
       model: DrawingModel,
       foreignKey: 'drawingId',
       as: 'drawing'
     },
     {
-      relation: 'belongsTo',
+      type: 'belongsTo',
       model: ProductModel,
       foreignKey: 'productId',
       as: 'product'

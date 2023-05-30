@@ -4,6 +4,8 @@ export * from './models/setting'
 export * from './models/cart'
 export * from './models/order'
 export * from './models/subscription'
+export * from './models/category'
+export * from './models/item'
 
 import express from 'express'
 import { EntityConfig } from '../db'

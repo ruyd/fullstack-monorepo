@@ -81,7 +81,7 @@ export function errorHandler(
   next: NextFunction
 ): void {
   const result = {
-    status: err.status,
+    status: err.status || 500,
     code: err.name,
     message: err.message,
     error: err.message,
@@ -95,7 +95,7 @@ export function errorHandler(
   )
 
   if (!res.headersSent) {
-    res.status(result.status || 500)
+    res.status(result.status)
   }
 
   res.json(result)

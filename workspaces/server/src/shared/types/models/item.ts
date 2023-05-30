@@ -26,11 +26,14 @@ export const ItemDefinition: EntityDefinition<Item> = {
     type: DataTypes.STRING
   },
   inventory: {
-    type: DataTypes.NUMBER
+    type: DataTypes.INTEGER
   },
   paywall: {
     type: DataTypes.BOOLEAN
   }
 }
 
-export const ItemModel = addModel<Item>({ name: 'item', attributes: ItemDefinition })
+export const ItemModel = addModel<Item>({
+  name: 'item',
+  attributes: ItemDefinition
+})

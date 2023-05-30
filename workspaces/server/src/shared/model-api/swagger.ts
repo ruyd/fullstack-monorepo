@@ -17,7 +17,21 @@ const conversions: Record<string, string> = {
   DATE: 'string',
   DATETIME: 'string',
   TIMESTAMP: 'string',
-  TIME: 'string'
+  TIME: 'string',
+  CHAR: 'string',
+  BOOLEAN: 'boolean'
+} as const
+
+const getConversion = (type: string): { type: string; items?: { type: string } } => {
+  if (type.endsWith('[]')) {
+    const arrayType = type.slice(0, type.indexOf('('))
+    return { type: 'array', items: { type: conversions[arrayType] || 'string' } }
+  }
+  const keys = Object.keys(conversions)
+  const key = keys.find(key => type.startsWith(key))
+  return {
+    type: key ? conversions[key] : 'string'
+  }
 }
 
 export function getSchema(model: ModelStatic<Model>) {
@@ -27,8 +41,8 @@ export function getSchema(model: ModelStatic<Model>) {
   ) as [[string, { type: string; allowNull: boolean }]]
   const properties: { [key: string]: Schema } = {}
   for (const [name, attribute] of columns) {
-    const type: string = conversions[attribute.type] || 'string'
-    const definition: Schema = attribute.allowNull ? { type, required: true } : { type }
+    const { type, items } = getConversion(attribute.type.toString())
+    const definition: Schema = { type, required: !!attribute.allowNull, items }
     properties[name] = definition
   }
   return {
