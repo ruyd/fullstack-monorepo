@@ -6,6 +6,7 @@ export * from './models/order'
 export * from './models/subscription'
 export * from './models/category'
 export * from './models/item'
+export * from './models/item.category'
 
 import express from 'express'
 import { EntityConfig } from '../db'

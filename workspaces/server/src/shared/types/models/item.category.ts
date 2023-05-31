@@ -1,7 +1,5 @@
 import { DataTypes } from 'sequelize'
 import { addModel } from 'src/shared/db'
-import { ItemModel } from './item'
-import { CategoryModel } from './category'
 
 export interface ItemCategory {
   itemId: string
@@ -16,22 +14,11 @@ export const ItemCategoryModel = addModel<ItemCategory>({
       primaryKey: true
     },
     categoryId: {
-      type: DataTypes.UUID,
+      type: DataTypes.STRING,
       primaryKey: true
     }
   },
-  joins: [
-    {
-      as: 'item',
-      model: ItemModel,
-      type: 'belongsTo',
-      foreignKey: 'itemId'
-    },
-    {
-      as: 'category',
-      model: CategoryModel,
-      type: 'belongsTo',
-      foreignKey: 'categoryId'
-    }
-  ]
+  options: {
+    timestamps: false
+  }
 })

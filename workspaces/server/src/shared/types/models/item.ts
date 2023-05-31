@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize'
-import { EntityDefinition, addModel } from '../../db'
+import { EntityDefinition, Join, addModel } from '../../db'
 import { Item } from '@lib'
+import { CategoryModel } from './category'
+import { ItemCategoryModel } from './item.category'
 
 export const ItemDefinition: EntityDefinition<Item> = {
   itemId: {
@@ -33,7 +35,18 @@ export const ItemDefinition: EntityDefinition<Item> = {
   }
 }
 
+const joins: Join[] = [
+  {
+    target: CategoryModel,
+    through: ItemCategoryModel,
+    type: 'belongsToMany',
+    foreignKey: 'itemId',
+    otherKey: 'categoryId'
+  }
+]
+
 export const ItemModel = addModel<Item>({
   name: 'item',
-  attributes: ItemDefinition
+  attributes: ItemDefinition,
+  joins
 })

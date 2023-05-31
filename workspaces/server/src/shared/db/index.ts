@@ -1,5 +1,6 @@
 import {
   Attributes,
+  InitOptions,
   Model,
   ModelAttributeColumnOptions,
   ModelAttributes,
@@ -16,9 +17,11 @@ export const commonOptions: ModelOptions = {
 }
 export interface Join {
   type: 'belongsTo' | 'hasOne' | 'hasMany' | 'belongsToMany'
-  model: ModelStatic<Model>
-  as: string
-  foreignKey: string
+  target: ModelStatic<Model>
+  as?: string
+  foreignKey?: string
+  otherKey?: string
+  through?: ModelStatic<Model>
 }
 
 export type EntityDefinition<T extends object> = {
@@ -33,6 +36,7 @@ export interface EntityConfig<M extends Model = Model> {
   publicWrite?: boolean
   model?: ModelStatic<M>
   joins?: Join[]
+  options?: Partial<InitOptions<M>>
   onChanges?: (source?: string, model?: M) => Promise<void> | void
 }
 
@@ -57,6 +61,10 @@ export class Connection {
   public static db: Sequelize
   static initialized = false
   static init() {
+    if (Connection.initialized) {
+      logger.warn('Connection already initialized')
+      return
+    }
     const checkRuntime = config
     if (!checkRuntime) {
       throw new Error(
@@ -87,7 +95,10 @@ export class Connection {
       logger.error('Error initializing DB', error)
       return
     }
-    Connection.initModels()
+    const sorted = Connection.entities.sort(sortEntities)
+    Connection.initModels(sorted)
+    Connection.initJoins(sorted)
+    Connection.autoDetectJoins(sorted)
     Connection.initialized = true
   }
 
@@ -103,53 +114,70 @@ export class Connection {
     const associations = others.filter(related => primaryKeys.some(key => related.attributes[key]))
     return associations
   }
-  static initModels() {
-    const sorted = Connection.entities.sort(sortEntities)
+  static initModels(sorted: EntityConfig[]) {
     for (const entity of sorted) {
-      const scopedOptions = { ...commonOptions, sequelize: Connection.db, modelName: entity.name }
+      const scopedOptions = {
+        ...commonOptions,
+        ...entity.options,
+        sequelize: Connection.db,
+        modelName: entity.name
+      }
       if (!entity.model) {
-        logger.error(`Model ${entity.name} not found`)
+        logger.error(`Entity without model: ${entity.name}`)
         continue
       }
-      entity.model.init(entity.attributes, scopedOptions)
-    }
-    for (const entity of sorted) {
-      Connection.initJoins(entity)
+      if (entity.model.name === 'model') {
+        entity.model.init(entity.attributes, scopedOptions)
+      }
     }
   }
-  static initJoins(entity: EntityConfig) {
-    if (!entity?.model) {
-      return
-    }
-    // Passed joins
-    for (const join of entity.joins || []) {
-      entity.model[join.type](join.model, {
-        through: join.model,
-        as: join.as as string,
-        foreignKey: join.foreignKey as string
-      })
-    }
-
-    // Detect joins based on column names
-    const otherModels = Connection.entities.filter(e => e.name !== entity.name)
-    for (const related of otherModels) {
-      if (related.model?.name === 'model') {
-        throw new Error('model not initialized for' + related.name)
+  static initJoins(sorted: EntityConfig[]) {
+    for (const entity of sorted) {
+      if (!entity?.model) {
+        return
       }
-      const relatedColumns = Object.keys(related.attributes).filter(
-        key => (related.attributes[key] as ModelAttributeColumnOptions).primaryKey
-      )
-      for (const relatedColumnPk of relatedColumns) {
-        if (relatedColumnPk.endsWith('Id') && entity.attributes[relatedColumnPk]) {
-          entity.model.belongsTo(related.model as ModelStatic<Model>, {
-            foreignKey: relatedColumnPk,
-            onDelete: 'CASCADE'
+      const joins = entity.joins ?? []
+      for (const join of joins) {
+        try {
+          entity.model[join.type](join.target as ModelStatic<Model>, {
+            foreignKey: join.foreignKey as string,
+            otherKey: join.otherKey as string,
+            through: join.through as ModelStatic<Model>,
+            as: join.as as string
           })
-          const propName = entity.model.tableName.replace(related.model?.name + '_', '')
-          related.model?.hasMany(entity.model, {
-            foreignKey: relatedColumnPk,
-            as: propName
-          })
+        } catch (err) {
+          throw err
+        }
+      }
+    }
+  }
+
+  /**
+   * Detect joins based on fieldId naming convention
+   * */
+  static autoDetectJoins(sorted: EntityConfig[]) {
+    for (const entity of sorted) {
+      if (!entity?.model) {
+        return
+      }
+      const otherModels = Connection.entities.filter(e => e.name !== entity.name)
+      for (const related of otherModels) {
+        if (entity.model.associations[related.name]) {
+          continue
+        }
+        const relatedColumns = Object.keys(related.attributes).filter(
+          key => (related.attributes[key] as ModelAttributeColumnOptions).primaryKey
+        )
+        for (const relatedColumnPk of relatedColumns) {
+          if (relatedColumnPk.endsWith('Id') && entity.attributes[relatedColumnPk]) {
+            entity.model.belongsTo(related.model as ModelStatic<Model>, {
+              foreignKey: relatedColumnPk,
+              onDelete: 'CASCADE'
+            })
+            related.model?.hasMany(entity.model, {
+              foreignKey: relatedColumnPk
+            })
+          }
         }
       }
     }
@@ -174,7 +202,8 @@ export function addModel<T extends object>({
   roles,
   publicRead,
   publicWrite,
-  onChanges
+  onChanges,
+  options
 }: EntityConfig<Model<T>>): ModelStatic<Model<T, T>> {
   const model = class extends Model {}
   const cfg: EntityConfig = {
@@ -185,7 +214,8 @@ export function addModel<T extends object>({
     model,
     publicRead,
     publicWrite,
-    onChanges
+    onChanges,
+    options
   }
   Connection.entities.push(cfg)
   if (config.db.trace) {

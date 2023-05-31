@@ -60,6 +60,12 @@ export function getPaths(model: typeof Model) {
       get: {
         summary: 'Get list',
         security: [{ BearerAuth: [] }],
+        parameters: [
+          {
+            name: 'include',
+            in: 'query'
+          }
+        ],
         responses: {
           '200': {
             content: {
