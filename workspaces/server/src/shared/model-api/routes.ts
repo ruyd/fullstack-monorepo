@@ -192,6 +192,16 @@ export async function listHandler(
   res.json(result)
 }
 
+function addRoutesForModel(router: express.Router, model: ModelStatic<Model>) {
+  const prefix = model.name.toLowerCase()
+  router.get(`/${prefix}`, listHandler.bind(model))
+  router.get(`/${prefix}/:id`, getHandler.bind(model))
+  router.post(`/${prefix}`, saveHandler.bind(model))
+  router.delete(`/${prefix}/:id`, deleteHandler.bind(model))
+  router.patch(`/${prefix}`, gridPatchHandler.bind(model))
+  router.delete(`/${prefix}`, gridDeleteHandler.bind(model))
+}
+
 /**
  * Mounts the CRUD handlers for the given model using name as path,
  * ie: /v1/model.name/:id
@@ -206,12 +216,21 @@ export function registerModelApiRoutes(entities: EntityConfig[], router: express
   }
   for (const cfg of entities) {
     const model = cfg.model as ModelStatic<Model>
-    const prefix = model.name.toLowerCase()
-    router.get(`/${prefix}`, listHandler.bind(model))
-    router.get(`/${prefix}/:id`, getHandler.bind(model))
-    router.post(`/${prefix}`, saveHandler.bind(model))
-    router.delete(`/${prefix}/:id`, deleteHandler.bind(model))
-    router.patch(`/${prefix}`, gridPatchHandler.bind(model))
-    router.delete(`/${prefix}`, gridDeleteHandler.bind(model))
+    if (model) {
+      addRoutesForModel(router, model)
+    }
+  }
+
+  const autoTables = entities
+    .filter(e => e.joins?.find(j => typeof j.through === 'string'))
+    .reduce((acc: Array<string>, entity) => {
+      return [...acc, ...(entity.joins?.map(j => j.through as string) ?? [])]
+    }, [])
+
+  for (const table of autoTables) {
+    const model = Connection.db?.models[table] as ModelStatic<Model>
+    if (model) {
+      addRoutesForModel(router, model)
+    }
   }
 }

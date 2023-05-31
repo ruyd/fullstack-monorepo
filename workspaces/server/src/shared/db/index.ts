@@ -21,7 +21,7 @@ export interface Join {
   as?: string
   foreignKey?: string
   otherKey?: string
-  through?: ModelStatic<Model>
+  through?: ModelStatic<Model> | string
 }
 
 export type EntityDefinition<T extends object> = {
@@ -170,9 +170,10 @@ export class Connection {
         )
         for (const relatedColumnPk of relatedColumns) {
           if (relatedColumnPk.endsWith('Id') && entity.attributes[relatedColumnPk]) {
-            entity.model.belongsTo(related.model as ModelStatic<Model>, {
+            entity.model.belongsToMany(related.model as ModelStatic<Model>, {
               foreignKey: relatedColumnPk,
-              onDelete: 'CASCADE'
+              onDelete: 'CASCADE',
+              through: ''
             })
             related.model?.hasMany(entity.model, {
               foreignKey: relatedColumnPk

@@ -5,6 +5,7 @@ import config from '../config'
 import Connection, { EntityConfig } from '../db'
 import { getRoutesFromApp } from '../server'
 import fs from 'fs'
+import logger from '../logger'
 
 const conversions: Record<string, string> = {
   INTEGER: 'number',
@@ -36,9 +37,10 @@ const getConversion = (type: string): { type: string; items?: { type: string } }
 
 export function getSchema(model: ModelStatic<Model>) {
   const excluded = ['createdAt', 'updatedAt', 'deletedAt']
-  const columns = Object.entries(model.getAttributes()).filter(
-    ([name]) => !excluded.includes(name)
-  ) as [[string, { type: string; allowNull: boolean }]]
+  const obj = model.name === 'model' ? {} : model.getAttributes()
+  const columns = Object.entries(obj).filter(([name]) => !excluded.includes(name)) as [
+    [string, { type: string; allowNull: boolean }]
+  ]
   const properties: { [key: string]: Schema } = {}
   for (const [name, attribute] of columns) {
     const { type, items } = getConversion(attribute.type.toString())
@@ -188,26 +190,59 @@ export function applyEntitiesToSwaggerDoc(entities: EntityConfig[], swaggerDoc: 
     return
   }
   for (const entity of entities) {
-    const model = entity.model as ModelStatic<Model>
-    const schema = getSchema(model)
+    const schema = getSchema(entity.model as ModelStatic<Model>)
     if (!swaggerDoc?.components?.schemas) {
       if (!swaggerDoc.components) {
         swaggerDoc.components = {}
       }
       swaggerDoc.components.schemas = {}
     }
-    const existingSchema = swaggerDoc?.components?.schemas[model.name]
+    const existingSchema = swaggerDoc?.components?.schemas[entity.name]
     if (!existingSchema) {
-      swaggerDoc.components.schemas[model.name] = schema
+      swaggerDoc.components.schemas[entity.name] = schema
     }
     if (!swaggerDoc.paths) {
       swaggerDoc.paths = {}
     }
-    const paths = getPaths(model)
+    const paths = getPaths(entity.model as ModelStatic<Model>)
     for (const p in paths) {
       const existingPath = swaggerDoc.paths[p]
       if (!existingPath) {
         swaggerDoc.paths[p] = paths[p]
+      }
+    }
+
+    // join auto tables, move to function
+    const autoTables =
+      entity.joins
+        ?.filter(a => typeof a.through === 'string')
+        .map(join => join.through as string) ?? []
+    for (const autoTable of autoTables) {
+      const autoModel = Connection.db.models[autoTable]
+      if (!autoModel) {
+        logger.error(`Could not find auto model ${autoTable}`)
+        continue
+      }
+      const schema = getSchema(autoModel)
+      if (!swaggerDoc?.components?.schemas) {
+        if (!swaggerDoc.components) {
+          swaggerDoc.components = {}
+        }
+        swaggerDoc.components.schemas = {}
+      }
+      const existingSchema = swaggerDoc?.components?.schemas[autoModel.name]
+      if (!existingSchema) {
+        swaggerDoc.components.schemas[autoModel.name] = schema
+      }
+      if (!swaggerDoc.paths) {
+        swaggerDoc.paths = {}
+      }
+      const paths = getPaths(autoModel)
+      for (const p in paths) {
+        const existingPath = swaggerDoc.paths[p]
+        if (!existingPath) {
+          swaggerDoc.paths[p] = paths[p]
+        }
       }
     }
   }
