@@ -161,22 +161,22 @@ export class Connection {
         return
       }
       const otherModels = Connection.entities.filter(e => e.name !== entity.name)
-      for (const related of otherModels) {
-        if (entity.model.associations[related.name]) {
+      for (const other of otherModels) {
+        if (entity.model.associations[other.name]) {
           continue
         }
-        const relatedColumns = Object.keys(related.attributes).filter(
-          key => (related.attributes[key] as ModelAttributeColumnOptions).primaryKey
+        const otherPrimaryKeys = Object.keys(other.attributes).filter(
+          key => (other.attributes[key] as ModelAttributeColumnOptions).primaryKey
         )
-        for (const relatedColumnPk of relatedColumns) {
-          if (relatedColumnPk.endsWith('Id') && entity.attributes[relatedColumnPk]) {
-            entity.model.belongsToMany(related.model as ModelStatic<Model>, {
-              foreignKey: relatedColumnPk,
-              onDelete: 'CASCADE',
-              through: ''
+        for (const otherPrimaryKey of otherPrimaryKeys) {
+          const columnDef = entity.attributes[otherPrimaryKey] as ModelAttributeColumnOptions
+          if (otherPrimaryKey.endsWith('Id') && columnDef && !columnDef.primaryKey) {
+            entity.model.belongsTo(other.model as ModelStatic<Model>, {
+              foreignKey: otherPrimaryKey,
+              onDelete: 'CASCADE'
             })
-            related.model?.hasMany(entity.model, {
-              foreignKey: relatedColumnPk
+            other.model?.hasMany(entity.model, {
+              foreignKey: otherPrimaryKey
             })
           }
         }
