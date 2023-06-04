@@ -64,8 +64,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.json/,
-        include: [path.resolve(__dirname, 'config')]
+        test: /\.json/
       }
     ]
   },
