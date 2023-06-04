@@ -1,7 +1,7 @@
 import os from 'os'
 import { OAS3Definition } from 'swagger-jsdoc'
 import packageJson from '../../package.json'
-import appConfig from '../../config/app.json'
+import appConfig from '../config/app.json'
 import logger from './logger'
 import dotenv from 'dotenv'
 
@@ -172,13 +172,6 @@ export function getConfig(): Config {
       basePath: '/docs'
     }
   }
-}
-
-export function getLimitedEnv() {
-  return appConfig.envConcerns.reduce((acc: { [key: string]: unknown }, key: string) => {
-    acc[key] = env[key]
-    return acc
-  }, {})
 }
 
 export function envi(val: unknown): unknown {

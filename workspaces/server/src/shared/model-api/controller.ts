@@ -12,7 +12,6 @@ export async function list<T extends object>(
   options: FindOptions = { limit: 100, offset: 0, include: [] }
 ): Promise<PagedResult<T>> {
   const { count: total, rows } = await model.findAndCountAll({
-    raw: true,
     nest: true,
     include: options.include || [],
     ...options

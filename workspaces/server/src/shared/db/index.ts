@@ -138,16 +138,12 @@ export class Connection {
       }
       const joins = entity.joins ?? []
       for (const join of joins) {
-        try {
-          entity.model[join.type](join.target as ModelStatic<Model>, {
-            foreignKey: join.foreignKey as string,
-            otherKey: join.otherKey as string,
-            through: join.through as ModelStatic<Model>,
-            as: join.as as string
-          })
-        } catch (err) {
-          throw err
-        }
+        entity.model[join.type](join.target as ModelStatic<Model>, {
+          foreignKey: join.foreignKey as string,
+          otherKey: join.otherKey as string,
+          through: join.through as ModelStatic<Model>,
+          as: join.as as string
+        })
       }
     }
   }

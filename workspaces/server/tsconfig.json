@@ -17,7 +17,7 @@
       "@lib": ["../lib/src"]
     }
   },
-  "include": ["src", ".eslintrc.js", "package.json", "config/*.json"],
+  "include": ["src", ".eslintrc.js", "package.json", "src/config/*.json"],
   "exclude": ["dist", "node_modules", "../../node_modules"],
   "references": [
     {

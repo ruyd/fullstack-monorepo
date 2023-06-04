@@ -7,7 +7,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
 const SwaggerJSDocWebpackPlugin = require('swagger-jsdoc-webpack-plugin')
-const appConfig = require('./config/app.json')
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getClientEnvironment = require('../../tools/env')
 const paths = require('../../tools/paths')
@@ -17,28 +16,17 @@ const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = env.mode
 const isDevelopment = env.isDevelopment
 
-function getDefinedEnv() {
-  const concerns = appConfig.envConcerns.reduce((acc, key) => {
-    if (process.env[key]) {
-      acc[`process.env.${key}`] = JSON.stringify(process.env[key])
-    }
-    return acc
-  }, {})
-  console.log('baked env vars:', concerns)
-  return concerns
-}
-
 module.exports = {
   mode,
   entry: {
-    index: './src/index.ts',
+    index: './src/index.ts'
   },
   target: 'node',
   devtool: isDevelopment ? 'source-map' : false,
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
-    chunkFilename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].js'
   },
   externalsPresets: { node: true },
   externals: [
@@ -46,8 +34,8 @@ module.exports = {
       additionalModuleDirs: [path.resolve(__dirname, '../../node_modules')],
       allowlist: ['ieee754'],
       bufferutil: 'bufferutil', //allowList?
-      'utf-8-validate': 'utf-8-validate',
-    }),
+      'utf-8-validate': 'utf-8-validate'
+    })
   ],
   plugins: [
     new webpack.DefinePlugin(getDefinedEnv()),
@@ -58,10 +46,10 @@ module.exports = {
       definition: {
         openapi: '3.0.0',
         title: packageJson.name,
-        description: packageJson.description,
+        description: packageJson.description
       },
-      apis: ['./src/routes/**/*.yaml', './src/routes/**/index.ts'],
-    }),
+      apis: ['./src/routes/**/*.yaml', './src/routes/**/index.ts']
+    })
   ],
   module: {
     rules: [
@@ -70,21 +58,21 @@ module.exports = {
         use: {
           loader: 'ts-loader',
           options: {
-            projectReferences: true,
-          },
+            projectReferences: true
+          }
         },
-        exclude: /node_modules/,
+        exclude: /node_modules/
       },
       {
         test: /\.json/,
-        include: [path.resolve(__dirname, 'config')],
-      },
-    ],
+        include: [path.resolve(__dirname, 'config')]
+      }
+    ]
   },
   resolve: {
     roots: [path.resolve(__dirname, 'src')],
     extensions: ['.tsx', '.ts', '.js'],
-    plugins: [new TsconfigPathsPlugin({})],
+    plugins: [new TsconfigPathsPlugin({})]
   },
   cache: {
     type: 'filesystem',
@@ -94,7 +82,7 @@ module.exports = {
     buildDependencies: {
       defaultWebpack: ['webpack/lib/'],
       config: [__filename],
-      tsconfig: [paths.appTsConfig, paths.appJsConfig].filter(f => fs.existsSync(f)),
-    },
-  },
+      tsconfig: [paths.appTsConfig, paths.appJsConfig].filter(f => fs.existsSync(f))
+    }
+  }
 }
