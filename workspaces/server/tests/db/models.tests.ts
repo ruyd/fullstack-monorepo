@@ -22,7 +22,7 @@ const conversions: Record<string, string> = {
   ['TIMESTAMP WITH TIME ZONE']: 'date'
 }
 
-const excluded = ['createdAt', 'updatedAt', 'deletedAt', 'audienceIds']
+const excluded = ['createdAt', 'updatedAt', 'deletedAt']
 
 export function getRandomInt(min: number, max: number) {
   min = Math.ceil(min)
