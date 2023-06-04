@@ -11,7 +11,6 @@ const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getClientEnvironment = require('../../tools/env')
 const paths = require('../../tools/paths')
 const packageJson = require('./package.json')
-const webpack = require('webpack')
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1))
 const mode = env.mode
 const isDevelopment = env.isDevelopment
@@ -38,7 +37,6 @@ module.exports = {
     })
   ],
   plugins: [
-    new webpack.DefinePlugin(getDefinedEnv()),
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
