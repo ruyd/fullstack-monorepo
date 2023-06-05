@@ -1,8 +1,10 @@
 // import * as functions from '@google-cloud/functions-framework'
 import { google } from 'googleapis'
-import { GoogleAuth } from 'google-auth-library'
+import { GoogleAuth, OAuth2Client } from 'google-auth-library'
 import { CloudEventFunction } from '@google-cloud/functions-framework/build/src/functions'
 import { PubsubMessage } from '@google-cloud/pubsub/build/src/publisher'
+import { JSONClient } from 'google-auth-library/build/src/auth/googleauth'
+import { GlobalOptions } from 'googleapis/build/src/apis/abusiveexperiencereport'
 
 const PROJECT_ID = 'mstream-368503'
 const PROJECT_NAME = `projects/${PROJECT_ID}`
@@ -16,7 +18,7 @@ export const onBudgetMessage: CloudEventFunction<PubsubMessage> = async cloudEve
   }
 
   const decoded = JSON.parse(
-    Buffer.from(JSON.stringify(cloudEvent.data) as string, 'base64').toString(),
+    Buffer.from(JSON.stringify(cloudEvent.data) as string, 'base64').toString()
   )
 
   console.log(decoded)
@@ -52,13 +54,13 @@ const _setAuthCredential = () => {
   const client = new GoogleAuth({
     scopes: [
       'https://www.googleapis.com/auth/cloud-billing',
-      'https://www.googleapis.com/auth/cloud-platform',
-    ],
+      'https://www.googleapis.com/auth/cloud-platform'
+    ]
   })
 
   // Set credential globally for all requests
   google.options({
-    auth: client,
+    auth: client as unknown as GlobalOptions['auth']
   })
 }
 
@@ -70,13 +72,13 @@ const _setAuthCredential = () => {
 const _isBillingEnabled = async (projectName: string) => {
   try {
     const res = await billing.getBillingInfo({
-      name: projectName,
+      name: projectName
     })
     console.log(res)
     return res.data.billingEnabled
   } catch (e) {
     console.log(
-      'Unable to determine if billing is enabled on specified project, assuming billing is enabled',
+      'Unable to determine if billing is enabled on specified project, assuming billing is enabled'
     )
     return true
   }
@@ -91,8 +93,8 @@ const _disableBillingForProject = async (projectName: string) => {
   const res = await billing.updateBillingInfo({
     name: projectName,
     resource: {
-      billingAccountName: '',
-    }, // Disable billing
+      billingAccountName: ''
+    } // Disable billing
   } as any)
   console.log(res)
   console.log('Billing Disabled')
