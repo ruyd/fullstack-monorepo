@@ -124,7 +124,8 @@ export function getConfig(): Config {
     port: dbport
   } = parseDatabaseConfig(serviceConfig.db)
 
-  const DB_URL = `${dialect}://${username}:${password}@${host}:${dbport}/${database}`
+  const portText = dbport ? `:${dbport}` : ''
+  const DB_URL = `${dialect}://${username}:${password}@${host}${portText}/${database}`
   const osHost = os.hostname()
   const isLocalhost = osHost.includes('local')
   const port = Number(env.PORT) || Number(envi(serviceConfig.service.port))
