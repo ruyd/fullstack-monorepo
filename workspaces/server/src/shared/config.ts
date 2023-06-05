@@ -12,6 +12,7 @@ export interface DBUrl {
   dialect?: string
   username?: string
   password?: string
+  port?: string
   host: string
   database: string
   ssl: boolean
@@ -64,17 +65,9 @@ export interface Config {
   swaggerSetup: Partial<OAS3Definition>
 }
 
-export function parseDatabaseConfig(
-  production: boolean,
-  db: { url: string | null; ssl: boolean; schema: string }
-) {
-  if (!production) {
-    return db as unknown as DBUrl
-  }
-  const url = env.DB_URL || (envi(db.url) as string)
+export function parseDatabaseUrl(url: string): DBUrl {
   if (!url) {
-    logger.error('DB_URL is not set')
-    return db as unknown as DBUrl
+    return {} as DBUrl
   }
   const database = url.slice(url.lastIndexOf('/') + 1)
   const regex = /(\w+):\/\/(\w+):(.*)@(.*):(\d+)\/(\w+)/
@@ -83,6 +76,26 @@ export function parseDatabaseConfig(
   const username = found?.[2] || ''
   const password = found?.[3] || ''
   const host = found?.[4] || ''
+  const port = found?.[5] || ''
+  return {
+    database,
+    dialect,
+    username,
+    password,
+    host,
+    port
+  } as DBUrl
+}
+
+export function parseDatabaseConfig(db: { url: string | null; ssl: boolean; schema: string }) {
+  const url = env.DB_URL || (envi(db.url) as string)
+  if (!url) {
+    logger.error('DB_URL is not set')
+    return db as unknown as DBUrl
+  }
+
+  const database = url.slice(url.lastIndexOf('/') + 1)
+  const { host, username, password, dialect, port } = parseDatabaseUrl(url) as DBUrl
   return {
     database,
     host,
@@ -90,7 +103,8 @@ export function parseDatabaseConfig(
     password,
     dialect,
     ssl: db.ssl,
-    schema: db.schema
+    schema: db.schema,
+    port
   } as DBUrl
 }
 
@@ -100,7 +114,6 @@ export function getConfig(): Config {
   const production = !['development', 'test'].includes(env.NODE_ENV?.toLowerCase() || '')
   const serviceConfig = production ? appConfig.production : appConfig.development
   const { database, host, username, password, ssl, schema, dialect } = parseDatabaseConfig(
-    production,
     serviceConfig.db
   )
 
