@@ -8,13 +8,16 @@ export const createMigrator = () => {
   if (!Connection.initialized) {
     Connection.init()
   }
+  if (!Connection.db) {
+    return null
+  }
   const sequelize = Connection.db
   const migrator = new Umzug({
     create: {
       folder: path.resolve(__dirname, 'migrations'),
       template: filePath => [
-        [filePath, fs.readFileSync(path.resolve(__dirname, 'template.ts')).toString()],
-      ],
+        [filePath, fs.readFileSync(path.resolve(__dirname, 'template.ts')).toString()]
+      ]
     },
     migrations: {
       glob: ['migrations/*.{ts,up.sql}', { cwd: __dirname }],
@@ -34,13 +37,13 @@ export const createMigrator = () => {
             // Get the corresponding `.down.sql` file to undo this migration
             const sql = fs.readFileSync(ppath.replace('.up.sql', '.down.sql')).toString()
             return sequelize.query(sql)
-          },
+          }
         }
-      },
+      }
     },
     context: sequelize,
     storage: new SequelizeStorage({ sequelize }),
-    logger: console,
+    logger: console
   })
 
   if (require.main === module) {
@@ -51,6 +54,9 @@ export const createMigrator = () => {
 }
 export async function checkMigrations(): Promise<boolean> {
   const migrator = createMigrator()
+  if (!migrator) {
+    return false
+  }
   const pending = await migrator.pending()
   if (pending.length > 0) {
     logger.info('Pending migrations', pending)
