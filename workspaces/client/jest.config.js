@@ -14,17 +14,17 @@ module.exports = {
     uuid: require.resolve('uuid'), // ???
     ...pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
     '^react-native$': 'react-native-web',
-    '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
+    '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy'
   },
   setupFiles: ['jest-environment-jsdom'],
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   transform: {
     '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': '<rootDir>/tools/jest/babelTransform.js',
     '^.+\\.css$': '<rootDir>/tools/jest/cssTransform.js',
-    '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)': '<rootDir>/tools/jest/fileTransform.js',
+    '^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)': '<rootDir>/tools/jest/fileTransform.js'
   },
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$',
-    '^.+\\.module\\.(css|sass|scss)$',
-  ],
+    '^.+\\.module\\.(css|sass|scss)$'
+  ]
 }

@@ -15,7 +15,7 @@ jest.mock('src/shared/store', () => ({
 }))
 
 jest.mock('@firebase/app', () => ({
-  initializeApp: jest.fn().mockReturnValue({ mocked: true }),
+  initializeApp: jest.fn().mockReturnValue({ name: 'mocked' }),
   registerVersion: jest.fn(),
   getApps: jest.fn().mockReturnValue([]),
   _registerComponent: jest.fn()
@@ -52,10 +52,6 @@ export const mockErrorResponse = {
 
 const mockIdTokenWithEmail =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.-6o-_8nZ_VCetTXmRS5cqkrhJVausvEyzWFbiM58lys'
-
-afterEach(() => {
-  jest.restoreAllMocks()
-})
 
 describe('Login Flows', () => {
   const mockLoginFlow = async (state?: Partial<RootState>) => {
