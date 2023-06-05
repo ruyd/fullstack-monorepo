@@ -87,10 +87,17 @@ export function parseDatabaseUrl(url: string): DBUrl {
   } as DBUrl
 }
 
-export function parseDatabaseConfig(db: { url: string | null; ssl: boolean; schema: string }) {
+export function parseDatabaseConfig(db: {
+  url: string | null
+  ssl: boolean
+  schema: string
+  host?: string
+}) {
   const url = env.DB_URL || (envi(db.url) as string)
   if (!url) {
-    logger.error('DB_URL is not set')
+    if (!db.host) {
+      logger.error('No DB_URL or host config found')
+    }
     return db as unknown as DBUrl
   }
 
