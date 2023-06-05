@@ -7,8 +7,8 @@
   "scripts": {
     "build": "yarn tsc --build && NODE_ENV=production yarn webpack",
     "start": "node index.js",
-    "mon": "NODE_ENV=development yarn nodemon -r tsconfig-paths/register -q src/index.ts",
-    "watch": "NODE_ENV=development yarn webpack watch",
+    "mon": "NODE_ENV=production DB_URL=postgres://postgres:postgrespass@localhost:5432/drawspace yarn nodemon -r tsconfig-paths/register -q src/index.ts",
+    "watch": "NODE_ENV=production yarn webpack watch",
     "dev": "docker compose up --wait && yarn tsc --build && yarn concurrently \"yarn watch\" \"yarn mon\"",
     "test": "yarn build && docker compose up --wait && NODE_ENV=test yarn jest --runInBand",
     "migrator": "yarn ts-node src/shared/db/migrator.ts",

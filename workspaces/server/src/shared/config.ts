@@ -70,13 +70,13 @@ export function parseDatabaseUrl(url: string): DBUrl {
     return {} as DBUrl
   }
   const database = url.slice(url.lastIndexOf('/') + 1)
-  const regex = /(\w+):\/\/(\w+):(.*)@(.*):(\d+)\/(\w+)/
+  const regex = /(\w+):\/\/(\w+):(.*)@(.*):?(\d+)?\/(\w+)/
   const found = url.match(regex)
   const dialect = found?.[1] || 'postgres'
   const username = found?.[2] || ''
   const password = found?.[3] || ''
   const host = found?.[4] || ''
-  const port = found?.[5] || ''
+  const port = found?.[5] || 5432
   return {
     database,
     dialect,
@@ -113,11 +113,18 @@ export function getConfig(): Config {
 
   const production = !['development', 'test'].includes(env.NODE_ENV?.toLowerCase() || '')
   const serviceConfig = production ? appConfig.production : appConfig.development
-  const { database, host, username, password, ssl, schema, dialect } = parseDatabaseConfig(
-    serviceConfig.db
-  )
+  const {
+    database,
+    host,
+    username,
+    password,
+    ssl,
+    schema,
+    dialect,
+    port: dbport
+  } = parseDatabaseConfig(serviceConfig.db)
 
-  const DB_URL = `${dialect}://${username}:${password}@${host}/${database}`
+  const DB_URL = `${dialect}://${username}:${password}@${host}:${dbport}/${database}`
   const osHost = os.hostname()
   const isLocalhost = osHost.includes('local')
   const port = Number(env.PORT) || Number(envi(serviceConfig.service.port))

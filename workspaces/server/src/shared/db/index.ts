@@ -61,24 +61,24 @@ export class Connection {
   public static db: Sequelize
   static initialized = false
   static init() {
-    if (Connection.initialized) {
-      logger.warn('Connection already initialized')
-      return
-    }
-    const checkRuntime = config
-    if (!checkRuntime) {
-      throw new Error(
-        'Connection Class cannot read config, undefined variable - check for cyclic dependency'
-      )
-    }
-    if (!config.db.url || !config.db.database) {
-      logger.error('DB URL not found, skipping DB init')
-      return
-    }
-    if (config.db.trace) {
-      logger.info(`Initializing DB...`)
-    }
     try {
+      if (Connection.initialized) {
+        logger.warn('Connection already initialized')
+        return
+      }
+      const checkRuntime = config
+      if (!checkRuntime) {
+        throw new Error(
+          'Connection Class cannot read config, undefined variable - check for cyclic dependency'
+        )
+      }
+      if (!config.db.url || !config.db.database) {
+        logger.error('DB URL not found, skipping DB init')
+        return
+      }
+      if (config.db.trace) {
+        logger.info(`Initializing DB...`)
+      }
       Connection.db = new Sequelize(config.db.url, {
         logging: sql => (config.db.trace ? logger.info(`${sql}\n`) : undefined),
         ssl: !!config.db.ssl,
@@ -91,15 +91,15 @@ export class Connection {
             }
           : {}
       })
+      const sorted = Connection.entities.sort(sortEntities)
+      Connection.initModels(sorted)
+      Connection.initJoins(sorted)
+      Connection.autoDetectJoins(sorted)
+      Connection.initialized = true
     } catch (error) {
       logger.error('Error initializing DB', error)
       return
     }
-    const sorted = Connection.entities.sort(sortEntities)
-    Connection.initModels(sorted)
-    Connection.initJoins(sorted)
-    Connection.autoDetectJoins(sorted)
-    Connection.initialized = true
   }
 
   static getAssociations(name: string) {
