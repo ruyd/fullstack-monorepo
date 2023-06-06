@@ -57,16 +57,17 @@ jobs:
           yarn workspace server build
           cp workspaces/server/app.yaml workspaces/server/dist/app.yaml
 
-      - name: '.env'
-        run: |
-          echo "DB_URL=$DB_URL" >> workspaces/server/dist/.env
-          echo "SSL_CERT=$SSL_CERT" >> workspaces/server/dist/.env
-          echo "SSL_KEY=$SSL_KEY" >> workspaces/server/dist/.env
-        shell: bash
-        env:
-          DB_URL: ${{ steps.secrets.outputs.DB_URL }}
-          SSL_CERT: ${{ steps.secrets.outputs.SSL_CERT }}
-          SSL_KEY: ${{ steps.secrets.outputs.SSL_KEY }}
+      # - name: '.env'
+      #   if: ${{ false }}
+      #   run: |
+      #     echo "DB_URL='$DB_URL'" >> workspaces/server/dist/.env
+      #     echo "SSL_CERT=$SSL_CERT" >> workspaces/server/dist/.env
+      #     echo "SSL_KEY=$SSL_KEY" >> workspaces/server/dist/.env
+      #   shell: bash
+      #   env:
+      #     DB_URL: ${{ steps.secrets.outputs.DB_URL }}
+      #     SSL_CERT: ${{ steps.secrets.outputs.SSL_CERT }}
+      #     SSL_KEY: ${{ steps.secrets.outputs.SSL_KEY }}
 
       - name: 'docker.auth'
         run: |-

@@ -72,17 +72,18 @@ export class Connection {
           'Connection Class cannot read config, undefined variable - check for cyclic dependency'
         )
       }
-      if (!config.db.url || !config.db.database) {
+      const cfg = config.db
+      if (!cfg.url || !cfg.database) {
         logger.error('DB URL not found, skipping DB init')
         return
       }
-      if (config.db.trace) {
+      if (cfg.trace) {
         logger.info(`Initializing DB...`)
       }
-      Connection.db = new Sequelize(config.db.url, {
-        logging: sql => (config.db.trace ? logger.info(`${sql}\n`) : undefined),
-        ssl: !!config.db.ssl,
-        dialectOptions: config.db.ssl
+      const sequelize = new Sequelize(cfg.url, {
+        logging: sql => (cfg.trace ? logger.info(`${sql}\n`) : undefined),
+        ssl: !!cfg.ssl,
+        dialectOptions: cfg.ssl
           ? {
               ssl: {
                 require: true,
@@ -91,6 +92,7 @@ export class Connection {
             }
           : {}
       })
+      Connection.db = sequelize
       const sorted = Connection.entities.sort(sortEntities)
       Connection.initModels(sorted)
       Connection.initJoins(sorted)

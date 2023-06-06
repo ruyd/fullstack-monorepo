@@ -9,6 +9,7 @@ export const createMigrator = () => {
     Connection.init()
   }
   if (!Connection.db) {
+    logger.error('No sequelize instance found')
     return null
   }
   const sequelize = Connection.db
@@ -74,4 +75,5 @@ export async function checkMigrations(): Promise<boolean> {
 }
 
 // CLI
-export default createMigrator()
+const defaultMigrator = require.main === module ? createMigrator() : null
+export default defaultMigrator
