@@ -57,6 +57,7 @@ export function homepage(req: express.Request, res: express.Response) {
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
     ">
     <div>
     ⚡️[server]: Backend is running on ${req.headers.host} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
