@@ -55,11 +55,10 @@ jobs:
       - id: cloudrun
         uses: 'google-github-actions/deploy-cloudrun@v1'
         with:
-          shell: bash
           service: 'server'
           source: 'workspaces/server'
           secrets: |
-            DB_URL=DB_URL:latest
+            DB_URL="${{ steps.secrets.outputs.DB_URL }}"
 
       - name: 'Check output url'
         run: 'curl "${{ steps.cloudrun.outputs.url }}"'

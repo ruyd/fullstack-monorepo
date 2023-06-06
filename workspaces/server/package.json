@@ -7,7 +7,7 @@
   "scripts": {
     "build": "yarn tsc --build && NODE_ENV=production yarn webpack",
     "start": "node index.js",
-    "mon": "NODE_ENV=development yarn nodemon -r tsconfig-paths/register -q src/index.ts",
+    "mon": "NODE_ENV=development DB_URL='postgres://postgres:b4y15r6cCBSEUE4@34.133.75.187:5432/draw' yarn nodemon -r tsconfig-paths/register -q src/index.ts",
     "watch": "NODE_ENV=development yarn webpack watch",
     "dev": "docker compose up --wait && yarn tsc --build && yarn concurrently \"yarn watch\" \"yarn mon\"",
     "test": "yarn build && docker compose up --wait && NODE_ENV=test yarn jest --runInBand",
@@ -16,7 +16,7 @@
     "prod": "docker compose up --wait && yarn tsc --build && yarn concurrently \"NODE_ENV=production yarn nodemon -r tsconfig-paths/register -q src/index.ts\" \"NODE_ENV=production yarn webpack watch\"",
     "cloud:debug": "yarn build && NODE_ENV=production gcloud beta code dev --secrets=DB_URL=DB_URL:latest --allow-secret-manager",
     "cloud:deploy": "gcloud run deploy server --source . --update-secrets DB_URL=DB_URL:latest --update-labels managed-by=github-actions --platform managed --format json --region us-central1",
-    "docker:prune": "docker system prune -af"
+    "cloud:prune": "docker system prune -af"
     },
   "dependencies": {
     "@google-cloud/secret-manager": "^4.2.0",
