@@ -46,7 +46,10 @@ module.exports = {
         title: packageJson.name,
         description: packageJson.description
       },
-      apis: ['./src/routes/**/*.yaml', './src/routes/**/index.ts']
+      apis: [
+        path.resolve(__dirname, './src/routes/*/index.ts'),
+        path.resolve(__dirname, './src/routes/**/*.yaml')
+      ]
     })
   ],
   module: {
