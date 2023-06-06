@@ -70,7 +70,7 @@ export function parseDatabaseUrl(url: string): DBUrl {
     return {} as DBUrl
   }
   const database = url.slice(url.lastIndexOf('/') + 1)
-  const regex = /(\w+):\/\/(\w+):(.*)@([^:\/\s]+)(:([^\/]*))?\/(\w+)/
+  const regex = /(\w+):\/\/(\w+):(.*)@([^:\/\s]+)(:([^\/]*))?\/(\w+)/g
   const found = url.match(regex)
   const dialect = found?.[1] || 'postgres'
   const username = found?.[2] || ''
