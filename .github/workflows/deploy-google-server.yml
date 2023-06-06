@@ -58,7 +58,7 @@ jobs:
           service: 'server'
           source: 'workspaces/server'
           secrets: |
-            DB_URL=DB_URL:latest
+            DB_URL="DB_URL:latest"
 
       - name: 'Check output url'
         run: 'curl "${{ steps.cloudrun.outputs.url }}"'
