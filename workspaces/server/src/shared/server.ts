@@ -35,7 +35,7 @@ export function getRoutesFromApp(app: express.Application) {
           result.push({
             path: s.route.path,
             methods: Object.keys(s.route.methods),
-            from: level === 1 ? 'model-api' : 'controller',
+            from: level === 1 ? 'model-api' : 'controller'
           })
         } else {
           result = [...result, ...recurse(s.handle.stack, level + 1)]
@@ -49,6 +49,8 @@ export function getRoutesFromApp(app: express.Application) {
 
 // Homepage
 export function homepage(req: express.Request, res: express.Response) {
+  const buildDate = process.env.BUILD_DATE
+  const builtOn = buildDate ? 'Built on: ' + buildDate : ''
   const title = config.swaggerSetup.info?.title || 'Backend'
   res.send(`<html><title>${title}</title>
     <body style="
@@ -58,6 +60,7 @@ export function homepage(req: express.Request, res: express.Response) {
     ">
     <div>
     ⚡️[server]: Backend is running on ${req.headers.host} with <a href="${config.swaggerSetup.basePath}">SwaggerUI Admin at ${config.swaggerSetup.basePath}</a>
+    <br />${builtOn}
     </div>
     </body></html>`)
 }
@@ -68,9 +71,9 @@ export function createServerService(app: express.Application) {
       ? createServerHttps(
           {
             key: config.sslKey,
-            cert: config.sslCert,
+            cert: config.sslCert
           },
-          app,
+          app
         )
       : createServer(app)
   return server
