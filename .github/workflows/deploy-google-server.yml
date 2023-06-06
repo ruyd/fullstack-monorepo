@@ -33,14 +33,14 @@ jobs:
           workload_identity_provider: 'projects/364055912546/locations/global/workloadIdentityPools/default-pool/providers/github-provider'
           service_account: 'github@mstream-368503.iam.gserviceaccount.com'
 
-      - id: 'secrets'
-        uses: 'google-github-actions/get-secretmanager-secrets@v1'
-        with:
-          secrets: |-
-            DB_URL:364055912546/DB_URL
+      # - id: 'secrets'
+      #   uses: 'google-github-actions/get-secretmanager-secrets@v1'
+      #   with:
+      #     secrets: |-
+      #       DB_URL:364055912546/DB_URL
 
-      - name: 'tag'
-        run: echo "TAG=$IMAGE_PATH/$VM_NAME.${{ github.ref_name }}:latest" >> $GITHUB_ENV
+      # - name: 'tag'
+      #   run: echo "TAG=$IMAGE_PATH/$VM_NAME.${{ github.ref_name }}:latest" >> $GITHUB_ENV
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
@@ -53,6 +53,7 @@ jobs:
           yarn workspace server test
 
       - id: cloudrun
+        if: ${{ false }}
         uses: 'google-github-actions/deploy-cloudrun@v1'
         with:
           service: 'server'
@@ -60,4 +61,8 @@ jobs:
           secrets: DB_URL=DB_URL:latest
 
       - name: 'Check output url'
+        if: ${{ false }}
         run: 'curl "${{ steps.cloudrun.outputs.url }}"'
+
+      - id: cli
+        run: gcloud run deploy server --source workspaces/server/ --update-secrets DB_URL=DB_URL:latest --platform managed --format json --region us-central1
