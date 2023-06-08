@@ -49,11 +49,11 @@ export function getRoutesFromApp(app: express.Application) {
 
 export function getBuildVersion() {
   try {
-    const buildDate = process.env.BUILD_DATE || process['env'].BUILD_DATE
+    const buildDate = process.env.BUILD_DATE || process['env'].COMMIT_DATE
     if (!buildDate) {
       return ''
     }
-    const localDate = new Date(buildDate).toLocaleDateString()
+    const localDate = new Date(buildDate).toLocaleString()
     const builtOn = 'Built on: ' + localDate
     return builtOn
   } catch {

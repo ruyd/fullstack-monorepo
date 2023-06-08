@@ -51,7 +51,7 @@ jobs:
           secrets: |
             DB_URL=DB_URL:latest
           env_vars: |
-            BUILD_DATE=${{ github.event.head_commit.timestamp }}
+            COMMIT_DATE=${{ github.event.head_commit.timestamp }}
 
       - name: 'Check output url'
         run: 'curl "${{ steps.cloudrun.outputs.url }}"'

@@ -8,6 +8,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin')
 const SwaggerJSDocWebpackPlugin = require('swagger-jsdoc-webpack-plugin')
+const webpack = require('webpack')
 const createEnvironmentHash = require('../../tools/createEnvironmentHash')
 const getEnvironment = require('../../tools/env')
 const paths = require('../../tools/paths')
@@ -38,6 +39,9 @@ module.exports = {
     })
   ],
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env.BUILD_DATE': JSON.stringify(new Date().toISOString())
+    }),
     new ForkTsCheckerWebpackPlugin(),
     new NodePolyfillPlugin(),
     new GeneratePackageJsonPlugin({ ...packageJson, main: 'index.js' }),
@@ -47,7 +51,10 @@ module.exports = {
         title: packageJson.name,
         description: packageJson.description
       },
-      apis: [path.resolve(__dirname, './src/routes/*/index.ts'), './src/routes/swagger.yaml']
+      apis: [
+        path.resolve(__dirname, './src/routes/*/index.ts'),
+        path.resolve(__dirname, './src/routes/**/*.yaml')
+      ]
     })
   ],
   module: {
