@@ -47,10 +47,23 @@ export function getRoutesFromApp(app: express.Application) {
   return recurse([composite])
 }
 
+export function getBuildVersion() {
+  try {
+    const buildDate = process.env.BUILD_DATE
+    if (!buildDate) {
+      return ''
+    }
+    const localDate = new Date(buildDate).toLocaleDateString()
+    const builtOn = 'Built on: ' + localDate
+    return builtOn
+  } catch {
+    return ''
+  }
+}
+
 // Homepage
 export function homepage(req: express.Request, res: express.Response) {
-  const buildDate = process.env.BUILD_DATE
-  const builtOn = buildDate ? 'Built on: ' + buildDate : ''
+  const builtOn = getBuildVersion()
   const title = config.swaggerSetup.info?.title || 'Backend'
   res.send(`<html><title>${title}</title>
     <body style="
