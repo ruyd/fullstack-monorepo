@@ -11,7 +11,7 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "baseUrl": ".",
-    "noEmit": true,
+    "noEmit": false,
     "outDir": "build",
     "paths": {
       "@lib": ["../lib/src"]

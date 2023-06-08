@@ -12,7 +12,7 @@ export interface DBUrl {
   dialect?: string
   username?: string
   password?: string
-  port?: string
+  port?: number
   host: string
   database: string
   ssl: boolean
@@ -75,7 +75,7 @@ export function parseDatabaseUrl(url: string): DBUrl {
   const username = parsed?.username
   const password = parsed?.password
   const host = parsed?.hostname
-  const port = parsed?.port || 5432
+  const port = Number(parsed?.port || 5432)
   return {
     database,
     dialect,

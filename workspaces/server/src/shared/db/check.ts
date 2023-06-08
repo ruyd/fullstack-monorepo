@@ -1,7 +1,8 @@
 import config from '../config'
 import logger from '../logger'
-import Connection, { createDatabase } from '.'
+import Connection from '.'
 import { checkMigrations } from './migrator'
+import { createDatabase } from './util'
 
 export async function checkDatabase(syncOverride?: boolean): Promise<boolean> {
   if (!Connection.initialized) {
@@ -17,7 +18,7 @@ export async function checkDatabase(syncOverride?: boolean): Promise<boolean> {
     await Connection.db.authenticate()
     logger.info(
       `Database: models: 
-        ${Connection.entities.map(a => a.name).join(', ')}`,
+        ${Connection.entities.map(a => a.name).join(', ')}`
     )
     if (syncModels) {
       await Connection.db.sync({ alter: config.db.alter, force: config.db.force })

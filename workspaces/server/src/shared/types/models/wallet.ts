@@ -1,6 +1,6 @@
 import { Wallet, WalletTransaction } from '@lib'
 import { DataTypes } from 'sequelize'
-import { addModel } from 'src/shared/db'
+import { addModel } from '../../db/util'
 
 export const WalletModel = addModel<Wallet>({
   name: 'wallet',

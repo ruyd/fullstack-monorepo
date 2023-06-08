@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize'
-import { addModel } from '../../db'
+import { addModel } from '../../db/util'
 import { Subscription } from '@lib'
 
 export const SubscriptionModel = addModel<Subscription>({

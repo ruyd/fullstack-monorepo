@@ -1,7 +1,8 @@
 import { DataTypes } from 'sequelize'
-import { EntityDefinition, Join, addModel } from '../../db'
+import { EntityDefinition, Join } from '../../db'
 import { Item } from '@lib'
 import { CategoryModel } from './category'
+import { addModel } from '../../db/util'
 
 export const ItemDefinition: EntityDefinition<Item> = {
   itemId: {

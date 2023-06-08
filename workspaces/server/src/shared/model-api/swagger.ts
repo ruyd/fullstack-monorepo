@@ -1,5 +1,4 @@
 import express from 'express'
-import { Model, ModelStatic } from 'sequelize'
 import swaggerJsdoc, { OAS3Definition, Schema } from 'swagger-jsdoc'
 import config from '../config'
 import Connection, { EntityConfig } from '../db'
@@ -35,12 +34,11 @@ const getConversion = (type: string): { type: string; items?: { type: string } }
   }
 }
 
-export function getSchema(model: ModelStatic<Model>) {
+export function getSchema(entity: EntityConfig) {
   const excluded = ['createdAt', 'updatedAt', 'deletedAt']
-  const obj = model.name === 'model' ? {} : model.getAttributes()
-  const columns = Object.entries(obj).filter(([name]) => !excluded.includes(name)) as [
-    [string, { type: string; allowNull: boolean }]
-  ]
+  const columns = Object.entries(entity.attributes).filter(
+    ([name]) => !excluded.includes(name)
+  ) as [[string, { type: string; allowNull: boolean }]]
   const properties: { [key: string]: Schema } = {}
   for (const [name, attribute] of columns) {
     const { type, items } = getConversion(attribute.type.toString())
@@ -53,10 +51,10 @@ export function getSchema(model: ModelStatic<Model>) {
   }
 }
 
-export function getPaths(model: typeof Model) {
-  const tagName = model.name.toLowerCase()
+export function getPaths(name: string) {
+  const tagName = name.toLowerCase()
   const tags = [tagName]
-  const $ref = `#/components/schemas/${model.name}`
+  const $ref = `#/components/schemas/${name}`
   const paths = {
     [`/${tagName}`]: {
       get: {
@@ -190,7 +188,7 @@ export function applyEntitiesToSwaggerDoc(entities: EntityConfig[], swaggerDoc: 
     return
   }
   for (const entity of entities) {
-    const schema = getSchema(entity.model as ModelStatic<Model>)
+    const schema = getSchema(entity)
     if (!swaggerDoc?.components?.schemas) {
       if (!swaggerDoc.components) {
         swaggerDoc.components = {}
@@ -204,7 +202,7 @@ export function applyEntitiesToSwaggerDoc(entities: EntityConfig[], swaggerDoc: 
     if (!swaggerDoc.paths) {
       swaggerDoc.paths = {}
     }
-    const paths = getPaths(entity.model as ModelStatic<Model>)
+    const paths = getPaths(entity.name)
     for (const p in paths) {
       const existingPath = swaggerDoc.paths[p]
       if (!existingPath) {
@@ -223,7 +221,7 @@ export function applyEntitiesToSwaggerDoc(entities: EntityConfig[], swaggerDoc: 
         logger.error(`Could not find auto model ${autoTable}`)
         continue
       }
-      const schema = getSchema(autoModel)
+      const schema = getSchema({ name: autoModel.name, attributes: autoModel.getAttributes() })
       if (!swaggerDoc?.components?.schemas) {
         if (!swaggerDoc.components) {
           swaggerDoc.components = {}
@@ -237,7 +235,7 @@ export function applyEntitiesToSwaggerDoc(entities: EntityConfig[], swaggerDoc: 
       if (!swaggerDoc.paths) {
         swaggerDoc.paths = {}
       }
-      const paths = getPaths(autoModel)
+      const paths = getPaths(autoModel.name)
       for (const p in paths) {
         const existingPath = swaggerDoc.paths[p]
         if (!existingPath) {

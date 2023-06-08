@@ -1,6 +1,6 @@
 import { Product } from '@lib'
 import { DataTypes } from 'sequelize'
-import { addModel } from 'src/shared/db'
+import { addModel } from '../../db/util'
 // import { CategoryModel } from './category'
 
 export const ProductDefinition = {

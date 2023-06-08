@@ -1,6 +1,6 @@
 import { Cart } from '@lib'
 import { DataTypes } from 'sequelize'
-import { addModel } from '../../../shared/db'
+import { addModel } from '../../db/util'
 import { DrawingModel } from './drawing'
 import { ProductModel } from './product'
 

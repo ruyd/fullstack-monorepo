@@ -1,6 +1,6 @@
 import { Address, User, UserActive } from '@lib'
 import { DataTypes } from 'sequelize'
-import { addModel } from '../../db'
+import { addModel } from '../../db/util'
 
 export const UserAttributes = {
   userId: {
