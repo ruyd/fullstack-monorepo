@@ -4,14 +4,14 @@ export const SettingTypes = {
   Auth0: 'auth0',
   Internal: 'internal'
 } as const
-export type SettingType = typeof SettingTypes[keyof typeof SettingTypes]
+export type SettingType = (typeof SettingTypes)[keyof typeof SettingTypes]
 
 export const PaymentSources = {
   Stripe: 'stripe',
   Paypal: 'paypal',
   Fake: 'fake'
 } as const
-export type PaymentSource = typeof PaymentSources[keyof typeof PaymentSources]
+export type PaymentSource = (typeof PaymentSources)[keyof typeof PaymentSources]
 
 export const AuthProviders = {
   Development: 'fake',
@@ -19,7 +19,7 @@ export const AuthProviders = {
   Auth0: 'auth0',
   None: 'none'
 } as const
-export type AuthProviders = typeof AuthProviders[keyof typeof AuthProviders]
+export type AuthProviders = (typeof AuthProviders)[keyof typeof AuthProviders]
 
 export interface SecretKeys {
   token?: string
@@ -60,7 +60,7 @@ export interface SystemSettings {
 export interface GoogleSettings {
   clientId?: string
   projectId?: string
-  analyticsId?: string
+  measurementId?: string
   enabled?: boolean
   apiKey?: string
   databaseUrl?: string

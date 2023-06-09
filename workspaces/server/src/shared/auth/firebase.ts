@@ -30,6 +30,9 @@ export const firebaseCredentialLogin = async ({ idToken }: oAuthInputs): Promise
     const settings = await getSettingsAsync()
     const clientId = settings?.google?.clientId
     const projectId = settings?.google?.projectId
+    if (!clientId || !projectId) {
+      throw new Error('Missing google settings: clientId and serviceAccountJson')
+    }
     const aud = (decode(idToken as string) as { aud: string })?.aud as string
     let result: DecodedIdToken
     if (aud === projectId) {

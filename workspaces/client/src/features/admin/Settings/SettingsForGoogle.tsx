@@ -3,7 +3,6 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Grid from '@mui/material/Grid'
-import Link from '@mui/material/Link'
 import Switch from '@mui/material/Switch'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -60,45 +59,9 @@ export default function SettingsForGoogle({
               />
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body2" component="p">
-                <Link href="https://console.cloud.google.com/apis/credentials" target="_blank">
-                  Project OAuth 2.0 Client ID and Secret (Click Create Credentials then OAuth client
-                  ID)
-                </Link>
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Client ID"
-                fullWidth
-                value={data?.google?.clientId || ''}
-                onChange={e => save('google', 'clientId', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Client Secret"
-                fullWidth
-                value={data?.internal?.secrets?.google?.clientSecret || ''}
-                onChange={e => save('internal', 'secrets.google.clientSecret', e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
               <Typography variant="h6" component="h4">
-                GCP and Firebase
+                Project and Credentials
               </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="serviceAccountKey.json File Contents"
-                fullWidth
-                value={data?.internal?.secrets?.google?.serviceAccountJson || ''}
-                multiline
-                rows={4}
-                onChange={e =>
-                  save('internal', 'secrets.google.serviceAccountJson', e.target.value)
-                }
-              />
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -136,8 +99,36 @@ export default function SettingsForGoogle({
               <TextField
                 label="Analytics ID"
                 fullWidth
-                value={data?.google?.analyticsId || ''}
-                onChange={e => save('google', 'analyticsId', e.target.value)}
+                value={data?.google?.measurementId || ''}
+                onChange={e => save('google', 'measurementId', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="serviceAccountKey.json File Contents"
+                fullWidth
+                value={data?.internal?.secrets?.google?.serviceAccountJson || ''}
+                multiline
+                rows={4}
+                onChange={e =>
+                  save('internal', 'secrets.google.serviceAccountJson', e.target.value)
+                }
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="OAuth 2.0 Client ID"
+                fullWidth
+                value={data?.google?.clientId || ''}
+                onChange={e => save('google', 'clientId', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="OAuth 2.0 Client Secret"
+                fullWidth
+                value={data?.internal?.secrets?.google?.clientSecret || ''}
+                onChange={e => save('internal', 'secrets.google.clientSecret', e.target.value)}
               />
             </Grid>
           </Grid>

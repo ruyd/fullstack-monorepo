@@ -6,7 +6,7 @@ import { SettingModel } from './types'
 import { omit } from 'lodash'
 import NodeCache from 'node-cache'
 
-export const SettingsCache = new NodeCache({ stdTTL: 100, useClones: false })
+export const SettingsCache = new NodeCache({ stdTTL: 60 * 5, useClones: false })
 const SETTINGS_CACHE_KEY = 'settings'
 
 export function getAuth0Settings(data: unknown) {
@@ -42,7 +42,6 @@ function setAuth(result: SettingState) {
 export async function getSettingsAsync(freshNotCached = false): Promise<SettingState> {
   const cache = SettingsCache.get(SETTINGS_CACHE_KEY)
   if (cache && !freshNotCached) {
-    logger.info(`Skipping settings load, cache hit...`)
     return cache as SettingState
   }
 

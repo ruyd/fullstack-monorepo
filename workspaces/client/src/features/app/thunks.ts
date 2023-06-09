@@ -17,7 +17,7 @@ export const Method = {
   PATCH: 'patch'
 } as const
 
-export type Method = typeof Method[keyof typeof Method]
+export type Method = (typeof Method)[keyof typeof Method]
 
 /**
  * Axios wrapper for thunks with token from onLogin
@@ -31,31 +31,29 @@ export async function request<
   method: Method = Method.POST,
   options?: AxiosRequestConfig<R>
 ): Promise<AxiosResponse<R>> {
-  let response: AxiosResponse<R>
+  let response: AxiosResponse<R & { message: string }>
   const dispatch = getStore().dispatch
   const state = getStore().getState()?.app
   try {
     dispatch(patch({ loading: true }))
     response = await axios({
       ...options,
-      // headers:{ Authorization: `Bearer ${token}` },
       url,
       data,
       method
     })
   } catch (err: unknown) {
     const error = err as Error
-    const resp = (
+    response = (
       error as unknown as {
-        response: AxiosResponse<{ message: string }>
+        response: AxiosResponse
       }
     ).response
-    if (state.user && url !== 'profile/login' && resp?.status === 401) {
+    if (state.user && url !== 'profile/login' && response?.status === 401) {
       onLogin()
-      dispatch(patch({ dialog: 'onboard', token: undefined, user: undefined }))
+      dispatch(patch({ dialog: 'onboard', token: undefined, user: undefined, loading: false }))
     }
-    dispatch(notifyError(resp?.data?.message || error.message))
-    throw error
+    dispatch(notifyError(response?.data?.message || error.message))
   } finally {
     dispatch(patch({ loading: false }))
   }
@@ -159,8 +157,8 @@ export const loginAsync = createAsyncThunk(
       const error = err as Error & { response?: { data?: { message?: string } } }
       const message = error.response?.data?.message || error.message
       dispatch(notifyError(message))
-      return
     }
+    dispatch(patch({ loading: false }))
   }
 )
 

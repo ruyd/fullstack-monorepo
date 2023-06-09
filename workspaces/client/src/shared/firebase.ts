@@ -42,7 +42,7 @@ export function getFirebaseApp() {
     storageBucket: `${projectId}.appspot.com`,
     messagingSenderId: settings?.google?.messagingSenderId,
     appId: settings?.google?.appId,
-    measurementId: settings?.google?.analyticsId
+    measurementId: settings?.google?.measurementId
   }
   firebaseApp = initializeApp(firebaseConfig)
   return firebaseApp
