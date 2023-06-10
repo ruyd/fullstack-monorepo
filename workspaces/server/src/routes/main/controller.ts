@@ -5,8 +5,10 @@ import { list } from '../../shared/model-api/controller'
 import { DrawingModel, EnrichedRequest, SettingModel, UserModel } from '../../shared/types'
 import { v4 as uuid } from 'uuid'
 import { createToken } from '../../shared/auth'
-import { getClientSettings } from '../../shared/settings'
+import { getClientSettings, getSettingsAsync } from '../../shared/settings'
 import { SystemSettings } from '@lib'
+import { getFirebaseApp } from 'src/shared/firebase'
+import { getAuth } from 'firebase-admin/auth'
 
 export async function start(req: express.Request, res: express.Response) {
   logger.info(`Database Initialization by: ${req.body.email}`)
@@ -90,4 +92,47 @@ export async function sendClientConfigSettings(req?: express.Request, res?: expr
   const payload = await getClientSettings(isAdmin)
   res?.json(payload)
   return payload
+}
+
+export async function checkFirebase(req: express.Request, res: express.Response) {
+  const settings = await getSettingsAsync()
+  const google = settings?.google
+  const isProjectValid =
+    google?.projectId &&
+    google?.apiKey &&
+    google?.appId &&
+    google?.measurementId &&
+    google?.messagingSenderId
+  const isServiceReady = settings?.internal?.secrets?.google?.serviceAccountJson
+  const isAuthValid = google?.clientId && settings?.internal?.secrets?.google?.clientSecret
+  if (!isProjectValid || !isServiceReady || !isAuthValid) {
+    res.json({
+      ok: false,
+      message: 'Firebase Project and Credentials are not filled properly'
+    })
+    return
+  }
+
+  const checkApp = await getFirebaseApp()
+  if (!checkApp) {
+    res.json({
+      ok: false,
+      message: 'Firebase App cannot initialize'
+    })
+  }
+
+  const auth = getAuth(checkApp)
+  try {
+    const tokenx = await auth.createCustomToken('test-1')
+    res.json({
+      ok: tokenx,
+      message: `Success! Firebase Authenticated a Test JWT Token: ${tokenx.substring(0, 10)}...`
+    })
+  } catch (err) {
+    const error = err as Error
+    res.json({
+      ok: false,
+      message: error.message
+    })
+  }
 }

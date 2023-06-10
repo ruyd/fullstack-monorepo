@@ -1,28 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { SettingState, SettingType } from '@lib'
 import Link from '@mui/material/Link'
-import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import {
-  Checkbox,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemButton,
-  ListItemText
-} from '@mui/material'
+import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
 import { Check } from '@mui/icons-material'
+import { notify, notifyError, request } from 'src/features/app'
+import { useAppDispatch, useAppSelector } from 'src/shared/store'
+import LoadingButton from '@mui/lab/LoadingButton/LoadingButton'
 
 export default function SettingsForFirebase({
-  data,
-  save
+  data
 }: {
   data?: SettingState
   save: (name: SettingType, prop: string, value: unknown) => void
 }) {
+  const dispatch = useAppDispatch()
+  const loading = useAppSelector(state => state.app.loading)
   const google = data?.google
   const isProjectValid =
     google?.projectId &&
@@ -32,6 +27,14 @@ export default function SettingsForFirebase({
     google?.messagingSenderId
   const isServiceReady = data?.internal?.secrets?.google?.serviceAccountJson
   const isAuthValid = google?.clientId && data?.internal?.secrets?.google?.clientSecret
+  const handleCheck = async () => {
+    const response = await request<{ ok: boolean; message: string }>('firebase/check')
+    if (response?.data?.ok) {
+      dispatch(notify(response.data.message))
+    } else {
+      dispatch(notifyError(response?.data?.message || 'Could not check with backend'))
+    }
+  }
 
   return (
     <>
@@ -44,7 +47,9 @@ export default function SettingsForFirebase({
               </Typography>
             </Grid>
             <Grid item xs={6} sx={{ textAlign: 'right' }}>
-              <Button fullWidth>Check Settings</Button>
+              <LoadingButton loading={loading} fullWidth onClick={handleCheck}>
+                Check Settings
+              </LoadingButton>
             </Grid>
             <Grid item xs={12}>
               {/* do a MUI List checklist of tasks */}
@@ -68,7 +73,7 @@ export default function SettingsForFirebase({
                 >
                   <ListItemAvatar>2</ListItemAvatar>
                   <ListItemText
-                    primary="Service Account Key (JSON)"
+                    primary="Service Account Generated Private Key.json"
                     secondary={
                       <Link
                         href="https://console.firebase.google.com/u/0/project/default/settings/serviceaccounts/adminsdk"
