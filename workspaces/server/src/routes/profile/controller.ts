@@ -65,7 +65,6 @@ export async function login(req: express.Request, res: express.Response) {
   const email = bodyEmail || tokenEmail
   const { startAdminEmail, isDevelopment, isNone } = await getAuthSettingsAsync()
   const isStartAdmin = email === startAdminEmail
-
   let user = (
     await UserModel.findOne({
       where: { email }
@@ -93,11 +92,7 @@ export async function login(req: express.Request, res: express.Response) {
     throw new Error(response.error_description)
   }
 
-  if (!user) {
-    const decoded = decode(response.access_token as string) as AppAccessToken
-    user = await createOrUpdate(UserModel, { email, userId: decoded.uid })
-  }
-
+  user = response.user
   if (!user) {
     throw new Error('Database User could not be get/put')
   }

@@ -1,7 +1,7 @@
 import { DecodedIdToken, getAuth } from 'firebase-admin/auth'
 import { getFirebaseApp } from '../firebase'
 import { UserModel } from '../types'
-import { oAuthError, oAuthInputs, oAuthRegistered, oAuthResponse } from '@lib'
+import { IdentityToken, oAuthError, oAuthInputs, oAuthRegistered, oAuthResponse } from '@lib'
 import { decode } from 'jsonwebtoken'
 import { OAuth2Client } from 'google-auth-library'
 import { getSettingsAsync } from '../settings'
@@ -16,6 +16,37 @@ export interface FirebaseAuthResponse {
   registered: boolean
   refreshToken: string
   expiresIn: string
+}
+
+async function getUserWithPropUpdate({
+  email,
+  picture,
+  given_name,
+  family_name
+}: Record<string, string>) {
+  const instance = await UserModel.findOne({
+    where: { email }
+  })
+  const user = instance?.get()
+  if (user) {
+    let dirty = false
+    if (user.picture !== picture && !!picture) {
+      user.picture = picture
+      dirty = true
+    }
+    if (user.firstName !== given_name && !!given_name) {
+      user.firstName = given_name
+      dirty = true
+    }
+    if (user.lastName !== family_name && !!family_name) {
+      user.lastName = family_name
+      dirty = true
+    }
+    if (dirty) {
+      await UserModel.update(user, { where: { email: user.email } })
+    }
+  }
+  return user
 }
 
 /**
@@ -34,32 +65,26 @@ export const firebaseCredentialLogin = async ({ idToken }: oAuthInputs): Promise
       throw new Error('Missing google settings: clientId and serviceAccountJson')
     }
     const aud = (decode(idToken as string) as { aud: string })?.aud as string
-    let result: DecodedIdToken
+    let validatedIdentity: DecodedIdToken
     if (aud === projectId) {
-      result = await auth.verifyIdToken(idToken as string, true)
+      validatedIdentity = await auth.verifyIdToken(idToken as string, true)
     } else {
-      result = (
+      validatedIdentity = (
         await new OAuth2Client(clientId).verifyIdToken({
           idToken: idToken as string,
           audience: clientId
         })
       ).getPayload() as DecodedIdToken
     }
-    let user = (
-      await UserModel.findOne({
-        where: {
-          email: result.email
-        }
-      })
-    )?.get()
-
+    let user = await getUserWithPropUpdate(validatedIdentity)
     if (!user) {
       user = (
         await UserModel.create({
-          email: result.email as string,
+          email: validatedIdentity.email as string,
           userId: randomUUID(),
-          picture: result.picture,
-          firstName: result.given_name || result.display_name
+          picture: validatedIdentity.picture,
+          firstName: validatedIdentity.given_name || validatedIdentity.display_name,
+          lastName: validatedIdentity.family_name
         })
       )?.get()
     }
@@ -69,7 +94,9 @@ export const firebaseCredentialLogin = async ({ idToken }: oAuthInputs): Promise
     })
 
     return {
-      access_token
+      access_token,
+      decoded: validatedIdentity as unknown as IdentityToken,
+      user
     }
   } catch (err) {
     const error = err as Error

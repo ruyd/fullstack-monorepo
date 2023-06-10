@@ -1,3 +1,5 @@
+import { User } from './user'
+
 export interface Jwt {
   [key: string]: unknown
   iss?: string | undefined
@@ -38,6 +40,8 @@ export interface oAuthResponse extends oAuthError {
   scope?: string
   expires_in?: number
   token_type?: string
+  decoded?: IdentityToken
+  user?: User
 }
 
 export interface oAuthRegistered extends oAuthError {
