@@ -8,7 +8,7 @@ import UserEdit from './Edit'
 import Orders from './Orders'
 import Subscription from './Subscription'
 import Container from '@mui/material/Container'
-import useTheme from '@mui/system/useTheme'
+import useTheme from '@mui/material/styles/useTheme'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box/Box'
@@ -40,7 +40,7 @@ export function Profile(): JSX.Element {
       <Card sx={{ borderRadius: '20px' }}>
         <CardContent
           sx={{
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: theme.palette?.primary?.main,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'end',
