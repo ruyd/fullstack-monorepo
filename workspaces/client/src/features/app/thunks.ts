@@ -148,9 +148,7 @@ export const loginAsync = createAsyncThunk(
       if (response.status === 200) {
         await setCustomToken(state?.app?.settings?.system?.authProvider, response.data.token)
         setLogin(dispatch, response.data.token, response.data.user)
-        if (state.app.dialog === 'onboard') {
-          dispatch(patch({ dialog: undefined }))
-        }
+        dispatch(patch({ dialog: undefined }))
       } else {
         dispatch(notifyError('Login error' + response.data.message))
       }
@@ -199,9 +197,7 @@ export const tapLoginAsync = createAsyncThunk(
         const state = getState() as RootState
         await setCustomToken(state?.app?.settings?.system?.authProvider, response.data.token)
         setLogin(dispatch, response.data.token, response.data.user)
-        if (state.app.dialog === 'onboard') {
-          dispatch(patch({ dialog: undefined }))
-        }
+        dispatch(patch({ dialog: undefined }))
         sendEvent('login.success')
       } else {
         dispatch(notifyError('Login error' + response.data.message))
@@ -232,9 +228,7 @@ export const registerAsync = createAsyncThunk(
     }
     //For email validation rework this
     setLogin(dispatch, response.data.token, response.data.user)
-    if (state.app.dialog === 'onboard.register') {
-      dispatch(patch({ dialog: undefined }))
-    }
+    dispatch(patch({ dialog: undefined }))
     sendEvent('register.success', { email: payload.email })
   }
 )
