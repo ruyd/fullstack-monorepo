@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import { sendEvent } from 'src/shared/firebase'
 
 export default function Register(props?: ContainerProps) {
   const dispatch = useAppDispatch()
@@ -32,6 +33,9 @@ export default function Register(props?: ContainerProps) {
       if (meta.requestStatus === 'fulfilled') {
         navigate(`${Paths.Login}${returnTo}`)
       }
+    })
+    sendEvent('register.submit', {
+      email: obj.email
     })
   }
 

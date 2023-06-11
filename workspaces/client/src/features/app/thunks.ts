@@ -5,10 +5,11 @@ import { useQuery, UseQueryOptions } from 'react-query'
 import { AppUser, onLogin, getAuth0 } from '../../shared/auth'
 import { getStore, RootState, store } from '../../shared/store'
 import { notify, notifyError, patch } from './slice'
-import { firebaseCustomTokenLogin, firebasePasswordLogin } from 'src/shared/firebase'
+import { firebaseCustomTokenLogin, firebasePasswordLogin, sendEvent } from 'src/shared/firebase'
 import { UserCredential } from 'firebase/auth'
 import { AuthProviders, oAuthInputs } from '@lib'
 import { Paths } from 'src/shared/routes'
+import { send } from 'process'
 
 export const Method = {
   GET: 'get',
@@ -201,12 +202,15 @@ export const tapLoginAsync = createAsyncThunk(
         if (state.app.dialog === 'onboard') {
           dispatch(patch({ dialog: undefined }))
         }
+        sendEvent('login.success')
       } else {
         dispatch(notifyError('Login error' + response.data.message))
+        sendEvent('login.error', { message: response.data.message })
       }
     } catch (err) {
       const error = err as Error
       dispatch(notifyError(error.message))
+      sendEvent('login.unhandledError', { message: error.message })
       return
     }
   }
@@ -223,6 +227,7 @@ export const registerAsync = createAsyncThunk(
     )
     if (response.status !== 200) {
       dispatch(notifyError('Register error' + response.data.message))
+      sendEvent('register.error', { message: response.data.message })
       return
     }
     //For email validation rework this
@@ -230,26 +235,32 @@ export const registerAsync = createAsyncThunk(
     if (state.app.dialog === 'onboard.register') {
       dispatch(patch({ dialog: undefined }))
     }
+    sendEvent('register.success', { email: payload.email })
   }
 )
 
-export const logoutAsync = createAsyncThunk('app/logout', async (_, { dispatch }) => {
+export const logoutAsync = createAsyncThunk('app/logout', async (_, { dispatch, getState }) => {
+  const state = getState() as RootState
+  const email = state?.app?.user?.email
   request('profile/logoff')
   dispatch(patch({ token: undefined, user: undefined }))
   onLogin(undefined)
   dispatch(notify('Have a nice day, bye'))
+  sendEvent('logout', { email })
 })
 
 export const editProfileAsync = createAsyncThunk(
   'app/editProfile',
   async (payload: Record<string, unknown>, { dispatch, getState }) => {
+    const state = getState() as RootState
     const response = await request<{ token: string; user: AppUser }>('profile/edit', payload)
     const user = response.data.user
     if (user) {
-      const token = (getState() as RootState)?.app?.token as string
+      const token = state?.app?.token as string
       dispatch(patch({ user }))
       onLogin({ token, user })
     }
+    sendEvent('editProfile')
   }
 )
 
@@ -258,5 +269,6 @@ export const forgotAsync = createAsyncThunk(
   async (payload: { email: string }, { dispatch }) => {
     const response = await request('profile/forgot', payload)
     dispatch(notify(response.data?.message || 'Recovery could not be sent'))
+    sendEvent('forgot', { email: payload.email })
   }
 )

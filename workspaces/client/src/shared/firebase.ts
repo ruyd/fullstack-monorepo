@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { initializeApp, type FirebaseApp } from 'firebase/app'
+import { initializeAnalytics, Analytics, logEvent } from 'firebase/analytics'
 import {
   AuthCredential,
   OAuthCredential,
-  User,
   UserCredential,
   getAuth,
   signInWithCredential,
@@ -12,8 +11,6 @@ import {
   signInWithRedirect
 } from 'firebase/auth'
 import config from './config'
-import { request } from 'src/features/app'
-import { AppUser } from './auth'
 
 let firebaseApp: FirebaseApp | null = null
 export function getFirebaseApp() {
@@ -35,6 +32,7 @@ export function getFirebaseApp() {
   // const app = initializeApp(firebaseConfig)
   const settings = config.settings
   const projectId = settings?.google?.projectId
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const params = {
     apiKey: settings?.google?.apiKey,
     authDomain: `${projectId}.firebaseapp.com`,
@@ -46,6 +44,24 @@ export function getFirebaseApp() {
   }
   firebaseApp = initializeApp(firebaseConfig)
   return firebaseApp
+}
+
+export let firebaseAnalytics: Analytics | null = null
+export function firebaseAppInit() {
+  const firstTime = !firebaseApp
+  const app = getFirebaseApp()
+  if (firstTime) {
+    firebaseAnalytics = initializeAnalytics(app)
+    logEvent(firebaseAnalytics, 'app_init')
+  }
+  return app
+}
+
+export function sendEvent(eventName: string, eventParams?: Record<string, unknown>) {
+  if (!firebaseAnalytics) {
+    return
+  }
+  logEvent(firebaseAnalytics, eventName, eventParams)
 }
 
 export async function firebasePasswordLogin(

@@ -14,6 +14,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
+import { sendEvent } from 'src/shared/firebase'
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -33,6 +34,9 @@ export default function OnboardingDialog() {
   const open = requested?.includes('onboard')
   const handleClose = React.useCallback(() => {
     dispatch(patch({ dialog: undefined }))
+    sendEvent('onboarding', {
+      action: 'close'
+    })
   }, [dispatch])
 
   React.useEffect(() => {
