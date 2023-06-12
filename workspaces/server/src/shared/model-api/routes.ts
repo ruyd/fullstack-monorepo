@@ -183,7 +183,11 @@ export async function listHandler(
 
   //userId filtering from authentication token
   const authId = modelApiConfig.getAuthUserId(req)
-  if (authId && Object.keys(fields).includes(modelApiConfig.userIdColumn)) {
+  if (
+    authId &&
+    model.name !== 'user' &&
+    Object.keys(fields).includes(modelApiConfig.userIdColumn)
+  ) {
     where[modelApiConfig.userIdColumn] = authId
   }
   const limit = Number(req.query.limit || 100)
