@@ -149,13 +149,16 @@ export const loginAsync = createAsyncThunk(
         await setCustomToken(state?.app?.settings?.system?.authProvider, response.data.token)
         setLogin(dispatch, response.data.token, response.data.user)
         dispatch(patch({ dialog: undefined }))
+        sendEvent('login.password.success')
       } else {
         dispatch(notifyError('Login error' + response.data.message))
+        sendEvent('login.password.error', { message: response.data.message })
       }
     } catch (err) {
       const error = err as Error & { response?: { data?: { message?: string } } }
       const message = error.response?.data?.message || error.message
       dispatch(notifyError(message))
+      sendEvent('login.password.error', { message })
     }
     dispatch(patch({ loading: false }))
   }
@@ -198,15 +201,15 @@ export const tapLoginAsync = createAsyncThunk(
         await setCustomToken(state?.app?.settings?.system?.authProvider, response.data.token)
         setLogin(dispatch, response.data.token, response.data.user)
         dispatch(patch({ dialog: undefined }))
-        sendEvent('login.success')
+        sendEvent('login.tap.success')
       } else {
         dispatch(notifyError('Login error' + response.data.message))
-        sendEvent('login.error', { message: response.data.message })
+        sendEvent('login.tap.error', { message: response.data.message })
       }
     } catch (err) {
       const error = err as Error
       dispatch(notifyError(error.message))
-      sendEvent('login.unhandledError', { message: error.message })
+      sendEvent('login.tap.unhandledError', { message: error.message })
       return
     }
   }

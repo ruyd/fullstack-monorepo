@@ -40,7 +40,7 @@ export const routes: Readonly<AppRoute>[] = [
     title: 'Login',
     path: Paths.Login,
     component: React.lazy(() => import('../features/profile/Login')),
-    profile: true,
+    profile: false,
     anon: true,
     dialog: 'onboard'
   },
@@ -48,7 +48,7 @@ export const routes: Readonly<AppRoute>[] = [
     title: 'Register',
     path: '/register',
     component: React.lazy(() => import('../features/profile/Register')),
-    profile: true,
+    profile: false,
     anon: true,
     dialog: 'onboard.register'
   },

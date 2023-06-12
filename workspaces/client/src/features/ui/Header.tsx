@@ -19,7 +19,7 @@ import Card from '@mui/material/Card'
 import Paper from '@mui/material/Paper/Paper'
 import MenuItem from '@mui/material/MenuItem'
 import AdbIcon from '@mui/icons-material/Adb'
-import { ShoppingCartCheckout, Warning } from '@mui/icons-material'
+import { LockOpen, SettingsRounded, ShoppingCartCheckout, Warning } from '@mui/icons-material'
 import { config } from '../../shared/config'
 import { useAppDispatch, useAppSelector } from '../../shared/store'
 import { patch } from '../app/slice'
@@ -35,7 +35,7 @@ const profileLinks = routes.filter(route => route.profile)
 export default function HeaderNavBar() {
   const locale = useAppSelector(state => state.app.locale)
   const maintenance = useAppSelector(state => state.app.settings?.system?.disable)
-  const backgroundColor = maintenance ? 'error.dark' : 'primary.main'
+  const backgroundColor = maintenance ? 'error.dark' : undefined
   const items = useAppSelector(state => state.shop.items)
   const activeSubscription = useAppSelector(state => state.shop.activeSubscription)
   const wallet = useAppSelector(state => state.shop.wallet)
@@ -98,9 +98,7 @@ export default function HeaderNavBar() {
   return (
     <AppBar
       position="static"
-      enableColorOnDark
-      color="primary"
-      sx={{ maxHeight: '4rem', backgroundColor }}
+      sx={{ maxHeight: '4rem', backgroundColor, backgroundImage: 'none !important', boxShadow: 0 }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -172,19 +170,17 @@ export default function HeaderNavBar() {
             component={RouterLink}
             to="/"
             sx={{
-              mr: 2,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none'
             }}
           >
             {config.defaultTitle}
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent: 'center' } }}>
             {links.map(route => (
               <Button
                 key={route.path}
@@ -221,10 +217,30 @@ export default function HeaderNavBar() {
               </Tooltip>
             </Box>
           )}
+          {!user && (
+            <>
+              <Button
+                variant="text"
+                startIcon={<LockOpen />}
+                onClick={() => handleDialog('onboard')}
+              >
+                Login
+              </Button>
+              <Button
+                variant="contained"
+                size="small"
+                sx={{ ml: 1 }}
+                onClick={() => handleDialog('onboard.register')}
+              >
+                Start
+              </Button>
+            </>
+          )}
           <Box sx={{ flexGrow: 0, ml: 1 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
-                <Avatar src={user?.picture} alt={user?.firstName} />
+                {!user && <SettingsRounded />}
+                {user && <Avatar src={user?.picture} alt={user?.firstName} />}
               </IconButton>
             </Tooltip>
             <Menu

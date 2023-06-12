@@ -34,13 +34,14 @@ export default function OnboardingDialog() {
   const open = requested?.includes('onboard')
   const handleClose = React.useCallback(() => {
     dispatch(patch({ dialog: undefined }))
-    sendEvent('onboarding', {
-      action: 'close'
+    sendEvent('onboarding.cancel', {
+      action: 'manualClose'
     })
   }, [dispatch])
 
   React.useEffect(() => {
     setShow(requested?.split('.')[1] || 'login')
+    sendEvent('onboarding.show')
   }, [requested, setShow])
 
   if (!open) {
