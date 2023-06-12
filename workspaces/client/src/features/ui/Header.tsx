@@ -223,6 +223,7 @@ export default function HeaderNavBar() {
                 variant="text"
                 startIcon={<LockOpen />}
                 onClick={() => handleDialog('onboard')}
+                sx={{ color: 'white' }}
               >
                 Login
               </Button>
