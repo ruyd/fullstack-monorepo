@@ -3,7 +3,7 @@ import {
   Palette,
   PaletteColorOptions,
   Theme,
-  ThemeOptions,
+  ThemeOptions
 } from '@mui/material/styles'
 import { Typography } from '@mui/material/styles/createTypography'
 import { CSSProperties } from '@mui/styled-engine'
@@ -37,42 +37,42 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
     palette: {
       mode: darkMode ? 'dark' : 'light',
       common: {
-        black: colors?.darkPaper,
+        black: '#000'
       },
       primary: {
         light: colors?.primaryLight,
         main: colors?.primaryMain,
         dark: colors?.primaryDark,
         200: colors?.primary200,
-        800: colors?.primary800,
+        800: colors?.primary800
       },
       secondary: {
         light: colors?.secondaryLight,
         main: colors?.secondaryMain,
         dark: colors?.secondaryDark,
         200: colors?.secondary200,
-        800: colors?.secondary800,
+        800: colors?.secondary800
       },
       error: {
         light: colors?.errorLight,
         main: colors?.errorMain,
-        dark: colors?.errorDark,
+        dark: colors?.errorDark
       },
       orange: {
         light: colors?.orangeLight,
         main: colors?.orangeMain,
-        dark: colors?.orangeDark,
+        dark: colors?.orangeDark
       },
       warning: {
         light: colors?.warningLight,
         main: colors?.warningMain,
-        dark: colors?.warningDark,
+        dark: colors?.warningDark
       },
       success: {
         light: colors?.successLight,
         200: colors?.success200,
         main: colors?.successMain,
-        dark: colors?.successDark,
+        dark: colors?.successDark
       },
       grey: {
         50: colors?.grey50,
@@ -80,18 +80,18 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
         500: colors?.darkTextSecondary,
         600: colors?.heading,
         700: colors?.darkTextPrimary,
-        900: colors?.textDark,
+        900: colors?.textDark
       },
       dark: {
         light: colors?.darkTextPrimary,
         main: colors?.darkLevel1,
         dark: colors?.darkLevel2,
         800: colors?.darkBackground,
-        900: colors?.darkPaper,
-      },
+        900: colors?.darkPaper
+      }
     },
     mixins: {
-      toolbar: {},
+      toolbar: {}
     },
     typography: {
       fontFamily: [
@@ -104,26 +104,26 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
         'sans-serif',
         '"Apple Color Emoji"',
         '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-      ].join(','),
+        '"Segoe UI Symbol"'
+      ].join(',')
     },
     components: {
       MuiCssBaseline: {
         styleOverrides: {
           '*::-webkit-scrollbar': {
-            width: '12px',
+            width: '12px'
           },
           '*::-webkit-scrollbar-track': {
-            background: darkMode ? '#646464' : '#e0e0e0',
+            background: darkMode ? '#646464' : '#e0e0e0'
           },
           '*::-webkit-scrollbar-thumb': {
             background: darkMode ? '#242424' : '#b0b0b0',
-            borderRadius: '2px',
+            borderRadius: '2px'
           },
           '& .MuiDataGrid-footerContainer': {
-            backgroundColor: 'background.paper',
-          },
-        },
+            backgroundColor: 'background.paper'
+          }
+        }
       },
       MuiTab: {
         styleOverrides: {
@@ -131,13 +131,13 @@ export function getTheme(darkMode?: boolean, state?: ThemeState): Theme {
             minHeight: 'auto',
             maxHeight: 'auto',
             '& .MuiTab-flexContainer': {
-              padding: 0,
-            },
-          },
-        },
-      },
+              padding: 0
+            }
+          }
+        }
+      }
     },
-    state,
+    state
   }
 
   // jest doesn't like css vars

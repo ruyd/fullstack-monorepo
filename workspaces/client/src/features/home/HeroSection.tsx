@@ -3,10 +3,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Paths } from '../../shared/routes'
 import { FormattedMessage, defineMessages } from 'react-intl'
-import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import { Grid } from '@mui/material'
+import styled from '@mui/system/styled'
 
 const messages = defineMessages({
   buttonCaption: {
@@ -16,8 +17,18 @@ const messages = defineMessages({
   }
 })
 
+const StyledTypography = styled(Typography)({
+  transform:
+    'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)',
+  opacity: 1,
+  transformStyle: 'preserve-3d',
+  margin: '.5rem 0 1.5rem 0',
+  fontWeight: 700,
+  letterSpacing: 0
+})
+
 export default function HeroSection({
-  subtitle = 'Foundation template for your projects and startups',
+  subtitle = 'Easy to use monorepo template for web projects',
   caption = <FormattedMessage {...messages.buttonCaption} />,
   children
 }: {
@@ -26,23 +37,26 @@ export default function HeroSection({
   children?: React.ReactNode
 }) {
   return (
-    <Container sx={{ m: '3rem 0 4rem 0' }}>
+    <Grid sx={{ m: '3rem 0 4rem 0' }}>
       <Box textAlign="center">
-        <Typography variant="h4">
-          <FormattedMessage
-            id="home.title"
-            description="Hero Title"
-            defaultMessage="Drawings Marketplace"
-          />
-        </Typography>
-        <Typography variant="h5" sx={{ m: '.5rem 0 1.5rem 0' }}>
+        <StyledTypography variant="h3" className="slide-up">
           {subtitle}
-        </Typography>
-        <Button component={Link} to={Paths.Draw} variant="outlined">
+        </StyledTypography>
+        <Button
+          component={Link}
+          to={Paths.Draw}
+          variant="outlined"
+          sx={{
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
+              transform: 'scale(1.05) translateY(4px)'
+            }
+          }}
+        >
           {caption}
         </Button>
         {children}
       </Box>
-    </Container>
+    </Grid>
   )
 }

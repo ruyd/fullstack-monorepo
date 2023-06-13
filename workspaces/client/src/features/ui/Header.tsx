@@ -35,7 +35,7 @@ const profileLinks = routes.filter(route => route.profile)
 export default function HeaderNavBar() {
   const locale = useAppSelector(state => state.app.locale)
   const maintenance = useAppSelector(state => state.app.settings?.system?.disable)
-  const backgroundColor = maintenance ? 'error.dark' : undefined
+  const backgroundColor = maintenance ? 'error.dark' : '#f59585'
   const items = useAppSelector(state => state.shop.items)
   const activeSubscription = useAppSelector(state => state.shop.activeSubscription)
   const wallet = useAppSelector(state => state.shop.wallet)
@@ -98,7 +98,13 @@ export default function HeaderNavBar() {
   return (
     <AppBar
       position="static"
-      sx={{ maxHeight: '4rem', backgroundColor, backgroundImage: 'none !important', boxShadow: 0 }}
+      sx={{
+        maxHeight: '4rem',
+        backgroundColor,
+        backgroundImage: 'none !important',
+        boxShadow: 0,
+        color: 'common.black'
+      }}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -187,7 +193,7 @@ export default function HeaderNavBar() {
                 onClick={() => handleCloseNavMenu(route)}
                 component={RouterLink}
                 to={route.dialog ? '#' : route.path}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'inherit', display: 'block' }}
               >
                 {route.title}
               </Button>
@@ -223,7 +229,7 @@ export default function HeaderNavBar() {
                 variant="text"
                 startIcon={<LockOpen />}
                 onClick={() => handleDialog('onboard')}
-                sx={{ color: 'white' }}
+                sx={{ color: 'inherit' }}
               >
                 Login
               </Button>
@@ -240,7 +246,7 @@ export default function HeaderNavBar() {
           <Box sx={{ flexGrow: 0, ml: 1 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu}>
-                {!user && <SettingsRounded />}
+                {!user && <SettingsRounded sx={{ color: 'common.black' }} />}
                 {user && <Avatar src={user?.picture} alt={user?.firstName} />}
               </IconButton>
             </Tooltip>

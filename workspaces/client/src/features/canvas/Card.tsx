@@ -18,13 +18,16 @@ export function GalleryCard({
       title={item?.name}
       key={item?.drawingId}
       sx={{
-        backgroundColor: 'primary.main',
+        backgroundColor: 'secondary.main',
         borderRadius: '16px',
-        transition: 'all 200ms ease-in',
+        transition: 'all 100ms ease-in',
         marginRight: '0.5rem',
         display: 'flex',
         position: 'relative',
-        maxWidth: '47vw'
+        maxWidth: '47vw',
+        ':hover': {
+          transform: 'scale(0.98)'
+        }
       }}
       {...props}
     >

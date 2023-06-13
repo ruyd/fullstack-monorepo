@@ -14,7 +14,7 @@ import { firebaseAppInit } from 'src/shared/firebase'
 firebaseAppInit()
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false, cacheTime: 3000, staleTime: 3000 } }
+  defaultOptions: { queries: { retry: true, cacheTime: 3000, staleTime: 3000 } }
 })
 
 axios.defaults.baseURL = config.backendUrl

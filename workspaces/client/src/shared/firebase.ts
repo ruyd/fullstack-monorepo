@@ -61,6 +61,9 @@ export function sendEvent(eventName: string, eventParams?: Record<string, unknow
   if (!firebaseAnalytics) {
     return
   }
+  if (process.env.NODE_ENV !== 'production') {
+    return
+  }
   logEvent(firebaseAnalytics, eventName, eventParams)
 }
 
@@ -72,7 +75,6 @@ export async function firebasePasswordLogin(
   const auth = getAuth(app)
   const credential = await signInWithEmailAndPassword(auth, email, password)
   const idToken = await credential.user.getIdToken()
-  // const idToken = (credential.user as unknown as { accessToken: string }).accessToken
   return {
     ...credential.user,
     idToken
