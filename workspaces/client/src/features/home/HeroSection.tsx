@@ -28,7 +28,7 @@ const StyledTypography = styled(Typography)({
 })
 
 export default function HeroSection({
-  subtitle = 'Easy to use monorepo template for web projects',
+  subtitle = 'Easy to use template for web projects',
   caption = <FormattedMessage {...messages.buttonCaption} />,
   children
 }: {
