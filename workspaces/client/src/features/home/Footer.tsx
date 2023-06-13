@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography } from '@mui/material'
+import { Box, Container, Grid, Link, Typography } from '@mui/material'
 
 const Footer = () => {
   return (
@@ -22,16 +22,24 @@ const Footer = () => {
             </Typography>
             <ul className="footer-links">
               <li>
-                <a href="/">Home</a>
+                <Link color="secondary" href="/">
+                  Home
+                </Link>
               </li>
               <li>
-                <a href="/about">About</a>
+                <Link color="secondary" href="/about">
+                  About
+                </Link>
               </li>
               <li>
-                <a href="/services">Services</a>
+                <Link color="secondary" href="/services">
+                  Services
+                </Link>
               </li>
               <li>
-                <a href="/contact">Contact</a>
+                <Link color="secondary" href="/contact">
+                  Contact
+                </Link>
               </li>
             </ul>
           </Grid>

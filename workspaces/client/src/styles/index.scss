@@ -27,6 +27,20 @@ footer {
   width: 100%;
 }
 
+.footer-links {
+  list-style-type: none;  
+  padding-left: 0;
+}
+
+.footer-links a {
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+
 /* </Layout */
 
 body {
