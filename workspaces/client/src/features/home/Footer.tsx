@@ -1,4 +1,9 @@
-import { Box, Container, Grid, Link, Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import Link from '@mui/material/Link'
+import Typography from '@mui/material/Typography'
+import { Link as RouterLink } from 'react-router-dom'
 
 const Footer = () => {
   return (
@@ -22,22 +27,22 @@ const Footer = () => {
             </Typography>
             <ul className="footer-links">
               <li>
-                <Link color="secondary" href="/">
+                <Link component={RouterLink} color="secondary" to="/">
                   Home
                 </Link>
               </li>
               <li>
-                <Link color="secondary" href="/about">
-                  About
+                <Link component={RouterLink} color="secondary" to="/404">
+                  404
                 </Link>
               </li>
               <li>
-                <Link color="secondary" href="/services">
+                <Link component={RouterLink} color="secondary" to="/">
                   Services
                 </Link>
               </li>
               <li>
-                <Link color="secondary" href="/contact">
+                <Link component={RouterLink} color="secondary" to="/">
                   Contact
                 </Link>
               </li>
