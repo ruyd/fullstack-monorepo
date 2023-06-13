@@ -16,10 +16,10 @@ export default function HomePage() {
           <HeroSection />
         </Box>
       </div>
-      <Typography variant="h6" sx={{ textAlign: 'center', mt: 1, fontWeight: 600 }}>
+      <Typography variant="h6" sx={{ textAlign: 'center', mt: 5, fontWeight: 600 }}>
         Drawings Marketplace
       </Typography>
-      <Box sx={{ m: 5 }}>
+      <Box sx={{ m: 5, mb: 8 }}>
         <Gallery />
       </Box>
       <Subscribe />
