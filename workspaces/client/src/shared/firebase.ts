@@ -50,9 +50,11 @@ export let firebaseAnalytics: Analytics | null = null
 export function firebaseAppInit() {
   const firstTime = !firebaseApp
   const app = getFirebaseApp()
-  if (firstTime) {
+  if (firstTime && app?.options?.measurementId) {
     firebaseAnalytics = initializeAnalytics(app)
-    logEvent(firebaseAnalytics, 'app_init')
+    if (firebaseAnalytics) {
+      logEvent(firebaseAnalytics, 'app_init')
+    }
   }
   return app
 }
