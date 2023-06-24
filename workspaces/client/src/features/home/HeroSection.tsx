@@ -18,10 +18,6 @@ const messages = defineMessages({
 })
 
 const StyledTypography = styled(Typography)({
-  transform:
-    'translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)',
-  opacity: 1,
-  transformStyle: 'preserve-3d',
   margin: '.5rem 0 1.5rem 0',
   fontWeight: 700,
   letterSpacing: 0
