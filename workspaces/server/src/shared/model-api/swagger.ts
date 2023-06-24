@@ -176,7 +176,7 @@ export function autoCompleteResponses(swaggerDoc: OAS3Definition) {
       if (!def[method]) {
         def[method] = { summary: 'No summary' }
       }
-      if (!def[method].responses) {
+      if (typeof def[method] === 'object' && !def[method].responses) {
         def[method].responses = { 200: swaggerDoc.components?.responses?.Success }
       }
     }
